@@ -1,66 +1,72 @@
-import React, { Fragment } from 'react';
 import Head from 'next/head';
-import Sticky from 'react-stickynode';
 import { ThemeProvider } from 'styled-components';
-import { agencyTheme } from 'common/theme/agency';
+import { theme } from 'common/theme/appModern';
 import { ResetCSS } from 'common/assets/css/style';
-import { GlobalStyle, AgencyWrapper } from 'containers/Agency/agency.style';
-import Navbar from 'containers/Agency/Navbar';
-import BannerSection from 'containers/Agency/BannerSection';
-import FeatureSection from 'containers/Agency/FeatureSection';
-import AboutUsSection from 'containers/Agency/AboutUsSection';
-import WorkHistory from 'containers/Agency/WorkHistory';
-import BlogSection from 'containers/Agency/BlogSection';
-import TestimonialSection from 'containers/Agency/TestimonialSection';
-import TeamSection from 'containers/Agency/TeamSection';
-import VideoSection from 'containers/Agency/VideoSection';
-import NewsletterSection from 'containers/Agency/NewsletterSection';
-import QualitySection from 'containers/Agency/QualitySection';
-import Footer from 'containers/Agency/Footer';
-import { DrawerProvider } from 'common/contexts/DrawerContext';
-import FaqSection from 'containers/Agency/FaqSection';
+import Sticky from 'react-stickynode';
+import Navbar from 'containers/CryptoModern/Navbar';
+import Banner from 'containers/CryptoModern/Banner';
+import CountDown from 'containers/CryptoModern/CountDown';
+import Features from 'containers/CryptoModern/FeatureSection';
+import WorkHistory from 'containers/CryptoModern/WorkHistory';
+import Investment from 'containers/CryptoModern/Investment';
+import FundRaising from 'containers/CryptoModern/FundRaising';
+import Privacypolicy from 'containers/CryptoModern/Privacy';
+import WalletSection from 'containers/CryptoModern/WalletSection';
+import MapSection from 'containers/CryptoModern/MapSection';
+import FaqSection from 'containers/CryptoModern/FaqSection';
+import Newsletter from 'containers/CryptoModern/Newsletter';
+import Footer from 'containers/CryptoModern/Footer';
+import GlobalStyle, {
+  CryptoWrapper,
+  ContentWrapper,
+} from 'containers/CryptoModern/cryptoModern.style';
 
-const Main = () => {
+const CryptoModern = () => {
   return (
-    <ThemeProvider theme={agencyTheme}>
-      <Fragment>
-        {/* Start agency head section */}
+    <ThemeProvider theme={theme}>
+      <>
         <Head>
-          <title>Agency | A react next landing page</title>
-          <meta name="theme-color" content="#10ac84" />
+          <title>Crypto Modern | A next js landing page</title>
           <meta name="Description" content="React next landing page" />
-          {/* Load google fonts */}
+          <meta name="theme-color" content="#2563FF" />
+          <meta
+            name="keywords"
+            content="React, React js, Next, Next js, Super fast next js landing, Modren landing, Next js landing"
+          />
           <link
             href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
             rel="stylesheet"
           />
         </Head>
+        {/* end of head */}
+
         <ResetCSS />
         <GlobalStyle />
-        {/* End of agency head section */}
-        {/* Start agency wrapper section */}
-        <AgencyWrapper>
-          <Sticky top={0} innerZ={9999} activeClass="sticky-nav-active">
-            <DrawerProvider>
-              <Navbar />
-            </DrawerProvider>
+        {/* end of global and reset style */}
+
+        {/* start app classic landing */}
+        <CryptoWrapper>
+          <Sticky top={0} innerZ={9999} activeClass="sticky-active">
+            <Navbar />
           </Sticky>
-          <BannerSection />
-          <FeatureSection />
-          <AboutUsSection />
-          <WorkHistory />
-          <BlogSection />
-          <QualitySection />
-          <VideoSection />
-          <TestimonialSection />
-          <TeamSection />
-          <FaqSection />
-          <NewsletterSection />
+          <ContentWrapper>
+            <Banner />
+            <CountDown />
+            <Features />
+            <WorkHistory />
+            <Investment />
+            <FundRaising />
+            <Privacypolicy />
+            <WalletSection />
+            <MapSection />
+            <FaqSection />
+            <Newsletter />
+          </ContentWrapper>
           <Footer />
-        </AgencyWrapper>
-        {/* End of agency wrapper section */}
-      </Fragment>
+        </CryptoWrapper>
+        {/* end of app classic landing */}
+      </>
     </ThemeProvider>
   );
 };
-export default Main;
+export default CryptoModern;
