@@ -86,20 +86,6 @@ const Navbar = () => {
   return (
     <NavbarWrapper className="navbar">
       <Container>
-        <Logo
-          href="/cryptoModern"
-          logoSrc={LogoImage}
-          title="Crypto Modern"
-          className="main-logo"
-        />
-        <Logo
-          href="/cryptoModern"
-          logoSrc={LogoImageAlt}
-          title="Crypto Modern"
-          className="logo-alt"
-        />
-        {/* end of logo */}
-
         <MenuArea className={state.searchToggle ? 'active' : ''}>
           <ScrollSpyMenu className="menu" menuItems={navMenu} offset={-84} />
           {/* end of main menu */}
@@ -123,7 +109,7 @@ const Navbar = () => {
           {/* end of search */}
 
           <AnchorLink href="#trail" offset={84}>
-            <Button className="trail" title="Try for Free" />
+            <Button className="trail" title="How To Buy" />
           </AnchorLink>
 
           <Button
@@ -165,7 +151,7 @@ const Navbar = () => {
               </li>
             ))}
           </Scrollspy>
-          <Button title="Try for Free" />
+          <Button title="How To Buy" />
         </Container>
       </MobileMenu>
       {/* end of mobile menu */}

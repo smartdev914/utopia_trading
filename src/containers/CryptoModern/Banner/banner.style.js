@@ -5,6 +5,8 @@ const BannerWrapper = styled.div`
   padding-top: 100px;
   min-height: 802px;
   overflow: hidden;
+  text-align: center;
+
   background-image: linear-gradient(
     135deg,
     rgba(64, 219, 216, 0.15) 0%,
@@ -24,7 +26,7 @@ const BannerWrapper = styled.div`
   > div.container {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     min-height: calc(802px - 100px);
     @media only screen and (min-width: 1201px) and (max-width: 1440px) {
       min-height: 100%;
@@ -40,7 +42,6 @@ const BannerWrapper = styled.div`
 `;
 
 export const BannerContent = styled.div`
-  max-width: 425px;
   width: 100%;
   @media only screen and (max-width: 991px) {
     flex-shrink: 0;
@@ -53,18 +54,24 @@ export const BannerContent = styled.div`
     font-weight: 400;
     color: ${themeGet('colors.menu', '#0D233E')};
     margin-bottom: 24px;
-    letter-spacing: -0.025em;
-    @media only screen and (max-width: 1440px) {
-      font-size: 38px;
+    letter-spacing: 0.5em;
+
+    @media only screen and (min-width: 992px) {
+      font-size: 125px;
+      letter-spacing: 25px;
       margin-bottom: 20px;
     }
   }
 
   p {
     color: ${themeGet('colors.paragraph', '#496b96')};
-    font-size: 16px;
+    font-size: 18px;
     line-height: 33px;
     font-weight: 400;
+
+    @media only screen and (min-width: 992px) {
+      font-size: 26px;
+    }
   }
 `;
 
@@ -113,6 +120,15 @@ export const BannerImage = styled.div`
 export const ButtonGroup = styled.div`
   margin-top: 35px;
 
+  a:first-child {
+    margin-left: 0;
+  }
+
+  .social-icon {
+    margin-left: 15px;
+    margin-bottom: 15px;
+  }
+
   .reusecore__button {
     text-transform: inherit;
     border-radius: 5px;
@@ -130,7 +146,7 @@ export const ButtonGroup = styled.div`
     }
 
     &.text {
-      margin-left: 15px;
+      margin-right: 15px;
       color: #fff;
       border: 1px solid rgba(255, 255, 255, 0.302);
     }

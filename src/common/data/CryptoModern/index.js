@@ -14,26 +14,8 @@ export const navbar = {
     },
     {
       id: 2,
-      label: 'Key Features',
-      path: '#key-features',
-      offset: '81',
-    },
-    {
-      id: 3,
-      label: 'Fund Raising',
-      path: '#fund',
-      offset: '81',
-    },
-    {
-      id: 4,
-      label: 'Locations',
-      path: '#map',
-      offset: '81',
-    },
-    {
-      id: 5,
-      label: 'FAQ',
-      path: '#faqSection',
+      label: 'White Paper',
+      path: '#white-paper',
       offset: '81',
     },
   ],
