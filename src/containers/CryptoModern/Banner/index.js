@@ -8,6 +8,7 @@ import Button from 'common/components/Button';
 import Heading from 'common/components/Heading';
 import Rating from 'common/components/Rating';
 import Container from 'common/components/UI/Container';
+import { SocialIcon } from 'react-social-icons';
 import BannerWrapper, {
   BannerContent,
   DiscountLabel,
@@ -22,19 +23,10 @@ const Banner = () => {
     <BannerWrapper id="home">
       <Container>
         <BannerContent>
-          <Fade up>
-            <DiscountLabel>
-              <Text className="discountAmount" content="25% Discount" />
-              <Text
-                className="discountText"
-                content="on every first project "
-              />
-            </DiscountLabel>
-          </Fade>
           <Fade up delay={100}>
             <Heading
               as="h1"
-              content="Welcome next level  cryptocurrency token with faster transfer"
+              content="UTOPIA"
             />
           </Fade>
           <Fade up delay={200}>
@@ -45,20 +37,28 @@ const Banner = () => {
           </Fade>
           <Fade up delay={300}>
             <ButtonGroup>
-              <Button className="primary" title="GET TOKEN" />
-              <Button
+              <SocialIcon network="tiktok"/>
+              <SocialIcon network="snapchat"/>
+              <SocialIcon network="linkedin"/>
+              <SocialIcon network="reddit"/>
+              <SocialIcon network="twitch"/>
+              <SocialIcon network="telegram"/>
+              <SocialIcon network="facebook"/>
+              <SocialIcon network="pinterest"/>
+            </ButtonGroup>
+          </Fade>
+          <Fade up delay={400}>
+            <ButtonGroup>
+            <Button
                 className="text"
                 variant="textButton"
-                title="WHITE PAPER"
+                title="EXCHANGE"
               />
+              <Button className="primary" title="HOW TO BUY" />
+
             </ButtonGroup>
           </Fade>
         </BannerContent>
-        <BannerImage>
-          <Fade in delay={100}>
-            <Image src={bannerImg} alt="Banner" />
-          </Fade>
-        </BannerImage>
       </Container>
     </BannerWrapper>
   );
