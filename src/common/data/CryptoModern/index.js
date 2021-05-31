@@ -24,10 +24,9 @@ export const navbar = {
 /* ------------------------------------ */
 // Features data section
 /* ------------------------------------ */
-import featureIcon1 from 'common/assets/image/cryptoModern/feature-1.png';
-import featureIcon2 from 'common/assets/image/cryptoModern/feature-2.png';
-import featureIcon3 from 'common/assets/image/cryptoModern/feature-3.png';
-import featureIcon4 from 'common/assets/image/cryptoModern/feature-4.png';
+import featureIcon1 from 'common/assets/image/utoptia/Utopia_dark_circle.png';
+
+
 
 export const Features = [
   {
@@ -35,28 +34,21 @@ export const Features = [
     icon: featureIcon1,
     title: 'Great Market Value',
     description:
-      'The leading digital currency by market capitalization, has grown in value by more than 10 times.',
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   },
   {
     id: 2,
-    icon: featureIcon2,
+    icon: featureIcon1,
     title: 'Verified Mining',
     description:
-      'Your mining rigs are already set up and running. As soon as you set up your account.',
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   },
   {
     id: 3,
-    icon: featureIcon3,
+    icon: featureIcon1,
     title: 'Fastest Miner',
     description:
-      'Don’t wrestle with rig assembly and hot, noisy miners at home. We have the fastest bitcoin mining.',
-  },
-  {
-    id: 4,
-    icon: featureIcon4,
-    title: 'Secure Transactions',
-    description:
-      'You can mine any cryptocurrency available in our catalogue! Switch your mining power.',
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   },
 ];
 

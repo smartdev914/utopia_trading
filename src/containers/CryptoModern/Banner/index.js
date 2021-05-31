@@ -17,6 +17,7 @@ import BannerWrapper, {
 } from './banner.style';
 
 import bannerImg from 'common/assets/image/cryptoModern/banner-bg.png';
+import UtopiaBanner from 'common/assets/image/utoptia/Utopia_dark_full.png';
 
 const Banner = () => {
   return (
@@ -24,10 +25,7 @@ const Banner = () => {
       <Container>
         <BannerContent>
           <Fade up delay={100}>
-            <Heading
-              as="h1"
-              content="UTOPIA"
-            />
+            <Image src={UtopiaBanner} alt="Utopia Banner"/>
           </Fade>
           <Fade up delay={200}>
             <Text

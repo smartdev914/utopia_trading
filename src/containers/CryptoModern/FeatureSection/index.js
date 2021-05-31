@@ -24,15 +24,11 @@ const FeatureSection = ({
     <FeatureSectionWrapper id="key-features">
       <Container>
         <Box {...sectionHeader} className="sectionHeader">
-          <Text content="Why you choose TheCoin" {...sectionSubTitle} />
-          <Heading
-            content="Lorem ipsum dolor sit amet consectetur adipisicing elit sed eiu Lorem ipsum dolor Lorem ipsum dolor"
-            {...sectionTitle}
-          />
+          <Text content="Mission" {...sectionSubTitle} />
         </Box>
         <Box className="row" {...row}>
           {Features.map((feature, index) => (
-            <Box className="col" {...col} key={index}>
+            <Box className="col" className="missionBlockItem" key={index}>
               <FeatureBlock
                 icon={<img src={feature.icon} />}
                 wrapperStyle={blockWrapperStyle}
