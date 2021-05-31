@@ -82,30 +82,6 @@ docker run -it -p 3000:3000 <tag>:latest
 Open http://localhost:3000
 ```
 
-# Deployment Support
-
-## vercel.com
-
-### GatsbyJs
-
-We have given vercel.com deployment by default. For hosting the project in vercel.com first you have to go within the `packages/landing-gatsby`
-
-Now run below command .
-
-```
-vercel
-```
-
-### NextJs
-
-For deploying nextjs on vercel.com go to `packages/landing`. Now run below command .
-
-```
-vercel
-```
-
-> **Make sure you have `vercel-cli` installed in your system.**
-
 ## Firebase
 
 ### NextJs
@@ -113,14 +89,6 @@ vercel
 Add your project ID at `packages/landing/.firebaserc`
 
 Then, To deploy to your site, run the following command from the `packages/landing` directory.
-
-```
-yarn deploy
-```
-
-### GatsbyJs
-
-To deploy to your site, run the following command from the `packages/landing-gatsby` directory.
 
 ```
 yarn deploy
@@ -142,14 +110,3 @@ yarn export
 
 After running the above command go to `/landing` folder. You will find a `out` folder there. Drag
 and drop this `out` folder on netlify `sites` tab. Now after finishing the upload you are ready to go.
-
-### GatsbyJs
-
-If you want to host the `gatsbyjs` project, go to your command line and run this command on `packages/landing-gatsby` directory.
-
-```
-yarn build
-```
-
-After running above command go to `landing-gatsby` folder. You will find a `public` folder
-there. Drag and drop this `public` folder on netlify `sites` tab.
