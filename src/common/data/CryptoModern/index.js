@@ -25,10 +25,34 @@ export const navbar = {
 // Features data section
 /* ------------------------------------ */
 import featureIcon1 from 'common/assets/image/utoptia/Utopia_dark_circle.png';
-
+import featureIcon2 from 'common/assets/image/utoptia/Utopia_simple_dark_circle.png';
 
 
 export const Features = [
+  {
+    id: 1,
+    icon: featureIcon2,
+    title: 'Great Market Value',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  },
+  {
+    id: 2,
+    icon: featureIcon2,
+    title: 'Verified Mining',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  },
+  {
+    id: 3,
+    icon: featureIcon2,
+    title: 'Fastest Miner',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  },
+];
+
+export const Tokenomics = [
   {
     id: 1,
     icon: featureIcon1,

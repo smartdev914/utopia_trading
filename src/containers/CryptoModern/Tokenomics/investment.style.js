@@ -4,6 +4,10 @@ import { themeGet } from '@styled-system/theme-get';
 const SectionWrapper = styled.div`
   padding: 75px 0 25px;
   position: relative;
+  .sectionHeader {
+    justify-content: center;
+  }
+
   @media (max-width: 1600px) {
     padding: 25px 0 0px;
   }
@@ -28,6 +32,53 @@ export const ContentWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+
+  .missionBlockItem {
+    width: 300px;
+    height: 300px;
+    margin-bottom: 20px;
+
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
+  .feature__block {
+    position: relative;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    padding: 0 20px;
+    cursor: pointer;
+    border-radius: 50%;
+    background: #152149;
+
+    div {
+      h2, p {
+        color: rgba(142,199,255,0.502);
+        padding: 0 20px;
+      }
+    }
+
+    &:hover {
+      background-image: linear-gradient(
+        to bottom,
+        transparent 50%,
+        rgba(255, 255, 255, 0.031)
+      );
+    }
+    @media (max-width: 500px) {
+      padding: 15px 0;
+      &:hover {
+        background-image: none;
+      }
+    }
+  }
+
   .image {
     width: 50%;
     @media only screen and (max-width: 991px) {
@@ -71,7 +122,7 @@ export const ContentWrapper = styled.div`
       }
     }
     p {
-      font-size: 16px;
+      font-size: 20px;
       line-height: 28px;
       color: #496b96;
       max-width: 400px;

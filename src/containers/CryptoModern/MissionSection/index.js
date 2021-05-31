@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Fade from 'react-reveal/Fade';
 import Box from 'common/components/Box';
 import Text from 'common/components/Text';
 import Heading from 'common/components/Heading';
 import FeatureBlock from 'common/components/FeatureBlock';
-import { Features } from 'common/data/CryptoModern';
+import { Tokenomics } from 'common/data/CryptoModern';
 import Container from 'common/components/UI/Container';
-import FeatureSectionWrapper from './featureSection.style';
+import MissionSectionWrapper from './missionSection.style';
 
-const FeatureSection = ({
+const MissionSection = ({
   row,
   col,
   sectionHeader,
@@ -21,34 +22,38 @@ const FeatureSection = ({
   blockWrapperStyle,
 }) => {
   return (
-    <FeatureSectionWrapper id="key-features">
+    <MissionSectionWrapper id="key-features">
       <Container>
-        <Box {...sectionHeader} className="sectionHeader">
-          <Text content="Mission" {...sectionSubTitle} />
-        </Box>
+        <Fade up delay={100}>
+          <Box {...sectionHeader} className="sectionHeader">
+            <Text content="Mission" {...sectionSubTitle} />
+          </Box>
+        </Fade>
         <Box className="row" {...row}>
-          {Features.map((feature, index) => (
-            <Box className="col" className="missionBlockItem" key={index}>
-              <FeatureBlock
-                icon={<img src={feature.icon} />}
-                wrapperStyle={blockWrapperStyle}
-                contentStyle={contentStyle}
-                title={<Heading content={feature.title} {...featureTitle} />}
-                description={
-                  <Text content={feature.description} {...featureDescription} />
-                }
-                className="cryptoFeature"
-              />
-            </Box>
+          {Tokenomics.map((feature, index) => (
+            <Fade up delay={index * 100}>
+              <Box className="col" className="missionBlockItem" key={feature.id}>
+                <FeatureBlock
+                  icon={<img src={feature.icon} />}
+                  wrapperStyle={blockWrapperStyle}
+                  contentStyle={contentStyle}
+                  title={<Heading content={feature.title} {...featureTitle} />}
+                  description={
+                    <Text content={feature.description} {...featureDescription} />
+                  }
+                  className="cryptoFeature"
+                />
+              </Box>
+            </Fade>
           ))}
         </Box>
       </Container>
-    </FeatureSectionWrapper>
+    </MissionSectionWrapper>
   );
 };
 
-// FeatureSection style props
-FeatureSection.propTypes = {
+// MissionSection style props
+MissionSection.propTypes = {
   sectionHeader: PropTypes.object,
   row: PropTypes.object,
   col: PropTypes.object,
@@ -58,8 +63,8 @@ FeatureSection.propTypes = {
   featureDescription: PropTypes.object,
 };
 
-// FeatureSection default style
-FeatureSection.defaultProps = {
+// MissionSection default style
+MissionSection.defaultProps = {
   // section header default style
   sectionHeader: {
     mb: ['40px', '40px', '40px', '80px'],
@@ -123,4 +128,4 @@ FeatureSection.defaultProps = {
   },
 };
 
-export default FeatureSection;
+export default MissionSection;

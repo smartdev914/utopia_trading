@@ -8,7 +8,7 @@ const BannerWrapper = styled.div`
   text-align: center;
 
   @media only screen and (min-width: 1201px) and (max-width: 1440px) {
-    min-height: 100%;
+    min-height: 100vh;
   }
   @media only screen and (max-width: 1099px) {
     padding-top: 120px;

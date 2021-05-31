@@ -6,9 +6,8 @@ import Sticky from 'react-stickynode';
 import Navbar from 'containers/CryptoModern/Navbar';
 import Banner from 'containers/CryptoModern/Banner';
 import CountDown from 'containers/CryptoModern/CountDown';
-import Features from 'containers/CryptoModern/FeatureSection';
-import WorkHistory from 'containers/CryptoModern/WorkHistory';
-import Investment from 'containers/CryptoModern/Investment';
+import Mission from 'containers/CryptoModern/MissionSection';
+import Tokenomics from 'containers/CryptoModern/Tokenomics';
 import FundRaising from 'containers/CryptoModern/FundRaising';
 import Privacypolicy from 'containers/CryptoModern/Privacy';
 import WalletSection from 'containers/CryptoModern/WalletSection';
@@ -52,9 +51,8 @@ const CryptoModern = () => {
           <ContentWrapper>
             <Banner />
             {/* <CountDown /> */}
-            <Features />
-            <WorkHistory />
-            <Investment />
+            <Mission />
+            <Tokenomics />
             <FundRaising />
             <Privacypolicy />
             <WalletSection />
