@@ -19,7 +19,7 @@ const BoxWrapper = styled('div')(
       flexWrap,
       flexDirection,
       alignItems,
-      justifyContent,
+      { justifyContent: 'space-between'},
       themed('FlexBox')
     )
 );

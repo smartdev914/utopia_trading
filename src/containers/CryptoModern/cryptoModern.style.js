@@ -4,7 +4,7 @@ import { themeGet } from '@styled-system/theme-get';
 const GlobalStyle = createGlobalStyle`
   body {
     font-family: 'Roboto', sans-serif;
-    background:#03103b;
+    background: rgb(28,0,58);
   }
   .reuseModalParentWrapper,
   .reuseModalOverlay {

@@ -8,12 +8,42 @@ const FeatureSectionWrapper = styled.section`
   @media (max-width: 767px) {
     padding: 60px 0 30px 0;
   }
+  @media (max-width: 992px) {
+    .row {
+      justify-content: center;
+    }
+
+    .missionBlockItem {
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+  }
+
   .sectionHeader {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    span {
+      font-size: 60px;
+      font-weight: 500;
+      color: rgb(163,254,254);
+    }
+
   }
+
+  .missionBlockItem {
+    width: 300px;
+    height: 300px;
+    margin-bottom: 20px;
+
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
   .feature__block {
     position: relative;
     height: 100%;
@@ -24,7 +54,16 @@ const FeatureSectionWrapper = styled.section`
     transition: all 0.3s ease;
     padding: 0 20px;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 50%;
+    background: #152149;
+
+    div {
+      h2, p {
+        color: rgba(142,199,255,0.502);
+        padding: 0 20px;
+      }
+    }
+
     &:hover {
       background-image: linear-gradient(
         to bottom,
