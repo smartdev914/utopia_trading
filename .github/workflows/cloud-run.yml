@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - master
-      - develop
 
 env:
   CLOUD_RUN_PROJECT_ID: ${{ secrets.CLOUD_RUN_PROJECT_NAME }}
+  GCS_BUCKET: ${{ secrets.GCS_BUCKET }}
   CLOUD_RUN_REGION: us-west2
   # project-name but it can be anything you want
   REPO_NAME: utopia-web
