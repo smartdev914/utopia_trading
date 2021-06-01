@@ -4,6 +4,10 @@ import { themeGet } from '@styled-system/theme-get';
 const SectionWrapper = styled.div`
   padding: 75px 0;
   position: relative;
+  .sectionHeader {
+    justify-content: center;
+  }
+
   @media only screen and (max-width: 667px) {
     padding: 30px 0 0;
   }
@@ -30,6 +34,7 @@ export const ContentWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+
   .image {
     width: 50%;
     padding: 70px;
