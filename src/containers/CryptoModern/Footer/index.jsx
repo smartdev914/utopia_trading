@@ -6,11 +6,11 @@ import Text from 'common/components/Text';
 import Heading from 'common/components/Heading';
 import Logo from 'common/components/UIElements/Logo';
 import Container from 'common/components/UI/Container';
-import FooterWrapper, { List, ListItem } from './footer.style';
 
 import LogoImage from 'common/assets/image/cryptoModern/logo-white.png';
 
-import { Footer_Data } from 'common/data/CryptoModern';
+import { FooterData } from 'common/data/CryptoModern';
+import FooterWrapper, { List, ListItem } from './footer.style';
 
 const Footer = ({
   row,
@@ -20,44 +20,43 @@ const Footer = ({
   titleStyle,
   logoStyle,
   textStyle,
-}) => {
-  return (
-    <FooterWrapper>
-      <Container className="footer_container">
-        <Box className="row" {...row}>
-          <Box {...colOne}>
-            <Logo
-              href="#"
-              logoSrc={LogoImage}
-              title="Hosting"
-              logoStyle={logoStyle}
-            />
-            <Text content="hello@redq.io" {...textStyle} />
-            <Text content="+479-443-9334" {...textStyle} />
-          </Box>
-          {/* End of footer logo column */}
-          <Box {...colTwo}>
-            {Footer_Data.map((widget, index) => (
-              <Box className="col" {...col} key={`footer-widget-${index}`}>
-                <Heading content={widget.title} {...titleStyle} />
-                <List>
-                  {widget.menuItems.map((item, index) => (
-                    <ListItem key={`footer-list-item-${index}`}>
-                      <Link href={item.url}>
-                        <a className="ListItem">{item.text}</a>
-                      </Link>
-                    </ListItem>
-                  ))}
-                </List>
-              </Box>
-            ))}
-          </Box>
-          {/* End of footer List column */}
+}) => (
+  <FooterWrapper>
+    <Container className="footer_container">
+      <Box className="row" {...row}>
+        <Box {...colOne}>
+          <Logo
+            href="#"
+            logoSrc={LogoImage}
+            title="Hosting"
+            logoStyle={logoStyle}
+          />
+          <Text content="hello@redq.io" {...textStyle} />
+          <Text content="+479-443-9334" {...textStyle} />
         </Box>
-      </Container>
-    </FooterWrapper>
-  );
-};
+        {/* End of footer logo column */}
+        <Box {...colTwo}>
+          {FooterData.map((widget) => (
+            <Box className="col" {...col} key={`footer-widget-${widget.title}`}>
+              <Heading content={widget.title} {...titleStyle} />
+              <List>
+                {widget.menuItems.map((item) => (
+                  <ListItem key={`footer-list-item-${widget.id}`}>
+                    <Link href={item.url}>
+                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                      <a className="ListItem">{item.text}</a>
+                    </Link>
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+          ))}
+        </Box>
+        {/* End of footer List column */}
+      </Box>
+    </Container>
+  </FooterWrapper>
+);
 
 // Footer style props
 Footer.propTypes = {
