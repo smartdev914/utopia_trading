@@ -11,52 +11,49 @@ import MissionSectionWrapper from './missionSection.style';
 
 const MissionSection = ({
   row,
-  col,
   sectionHeader,
-  sectionTitle,
   sectionSubTitle,
   featureTitle,
   featureDescription,
-  iconStyle,
   contentStyle,
   blockWrapperStyle,
-}) => {
-  return (
-    <MissionSectionWrapper id="key-features">
-      <Container>
-        <Fade up delay={100}>
-          <Box {...sectionHeader} className="sectionHeader">
-            <Text content="Mission" {...sectionSubTitle} />
-          </Box>
-        </Fade>
-        <Box className="row" {...row}>
-          {Tokenomics.map((feature, index) => (
-            <Fade up delay={index * 100}>
-              <Box className="col" className="missionBlockItem" key={feature.id}>
-                <FeatureBlock
-                  icon={<img src={feature.icon} />}
-                  wrapperStyle={blockWrapperStyle}
-                  contentStyle={contentStyle}
-                  title={<Heading content={feature.title} {...featureTitle} />}
-                  description={
-                    <Text content={feature.description} {...featureDescription} />
-                  }
-                  className="cryptoFeature"
-                />
-              </Box>
-            </Fade>
-          ))}
+}) => (
+  <MissionSectionWrapper id="key-features">
+    <Container>
+      <Fade up delay={100}>
+        <Box {...sectionHeader} className="sectionHeader">
+          <Text content="Mission" {...sectionSubTitle} />
         </Box>
-      </Container>
-    </MissionSectionWrapper>
-  );
-};
+      </Fade>
+      <Box className="row" {...row}>
+        {Tokenomics.map((feature, index) => (
+          <Fade up delay={index * 100} key={feature.id}>
+            <Box className="col missionBlockItem">
+              <FeatureBlock
+                icon={<img src={feature.icon} alt="utopia icon" />}
+                wrapperStyle={blockWrapperStyle}
+                contentStyle={contentStyle}
+                title={<Heading content={feature.title} {...featureTitle} />}
+                description={
+                  <Text content={feature.description} {...featureDescription} />
+                  }
+                className="cryptoFeature"
+              />
+            </Box>
+          </Fade>
+        ))}
+      </Box>
+    </Container>
+  </MissionSectionWrapper>
+);
 
 // MissionSection style props
 MissionSection.propTypes = {
   sectionHeader: PropTypes.object,
   row: PropTypes.object,
   col: PropTypes.object,
+  blockWrapperStyle: PropTypes.object,
+  contentStyle: PropTypes.object,
   sectionTitle: PropTypes.object,
   sectionSubTitle: PropTypes.object,
   featureTitle: PropTypes.object,

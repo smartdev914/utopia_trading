@@ -7,15 +7,12 @@ import { Icon } from 'react-icons-kit';
 import { menu } from 'react-icons-kit/feather/menu';
 import { x } from 'react-icons-kit/feather/x';
 import { search } from 'react-icons-kit/feather/search';
-import Logo from 'common/components/UIElements/Logo';
 import Button from 'common/components/Button';
 import Container from 'common/components/UI/Container';
 import useOnClickOutside from 'common/hooks/useOnClickOutside';
-import NavbarWrapper, { MenuArea, MobileMenu, Search } from './navbar.style';
-import LogoImage from 'common/assets/image/cryptoModern/logo-white.png';
-import LogoImageAlt from 'common/assets/image/cryptoModern/logo.png';
 
 import { navbar } from 'common/data/CryptoModern';
+import NavbarWrapper, { MenuArea, MobileMenu, Search } from './navbar.style';
 
 const Navbar = () => {
   const { navMenu } = navbar;
@@ -26,9 +23,7 @@ const Navbar = () => {
   });
 
   const searchRef = useRef(null);
-  useOnClickOutside(searchRef, () =>
-    setState({ ...state, searchToggle: false })
-  );
+  useOnClickOutside(searchRef, () => setState({ ...state, searchToggle: false }));
 
   const toggleHandler = (type) => {
     if (type === 'search') {
@@ -59,14 +54,10 @@ const Navbar = () => {
     event.preventDefault();
 
     if (state.search !== '') {
-      console.log('search data: ', state.search);
-
       setState({
         ...state,
         search: '',
       });
-    } else {
-      console.log('Please fill this field.');
     }
   };
 
@@ -139,14 +130,14 @@ const Navbar = () => {
             offset={-84}
             currentClassName="active"
           >
-            {navMenu.map((menu, index) => (
-              <li key={`menu_key${index}`}>
+            {navMenu.map((currMenu) => (
+              <li key={`menu_key${currMenu.id}`}>
                 <AnchorLink
                   href={menu.path}
                   offset={menu.offset}
                   onClick={handleRemoveMenu}
                 >
-                  {menu.label}
+                  {currMenu.label}
                 </AnchorLink>
               </li>
             ))}

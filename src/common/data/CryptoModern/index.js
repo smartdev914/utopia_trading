@@ -3,8 +3,21 @@
 /* ------------------------------------ */
 import logo from 'common/assets/image/cryptoModern/logo.png';
 
+/* ------------------------------------ */
+// Features data section
+/* ------------------------------------ */
+import featureIcon1 from 'common/assets/image/utoptia/Utopia_dark_circle.png';
+import featureIcon2 from 'common/assets/image/utoptia/Utopia_simple_dark_circle.png';
+
+/* ------------------------------------ */
+// Wallet  data section
+/* ------------------------------------ */
+import walletIcon1 from 'common/assets/image/cryptoModern/wallet1.png';
+import walletIcon2 from 'common/assets/image/cryptoModern/wallet2.png';
+import walletIcon3 from 'common/assets/image/cryptoModern/wallet3.png';
+
 export const navbar = {
-  logo: logo,
+  logo,
   navMenu: [
     {
       id: 1,
@@ -20,13 +33,6 @@ export const navbar = {
     },
   ],
 };
-
-/* ------------------------------------ */
-// Features data section
-/* ------------------------------------ */
-import featureIcon1 from 'common/assets/image/utoptia/Utopia_dark_circle.png';
-import featureIcon2 from 'common/assets/image/utoptia/Utopia_simple_dark_circle.png';
-
 
 export const Features = [
   {
@@ -75,13 +81,6 @@ export const Tokenomics = [
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   },
 ];
-
-/* ------------------------------------ */
-// Wallet  data section
-/* ------------------------------------ */
-import walletIcon1 from 'common/assets/image/cryptoModern/wallet1.png';
-import walletIcon2 from 'common/assets/image/cryptoModern/wallet2.png';
-import walletIcon3 from 'common/assets/image/cryptoModern/wallet3.png';
 
 export const WalletFeatures = [
   {
@@ -136,27 +135,32 @@ export const Faq = [
 /* ------------------------------------ */
 // Footer data section
 /* ------------------------------------ */
-export const Footer_Data = [
+export const FooterData = [
   {
     title: 'About Us',
     menuItems: [
       {
+        id: 1,
         url: '#',
         text: 'Support Center',
       },
       {
+        id: 2,
         url: '#',
         text: 'Customer Support',
       },
       {
+        id: 3,
         url: '#',
         text: 'About Us',
       },
       {
+        id: 4,
         url: '#',
         text: 'Copyright',
       },
       {
+        id: 5,
         url: '#',
         text: 'Popular Campaign',
       },
@@ -166,22 +170,27 @@ export const Footer_Data = [
     title: 'Our Information',
     menuItems: [
       {
+        id: 1,
         url: '#',
         text: 'Return Policy',
       },
       {
+        id: 2,
         url: '#',
         text: 'Privacy Policy',
       },
       {
+        id: 3,
         url: '#',
         text: 'Terms & Conditions',
       },
       {
+        id: 4,
         url: '#',
         text: 'Site Map',
       },
       {
+        id: 5,
         url: '#',
         text: 'Store Hours',
       },
@@ -191,22 +200,27 @@ export const Footer_Data = [
     title: 'My Account',
     menuItems: [
       {
+        id: 1,
         url: '#',
         text: 'Press inquiries',
       },
       {
+        id: 2,
         url: '#',
         text: 'Social media directories',
       },
       {
+        id: 3,
         url: '#',
         text: 'Images & B-roll',
       },
       {
+        id: 4,
         url: '#',
         text: 'Permissions',
       },
       {
+        id: 5,
         url: '#',
         text: 'Speaker requests',
       },
@@ -216,18 +230,22 @@ export const Footer_Data = [
     title: 'Policy',
     menuItems: [
       {
+        id: 1,
         url: '#',
         text: 'Application security',
       },
       {
+        id: 2,
         url: '#',
         text: 'Software principles',
       },
       {
+        id: 3,
         url: '#',
         text: 'Unwanted software policy',
       },
       {
+        id: 4,
         url: '#',
         text: 'Responsible supply chain',
       },

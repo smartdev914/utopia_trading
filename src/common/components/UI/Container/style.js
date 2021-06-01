@@ -3,19 +3,17 @@ import styled, { css } from 'styled-components';
 const ContainerWrapper = styled.div`
   margin-left: auto;
   margin-right: auto;
-  ${(props) =>
-    props.fullWidth &&
-    css`
+  ${(props) => props.fullWidth
+    && css`
       width: 100%;
       max-width: none !important;
     `};
-  ${(props) =>
-    (props.noGutter &&
-      css`
+  ${(props) => (props.noGutter
+      && css`
         padding-left: 0;
         padding-right: 0;
-      `) ||
-    css`
+      `)
+    || css`
       padding-left: 10px;
       padding-right: 10px;
     `};
@@ -32,9 +30,8 @@ const ContainerWrapper = styled.div`
     width: 100%;
   }
   @media (max-width: 768px) {
-    ${(props) =>
-      props.mobileGutter &&
-      css`
+    ${(props) => props.mobileGutter
+      && css`
         padding-left: 30px;
         padding-right: 30px;
       `};
