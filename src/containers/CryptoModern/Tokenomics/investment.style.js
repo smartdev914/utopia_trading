@@ -32,6 +32,7 @@ export const ContentWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: space-around;
 
   .missionBlockItem {
     width: 300px;
