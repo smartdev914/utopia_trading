@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 
-const FeatureSectionWrapper = styled.section`
-  padding: 80px 0 180px 0;
+const MissionSectionWrapper = styled.section`
+  padding-bottom: 180px;
   @media (max-width: 990px) {
     padding: 60px 0 60px 0;
   }
   @media (max-width: 767px) {
     padding: 60px 0 30px 0;
   }
-  @media (max-width: 992px) {
+  @media (max-width: 991px) {
     .row {
       justify-content: center;
     }
@@ -16,6 +16,11 @@ const FeatureSectionWrapper = styled.section`
     .missionBlockItem {
       margin-left: 20px;
       margin-right: 20px;
+    }
+  }
+  @media (min-width: 992px) {
+    .row {
+      justify-content: space-between;
     }
   }
 
@@ -80,4 +85,4 @@ const FeatureSectionWrapper = styled.section`
   }
 `;
 
-export default FeatureSectionWrapper;
+export default MissionSectionWrapper;
