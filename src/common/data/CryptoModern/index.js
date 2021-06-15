@@ -55,24 +55,68 @@ export const MissionData = [
 export const TokenomicsData = [
   {
     id: 1,
-    icon: featureIcon1,
-    title: 'Great Market Value',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    title: 'Total Supply',
+    value: '1,000,000,000,000',
   },
   {
     id: 2,
-    icon: featureIcon1,
-    title: 'Verified Mining',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    title: 'Presale',
+    value: '400,000,000,000',
   },
   {
     id: 3,
-    icon: featureIcon1,
-    title: 'Fastest Miner',
+    title: 'Pancakeswap Liquidity',
+    value: '400,000,000,000',
+  },
+  {
+    id: 4,
+    title: 'Team',
+    value: '42,000,000,000',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      'Locked and will be slowly released',
+  },
+  {
+    id: 5,
+    title: 'Locked Tokens',
+    value: '158,000,000,000',
+    description:
+      'These tokens will primarily be used to provide liquidity to centralised exchanges for new listings and a store of value for the business as an asset',
+  },
+];
+
+export const TokenomicsTaxHightlights = [
+  {
+    id: 1,
+    title: '10%',
+    description: 'tax applied on each transaction',
+  },
+  {
+    id: 2,
+    title: '5%',
+    description: 'goes to existing holders allowing them to passively earn',
+  },
+  {
+    id: 3,
+    title: '5%',
+    description: 'goes towards token stability and charity',
+  },
+];
+
+export const TokenomicsWhaleHightlights = [
+  {
+    id: 1,
+    title: 'Higher tax',
+    description: 'for larger transactions',
+  },
+  {
+    id: 2,
+    title: 'Max amount of transactions',
+    description: 'set to 0.2%',
+  },
+  {
+    id: 3,
+    title: 'Max cap per wallet',
+    description: 'set to 0,7%',
   },
 ];
 

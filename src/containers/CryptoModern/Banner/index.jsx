@@ -15,15 +15,15 @@ const Banner = () => (
   <BannerWrapper id="home">
     <Container>
       <BannerContent>
-        <Fade up delay={100}>
+        <Fade up delay={50}>
           <Image src={UtopiaBanner} alt="Utopia Banner" />
         </Fade>
-        <Fade up delay={200}>
+        <Fade up delay={100}>
           <Text
             content="Built today, for a better tomorrow"
           />
         </Fade>
-        <Fade up delay={300}>
+        <Fade up delay={150}>
           <ButtonGroup>
             <Button
               className="text"
