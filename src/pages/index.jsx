@@ -9,7 +9,7 @@ import Banner from 'containers/CryptoModern/Banner';
 import Mission from 'containers/CryptoModern/MissionSection';
 import Tokenomics from 'containers/CryptoModern/Tokenomics';
 import RoadMap from 'containers/CryptoModern/RoadMap';
-import Privacypolicy from 'containers/CryptoModern/Privacy';
+import Products from 'containers/CryptoModern/Products';
 import WalletSection from 'containers/CryptoModern/WalletSection';
 import MapSection from 'containers/CryptoModern/MapSection';
 import FaqSection from 'containers/CryptoModern/FaqSection';
@@ -54,8 +54,8 @@ const CryptoModern = () => (
           {/* <CountDown /> */}
           <Mission />
           <Tokenomics />
+          <Products />
           <RoadMap />
-          {/* <Privacypolicy /> */}
           {/* <WalletSection /> */}
           {/* <MapSection /> */}
           {/* <FaqSection /> */}
