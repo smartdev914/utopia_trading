@@ -1,151 +1,38 @@
-import React, { useState, useRef } from 'react';
-import Fade from 'react-reveal/Fade';
+import React from 'react';
 import ScrollSpyMenu from 'common/components/ScrollSpyMenu';
-import Scrollspy from 'react-scrollspy';
 import AnchorLink from 'react-anchor-link-smooth-scroll';
-import { Icon } from 'react-icons-kit';
-import { menu } from 'react-icons-kit/feather/menu';
-import { x } from 'react-icons-kit/feather/x';
-import { search } from 'react-icons-kit/feather/search';
 import Button from 'common/components/Button';
 import Container from 'common/components/UI/Container';
-import useOnClickOutside from 'common/hooks/useOnClickOutside';
 
 import { navbar } from 'common/data/CryptoModern';
-import NavbarWrapper, { MenuArea, MobileMenu, Search } from './navbar.style';
+import { SocialIcon } from 'react-social-icons';
+import NavbarWrapper, {
+  MenuArea, SocialMediaButtonGroup,
+} from './navbar.style';
 
 const Navbar = () => {
   const { navMenu } = navbar;
-  const [state, setState] = useState({
-    search: '',
-    searchToggle: false,
-    mobileMenu: false,
-  });
 
-  const searchRef = useRef(null);
-  useOnClickOutside(searchRef, () => setState({ ...state, searchToggle: false }));
-
-  const toggleHandler = (type) => {
-    if (type === 'search') {
-      setState({
-        ...state,
-        search: '',
-        searchToggle: !state.searchToggle,
-        mobileMenu: false,
-      });
-    }
-
-    if (type === 'menu') {
-      setState({
-        ...state,
-        mobileMenu: !state.mobileMenu,
-      });
-    }
-  };
-
-  const handleOnChange = (event) => {
-    setState({
-      ...state,
-      search: event.target.value,
-    });
-  };
-
-  const handleSearchForm = (event) => {
-    event.preventDefault();
-
-    if (state.search !== '') {
-      setState({
-        ...state,
-        search: '',
-      });
-    }
-  };
-
-  const scrollItems = [];
-
-  navMenu.forEach((item) => {
-    scrollItems.push(item.path.slice(1));
-  });
-
-  const handleRemoveMenu = () => {
-    setState({
-      ...state,
-      mobileMenu: false,
-    });
-  };
+  const iconSize = '30px';
 
   return (
     <NavbarWrapper className="navbar">
       <Container>
-        <MenuArea className={state.searchToggle ? 'active' : ''}>
-          <ScrollSpyMenu className="menu" menuItems={navMenu} offset={-84} />
-          {/* end of main menu */}
-
-          <Search className="search" ref={searchRef}>
-            <form onSubmit={handleSearchForm}>
-              <input
-                type="text"
-                value={state.search}
-                placeholder="Enter your keyword"
-                onChange={handleOnChange}
-              />
-            </form>
-            <Button
-              className="text"
-              variant="textButton"
-              icon={<Icon icon={state.searchToggle ? x : search} />}
-              onClick={() => toggleHandler('search')}
-            />
-          </Search>
-          {/* end of search */}
-
-          <AnchorLink href="#trail" offset={84}>
-            <Button className="trail" title="How To Buy" />
-          </AnchorLink>
-
-          <Button
-            className="menubar"
-            icon={
-              state.mobileMenu ? (
-                <Icon className="bar" icon={x} />
-              ) : (
-                <Fade>
-                  <Icon className="close" icon={menu} />
-                </Fade>
-              )
-            }
-            color="#0F2137"
-            variant="textButton"
-            onClick={() => toggleHandler('menu')}
-          />
+        <SocialMediaButtonGroup>
+          <SocialIcon bgColor="#2D75DC" network="tiktok" style={{ width: iconSize, height: iconSize }} />
+          <SocialIcon bgColor="#2D75DC" network="snapchat" style={{ width: iconSize, height: iconSize }} />
+          <SocialIcon bgColor="#2D75DC" network="linkedin" style={{ width: iconSize, height: iconSize }} />
+          <SocialIcon bgColor="#2D75DC" network="reddit" style={{ width: iconSize, height: iconSize }} />
+          <SocialIcon bgColor="#2D75DC" network="twitch" style={{ width: iconSize, height: iconSize }} />
+          <SocialIcon bgColor="#2D75DC" network="telegram" style={{ width: iconSize, height: iconSize }} />
+          <SocialIcon bgColor="#2D75DC" network="facebook" style={{ width: iconSize, height: iconSize }} />
+          <SocialIcon bgColor="#2D75DC" network="pinterest" style={{ width: iconSize, height: iconSize }} />
+        </SocialMediaButtonGroup>
+        <MenuArea>
+          <Button className="whitepaper" title="WHITE PAPER" />
+          <Button className="trail" title="HOW TO BUY" />
         </MenuArea>
       </Container>
-
-      {/* start mobile menu */}
-      <MobileMenu className={`mobile-menu ${state.mobileMenu ? 'active' : ''}`}>
-        <Container>
-          <Scrollspy
-            className="menu"
-            items={scrollItems}
-            offset={-84}
-            currentClassName="active"
-          >
-            {navMenu.map((currMenu) => (
-              <li key={`menu_key${currMenu.id}`}>
-                <AnchorLink
-                  href={menu.path}
-                  offset={menu.offset}
-                  onClick={handleRemoveMenu}
-                >
-                  {currMenu.label}
-                </AnchorLink>
-              </li>
-            ))}
-          </Scrollspy>
-          <Button title="How To Buy" />
-        </Container>
-      </MobileMenu>
-      {/* end of mobile menu */}
     </NavbarWrapper>
   );
 };

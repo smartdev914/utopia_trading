@@ -8,9 +8,9 @@ import Fade from 'react-reveal/Fade';
 import Container from 'common/components/UI/Container';
 import GraphImg from 'common/assets/image/cryptoModern/graph.png';
 import dummyImg from 'common/assets/image/cryptoModern/pattern.png';
-import { Features } from 'common/data/CryptoModern';
+import { TokenomicsData } from 'common/data/CryptoModern';
 import FeatureBlock from 'common/components/FeatureBlock';
-import SectionWrapper, { ContentWrapper } from './investment.style';
+import SectionWrapper, { ContentWrapper } from './tokenomics.style';
 
 const Tokenomics = ({
   sectionHeader, sectionSubTitle, blockWrapperStyle, contentStyle, featureTitle, featureDescription,
@@ -19,11 +19,11 @@ const Tokenomics = ({
     <Container>
       <Fade up delay={100}>
         <Box {...sectionHeader} className="sectionHeader">
-          <Text content="Tokenomics + Trust" {...sectionSubTitle} />
+          <Heading content="TOKENOMICS" {...sectionSubTitle} />
         </Box>
       </Fade>
       <ContentWrapper>
-        {Features.map((feature, index) => (
+        {TokenomicsData.map((feature, index) => (
           <Fade up delay={index * 100} key={feature.id}>
             <Box className="col missionBlockItem">
               <FeatureBlock
@@ -70,14 +70,14 @@ Tokenomics.defaultProps = {
   },
   // sub section default style
   sectionSubTitle: {
-    as: 'span',
+    as: 'h2',
     display: 'block',
     textAlign: 'center',
-    letterSpacing: '-0.025em',
+    letterSpacing: '0.65rem',
     mb: '15px',
-    fontSize: '60px',
-    fontWeight: '500',
-    color: 'rgb(163,254,254)',
+    fontSize: '36px',
+    fontWeight: '700',
+    color: 'var(--primaryColor)',
   },
   // feature block wrapper default style
   blockWrapperStyle: {

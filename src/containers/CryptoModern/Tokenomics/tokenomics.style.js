@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { themeGet } from '@styled-system/theme-get';
 
 const SectionWrapper = styled.div`
+  background-color: #051557;
   padding: 75px 0 25px;
   position: relative;
   .sectionHeader {
@@ -9,7 +10,7 @@ const SectionWrapper = styled.div`
   }
 
   @media (max-width: 1600px) {
-    padding: 25px 0 0px;
+    padding: 80px 0 80px;
   }
   @media only screen and (max-width: 1366px) {
     padding: 30px 0;

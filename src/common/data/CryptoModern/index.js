@@ -21,44 +21,38 @@ export const navbar = {
   navMenu: [
     {
       id: 1,
-      label: 'Home',
-      path: '#home',
-      offset: '84',
-    },
-    {
-      id: 2,
-      label: 'White Paper',
+      label: 'WHITE PAPER',
       path: '#white-paper',
       offset: '81',
     },
   ],
 };
 
-export const Features = [
+export const MissionData = [
   {
     id: 1,
     icon: featureIcon2,
-    title: 'Great Market Value',
+    title: 'CHARITY',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      'We seek to solve real-world problems through our charity donations/crowdfunding. We want to ensure everything we donate has the most impact per dollar.',
   },
   {
     id: 2,
     icon: featureIcon2,
-    title: 'Verified Mining',
+    title: 'EQUALITY',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      'The whole philosophy of Utopia is equality and fairness. We represent this through our anti-bot and anti-whale features. We intend to take a stand against unfairness in the the DeFi space.',
   },
   {
     id: 3,
     icon: featureIcon2,
-    title: 'Fastest Miner',
+    title: 'COMMUNITY',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      'Built by and for the community, we strive to get close to achieving a perfect world with the empowerment and support of our community.',
   },
 ];
 
-export const Tokenomics = [
+export const TokenomicsData = [
   {
     id: 1,
     icon: featureIcon1,

@@ -8,7 +8,7 @@ const BannerWrapper = styled.div`
   text-align: center;
 
   @media only screen and (min-width: 1201px) and (max-width: 1440px) {
-    min-height: 100vh;
+    min-height: 90vh;
   }
   @media only screen and (max-width: 1099px) {
     padding-top: 120px;
@@ -38,6 +38,7 @@ const BannerWrapper = styled.div`
 
 export const BannerContent = styled.div`
   width: 100%;
+  margin-top: 60px;
   @media only screen and (max-width: 991px) {
     flex-shrink: 0;
     max-width: 360px;
@@ -59,7 +60,7 @@ export const BannerContent = styled.div`
   }
 
   p {
-    color: ${themeGet('colors.paragraph', '#496b96')};
+    color: var(--primaryColor);
     font-size: 18px;
     line-height: 33px;
     font-weight: 400;
@@ -70,50 +71,10 @@ export const BannerContent = styled.div`
   }
 `;
 
-export const DiscountLabel = styled.div`
-  display: flex;
-  border-radius: 4em;
-  background-color: rgb(26, 29, 95);
-  box-shadow: 0px 5px 15px 0px rgba(22, 53, 76, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.03);
-  padding: 7px 25px;
-  margin-bottom: 15px;
-  width: 80%;
-  @media (max-width: 767px) {
-    padding: 7px 15px;
-    width: 100%;
-  }
-  .discountAmount {
-    font-size: 14px;
-    color: rgb(64, 224, 219);
-    margin-bottom: 0;
-    margin-right: 0.6em;
-    font-weight: 700;
-  }
-  .discountText {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.902);
-    margin-bottom: 0;
-    font-weight: 700;
-  }
-`;
-
-export const BannerImage = styled.div`
-  flex-shrink: 0;
-  width: calc(100% - 425px);
-  img {
-    margin-left: 80px;
-    @media only screen and (max-width: 1600px) {
-      margin-left: 0;
-    }
-    @media only screen and (max-width: 480px) {
-      max-width: 70%;
-    }
-  }
-`;
-
 export const ButtonGroup = styled.div`
-  margin-top: 35px;
+  margin-top: 75px;
+  display: flex;
+  justify-content: center;
 
   a:first-child {
     margin-left: 0;
@@ -125,25 +86,30 @@ export const ButtonGroup = styled.div`
   }
 
   .reusecore__button {
+    width: 250px;
     text-transform: inherit;
-    border-radius: 5px;
+    border-radius: 10px;
     padding-left: 16px;
     padding-right: 16px;
-    font-size: 14px;
+    font-size: 20px;
     font-weight: 500;
     text-transform: uppercase;
 
     &.primary {
-      background-image: linear-gradient(to right, #4ba1d8, #4464bd 95%);
+      color: var(--backgroundColor);
+      background-color: #00DEE6;
       &:hover {
-        box-shadow: rgba(75, 109, 235, 0.78) 0px 12px 24px -10px;
+        box-shadow: #00DEE6 0px 0px 24px 5px;
       }
     }
 
     &.text {
       margin-right: 15px;
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.302);
+      color: #00DEE6;
+      border: 2px solid #00DEE6;
+      &:hover {
+        box-shadow: #00DEE6 0px 0px 24px 5px;
+      }
     }
   }
 `;
