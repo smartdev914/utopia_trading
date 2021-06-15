@@ -8,6 +8,7 @@ const GlobalStyle = createGlobalStyle`
 
     --backgroundColor: #1B003B;
     --primaryColor: #A3FFFF;
+    --tertiaryTextColor: #F9DF00;
   }
 
   body {
@@ -74,7 +75,7 @@ export const CryptoWrapper = styled.div`
       background-image: none;
       box-shadow: 0px 3px 8px 0px rgba(43, 83, 135, 0.08);
       @media only screen and (max-width: 1366px) {
-        padding: 15px 0 16px;
+        padding: 5px 0 5px;
       }
       .main-logo {
         display: none;

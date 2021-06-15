@@ -130,7 +130,7 @@ export const SocialMediaButtonGroup = styled.div`
   }
 
   .social-icon {
-    margin: 15px 7px 15px;
+    margin: 10px 5px 10px;
   }
 `;
 

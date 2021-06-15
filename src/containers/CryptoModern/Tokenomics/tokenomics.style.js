@@ -5,6 +5,14 @@ const SectionWrapper = styled.div`
   background-color: #051557;
   padding: 75px 0 25px;
   position: relative;
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
   .sectionHeader {
     justify-content: center;
   }
@@ -18,83 +26,99 @@ const SectionWrapper = styled.div`
   @media only screen and (max-width: 667px) {
     padding: 30px 0 0;
   }
-  .patternImg {
-    position: absolute;
-    left: -28%;
-    top: -100%;
-    width: 50%;
-    @media only screen and (max-width: 1440px) {
-      display: none;
+`;
+
+export const TokenomicsNumber = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 350px;
+  text-align: center;
+  margin-bottom: 40px;
+
+  .tokenomicsHeader {
+    font-size: 20px;
+    color: var(--primaryColor);
+  }
+
+  .tokenomicsValue {
+    font-size: 36px;
+    color: var(--tertiaryTextColor);
+  }
+
+  .tokenomicsDescription {
+    font-size: 16px;
+    color: var(--primaryColor);
+  }
+`;
+
+export const TokenomicsHighlight = styled.div`
+  background-color: #004FBF;
+  display: flex;
+  flex-direction: column;
+  padding: 50px 70px;
+  border-radius: 20px;
+  color: var(--primaryColor);
+  position: relative;
+
+  .sectionHeader {
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--tertiaryTextColor);
+  }
+
+  .highlight {
+    margin-bottom: 30px;
+    z-index: 1;
+
+    p:first-child {
+      margin-bottom: 0.25em;
     }
+  }
+  .spaceNeedleOne,
+  .spaceNeedleTwo,
+  .spaceNeedleThree {
+    position: absolute;
+    z-index: 0;
+  }
+
+  .spaceNeedleOne {
+    top: -280px;
+    left: 20px;
+  }
+
+  .spaceNeedleTwo {
+    top: -190px;
+    right: 100px;
+  }
+
+  .spaceNeedleThree {
+    top: -250px;
+    right: 0px;
   }
 `;
 
 export const ContentWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-around;
+  align-items: start;
+  justify-content: space-evenly;
+  position: relative;
+  z-index: 1;
 
-  .missionBlockItem {
-    width: 300px;
-    height: 300px;
-    margin-bottom: 20px;
+  &.tokenomicsHighlights {
+    margin-top: 75px;
+    z-index: 0;
 
-    img {
-      width: 100px;
-      height: 100px;
+    > div:nth-child(2) {
+      margin-top: 50px;
+    }
+
+    @media only screen and (min-width: 1140px) {
+      width: 1250px;
     }
   }
 
-  .feature__block {
-    position: relative;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    transition: all 0.3s ease;
-    padding: 0 20px;
-    cursor: pointer;
-    border-radius: 50%;
-    background: #152149;
-
-    div {
-      h2, p {
-        color: rgba(142,199,255,0.502);
-        padding: 0 20px;
-      }
-    }
-
-    &:hover {
-      background-image: linear-gradient(
-        to bottom,
-        transparent 50%,
-        rgba(255, 255, 255, 0.031)
-      );
-    }
-    @media (max-width: 500px) {
-      padding: 15px 0;
-      &:hover {
-        background-image: none;
-      }
-    }
-  }
-
-  .image {
-    width: 50%;
-    @media only screen and (max-width: 991px) {
-      width: 50%;
-    }
-    @media only screen and (max-width: 768px) {
-      width: 100%;
-      margin-bottom: 40px;
-    }
-    img {
-      width: 100%;
-      object-fit: cover;
-    }
-  }
   .content {
     width: 50%;
     @media only screen and (max-width: 991px) {

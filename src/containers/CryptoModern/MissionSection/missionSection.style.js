@@ -19,7 +19,7 @@ const MissionSectionWrapper = styled.section`
     }
   }
   @media (min-width: 991px) {
-    padding: 0;
+    padding: 0 0 100px;
     .row {
       justify-content: space-around;
     }
@@ -61,7 +61,7 @@ const MissionSectionWrapper = styled.section`
     padding: 0 20px;
     cursor: pointer;
     border-radius: 50%;
-    background: #152149;
+    background: #1733AA;
 
     div {
       h2, p {

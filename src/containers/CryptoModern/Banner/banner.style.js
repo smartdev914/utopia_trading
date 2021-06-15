@@ -80,11 +80,6 @@ export const ButtonGroup = styled.div`
     margin-left: 0;
   }
 
-  .social-icon {
-    margin-left: 15px;
-    margin-bottom: 15px;
-  }
-
   .reusecore__button {
     width: 250px;
     text-transform: inherit;
