@@ -3,7 +3,7 @@ import { themeGet } from '@styled-system/theme-get';
 
 const SectionWrapper = styled.div`
   background-color: #051557;
-  padding: 75px 0 25px;
+  padding: 75px 0 100px;
   position: relative;
 
   .container {
@@ -17,15 +17,6 @@ const SectionWrapper = styled.div`
     justify-content: center;
   }
 
-  @media (max-width: 1600px) {
-    padding: 80px 0 80px;
-  }
-  @media only screen and (max-width: 1366px) {
-    padding: 30px 0;
-  }
-  @media only screen and (max-width: 667px) {
-    padding: 30px 0 0;
-  }
 `;
 
 export const TokenomicsNumber = styled.div`

@@ -43,6 +43,12 @@ const GlobalStyle = createGlobalStyle`
   .reusecore__button {
     font-weight: 500;
   }
+  .sectionHeaderStyle {
+    font-weight: 700;
+    font-size: 36px;
+    letter-spacing: 0.65rem;
+    color: var(--primaryColor)
+  }
   @media only screen and (max-width: 667px) {
     .container {
       width: 100%;
