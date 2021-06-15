@@ -2,9 +2,17 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { themeGet } from '@styled-system/theme-get';
 
 const GlobalStyle = createGlobalStyle`
+  :root {
+    --fontSyncopate: 'Syncopate', sans-serif;
+    --fontOswald: 'Oswald', sans-serif;
+
+    --backgroundColor: #1B003B;
+    --primaryColor: #A3FFFF;
+  }
+
   body {
-    font-family: 'Roboto', sans-serif;
-    background: rgb(28,0,58);
+    font-family: var(--fontOswald);
+    background: var(--backgroundColor);
   }
   .reuseModalParentWrapper,
   .reuseModalOverlay {
@@ -18,9 +26,15 @@ const GlobalStyle = createGlobalStyle`
   h3,
   h4,
   h5,
-  h6,
-  p {
-    font-family: 'Roboto', sans-serif;
+  h6
+  {
+    font-family: var(--fontSyncopate);
+  }
+  span,
+  div,
+  p
+  {
+    font-family: var(--fontOswald)
   }
   section {
     position: relative;
@@ -56,7 +70,7 @@ export const CryptoWrapper = styled.div`
   .sticky-active {
     .navbar {
       padding: 20px 0 21px;
-      background-color: ${themeGet('colors.white', '#ffffff')};
+      background-color: #051557;
       background-image: none;
       box-shadow: 0px 3px 8px 0px rgba(43, 83, 135, 0.08);
       @media only screen and (max-width: 1366px) {

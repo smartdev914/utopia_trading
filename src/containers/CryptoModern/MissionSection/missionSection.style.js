@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const MissionSectionWrapper = styled.section`
   padding-bottom: 180px;
   @media (max-width: 990px) {
-    padding: 60px 0 60px 0;
+    padding: 20px 0 20px 0;
   }
   @media (max-width: 767px) {
     padding: 60px 0 30px 0;
@@ -18,9 +18,10 @@ const MissionSectionWrapper = styled.section`
       margin-right: 20px;
     }
   }
-  @media (min-width: 992px) {
+  @media (min-width: 991px) {
+    padding: 0;
     .row {
-      justify-content: space-between;
+      justify-content: space-around;
     }
   }
 
@@ -39,8 +40,8 @@ const MissionSectionWrapper = styled.section`
   }
 
   .missionBlockItem {
-    width: 300px;
-    height: 300px;
+    width: 350px;
+    height: 350px;
     margin-bottom: 20px;
 
     img {
@@ -53,7 +54,7 @@ const MissionSectionWrapper = styled.section`
     position: relative;
     height: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     flex-direction: column;
     transition: all 0.3s ease;
@@ -64,7 +65,7 @@ const MissionSectionWrapper = styled.section`
 
     div {
       h2, p {
-        color: rgba(142,199,255,0.502);
+        color: var(--primaryColor);
         padding: 0 20px;
       }
     }

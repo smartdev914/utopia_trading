@@ -5,7 +5,7 @@ import Box from 'common/components/Box';
 import Text from 'common/components/Text';
 import Heading from 'common/components/Heading';
 import FeatureBlock from 'common/components/FeatureBlock';
-import { Tokenomics } from 'common/data/CryptoModern';
+import { MissionData } from 'common/data/CryptoModern';
 import Container from 'common/components/UI/Container';
 import MissionSectionWrapper from './missionSection.style';
 
@@ -22,18 +22,17 @@ const MissionSection = ({
     <Container>
       <Fade up delay={100}>
         <Box {...sectionHeader} className="sectionHeader">
-          <Text content="Mission" {...sectionSubTitle} />
+          <Heading content="MISSION" {...sectionSubTitle} />
         </Box>
       </Fade>
       <Box className="row" {...row}>
-        {Tokenomics.map((feature, index) => (
+        {MissionData.map((feature, index) => (
           <Fade up delay={index * 100} key={feature.id}>
             <Box className="col missionBlockItem">
               <FeatureBlock
-                icon={<img src={feature.icon} alt="utopia icon" />}
                 wrapperStyle={blockWrapperStyle}
                 contentStyle={contentStyle}
-                title={<Heading content={feature.title} {...featureTitle} />}
+                title={<Text content={feature.title} {...featureTitle} />}
                 description={
                   <Text content={feature.description} {...featureDescription} />
                   }
@@ -70,13 +69,13 @@ MissionSection.defaultProps = {
   },
   // sub section default style
   sectionSubTitle: {
-    as: 'span',
+    as: 'h2',
     display: 'block',
     textAlign: 'center',
-    fontSize: ['30px', '40px'],
-    fontWeight: '300',
-    letterSpacing: '-0.025em',
-    color: '#fff',
+    fontSize: ['36px', '36px'],
+    fontWeight: '700',
+    letterSpacing: '0.65rem',
+    color: '#2D75DC',
     mb: '15px',
   },
   // section title default style
@@ -109,17 +108,16 @@ MissionSection.defaultProps = {
   },
   // feature title default style
   featureTitle: {
-    fontSize: ['18px', '20px'],
-    fontWeight: '400',
-    color: '#fff',
+    fontSize: ['24px'],
+    fontWeight: '600',
     lineHeight: '1.5',
     mb: ['10px', '10px', '10px', '15px'],
-    letterSpacing: '-0.025em',
-    mt: ['15px', '15px', '15px', '25px'],
+    letterSpacing: '0.3rem',
+    mt: ['60px'],
   },
   // feature description default style
   featureDescription: {
-    fontSize: '15px',
+    fontSize: '20px',
     lineHeight: '1.6',
     color: 'rgba(142, 199, 255, 0.502)',
   },
