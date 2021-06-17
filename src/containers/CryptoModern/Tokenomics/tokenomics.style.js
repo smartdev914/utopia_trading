@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { themeGet } from '@styled-system/theme-get';
 
 const SectionWrapper = styled.div`
-  background-color: #051557;
+  background-color: var(--tertiaryBackgroundColor);
   padding: 75px 0 100px;
   position: relative;
 

@@ -91,7 +91,7 @@ export const ButtonGroup = styled.div`
     text-transform: uppercase;
 
     &.primary {
-      color: var(--backgroundColor);
+      color: var(--primaryBackgroundColor);
       background-color: #00DEE6;
       &:hover {
         box-shadow: #00DEE6 0px 0px 24px 5px;

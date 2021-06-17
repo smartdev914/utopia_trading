@@ -114,7 +114,7 @@ export const MenuArea = styled.div`
       border-radius: 10px;
       background-color: var(--primaryColor);
       height: 40px;
-      color: var(--backgroundColor);
+      color: var(--primaryBackgroundColor);
       &:hover {
         box-shadow: rgba(75, 109, 235, 0.78) 0px 12px 24px -10px;
       }
