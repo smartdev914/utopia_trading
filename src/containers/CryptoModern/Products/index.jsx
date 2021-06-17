@@ -2,9 +2,7 @@ import React from 'react';
 import Fade from 'react-reveal/Fade';
 import Text from 'common/components/Text';
 import Heading from 'common/components/Heading';
-import Image from 'common/components/Image';
 import Container from 'common/components/UI/Container';
-import Illustration from 'common/assets/image/cryptoModern/illustration1.png';
 import SectionWrapper, { ContentWrapper, ProductIcon, ProductSectionWrapper } from './products.style';
 
 const PrivacyPortal = () => (

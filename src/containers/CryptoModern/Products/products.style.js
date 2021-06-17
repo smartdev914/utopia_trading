@@ -42,7 +42,7 @@ export const ContentWrapper = styled.div`
 export const ProductSectionWrapper = styled.div`
   padding: 90px 70px 70px;
   border-radius: 20px;
-  background-color: var(--backgroundColor);
+  background-color: var(--primaryBackgroundColor);
   color: var(--primaryColor);
   width: auto;
   margin-bottom: 150px;
@@ -77,7 +77,7 @@ export const ProductIcon = styled.div`
   transform: translateX(-50%);
   width: 140px;
   height: 140px;
-  background-color: #1733AA;
+  background-color: var(--secondaryBackgroundColor);
 `;
 
 export default SectionWrapper;

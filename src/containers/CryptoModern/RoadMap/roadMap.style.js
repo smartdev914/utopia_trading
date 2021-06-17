@@ -4,6 +4,7 @@ import { themeGet } from '@styled-system/theme-get';
 const SectionWrapper = styled.div`
   padding: 75px 0;
   position: relative;
+  background-color: var(--tertiaryBackgroundColor);
   .sectionHeader {
     justify-content: center;
   }

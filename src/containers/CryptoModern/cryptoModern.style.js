@@ -6,14 +6,16 @@ const GlobalStyle = createGlobalStyle`
     --fontSyncopate: 'Syncopate', sans-serif;
     --fontOswald: 'Oswald', sans-serif;
 
-    --backgroundColor: #1B003B;
+    --primaryBackgroundColor: #1B003B;
+    --secondaryBackgroundColor: #1733AA;
+    --tertiaryBackgroundColor: #051557;
     --primaryColor: #A3FFFF;
     --tertiaryTextColor: #F9DF00;
   }
 
   body {
     font-family: var(--fontOswald);
-    background: var(--backgroundColor);
+    background: var(--primaryBackgroundColor);
   }
   .reuseModalParentWrapper,
   .reuseModalOverlay {
@@ -42,6 +44,11 @@ const GlobalStyle = createGlobalStyle`
   }
   .reusecore__button {
     font-weight: 500;
+  }
+  .link {
+    display: inline-block;
+    color: var(--tertiaryTextColor);
+    text-decoration: underline;
   }
   .sectionHeaderStyle {
     font-weight: 700;
@@ -77,7 +84,7 @@ export const CryptoWrapper = styled.div`
   .sticky-active {
     .navbar {
       padding: 20px 0 21px;
-      background-color: #051557;
+      background-color: var(--tertiaryBackgroundColor);
       background-image: none;
       box-shadow: 0px 3px 8px 0px rgba(43, 83, 135, 0.08);
       @media only screen and (max-width: 1366px) {
