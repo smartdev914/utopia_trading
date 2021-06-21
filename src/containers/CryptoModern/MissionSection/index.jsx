@@ -119,7 +119,6 @@ MissionSection.defaultProps = {
   featureDescription: {
     fontSize: '20px',
     lineHeight: '1.6',
-    color: 'rgba(142, 199, 255, 0.502)',
   },
 };
 

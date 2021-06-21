@@ -85,7 +85,6 @@ Tokenomics.defaultProps = {
     mb: '15px',
     fontSize: '36px',
     fontWeight: '700',
-    color: 'var(--primaryColor)',
   },
 };
 

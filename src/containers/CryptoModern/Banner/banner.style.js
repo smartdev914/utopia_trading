@@ -60,7 +60,6 @@ export const BannerContent = styled.div`
   }
 
   p {
-    color: var(--primaryColor);
     font-size: 18px;
     line-height: 33px;
     font-weight: 400;

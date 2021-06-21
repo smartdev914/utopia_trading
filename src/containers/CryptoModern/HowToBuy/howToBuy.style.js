@@ -54,7 +54,6 @@ export const ContentWrapper = styled.div`
 
     .stepDesc {
       font-size: 20px;
-      color: var(--primaryColor)
     }
 
     .stepNumber {

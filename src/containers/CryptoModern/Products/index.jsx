@@ -20,8 +20,9 @@ const PrivacyPortal = () => (
             <ProductSectionWrapper>
               <ProductIcon />
               <Text content="UTOPIA DECENTRALIZED EXCHANGE" />
-              <Text as="span" content="We seek to solve real-world problems through our charity donations/crowdfunding. We want to ensure " />
-              <Text className="highlightText" as="span" content="everything we donate has the most impact per dollar." />
+              <Text as="span" content="The Decentralized Exchange will allow seamless trading with minimal fees. " />
+              <Text className="highlightText" as="span" content="The exchange will include various tools including next gen charting, limit orders and more. " />
+              <Text as="span" content="Eventually we intend to have our own liquidity pools that will be directly linked to our launchpad, allowing easy token launches." />
             </ProductSectionWrapper>
           </Fade>
           <Fade left delay={50}>

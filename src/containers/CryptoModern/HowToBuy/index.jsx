@@ -3,7 +3,7 @@ import Text from 'common/components/Text';
 import Heading from 'common/components/Heading';
 import Container from 'common/components/UI/Container';
 
-import SectionWrapper, { ContentWrapper } from './walletSection.style';
+import SectionWrapper, { ContentWrapper } from './howToBuy.style';
 import utopiaTree from '../../../common/assets/image/utoptia/utopiaTree.svg';
 
 const WalletPortal = () => (

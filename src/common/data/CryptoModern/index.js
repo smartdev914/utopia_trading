@@ -120,21 +120,140 @@ export const TokenomicsWhaleHightlights = [
   },
 ];
 
-export const WalletFeatures = [
+export const Q2RoadMap = [
   {
-    id: 1,
-    icon: walletIcon1,
-    title: 'Secure transfers with verified Casinos.',
+    id: 'Q2-1',
+    checked: false,
+    label: 'Presale',
   },
   {
-    id: 2,
-    icon: walletIcon2,
-    title: 'Easily buy and sell CLV within the wallet',
+    id: 'Q2-2',
+    checked: false,
+    label: 'Twitch AMAs',
   },
   {
-    id: 3,
-    icon: walletIcon3,
-    title: 'Pay as many as you want',
+    id: 'Q2-3',
+    checked: false,
+    label: 'Pancakeswap Launch',
+  },
+  {
+    id: 'Q2-4',
+    checked: false,
+    label: 'Launch with Utopia Exchange',
+  },
+  {
+    id: 'Q2-5',
+    checked: false,
+    label: 'Tech-rate and Certik audit before launch',
+  },
+  {
+    id: 'Q2-6',
+    checked: false,
+    label: 'Launch marketing',
+  },
+  {
+    id: 'Q2-7',
+    checked: true,
+    label: 'Website/Whitepaper',
+  },
+  {
+    id: 'Q2-8',
+    checked: false,
+    label: 'CMC and Coingecko Submissions',
+  },
+  {
+    id: 'Q2-9',
+    checked: false,
+    label: 'Launch merchandise',
+  },
+  {
+    id: 'Q2-10',
+    checked: false,
+    label: '1st Charity Donation',
+  },
+];
+
+export const Q3RoadMap = [
+  {
+    id: 'Q3-1',
+    checked: false,
+    label: 'CMC / Coingecko / Blockfolio Listings',
+  },
+  {
+    id: 'Q3-2',
+    checked: false,
+    label: 'Establish LLC',
+  },
+  {
+    id: 'Q3-3',
+    checked: false,
+    label: 'Marketing Campaign',
+  },
+  {
+    id: 'Q3-4',
+    checked: false,
+    label: '1st Exchange Listing',
+  },
+  {
+    id: 'Q3-5',
+    checked: false,
+    label: 'Charity Partnerships',
+  },
+  {
+    id: 'Q3-6',
+    checked: false,
+    label: 'V2 Exchange - Charting, limit orders, stop losses',
+  },
+  {
+    id: 'Q3-7',
+    checked: false,
+    label: 'Beta LaunchPad',
+  },
+];
+
+export const Q4RoadMap = [
+  {
+    id: 'Q4-1',
+    checked: false,
+    label: 'Utopia charity foundation',
+  },
+  {
+    id: 'Q4-2',
+    checked: false,
+    label: 'V3 Exchange',
+  },
+  {
+    id: 'Q4-3',
+    checked: false,
+    label: 'DeFi Crowdfunding tool',
+  },
+  {
+    id: 'Q4-4',
+    checked: false,
+    label: 'BTC Bridge',
+  },
+  {
+    id: 'Q4-5',
+    checked: false,
+    label: 'Finalized Launchpad',
+  },
+];
+
+export const FutureRoadMap = [
+  {
+    id: 'F-1',
+    checked: false,
+    label: 'Utopia wallet app with integrated DEX',
+  },
+  {
+    id: 'F-2',
+    checked: false,
+    label: 'Utopia Debit card',
+  },
+  {
+    id: 'F-3',
+    checked: false,
+    label: 'Sister token on Ethereum Network',
   },
 ];
 
