@@ -112,9 +112,12 @@ export const MenuArea = styled.div`
     &.trail {
       letter-spacing: 0.1rem;
       border-radius: 10px;
-      background-color: var(--primaryColor);
+      background-color: var(--primaryTextColor);
       height: 40px;
-      color: var(--primaryBackgroundColor);
+      span {
+        color: var(--primaryBackgroundColor);
+      }
+
       &:hover {
         box-shadow: rgba(75, 109, 235, 0.78) 0px 12px 24px -10px;
       }

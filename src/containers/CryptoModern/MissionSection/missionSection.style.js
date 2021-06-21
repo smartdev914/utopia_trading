@@ -34,7 +34,6 @@ const MissionSectionWrapper = styled.section`
     span {
       font-size: 60px;
       font-weight: 500;
-      color: rgb(163,254,254);
     }
 
   }
@@ -61,11 +60,10 @@ const MissionSectionWrapper = styled.section`
     padding: 0 20px;
     cursor: pointer;
     border-radius: 50%;
-    background: #1733AA;
+    background: var(--secondaryBackgroundColor);
 
     div {
       h2, p {
-        color: var(--primaryColor);
         padding: 0 20px;
       }
     }

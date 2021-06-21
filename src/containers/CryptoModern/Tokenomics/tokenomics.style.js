@@ -29,7 +29,6 @@ export const TokenomicsNumber = styled.div`
 
   .tokenomicsHeader {
     font-size: 20px;
-    color: var(--primaryColor);
   }
 
   .tokenomicsValue {
@@ -39,7 +38,6 @@ export const TokenomicsNumber = styled.div`
 
   .tokenomicsDescription {
     font-size: 16px;
-    color: var(--primaryColor);
   }
 `;
 
@@ -49,7 +47,6 @@ export const TokenomicsHighlight = styled.div`
   flex-direction: column;
   padding: 50px 70px;
   border-radius: 20px;
-  color: var(--primaryColor);
   position: relative;
 
   .sectionHeader {

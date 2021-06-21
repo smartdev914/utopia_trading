@@ -1,5 +1,6 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import { themeGet } from '@styled-system/theme-get';
+import utopiaFlyingCar from '../../common/assets/image/utoptia/utopiaFlyingCar.svg';
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -9,13 +10,14 @@ const GlobalStyle = createGlobalStyle`
     --primaryBackgroundColor: #1B003B;
     --secondaryBackgroundColor: #1733AA;
     --tertiaryBackgroundColor: #051557;
-    --primaryColor: #A3FFFF;
+    --primaryTextColor: #A3FFFF;
     --tertiaryTextColor: #F9DF00;
   }
 
   body {
     font-family: var(--fontOswald);
     background: var(--primaryBackgroundColor);
+    font-size: 16px;
   }
   .reuseModalParentWrapper,
   .reuseModalOverlay {
@@ -37,8 +39,37 @@ const GlobalStyle = createGlobalStyle`
   div,
   p
   {
+    color: var(--primaryTextColor);
     font-family: var(--fontOswald)
   }
+  input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border: 1px solid var(--primaryTextColor);
+    border-radius: 2px;
+    margin-right: 12px;
+
+    &:checked:after {
+      position:absolute;
+      top: 4.5px;
+      left: 6px;
+      content: "X";
+      font-weight: 700;
+      color: var(--tertiaryTextColor)
+    }
+  }
+
+  .checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    position: relative;
+  }
+
   section {
     position: relative;
   }
@@ -54,8 +85,26 @@ const GlobalStyle = createGlobalStyle`
     font-weight: 700;
     font-size: 36px;
     letter-spacing: 0.65rem;
-    color: var(--primaryColor)
+    color: var(--primaryTextColor)
   }
+
+  .utopiaFlyingCarLeft {
+    position: absolute;
+    background: url(${utopiaFlyingCar}) no-repeat;
+    background-size: contain;
+    width: 60px;
+    height: 23px;
+  }
+
+  .utopiaFlyingCarRight {
+    position: absolute;
+    background: url(${utopiaFlyingCar}) no-repeat;
+    background-size: contain;
+    width: 60px;
+    height: 23px;
+    transform: scaleX(-1);
+  }
+
   @media only screen and (max-width: 667px) {
     .container {
       width: 100%;

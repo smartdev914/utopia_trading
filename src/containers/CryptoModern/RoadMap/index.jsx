@@ -1,13 +1,13 @@
 import React from 'react';
 import Text from 'common/components/Text';
-import Heading from 'common/components/Heading';
-import Image from 'common/components/Image';
 import Fade from 'react-reveal/Fade';
 import Box from 'common/components/Box';
 import Container from 'common/components/UI/Container';
-import FundGraphImg from 'common/assets/image/cryptoModern/fund-graph.png';
-import GraphFeatureImg from 'common/assets/image/cryptoModern/graph-feature.png';
 import PropTypes from 'prop-types';
+import {
+  FutureRoadMap, Q2RoadMap, Q3RoadMap, Q4RoadMap,
+} from 'common/data/CryptoModern';
+import Heading from 'common/components/Heading';
 import SectionWrapper, { ContentWrapper } from './roadMap.style';
 
 const RoadMap = ({ sectionHeader, sectionSubTitle }) => (
@@ -15,22 +15,92 @@ const RoadMap = ({ sectionHeader, sectionSubTitle }) => (
     <Container>
       <Fade up delay={100}>
         <Box {...sectionHeader} className="sectionHeader">
-          <Text content="Road Map" {...sectionSubTitle} />
+          <Heading content="ROAD MAP" {...sectionSubTitle} />
         </Box>
       </Fade>
       <ContentWrapper>
         <Fade up delay={100}>
-          <div className="image">
-            <Image src={FundGraphImg} alt="Graph Image" />
-          </div>
           <div className="content">
-            <Heading content="Fund raising allocation" />
-            <Text content="Lorem ipsum dolor sit amet consectetur adipisicing elit sed eiu Lorem ipsum dolor sit ." />
-            <Image src={GraphFeatureImg} alt="Graph Feature Image" />
+            <div className="utopiaFlyingCarLeft carOne" />
+            <div className="quarterSection quarterTwo">
+              <Text className="quarterHeader" as="div" content="Q2 / LAUNCH" />
+              {Q2RoadMap.filter((item) => item.checked).map((roadMapItem) => (
+                <div key={roadMapItem.id} className="checkbox">
+                  <input type="checkbox" id={roadMapItem.id} checked disabled />
+                  <label htmlFor={roadMapItem.id}>{roadMapItem.label}</label>
+                </div>
+              ))}
+              {Q2RoadMap.filter((item) => !item.checked).map((roadMapItem) => (
+                <div key={roadMapItem.id} className="checkbox">
+                  <input type="checkbox" id={roadMapItem.id} disabled />
+                  <label htmlFor={roadMapItem.id}>{roadMapItem.label}</label>
+                </div>
+              ))}
+              <div className="quarterTwoOuterDot">
+                <div className="quarterTwoInnerDot" />
+              </div>
+              <div className="roadMapLine" />
+            </div>
+            <div className="quarterSection quarterThree">
+              <Text className="quarterHeader" as="div" content="Q3" />
+              {Q3RoadMap.filter((item) => item.checked).map((roadMapItem) => (
+                <div key={roadMapItem.id} className="checkbox">
+                  <input type="checkbox" id={roadMapItem.id} checked disabled />
+                  <label htmlFor={roadMapItem.id}>{roadMapItem.label}</label>
+                </div>
+              ))}
+              {Q3RoadMap.filter((item) => !item.checked).map((roadMapItem) => (
+                <div key={roadMapItem.id} className="checkbox">
+                  <input type="checkbox" id={roadMapItem.id} disabled />
+                  <label htmlFor={roadMapItem.id}>{roadMapItem.label}</label>
+                </div>
+              ))}
+              <div className="quarterDot" />
+              <div className="roadMapLine" />
+            </div>
+            <div className="quarterSection quarterFour">
+              <Text className="quarterHeader" as="div" content="Q4" />
+              {Q4RoadMap.filter((item) => item.checked).map((roadMapItem) => (
+                <div key={roadMapItem.id} className="checkbox">
+                  <input type="checkbox" id={roadMapItem.id} checked disabled />
+                  <label htmlFor={roadMapItem.id}>{roadMapItem.label}</label>
+                </div>
+              ))}
+              {Q4RoadMap.filter((item) => !item.checked).map((roadMapItem) => (
+                <div key={roadMapItem.id} className="checkbox">
+                  <input type="checkbox" id={roadMapItem.id} disabled />
+                  <label htmlFor={roadMapItem.id}>{roadMapItem.label}</label>
+                </div>
+              ))}
+              <div className="quarterDot" />
+              <div className="roadMapLine last" />
+            </div>
+            <div className="quarterSection futureQuarter">
+              <Text className="quarterHeader" as="div" content="FUTURE" />
+              {FutureRoadMap.filter((item) => item.checked).map((roadMapItem) => (
+                <div key={roadMapItem.id} className="checkbox">
+                  <input type="checkbox" id={roadMapItem.id} checked disabled />
+                  <label htmlFor={roadMapItem.id}>{roadMapItem.label}</label>
+                </div>
+              ))}
+              {FutureRoadMap.filter((item) => !item.checked).map((roadMapItem) => (
+                <div key={roadMapItem.id} className="checkbox">
+                  <input type="checkbox" id={roadMapItem.id} disabled />
+                  <label htmlFor={roadMapItem.id}>{roadMapItem.label}</label>
+                </div>
+              ))}
+              <div className="quarterDot" />
+            </div>
           </div>
-          <div className="gradientDiv"> </div>
         </Fade>
       </ContentWrapper>
+      <div className="backgroundContainer">
+        <div className="background">
+          <div className="utopiaHouseOne" />
+          <div className="utopiaHouseTwo" />
+          <div className="utopiaFlyingCarRight carTwo" />
+        </div>
+      </div>
     </Container>
   </SectionWrapper>
 );
@@ -50,14 +120,13 @@ RoadMap.defaultProps = {
   },
   // sub section default style
   sectionSubTitle: {
-    as: 'span',
+    as: 'h2',
     display: 'block',
     textAlign: 'center',
-    letterSpacing: '-0.025em',
+    fontSize: ['36px', '36px'],
+    fontWeight: '700',
+    letterSpacing: '0.65rem',
     mb: '15px',
-    fontSize: '60px',
-    fontWeight: '500',
-    color: 'rgb(163,254,254)',
   },
 };
 

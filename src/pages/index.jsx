@@ -10,7 +10,7 @@ import Mission from 'containers/CryptoModern/MissionSection';
 import Tokenomics from 'containers/CryptoModern/Tokenomics';
 import RoadMap from 'containers/CryptoModern/RoadMap';
 import Products from 'containers/CryptoModern/Products';
-import WalletSection from 'containers/CryptoModern/WalletSection';
+import WalletSection from 'containers/CryptoModern/HowToBuy';
 import MapSection from 'containers/CryptoModern/MapSection';
 import FaqSection from 'containers/CryptoModern/FaqSection';
 import Newsletter from 'containers/CryptoModern/Newsletter';
@@ -62,7 +62,6 @@ const CryptoModern = () => (
           {/* <FaqSection /> */}
           {/* <Newsletter /> */}
         </ContentWrapper>
-        <Footer />
       </CryptoWrapper>
       {/* end of app classic landing */}
     </>

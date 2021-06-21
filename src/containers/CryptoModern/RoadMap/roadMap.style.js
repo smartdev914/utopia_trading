@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 import { themeGet } from '@styled-system/theme-get';
+import backgroundHill from '../../../common/assets/image/utoptia/backgroundHill.svg';
+import utopiaHouseOne from '../../../common/assets/image/utoptia/utopiaBuilding4.svg';
+import utopiaHouseTwo from '../../../common/assets/image/utoptia/utopiaBuilding5.svg';
 
 const SectionWrapper = styled.div`
   padding: 75px 0;
@@ -9,24 +12,129 @@ const SectionWrapper = styled.div`
     justify-content: center;
   }
 
-  @media only screen and (max-width: 667px) {
-    padding: 30px 0 0;
+  @keyframes utopiaCarOne {
+    0% {right: 100px; top: 50px}
+    25% {right: 300px; top: 25px}
+    50% {transform: scaleX(1); right: 600px; top: 0px}
+    53% {transform: scaleX(-1)}
+    75% {right: 300px; top: 25px}
+    97% {transform: scaleX(-1)}
+    100% {transform: scaleX(1); right: 100px; top: 50px}
   }
-  .gradientDiv {
+
+  .carOne {
+    top: 50px;
+    right: 100px;
+    animation-name: utopiaCarOne;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+
+  @keyframes utopiaCarTwo {
+    0% {left: 100px; top: -500px}
+    25% {left: 300px; top: -400px}
+    50% {transform: scaleX(-1) rotate(-10deg); left: 600px; top: -300px}
+    53% {transform: scaleX(1)  rotate(-10deg);}
+    75% {left: 300px; top: -400px}
+    97% {transform: scaleX(1) rotate(-10deg)}
+    100% {transform: scaleX(-1) rotate(-10deg); left: 100px; top: -500px}
+  }
+
+  .carTwo {
+    left: 100px;
+    top: -500px;
+    transform: scaleX(-1) rotate(-10deg);
+    animation-name: utopiaCarTwo;
+    animation-duration: 7s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+
+  .backgroundContainer {
+    z-index: 1;
     position: absolute;
-    width: 700px;
-    height: 700px;
-    opacity: 0.16;
-    right: -15%;
-    bottom: -40%;
-    border-radius: 50%;
-    background: radial-gradient(
-      circle closest-side,
-      rgb(109, 140, 243),
-      rgb(3, 16, 59)
-    );
-    @media only screen and (max-width: 1600px) {
-      display: none;
+    height: 664px;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+  }
+
+  .background {
+    background: url(${backgroundHill}) no-repeat;
+    background-size: cover;
+    background-position: top;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: initial;
+
+    .utopiaHouseOne {
+      position: absolute;
+      background: url(${utopiaHouseOne}) no-repeat;
+      width: 290px;
+      height: 531px;
+      top: -74%;
+      left: -18%;
+      z-index: -1;
+    }
+
+    .utopiaHouseTwo {
+      position: absolute;
+      background: url(${utopiaHouseTwo}) no-repeat;
+      width: 161px;
+      height: 287px;
+      top: -34%;
+      left: 20%;
+      z-index: -1;
+    }
+
+    @media (min-width: 769px) {
+      .utopiaHouseOne {
+        top: -77%;
+        left: -10%;
+      }
+
+      .utopiaHouseTwo {
+        top: -37%;
+        left: 17%;
+      }
+    }
+
+    @media (min-width: 1170px) {
+      .utopiaHouseOne {
+        top: -75%;
+        left: 2%;
+      }
+
+      .utopiaHouseTwo {
+        top: -41%;
+        left: 20%;
+      }
+    }
+
+    @media (min-width: 1440px) {
+      .utopiaHouseOne {
+        top: -75%;
+        left: 8%;
+      }
+
+      .utopiaHouseTwo {
+        top: -41%;
+        left: 24%;
+      }
+    }
+
+    @media (min-width: 1800px) {
+      .utopiaHouseOne {
+        top: -75%;
+        left: 11%;
+      }
+
+      .utopiaHouseTwo {
+        top: -41%;
+        left: 24%;
+      }
     }
   }
 `;
@@ -35,31 +143,60 @@ export const ContentWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-end;
+  position: relative;
+  z-index: 2;
+  margin-left: 85px;
 
-  .image {
-    width: 50%;
-    padding: 70px;
-    padding-right: 100px;
-    @media only screen and (max-width: 991px) {
-      width: 50%;
-    }
-    @media only screen and (max-width: 768px) {
-      width: 100%;
-      padding: 100px;
-      margin-bottom: 0;
-      padding-top: 0;
-    }
-    @media only screen and (max-width: 480px) {
-      padding: 25px;
-      margin-bottom: 30px;
-    }
-    img {
-      width: 100%;
-      object-fit: cover;
+  .quarterSection {
+    padding-bottom: 60px;
+    position: relative;
+  }
+
+  .quarterHeader {
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  .quarterTwoInnerDot {
+    width: 20px;
+    height: 20px;
+    border: 13px solid var(--primaryTextColor);
+    border-radius: 50%;
+  }
+
+  .quarterTwoOuterDot {
+    position: absolute;
+    top: -13px;
+    left: -80px;
+    border: 3px solid var(--primaryTextColor);
+    border-radius: 50%;
+    padding: 16px;
+  }
+
+  .quarterDot {
+    position: absolute;
+    border: 7.5px solid var(--primaryTextColor);
+    border-radius: 50%;
+    top: 15px;
+    left: -54.5px;
+  }
+
+  .roadMapLine {
+    position: absolute;
+    left: -49px;
+    top: 49px;
+    border: 1px solid var(--primaryTextColor);
+    height: 100%;
+
+    &.last {
+      height: calc(100% - 20px);
     }
   }
+
+
   .content {
-    width: 50%;
+    width: 40%;
     @media only screen and (max-width: 991px) {
       width: 50%;
     }
