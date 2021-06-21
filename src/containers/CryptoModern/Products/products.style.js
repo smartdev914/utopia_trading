@@ -6,9 +6,6 @@ const SectionWrapper = styled.div`
   overflow: hidden;
   @media (max-width: 1440px) {
   }
-  @media only screen and (max-width: 480px) {
-    padding: 30px 0;
-  }
 `;
 
 export const ContentWrapper = styled.div`
