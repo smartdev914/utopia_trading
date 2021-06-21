@@ -21,6 +21,7 @@ const RoadMap = ({ sectionHeader, sectionSubTitle }) => (
       <ContentWrapper>
         <Fade up delay={100}>
           <div className="content">
+            <div className="utopiaFlyingCarLeft carOne" />
             <div className="quarterSection quarterTwo">
               <Text className="quarterHeader" as="div" content="Q2 / LAUNCH" />
               {Q2RoadMap.filter((item) => item.checked).map((roadMapItem) => (
@@ -97,6 +98,7 @@ const RoadMap = ({ sectionHeader, sectionSubTitle }) => (
         <div className="background">
           <div className="utopiaHouseOne" />
           <div className="utopiaHouseTwo" />
+          <div className="utopiaFlyingCarRight carTwo" />
         </div>
       </div>
     </Container>

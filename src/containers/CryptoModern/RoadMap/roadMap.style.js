@@ -12,6 +12,44 @@ const SectionWrapper = styled.div`
     justify-content: center;
   }
 
+  @keyframes utopiaCarOne {
+    0% {right: 100px; top: 50px}
+    25% {right: 300px; top: 25px}
+    50% {transform: scaleX(1); right: 600px; top: 0px}
+    53% {transform: scaleX(-1)}
+    75% {right: 300px; top: 25px}
+    97% {transform: scaleX(-1)}
+    100% {transform: scaleX(1); right: 100px; top: 50px}
+  }
+
+  .carOne {
+    top: 50px;
+    right: 100px;
+    animation-name: utopiaCarOne;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+
+  @keyframes utopiaCarTwo {
+    0% {left: 100px; top: -500px}
+    25% {left: 300px; top: -400px}
+    50% {transform: scaleX(-1) rotate(-10deg); left: 600px; top: -300px}
+    53% {transform: scaleX(1)  rotate(-10deg);}
+    75% {left: 300px; top: -400px}
+    97% {transform: scaleX(1) rotate(-10deg)}
+    100% {transform: scaleX(-1) rotate(-10deg); left: 100px; top: -500px}
+  }
+
+  .carTwo {
+    left: 100px;
+    top: -500px;
+    transform: scaleX(-1) rotate(-10deg);
+    animation-name: utopiaCarTwo;
+    animation-duration: 7s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
 
   .backgroundContainer {
     z-index: 1;

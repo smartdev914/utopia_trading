@@ -1,5 +1,6 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import { themeGet } from '@styled-system/theme-get';
+import utopiaFlyingCar from '../../common/assets/image/utoptia/utopiaFlyingCar.svg';
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -86,6 +87,24 @@ const GlobalStyle = createGlobalStyle`
     letter-spacing: 0.65rem;
     color: var(--primaryTextColor)
   }
+
+  .utopiaFlyingCarLeft {
+    position: absolute;
+    background: url(${utopiaFlyingCar}) no-repeat;
+    background-size: contain;
+    width: 60px;
+    height: 23px;
+  }
+
+  .utopiaFlyingCarRight {
+    position: absolute;
+    background: url(${utopiaFlyingCar}) no-repeat;
+    background-size: contain;
+    width: 60px;
+    height: 23px;
+    transform: scaleX(-1);
+  }
+
   @media only screen and (max-width: 667px) {
     .container {
       width: 100%;
