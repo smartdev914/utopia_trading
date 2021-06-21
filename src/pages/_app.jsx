@@ -1,3 +1,4 @@
+import React from 'react';
 import { Modal } from '@redq/reuse-modal';
 import '@redq/reuse-modal/es/index.css';
 import 'common/assets/css/flaticon.css';

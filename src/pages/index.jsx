@@ -11,10 +11,6 @@ import Tokenomics from 'containers/CryptoModern/Tokenomics';
 import RoadMap from 'containers/CryptoModern/RoadMap';
 import Products from 'containers/CryptoModern/Products';
 import WalletSection from 'containers/CryptoModern/HowToBuy';
-import MapSection from 'containers/CryptoModern/MapSection';
-import FaqSection from 'containers/CryptoModern/FaqSection';
-import Newsletter from 'containers/CryptoModern/Newsletter';
-import Footer from 'containers/CryptoModern/Footer';
 import GlobalStyle, {
   CryptoWrapper,
   ContentWrapper,
@@ -24,7 +20,7 @@ const CryptoModern = () => (
   <ThemeProvider theme={theme}>
     <>
       <Head>
-        <title>Crypto Modern | A next js landing page</title>
+        <title>Utopia | Built today, for a better tomorrow</title>
         <meta name="Description" content="React next landing page" />
         <meta name="theme-color" content="#2563FF" />
         <meta
@@ -51,16 +47,12 @@ const CryptoModern = () => (
         </Sticky>
         <ContentWrapper>
           <Banner />
-          {/* <CountDown /> */}
           <Mission />
           <Tokenomics />
           <Products />
           <WalletSection />
 
           <RoadMap />
-          {/* <MapSection /> */}
-          {/* <FaqSection /> */}
-          {/* <Newsletter /> */}
         </ContentWrapper>
       </CryptoWrapper>
       {/* end of app classic landing */}

@@ -83,7 +83,7 @@ Tokenomics.defaultProps = {
     textAlign: 'center',
     letterSpacing: '0.65rem',
     mb: '15px',
-    fontSize: '36px',
+    fontSize: ['28px', '36px', '36px', '36px'],
     fontWeight: '700',
   },
 };
