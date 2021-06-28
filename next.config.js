@@ -22,5 +22,5 @@ module.exports = withPlugins(
     ],
     withFonts,
   ],
-  nextConfig
+  nextConfig,
 );

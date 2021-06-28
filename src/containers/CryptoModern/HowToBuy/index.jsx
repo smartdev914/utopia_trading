@@ -8,7 +8,7 @@ import SectionWrapper, { ContentWrapper } from './howToBuy.style';
 import utopiaTree from '../../../common/assets/image/utoptia/utopiaTree.svg';
 
 const WalletPortal = () => (
-  <SectionWrapper id="wallet">
+  <SectionWrapper id="howToBuy">
     <Fade up delay={100}>
       <Heading content="HOW TO BUY" className="sectionHeaderStyle" />
     </Fade>

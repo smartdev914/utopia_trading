@@ -17,6 +17,44 @@ const SectionWrapper = styled.div`
     justify-content: center;
   }
 
+  @keyframes utopiaCarThree {
+    0% {left: 50px; top: -200px}
+    25% {left: 300px; top: -250px}
+    50% {transform: scaleX(-1) rotate(-10deg); left: 600px; top: -300px}
+    53% {transform: scaleX(1)  rotate(-10deg);}
+    75% {left: 300px; top: -250px}
+    97% {transform: scaleX(1) rotate(-10deg)}
+    100% {transform: scaleX(-1) rotate(-10deg); left: 50px; top: -200px}
+  }
+
+  .carThree {
+    left: 50px;
+    top: -200px;
+    transform: scaleX(-1) rotate(-10deg);
+    animation-name: utopiaCarThree;
+    animation-duration: 7s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+
+  @keyframes utopiaCarFour {
+    0% {right: 0px; top: -100px}
+    25% {right: 150px; top: -50px}
+    50% {transform: scaleX(1); right: 400px; top: 0px}
+    53% {transform: scaleX(-1)}
+    75% {right: 150px; top: -50px}
+    97% {transform: scaleX(-1)}
+    100% {transform: scaleX(1); right: 0px; top: -100px}
+  }
+
+  .carFour {
+    top: 0px;
+    right: 100px;
+    animation-name: utopiaCarFour;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
 `;
 
 export const TokenomicsNumber = styled.div`

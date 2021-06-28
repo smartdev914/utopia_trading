@@ -7,8 +7,21 @@ import NavbarWrapper, {
   MenuArea, SocialMediaButtonGroup,
 } from './navbar.style';
 
-const Navbar = () => {
+const Navbar = ({ toggleShowWhitePaper, showWhitePaper }) => {
   const iconSize = '30px';
+
+  const scrollTo = () => {
+    const howToBuy = document.getElementById('howToBuy');
+
+    const sectionTop = howToBuy.getBoundingClientRect().top;
+
+    if (howToBuy) {
+      window.scroll({
+        top: sectionTop - '75',
+        behavior: 'smooth',
+      });
+    }
+  };
 
   return (
     <NavbarWrapper className="navbar">
@@ -22,8 +35,8 @@ const Navbar = () => {
           <SocialIcon bgColor="#2D75DC" network="facebook" style={{ width: iconSize, height: iconSize }} />
         </SocialMediaButtonGroup>
         <MenuArea>
-          <Button className="whitepaper" title="WHITE PAPER" />
-          <Button className="trail" title="HOW TO BUY" />
+          <Button onClick={() => toggleShowWhitePaper(!showWhitePaper)} className="whitepaper" title="WHITE PAPER" />
+          <Button className="trail" title="HOW TO BUY" onClick={scrollTo} />
         </MenuArea>
       </Container>
     </NavbarWrapper>
