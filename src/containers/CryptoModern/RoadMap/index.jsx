@@ -19,9 +19,9 @@ const RoadMap = ({ sectionHeader, sectionSubTitle }) => (
         </Box>
       </Fade>
       <ContentWrapper>
-        <Fade up delay={100}>
-          <div className="content">
-            <div className="utopiaFlyingCarLeft carOne" />
+        <div className="content">
+          <div className="utopiaFlyingCarLeft carOne" />
+          <Fade down delay={100}>
             <div className="quarterSection quarterTwo">
               <Text className="quarterHeader" as="div" content="Q2 / LAUNCH" />
               {Q2RoadMap.filter((item) => item.checked).map((roadMapItem) => (
@@ -41,6 +41,8 @@ const RoadMap = ({ sectionHeader, sectionSubTitle }) => (
               </div>
               <div className="roadMapLine" />
             </div>
+          </Fade>
+          <Fade down delay={200}>
             <div className="quarterSection quarterThree">
               <Text className="quarterHeader" as="div" content="Q3" />
               {Q3RoadMap.filter((item) => item.checked).map((roadMapItem) => (
@@ -58,6 +60,8 @@ const RoadMap = ({ sectionHeader, sectionSubTitle }) => (
               <div className="quarterDot" />
               <div className="roadMapLine" />
             </div>
+          </Fade>
+          <Fade down delay={300}>
             <div className="quarterSection quarterFour">
               <Text className="quarterHeader" as="div" content="Q4" />
               {Q4RoadMap.filter((item) => item.checked).map((roadMapItem) => (
@@ -75,6 +79,8 @@ const RoadMap = ({ sectionHeader, sectionSubTitle }) => (
               <div className="quarterDot" />
               <div className="roadMapLine last" />
             </div>
+          </Fade>
+          <Fade down delay={400}>
             <div className="quarterSection futureQuarter">
               <Text className="quarterHeader" as="div" content="FUTURE" />
               {FutureRoadMap.filter((item) => item.checked).map((roadMapItem) => (
@@ -91,8 +97,8 @@ const RoadMap = ({ sectionHeader, sectionSubTitle }) => (
               ))}
               <div className="quarterDot" />
             </div>
-          </div>
-        </Fade>
+          </Fade>
+        </div>
       </ContentWrapper>
       <div className="backgroundContainer">
         <div className="background">

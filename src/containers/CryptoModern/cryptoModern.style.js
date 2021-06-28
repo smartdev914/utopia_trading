@@ -63,6 +63,16 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  .WhitePaper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 90%;
+    opacity: 0.9;
+    z-index: 10;
+  }
+
   .checkbox {
     display: flex;
     align-items: center;

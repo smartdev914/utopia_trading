@@ -11,32 +11,46 @@ import BannerWrapper, {
   ButtonGroup,
 } from './banner.style';
 
-const Banner = () => (
-  <BannerWrapper id="home">
-    <Container>
-      <BannerContent>
-        <Fade up delay={50}>
-          <Image src={UtopiaBanner} alt="Utopia Banner" />
-        </Fade>
-        <Fade up delay={100}>
-          <Text
-            content="Built today, for a better tomorrow"
-          />
-        </Fade>
-        <Fade up delay={150}>
-          <ButtonGroup>
-            <Button
-              className="text"
-              variant="textButton"
-              title="EXCHANGE"
-            />
-            <Button className="primary" title="HOW TO BUY" />
+const Banner = () => {
+  const scrollTo = () => {
+    const howToBuy = document.getElementById('howToBuy');
 
-          </ButtonGroup>
-        </Fade>
-      </BannerContent>
-    </Container>
-  </BannerWrapper>
-);
+    const sectionTop = howToBuy.getBoundingClientRect().top;
+
+    if (howToBuy) {
+      window.scroll({
+        top: sectionTop - '75',
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  return (
+    <BannerWrapper id="home">
+      <Container>
+        <BannerContent>
+          <Fade up delay={50}>
+            <Image src={UtopiaBanner} alt="Utopia Banner" />
+          </Fade>
+          <Fade up delay={100}>
+            <Text
+              content="Built today, for a better tomorrow"
+            />
+          </Fade>
+          <Fade up delay={150}>
+            <ButtonGroup>
+              <Button
+                className="text"
+                variant="textButton"
+                title="EXCHANGE"
+              />
+              <Button className="primary" title="HOW TO BUY" onClick={scrollTo} />
+            </ButtonGroup>
+          </Fade>
+        </BannerContent>
+      </Container>
+    </BannerWrapper>
+  );
+};
 
 export default Banner;

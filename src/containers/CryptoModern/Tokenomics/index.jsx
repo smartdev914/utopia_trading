@@ -43,6 +43,8 @@ const Tokenomics = ({
               </div>
             ))}
             <img src={utopiaBuilding1} alt="futuristic space needle building" className="spaceNeedleOne" />
+            <div className="utopiaFlyingCarRight carThree" />
+
           </TokenomicsHighlight>
         </Fade>
         <Fade right delay={50}>
@@ -56,6 +58,8 @@ const Tokenomics = ({
             ))}
             <img src={utopiaBuilding2} alt="futuristic space needle building" className="spaceNeedleTwo" />
             <img src={utopiaBuilding3} alt="futuristic space needle building" className="spaceNeedleThree" />
+            <div className="utopiaFlyingCarLeft carFour" />
+
           </TokenomicsHighlight>
         </Fade>
       </ContentWrapper>
