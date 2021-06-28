@@ -99,7 +99,7 @@ export const ContentWrapper = styled.div`
     z-index: 0;
 
     > div:nth-child(2) {
-      margin-top: 50px;
+      margin-top: 65px;
     }
 
     @media only screen and (min-width: 1140px) {

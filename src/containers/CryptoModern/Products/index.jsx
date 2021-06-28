@@ -9,10 +9,12 @@ const PrivacyPortal = () => (
   <SectionWrapper>
     <Container fullWidth>
       <ContentWrapper>
-        <div className="content">
-          <Heading content="PRODUCTS" className="sectionHeaderStyle" />
-          <Heading content="IN DEVELOPMENT" className="sectionHeaderStyle" />
-        </div>
+        <Fade up delay={100}>
+          <div className="content">
+            <Heading content="PRODUCTS" className="sectionHeaderStyle" />
+            <Heading content="IN DEVELOPMENT" className="sectionHeaderStyle" />
+          </div>
+        </Fade>
       </ContentWrapper>
       <ContentWrapper>
         <div className="productColumn">

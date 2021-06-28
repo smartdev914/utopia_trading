@@ -10,7 +10,8 @@ import Mission from 'containers/CryptoModern/MissionSection';
 import Tokenomics from 'containers/CryptoModern/Tokenomics';
 import RoadMap from 'containers/CryptoModern/RoadMap';
 import Products from 'containers/CryptoModern/Products';
-import WalletSection from 'containers/CryptoModern/HowToBuy';
+import HowToBuy from 'containers/CryptoModern/HowToBuy';
+import Team from 'containers/CryptoModern/Team';
 import GlobalStyle, {
   CryptoWrapper,
   ContentWrapper,
@@ -50,9 +51,9 @@ const CryptoModern = () => (
           <Mission />
           <Tokenomics />
           <Products />
-          <WalletSection />
-
+          <HowToBuy />
           <RoadMap />
+          <Team />
         </ContentWrapper>
       </CryptoWrapper>
       {/* end of app classic landing */}
