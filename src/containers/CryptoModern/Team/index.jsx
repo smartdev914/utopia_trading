@@ -57,9 +57,9 @@ const PrivacyPortal = () => (
           <Fade up delay={100}>
             <div>
               <a href="https://www.linkedin.com/in/derekzx/">
-                <img src={DerekPic} alt="Derek Chin Zhi Xian" />
+                <img src={DerekPic} alt="Derek Chin" />
               </a>
-              <Heading as="h4" content="DEREK CHIN ZHI XIAN" />
+              <Heading as="h4" content="DEREK CHIN" />
               <Text content="HEAD OF TECHNOLOGY DEVELOPMENT" />
             </div>
           </Fade>
