@@ -4,7 +4,7 @@ import Text from 'common/components/Text';
 import Heading from 'common/components/Heading';
 import Container from 'common/components/UI/Container';
 import DecentralisedIcon from 'common/assets/image/icons/DecentralisedIcon.svg';
-import LaunchPadIcon from 'common/assets/image/icons/LaunchPadIcon.svg';
+import LaunchPadIcon from 'common/assets/image/icons/LaunchpadIcon.svg';
 import DefiIcon from 'common/assets/image/icons/DefiIcon.svg';
 import BTCBridgeIcon from 'common/assets/image/icons/BTCBridgeIcon.svg';
 import SectionWrapper, { ContentWrapper, ProductIcon, ProductSectionWrapper } from './products.style';
