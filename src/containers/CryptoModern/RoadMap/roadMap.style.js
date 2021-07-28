@@ -147,6 +147,7 @@ export const ContentWrapper = styled.div`
   position: relative;
   z-index: 2;
   margin-left: 85px;
+  font-family: var(--fontDosis);
 
   .quarterSection {
     padding-bottom: 60px;
@@ -155,7 +156,7 @@ export const ContentWrapper = styled.div`
 
   .quarterHeader {
     font-size: 24px;
-    font-weight: 500;
+    font-weight: 700;
   }
 
   .quarterTwoInnerDot {
@@ -179,7 +180,7 @@ export const ContentWrapper = styled.div`
     border: 7.5px solid var(--primaryTextColor);
     border-radius: 50%;
     top: 15px;
-    left: -54.5px;
+    left: -55.5px;
   }
 
   .roadMapLine {
@@ -192,6 +193,10 @@ export const ContentWrapper = styled.div`
     &.last {
       height: calc(100% - 20px);
     }
+  }
+
+  label {
+    font-size: 18px;
   }
 
 

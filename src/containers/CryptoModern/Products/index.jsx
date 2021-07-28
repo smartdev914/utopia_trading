@@ -3,6 +3,10 @@ import Fade from 'react-reveal/Fade';
 import Text from 'common/components/Text';
 import Heading from 'common/components/Heading';
 import Container from 'common/components/UI/Container';
+import DecentralisedIcon from 'common/assets/image/icons/DecentralisedIcon.svg';
+import LaunchPadIcon from 'common/assets/image/icons/LaunchPadIcon.svg';
+import DefiIcon from 'common/assets/image/icons/DefiIcon.svg';
+import BTCBridgeIcon from 'common/assets/image/icons/BTCBridgeIcon.svg';
 import SectionWrapper, { ContentWrapper, ProductIcon, ProductSectionWrapper } from './products.style';
 
 const PrivacyPortal = () => (
@@ -12,7 +16,7 @@ const PrivacyPortal = () => (
         <Fade up delay={100}>
           <div className="content">
             <Heading content="PRODUCTS" className="sectionHeaderStyle" />
-            <Heading content="IN DEVELOPMENT" className="sectionHeaderStyle" />
+            <Heading content="IN DEVELOPMENT" className="sectionSubHeaderStyle" />
           </div>
         </Fade>
       </ContentWrapper>
@@ -20,16 +24,19 @@ const PrivacyPortal = () => (
         <div className="productColumn">
           <Fade left>
             <ProductSectionWrapper>
-              <ProductIcon />
+              <ProductIcon>
+                <img src={DecentralisedIcon} alt="Decentralised" />
+              </ProductIcon>
               <Text content="UTOPIA DECENTRALIZED EXCHANGE" />
-              <Text as="span" content="The Decentralized Exchange will allow seamless trading with minimal fees. " />
-              <Text className="highlightText" as="span" content="The exchange will include various tools including next gen charting, limit orders and more. " />
-              <Text as="span" content="Eventually we intend to have our own liquidity pools that will be directly linked to our launchpad, allowing easy token launches." />
+              <Text as="span" content="We seek to solve real-world problems through our charity donations/crowdfunding. We want to ensure " />
+              <Text className="highlightText" as="span" content="everything we donate has the most impact per dollar." />
             </ProductSectionWrapper>
           </Fade>
           <Fade left delay={50}>
             <ProductSectionWrapper>
-              <ProductIcon />
+              <ProductIcon>
+                <img src={DefiIcon} alt="Defi Crowdfunding tool" />
+              </ProductIcon>
               <Text content="DEFI CROWDFUNDING TOOL" />
               <Text as="span" content="Using our decentralised crowdfunding platform, " />
               <Text className="highlightText" as="span" content="people will be able to use trustless smart contracts to fund charitable acts. " />
@@ -40,7 +47,9 @@ const PrivacyPortal = () => (
         <div className="productColumn">
           <Fade right delay={50}>
             <ProductSectionWrapper>
-              <ProductIcon />
+              <ProductIcon>
+                <img src={LaunchPadIcon} alt="Launch Pad" />
+              </ProductIcon>
               <Text content="UTOPIA LAUNCHPAD" />
               <Text as="span" content="This decentralised platform will provide new tokens the essential tools for conducting presales. " />
               <Text className="highlightText" as="span" content="There will be multiple anti-bot features that will be implemented so that fair presales can be conducted. " />
@@ -49,7 +58,9 @@ const PrivacyPortal = () => (
           </Fade>
           <Fade right>
             <ProductSectionWrapper>
-              <ProductIcon />
+              <ProductIcon>
+                <img src={BTCBridgeIcon} alt="BTC Utopia Bridge" />
+              </ProductIcon>
               <Text content="BTC UTOPIA BRIDGE" />
               <Text as="span" content="In order to further lower the barrier of entry to buy our token and to bring further utility to the platform, we will build a decentralized bridge in between BTC and UTOPIA. This bridge will " />
               <Text className="highlightText" as="span" content="allow users to go fluidly in between the 2 different blockchains." />

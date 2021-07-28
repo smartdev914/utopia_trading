@@ -37,6 +37,8 @@ export const ContentWrapper = styled.div`
   align-items: center;
   flex-direction: column;
   max-width: 800px;
+  font-family: var(--fontDosis);
+
   .content {
     margin-top: 80px;
 
@@ -48,18 +50,20 @@ export const ContentWrapper = styled.div`
 
     .step {
       font-size: 20px;
-      font-weight: 500px;
+      font-weight: 700;
       color: var(--tertiaryTextColor)
     }
 
     .stepDesc {
       font-size: 20px;
+      line-height: 35px;
     }
 
     .stepNumber {
       width: 80px;
       height: 80px;
       border-radius: 50%;
+      font-family: var(--fontOswald);
       color: var(--tertiaryTextColor);
       background-color: var(--secondaryBackgroundColor);
       display: flex;

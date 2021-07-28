@@ -36,7 +36,7 @@ const FeatureBlock = ({
   // check icon value and add
   const Icon = icon && (
     <IconWrapper className="icon__wrapper" {...iconStyle}>
-      {icon}
+      <img src={icon} />
     </IconWrapper>
   );
 
@@ -49,7 +49,7 @@ const FeatureBlock = ({
       {Icon}
 
       {title || description || button ? (
-        <Fragment>
+        <>
           <ContentWrapper className="content__wrapper" {...contentStyle}>
             {title}
             {description}
@@ -60,7 +60,7 @@ const FeatureBlock = ({
             )}
           </ContentWrapper>
           {additionalContent}
-        </Fragment>
+        </>
       ) : (
         ''
       )}
