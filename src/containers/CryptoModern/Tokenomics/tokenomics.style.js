@@ -66,7 +66,8 @@ export const TokenomicsNumber = styled.div`
   margin-bottom: 40px;
 
   .tokenomicsHeader {
-    font-size: 20px;
+    font-family: var(--fontNotoSans);
+    font-size: 18px;
   }
 
   .tokenomicsValue {
@@ -75,7 +76,10 @@ export const TokenomicsNumber = styled.div`
   }
 
   .tokenomicsDescription {
-    font-size: 16px;
+    font-family: var(--fontNotoSans);
+    font-size: 14px;
+    padding: 0 48px;
+    line-height: 24px;
   }
 `;
 
@@ -89,13 +93,20 @@ export const TokenomicsHighlight = styled.div`
 
   .sectionHeader {
     font-size: 24px;
-    font-weight: 500;
+    font-weight: 700;
     color: var(--tertiaryTextColor);
+    font-family: var(--fontDosis);
+    letter-spacing: 4px;
+
   }
 
   .highlight {
     margin-bottom: 30px;
     z-index: 1;
+
+    p {
+      font-family: var(--fontNotoSans);
+    }
 
     p:first-child {
       margin-bottom: 0.25em;
@@ -141,7 +152,7 @@ export const ContentWrapper = styled.div`
     }
 
     @media only screen and (min-width: 1140px) {
-      width: 1250px;
+      width: 1350px;
     }
   }
 

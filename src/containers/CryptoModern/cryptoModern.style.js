@@ -1,11 +1,15 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import { themeGet } from '@styled-system/theme-get';
+import emptyCheckbox from 'common/assets/image/cryptoModern/EmptyCheckbox.svg';
+import filledCheckbox from 'common/assets/image/cryptoModern/FilledCheckbox.svg';
 import utopiaFlyingCar from '../../common/assets/image/utoptia/utopiaFlyingCar.svg';
 
 const GlobalStyle = createGlobalStyle`
   :root {
     --fontSyncopate: 'Syncopate', sans-serif;
     --fontOswald: 'Oswald', sans-serif;
+    --fontDosis: 'Dosis', sans-serif;
+    --fontNotoSans: 'Noto Sans', sans-serif;
 
     --primaryBackgroundColor: #1B003B;
     --secondaryBackgroundColor: #1733AA;
@@ -40,26 +44,31 @@ const GlobalStyle = createGlobalStyle`
   p
   {
     color: var(--primaryTextColor);
-    font-family: var(--fontOswald)
   }
   input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
     -webkit-appearance: none;
     -moz-appearance: none;
     -o-appearance: none;
     appearance: none;
-    width: 12px;
-    height: 12px;
-    border: 1px solid var(--primaryTextColor);
-    border-radius: 2px;
-    margin-right: 12px;
 
-    &:checked:after {
-      position:absolute;
-      top: 4.5px;
-      left: 6px;
-      content: "X";
-      font-weight: 700;
-      color: var(--tertiaryTextColor)
+
+    &:before {
+      width: 16px;
+      height: 16px;
+      content: "";
+      display: inline-block;
+      background: url(${emptyCheckbox})
+    }
+
+    &:checked:before {
+      width: 16px;
+      height: 16px;
+      content: "";
+      display: inline-block;
+      background: url(${filledCheckbox})
     }
   }
 

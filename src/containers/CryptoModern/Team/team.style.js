@@ -29,6 +29,7 @@ export const ContentWrapper = styled.div`
 
 export const TeamMember = styled.div`
   width: 100%;
+  font-family: var(--fontDosis);
 
   @media only screen and (min-width: 768px) {
     width: 50%;
@@ -39,12 +40,26 @@ export const TeamMember = styled.div`
   }
 
   h4 {
+    display: inline-block;
+    letter-spacing: 4px;
+    font-family: var(--fontDosis);
     font-size: 28px;
+    margin: 0px 8px 0;
   }
+
   p {
+    letter-spacing: 2px;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--tertiaryTextColor);
+  }
+
+  .nameHeader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    margin-bottom: 1rem;
   }
 `;
 

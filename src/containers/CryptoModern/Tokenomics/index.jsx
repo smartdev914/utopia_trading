@@ -38,8 +38,8 @@ const Tokenomics = ({
             <Text className="sectionHeader" content="TAX" />
             {TokenomicsTaxHightlights.map((highlight) => (
               <div className="highlight">
-                <Text fontSize="36px" fontWeight="500" content={highlight.title} />
-                <Text fontSize="20px" content={highlight.description} />
+                <Text fontSize="36px" fontWeight="600" content={highlight.title} />
+                <Text fontSize="16px" fontWeight="500" content={highlight.description} />
               </div>
             ))}
             <img src={utopiaBuilding1} alt="futuristic space needle building" className="spaceNeedleOne" />
@@ -52,8 +52,8 @@ const Tokenomics = ({
             <Text className="sectionHeader" content="ANTI WHALE/BOT FEATURE" />
             {TokenomicsWhaleHightlights.map((highlight) => (
               <div className="highlight">
-                <Text fontSize="36px" fontWeight="500" content={highlight.title} />
-                <Text fontSize="20px" content={highlight.description} />
+                <Text fontSize="36px" fontWeight="600" content={highlight.title} />
+                <Text fontSize="16px" fontWeight="500" content={highlight.description} />
               </div>
             ))}
             <img src={utopiaBuilding2} alt="futuristic space needle building" className="spaceNeedleTwo" />

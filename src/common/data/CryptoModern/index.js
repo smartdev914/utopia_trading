@@ -1,20 +1,15 @@
+import React from 'react';
 /* ------------------------------------ */
 // Navbar data section
 /* ------------------------------------ */
 import logo from 'common/assets/image/cryptoModern/logo.png';
 
 /* ------------------------------------ */
-// Features data section
-/* ------------------------------------ */
-import featureIcon1 from 'common/assets/image/utoptia/Utopia_dark_circle.png';
-import featureIcon2 from 'common/assets/image/utoptia/Utopia_simple_dark_circle.png';
-
-/* ------------------------------------ */
 // Wallet  data section
 /* ------------------------------------ */
-import walletIcon1 from 'common/assets/image/cryptoModern/wallet1.png';
-import walletIcon2 from 'common/assets/image/cryptoModern/wallet2.png';
-import walletIcon3 from 'common/assets/image/cryptoModern/wallet3.png';
+import charityIcon from 'common/assets/image/icons/CharityIcon.svg';
+import equalityIcon from 'common/assets/image/icons/EqualityIcon.svg';
+import communityIcon from 'common/assets/image/icons/CommunityIcon.svg';
 
 export const navbar = {
   logo,
@@ -31,21 +26,21 @@ export const navbar = {
 export const MissionData = [
   {
     id: 1,
-    icon: featureIcon2,
+    icon: charityIcon,
     title: 'CHARITY',
     description:
       'We seek to solve real-world problems through our charity donations/crowdfunding. We want to ensure everything we donate has the most impact per dollar.',
   },
   {
     id: 2,
-    icon: featureIcon2,
+    icon: equalityIcon,
     title: 'EQUALITY',
     description:
-      'The whole philosophy of Utopia is equality and fairness. We represent this through our anti-bot and anti-whale features. We intend to take a stand against unfairness in the the DeFi space.',
+      'The whole philosophy of Utopia is equality and fairness. We represent this through our anti-bot and anti-whale features. We intend to take a stand against unfairness in the DeFi space.',
   },
   {
     id: 3,
-    icon: featureIcon2,
+    icon: communityIcon,
     title: 'COMMUNITY',
     description:
       'Built by and for the community, we strive to get close to achieving a perfect world with the empowerment and support of our community.',
@@ -88,17 +83,17 @@ export const TokenomicsTaxHightlights = [
   {
     id: 1,
     title: '10%',
-    description: 'tax applied on each transaction',
+    description: 'tax applied on each transaction.',
   },
   {
     id: 2,
     title: '5%',
-    description: 'goes to existing holders allowing them to passively earn',
+    description: 'goes to existing holders allowing them to passively earn.',
   },
   {
     id: 3,
     title: '5%',
-    description: 'goes towards token stability and charity',
+    description: 'goes towards token stability and charity.',
   },
 ];
 

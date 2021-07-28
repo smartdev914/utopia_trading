@@ -42,11 +42,6 @@ const MissionSectionWrapper = styled.section`
     width: 350px;
     height: 350px;
     margin-bottom: 20px;
-
-    img {
-      width: 100px;
-      height: 100px;
-    }
   }
 
   .feature__block {
@@ -61,10 +56,15 @@ const MissionSectionWrapper = styled.section`
     cursor: pointer;
     border-radius: 50%;
     background: var(--secondaryBackgroundColor);
+    font-family: var(--fontDosis);
+
+    .icon__wrapper {
+      margin-top: 20px;
+    }
 
     div {
       h2, p {
-        padding: 0 20px;
+        padding: 0 30px;
       }
     }
 

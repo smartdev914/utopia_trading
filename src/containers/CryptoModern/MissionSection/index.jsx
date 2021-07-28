@@ -30,6 +30,7 @@ const MissionSection = ({
           <Fade up delay={index * 100} key={feature.id}>
             <Box className="col missionBlockItem">
               <FeatureBlock
+                icon={feature.icon}
                 wrapperStyle={blockWrapperStyle}
                 contentStyle={contentStyle}
                 title={<Text content={feature.title} {...featureTitle} />}
@@ -113,11 +114,10 @@ MissionSection.defaultProps = {
     lineHeight: '1.5',
     mb: ['10px', '10px', '10px', '15px'],
     letterSpacing: '0.3rem',
-    mt: ['60px'],
   },
   // feature description default style
   featureDescription: {
-    fontSize: '20px',
+    fontSize: '18px',
     lineHeight: '1.6',
   },
 };
