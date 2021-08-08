@@ -15,7 +15,7 @@ const ButtonStyle = styled.button`
   min-height: ${themeGet('heights.3', '48')}px;
   min-width: ${themeGet('widths.3', '48')}px;
   border-radius: ${themeGet('radius.0', '3')}px;
-  font-family: inherit;
+  font-family: var(--fontNotoSans);
   font-size: ${themeGet('fontSizes.4', '16')}px;
   font-weight: ${themeGet('fontWeights.4', '500')};
   text-decoration: none;

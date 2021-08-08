@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React from 'react';
 import Button from 'common/components/Button';
 import Container from 'common/components/UI/Container';
@@ -27,12 +28,8 @@ const Navbar = ({ toggleShowWhitePaper, showWhitePaper }) => {
     <NavbarWrapper className="navbar">
       <Container>
         <SocialMediaButtonGroup>
-          <SocialIcon bgColor="#2D75DC" network="tiktok" style={{ width: iconSize, height: iconSize }} />
-          <SocialIcon bgColor="#2D75DC" network="linkedin" style={{ width: iconSize, height: iconSize }} />
-          <SocialIcon bgColor="#2D75DC" network="reddit" style={{ width: iconSize, height: iconSize }} />
-          <SocialIcon bgColor="#2D75DC" network="twitch" style={{ width: iconSize, height: iconSize }} />
-          <SocialIcon bgColor="#2D75DC" network="telegram" style={{ width: iconSize, height: iconSize }} />
-          <SocialIcon bgColor="#2D75DC" network="facebook" style={{ width: iconSize, height: iconSize }} />
+          <SocialIcon url="https://twitter.com/utopia_bsc" bgColor="#2D75DC" network="twitter" style={{ width: iconSize, height: iconSize }} />
+          <SocialIcon url="https://www.linkedin.com/company/utp-earth/about/" bgColor="#2D75DC" network="linkedin" style={{ width: iconSize, height: iconSize }} />
         </SocialMediaButtonGroup>
         <MenuArea>
           <Button onClick={() => toggleShowWhitePaper(!showWhitePaper)} className="whitepaper" title="WHITE PAPER" />

@@ -1,8 +1,8 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import { themeGet } from '@styled-system/theme-get';
-import emptyCheckbox from 'common/assets/image/cryptoModern/EmptyCheckbox.svg';
-import filledCheckbox from 'common/assets/image/cryptoModern/FilledCheckbox.svg';
-import utopiaFlyingCar from '../../common/assets/image/utoptia/utopiaFlyingCar.svg';
+import emptyCheckbox from '../../../public/assets/image/cryptoModern/EmptyCheckbox.svg';
+import filledCheckbox from '../../../public/assets/image/cryptoModern/FilledCheckbox.svg';
+import utopiaFlyingCar from '../../../public/assets/image/utoptia/utopiaFlyingCar.svg';
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -92,6 +92,10 @@ const GlobalStyle = createGlobalStyle`
   section {
     position: relative;
   }
+
+  button {
+    font-family: var(--fontNotoSans);
+  }
   .reusecore__button {
     font-weight: 500;
   }
@@ -122,6 +126,25 @@ const GlobalStyle = createGlobalStyle`
     width: 60px;
     height: 23px;
     transform: scaleX(-1);
+  }
+
+  .whitePaperContainer {
+    position: fixed;
+    top: 10em;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 100vh;
+    overflow: scroll;
+    z-index: 100;
+    padding-bottom: 10em;
+  }
+
+  .greyedBackground {
+    position:fixed;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
   }
 
   @media only screen and (max-width: 667px) {

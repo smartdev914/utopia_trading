@@ -82,7 +82,7 @@ export const MenuArea = styled.div`
     padding-left: 13px;
     padding-right: 13px;
     min-height: 42px;
-    width: 168px;
+    width: 198px;
 
     &.text {
       padding: 0;

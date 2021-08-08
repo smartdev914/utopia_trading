@@ -7,12 +7,14 @@ import Text from 'common/components/Text';
 import Heading from 'common/components/Heading';
 import Image from 'common/components/Image';
 import Button from 'common/components/Button';
-import ErrorImage from 'common/assets/image/404.svg';
 import { home } from 'react-icons-kit/entypo/home';
 import { ccw } from 'react-icons-kit/entypo/ccw';
+import ErrorImage from '../../../public/assets/image/404.svg';
 import { ErrorWrapper, ErrorConatent, ButtonWrapper } from './error.style';
 
-const ErrorSec = ({ imageWrapper, title, text, reloadButton, homeButton }) => {
+const ErrorSec = ({
+  imageWrapper, title, text, reloadButton, homeButton,
+}) => {
   const pageReload = () => {
     window.location.reload();
   };

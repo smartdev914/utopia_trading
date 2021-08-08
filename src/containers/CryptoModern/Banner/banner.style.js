@@ -61,10 +61,19 @@ export const BannerContent = styled.div`
 
   p {
     font-size: 18px;
-    line-height: 33px;
     font-weight: 400;
 
     @media only screen and (min-width: 992px) {
+      font-size: 26px;
+    }
+  }
+
+  .tagline {
+    font-family: var(--fontDosis);
+    font-size: 48px;
+    font-weight: 500;
+
+    @media only screen and (max-width: 992px) {
       font-size: 26px;
     }
   }
@@ -95,6 +104,10 @@ export const ButtonGroup = styled.div`
       &:hover {
         box-shadow: #00DEE6 0px 0px 24px 5px;
       }
+
+      span {
+        color: var(--primaryBackgroundColor);
+      }
     }
 
     &.text {
@@ -105,6 +118,8 @@ export const ButtonGroup = styled.div`
         box-shadow: #00DEE6 0px 0px 24px 5px;
       }
     }
+
+
   }
 `;
 

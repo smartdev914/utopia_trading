@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { themeGet } from '@styled-system/theme-get';
-import backgroundHill from '../../../common/assets/image/utoptia/backgroundHill.svg';
-import utopiaHouseOne from '../../../common/assets/image/utoptia/utopiaBuilding4.svg';
-import utopiaHouseTwo from '../../../common/assets/image/utoptia/utopiaBuilding5.svg';
+import backgroundHill from '../../../../public/assets/image/utoptia/backgroundHill.svg';
+import utopiaHouseOne from '../../../../public/assets/image/utoptia/utopiaBuilding4.svg';
+import utopiaHouseTwo from '../../../../public/assets/image/utoptia/utopiaBuilding5.svg';
 
 const SectionWrapper = styled.div`
   padding: 75px 0;

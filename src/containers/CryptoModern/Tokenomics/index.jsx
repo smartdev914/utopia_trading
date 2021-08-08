@@ -6,10 +6,11 @@ import Box from 'common/components/Box';
 import Fade from 'react-reveal/Fade';
 import Container from 'common/components/UI/Container';
 import { TokenomicsData, TokenomicsTaxHightlights, TokenomicsWhaleHightlights } from 'common/data/CryptoModern';
+import Image from 'next/image';
 import SectionWrapper, { ContentWrapper, TokenomicsHighlight, TokenomicsNumber } from './tokenomics.style';
-import utopiaBuilding1 from '../../../common/assets/image/utoptia/utopiaBuilding1.svg';
-import utopiaBuilding2 from '../../../common/assets/image/utoptia/utopiaBuilding2.svg';
-import utopiaBuilding3 from '../../../common/assets/image/utoptia/utopiaBuilding3.svg';
+import utopiaBuilding1 from '../../../../public/assets/image/utoptia/utopiaBuilding1.svg';
+import utopiaBuilding2 from '../../../../public/assets/image/utoptia/utopiaBuilding2.svg';
+import utopiaBuilding3 from '../../../../public/assets/image/utoptia/utopiaBuilding3.svg';
 
 const Tokenomics = ({
   sectionHeader, sectionSubTitle,
@@ -37,12 +38,14 @@ const Tokenomics = ({
           <TokenomicsHighlight>
             <Text className="sectionHeader" content="TAX" />
             {TokenomicsTaxHightlights.map((highlight) => (
-              <div className="highlight">
+              <div className="highlight" key={highlight.id}>
                 <Text fontSize="36px" fontWeight="600" content={highlight.title} />
                 <Text fontSize="16px" fontWeight="500" content={highlight.description} />
               </div>
             ))}
-            <img src={utopiaBuilding1} alt="futuristic space needle building" className="spaceNeedleOne" />
+            <div className="spaceNeedleOne">
+              <Image src={utopiaBuilding1} alt="futuristic space needle building" />
+            </div>
             <div className="utopiaFlyingCarRight carThree" />
 
           </TokenomicsHighlight>
@@ -51,13 +54,17 @@ const Tokenomics = ({
           <TokenomicsHighlight>
             <Text className="sectionHeader" content="ANTI WHALE/BOT FEATURE" />
             {TokenomicsWhaleHightlights.map((highlight) => (
-              <div className="highlight">
+              <div className="highlight" key={highlight.id}>
                 <Text fontSize="36px" fontWeight="600" content={highlight.title} />
                 <Text fontSize="16px" fontWeight="500" content={highlight.description} />
               </div>
             ))}
-            <img src={utopiaBuilding2} alt="futuristic space needle building" className="spaceNeedleTwo" />
-            <img src={utopiaBuilding3} alt="futuristic space needle building" className="spaceNeedleThree" />
+            <div className="spaceNeedleTwo">
+              <Image src={utopiaBuilding2} alt="futuristic space needle building" />
+            </div>
+            <div className="spaceNeedleThree">
+              <Image src={utopiaBuilding3} alt="futuristic space needle building" />
+            </div>
             <div className="utopiaFlyingCarLeft carFour" />
 
           </TokenomicsHighlight>
