@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import Image from 'next/image';
 import FeatureBlockWrapper, {
   IconWrapper,
   ContentWrapper,
@@ -36,7 +37,7 @@ const FeatureBlock = ({
   // check icon value and add
   const Icon = icon && (
     <IconWrapper className="icon__wrapper" {...iconStyle}>
-      <img src={icon} />
+      <Image src={icon} />
     </IconWrapper>
   );
 

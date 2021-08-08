@@ -3,9 +3,10 @@ import Text from 'common/components/Text';
 import Heading from 'common/components/Heading';
 import Container from 'common/components/UI/Container';
 import Fade from 'react-reveal/Fade';
+import Image from 'next/image';
 
 import SectionWrapper, { ContentWrapper } from './howToBuy.style';
-import utopiaTree from '../../../common/assets/image/utoptia/utopiaTree.svg';
+import utopiaTree from '../../../../public/assets/image/utoptia/utopiaTree.svg';
 
 const WalletPortal = () => (
   <SectionWrapper id="howToBuy">
@@ -57,7 +58,9 @@ const WalletPortal = () => (
             </div>
           </Fade>
         </div>
-        <img src={utopiaTree} alt="utopia tree" className="utopiaTree" />
+        <div className="utopiaTree">
+          <Image src={utopiaTree} alt="utopia tree" />
+        </div>
       </ContentWrapper>
     </Container>
   </SectionWrapper>

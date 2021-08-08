@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import { ThemeProvider } from 'styled-components';
 import { theme } from 'common/theme/appModern';
-import { ResetCSS } from 'common/assets/css/style';
 import Sticky from 'react-stickynode';
 import Navbar from 'containers/CryptoModern/Navbar';
 import Banner from 'containers/CryptoModern/Banner';
@@ -16,6 +15,11 @@ import GlobalStyle, {
   CryptoWrapper,
   ContentWrapper,
 } from 'containers/CryptoModern/cryptoModern.style';
+import dynamic from 'next/dynamic';
+import { ResetCSS } from '../../public/assets/css/style';
+import UtopiaWhitePaper from '../../public/assets/docs/Utopia_Whitepaper.pdf';
+
+const PDFViewer = dynamic(() => import('../containers/CryptoModern/PDFViewer'), { ssr: false });
 
 const CryptoModern = () => {
   const [showWhitePaper, toggleShowWhitePaper] = useState(false);
@@ -58,7 +62,8 @@ const CryptoModern = () => {
             <HowToBuy />
             <RoadMap />
             <Team />
-            {showWhitePaper && <iframe title="Utopia White Paper" className="WhitePaper" src="https://docs.google.com/document/d/13_KB91ZDZEPRtU9Y2ZXmUwkkXU9NJVN3vHqngvgpp7Q/edit?usp=sharing" />}
+            {/* {showWhitePaper && <iframe title="Utopia White Paper" className="WhitePaper" src="https://drive.google.com/file/d/1lwGavoH53yk6PezOEUXbwshSj230SIW5/view?usp=sharing" />} */}
+            {showWhitePaper && <PDFViewer url={UtopiaWhitePaper} />}
           </ContentWrapper>
         </CryptoWrapper>
         {/* end of app classic landing */}

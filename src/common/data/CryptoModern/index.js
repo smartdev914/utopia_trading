@@ -2,14 +2,14 @@ import React from 'react';
 /* ------------------------------------ */
 // Navbar data section
 /* ------------------------------------ */
-import logo from 'common/assets/image/cryptoModern/logo.png';
+import logo from '../../../../public/assets/image/cryptoModern/logo.png';
 
 /* ------------------------------------ */
 // Wallet  data section
 /* ------------------------------------ */
-import charityIcon from 'common/assets/image/icons/CharityIcon.svg';
-import equalityIcon from 'common/assets/image/icons/EqualityIcon.svg';
-import communityIcon from 'common/assets/image/icons/CommunityIcon.svg';
+import charityIcon from '../../../../public/assets/image/icons/CharityIcon.svg';
+import equalityIcon from '../../../../public/assets/image/icons/EqualityIcon.svg';
+import communityIcon from '../../../../public/assets/image/icons/CommunityIcon.svg';
 
 export const navbar = {
   logo,

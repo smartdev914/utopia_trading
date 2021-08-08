@@ -3,7 +3,7 @@ import Document, {
   Html, Head, Main, NextScript,
 } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
-import FavIcon from 'common/assets/image/favicon-32x32.png';
+import FavIcon from '../../public/assets/image/favicon-32x32.png';
 
 export default class CustomDocument extends Document {
   static async getInitialProps(ctx) {

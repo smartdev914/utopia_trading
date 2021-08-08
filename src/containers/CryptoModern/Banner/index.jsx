@@ -1,11 +1,11 @@
 import React from 'react';
 import Fade from 'react-reveal/Fade';
 import Text from 'common/components/Text';
-import Image from 'common/components/Image';
+import Image from 'next/image';
 import Button from 'common/components/Button';
 import Container from 'common/components/UI/Container';
 
-import UtopiaBanner from 'common/assets/image/utoptia/Utopia_dark_full.png';
+import UtopiaBanner from '../../../../public/assets/image/utoptia/Utopia_dark_full.png';
 import BannerWrapper, {
   BannerContent,
   ButtonGroup,
@@ -34,6 +34,7 @@ const Banner = () => {
           </Fade>
           <Fade up delay={100}>
             <Text
+              className="tagline"
               content="Built today, for a better tomorrow"
             />
           </Fade>
