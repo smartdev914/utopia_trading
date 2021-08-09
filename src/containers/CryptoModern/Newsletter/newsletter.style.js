@@ -1,9 +1,8 @@
 import styled from 'styled-components';
-import BannerBG from 'common/assets/image/cryptoModern/get-start.png';
 
 const NewsletterWrapper = styled.div`
   position: relative;
-  background-image: url(${BannerBG});
+  background-image: url('/assets/image/cryptoModern/get-start.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

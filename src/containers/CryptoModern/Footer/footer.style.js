@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import FooterImage from 'common/assets/image/hosting/footer-bg.png';
+import FooterImage from 'common';
 
 const FooterWrapper = styled.footer`
   position: relative;
@@ -31,7 +31,7 @@ const FooterWrapper = styled.footer`
     padding-bottom: 80px;
     position: relative;
     @media (min-width: 576px) {
-      background-image: url(${FooterImage});
+      background-image: url('/assets/image/hosting/footer-bg.png');
     }
     @media (max-width: 990px) {
       padding-bottom: 20px;

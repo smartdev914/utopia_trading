@@ -9,7 +9,6 @@ import Image from 'common/components/Image';
 import Button from 'common/components/Button';
 import { home } from 'react-icons-kit/entypo/home';
 import { ccw } from 'react-icons-kit/entypo/ccw';
-import ErrorImage from '../../../public/assets/image/404.svg';
 import { ErrorWrapper, ErrorConatent, ButtonWrapper } from './error.style';
 
 const ErrorSec = ({
@@ -22,7 +21,7 @@ const ErrorSec = ({
     <ErrorWrapper>
       <ErrorConatent>
         <Box {...imageWrapper} className="image-wrapper">
-          <Image src={ErrorImage} alt="404" />
+          <Image src="/assets/image/404.svg" alt="404" />
         </Box>
         <Heading {...title} content="Page not found!" />
         <Text

@@ -4,14 +4,6 @@ import Text from 'common/components/Text';
 import Heading from 'common/components/Heading';
 import Container from 'common/components/UI/Container';
 import Image from 'next/image';
-import TimmyPic from '../../../../public/assets/image/TeamMembers/ProfilePic-Timmy.png';
-import IgorPic from '../../../../public/assets/image/TeamMembers/ProfilePic-Igor.png';
-import ChristianPic from '../../../../public/assets/image/TeamMembers/ProfilePic-Christian.png';
-import DerekPic from '../../../../public/assets/image/TeamMembers/ProfilePic-Derek.png';
-import LanePic from '../../../../public/assets/image/TeamMembers/ProfilePic-Lane.png';
-import JerryPic from '../../../../public/assets/image/TeamMembers/ProfilePic-Jerry.png';
-import LinkedInIcon from '../../../../public/assets/image/icons/linkedin.svg';
-import InstagramIcon from '../../../../public/assets/image/icons/Instagram.svg';
 import SectionWrapper, { ContentWrapper, TeamMember } from './team.style';
 
 const PrivacyPortal = () => (
@@ -26,11 +18,11 @@ const PrivacyPortal = () => (
         <TeamMember>
           <Fade up delay={100}>
             <div>
-              <Image src={TimmyPic} alt="Timmy Kuriakose" />
+              <Image src="/assets/image/TeamMembers/ProfilePic-Timmy.png" alt="Timmy Kuriakose" width={275} height={275} />
               <div className="nameHeader">
                 <Heading as="h4" content="TIMMY KURIAKOSE" />
                 <a href="https://www.linkedin.com/in/timmy-kuriakose-5a6537145/">
-                  <Image src={LinkedInIcon} alt="Timmy Kuriakose's LinkedIn Profile" />
+                  <Image src="/assets/image/icons/linkedin.svg" alt="Timmy Kuriakose's LinkedIn Profile" width={32} height={32} />
                 </a>
               </div>
               <Text content="CO-FOUNDER / PROJECT COORDINATION" />
@@ -40,11 +32,11 @@ const PrivacyPortal = () => (
         <TeamMember>
           <Fade up delay={175}>
             <div>
-              <Image src={IgorPic} alt="Igor Ainbinder" />
+              <Image src="/assets/image/TeamMembers/ProfilePic-Igor.png" alt="Igor Ainbinder" width={275} height={275} />
               <div className="nameHeader">
                 <Heading as="h4" content="IGOR AINBINDER" />
                 <a href="https://www.linkedin.com/in/igor-ainbinder/">
-                  <Image src={LinkedInIcon} alt="Igor Ainbinder's LinkedIn Profile" />
+                  <Image src="/assets/image/icons/linkedin.svg" alt="Igor Ainbinder's LinkedIn Profile" width={32} height={32} />
                 </a>
               </div>
               <Text content="CO-FOUNDER / BUSINESS DEVELOPMENT" />
@@ -54,11 +46,11 @@ const PrivacyPortal = () => (
         <TeamMember>
           <Fade up delay={225}>
             <div>
-              <Image src={ChristianPic} alt="Christian Clayton" />
+              <Image src="/assets/image/TeamMembers/ProfilePic-Christian.png" alt="Christian Clayton" width={275} height={275} />
               <div className="nameHeader">
                 <Heading as="h4" content="CHRISTIAN CLAYTON" />
                 <a href="https://www.instagram.com/onlineboss__/">
-                  <Image src={InstagramIcon} alt="Christian Clayton's Instagram Profile" />
+                  <Image src="/assets/image/icons/Instagram.svg" alt="Christian Clayton's Instagram Profile" width={32} height={32} />
                 </a>
               </div>
               <Text content="CO-FOUNDER / MARKETING" />
@@ -68,11 +60,11 @@ const PrivacyPortal = () => (
         <TeamMember>
           <Fade up delay={100}>
             <div>
-              <Image src={DerekPic} alt="Derek Chin Zhi Xian" />
+              <Image src="/assets/image/TeamMembers/ProfilePic-Derek.png" alt="Derek Chin Zhi Xian" width={275} height={275} />
               <div className="nameHeader">
                 <Heading as="h4" content="DEREK CHIN ZHI XIAN" />
                 <a href="https://www.linkedin.com/in/derekzx/">
-                  <Image src={LinkedInIcon} alt="Derek Chin Zhi Xian's LinkedIn Profile" />
+                  <Image src="/assets/image/icons/linkedin.svg" alt="Derek Chin Zhi Xian's LinkedIn Profile" width={32} height={32} />
                 </a>
               </div>
               <Text content="HEAD OF TECHNOLOGY DEVELOPMENT" />
@@ -82,11 +74,11 @@ const PrivacyPortal = () => (
         <TeamMember>
           <Fade up delay={175}>
             <div>
-              <Image src={JerryPic} alt="Jerry Ku" />
+              <Image src="/assets/image/TeamMembers/ProfilePic-Jerry.png" alt="Jerry Ku" width={275} height={275} />
               <div className="nameHeader">
                 <Heading as="h4" content="JERRY KU" />
                 <a href="https://www.linkedin.com/in/jerry-ku/">
-                  <Image src={LinkedInIcon} alt="Jerry Ku's LinkedIn Profile" />
+                  <Image src="/assets/image/icons/linkedin.svg" alt="Jerry Ku's LinkedIn Profile" width={32} height={32} />
                 </a>
               </div>
               <Text content="LEAD FRONT END DEVELOPER" />
@@ -96,11 +88,11 @@ const PrivacyPortal = () => (
         <TeamMember>
           <Fade up delay={225}>
             <div>
-              <Image src={LanePic} alt="Lane Ainbinder" />
+              <Image src="/assets/image/TeamMembers/ProfilePic-Lane.png" alt="Lane Ainbinder" width={275} height={275} />
               <div className="nameHeader">
                 <Heading as="h4" content="LANE AINBINDER" />
                 <a href="https://www.linkedin.com/in/julia-ainbinder/">
-                  <Image src={LinkedInIcon} alt="Lane Ainbinder's LinkedIn Profile" />
+                  <Image src="/assets/image/icons/linkedin.svg" alt="Lane Ainbinder's LinkedIn Profile" width={32} height={32} />
                 </a>
               </div>
               <Text content="LEAD DESIGNER" />

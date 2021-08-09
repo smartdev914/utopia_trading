@@ -4,10 +4,6 @@ import Text from 'common/components/Text';
 import Heading from 'common/components/Heading';
 import Container from 'common/components/UI/Container';
 import Image from 'next/image';
-import DecentralisedIcon from '../../../../public/assets/image/icons/DecentralisedIcon.svg';
-import LaunchPadIcon from '../../../../public/assets/image/icons/LaunchpadIcon.svg';
-import DefiIcon from '../../../../public/assets/image/icons/DefiIcon.svg';
-import BTCBridgeIcon from '../../../../public/assets/image/icons/BTCBridgeIcon.svg';
 import SectionWrapper, { ContentWrapper, ProductIcon, ProductSectionWrapper } from './products.style';
 
 const PrivacyPortal = () => (
@@ -26,7 +22,7 @@ const PrivacyPortal = () => (
           <Fade left>
             <ProductSectionWrapper>
               <ProductIcon>
-                <Image src={DecentralisedIcon} alt="Decentralised" />
+                <Image src="/assets/image/icons/DecentralisedIcon.svg" alt="Decentralised" width={75} height={75} />
               </ProductIcon>
               <Text content="UTOPIA DECENTRALIZED EXCHANGE" />
               <Text as="span" content="We seek to solve real-world problems through our charity donations/crowdfunding. We want to ensure " />
@@ -36,7 +32,7 @@ const PrivacyPortal = () => (
           <Fade left delay={50}>
             <ProductSectionWrapper>
               <ProductIcon>
-                <Image src={DefiIcon} alt="Defi Crowdfunding tool" />
+                <Image src="/assets/image/icons/DefiIcon.svg" alt="Defi Crowdfunding tool" width={82} height={82} />
               </ProductIcon>
               <Text content="DEFI CROWDFUNDING TOOL" />
               <Text as="span" content="Using our decentralised crowdfunding platform, " />
@@ -49,7 +45,7 @@ const PrivacyPortal = () => (
           <Fade right delay={50}>
             <ProductSectionWrapper>
               <ProductIcon>
-                <Image src={LaunchPadIcon} alt="Launch Pad" />
+                <Image src="/assets/image/icons/LaunchpadIcon.svg" alt="Launch Pad" width={90} height={111} />
               </ProductIcon>
               <Text content="UTOPIA LAUNCHPAD" />
               <Text as="span" content="This decentralised platform will provide new tokens the essential tools for conducting presales. " />
@@ -60,7 +56,7 @@ const PrivacyPortal = () => (
           <Fade right>
             <ProductSectionWrapper>
               <ProductIcon>
-                <Image src={BTCBridgeIcon} alt="BTC Utopia Bridge" />
+                <Image src="/assets/image/icons/BTCBridgeIcon.svg" alt="BTC Utopia Bridge" width={89} height={37} />
               </ProductIcon>
               <Text content="BTC UTOPIA BRIDGE" />
               <Text as="span" content="In order to further lower the barrier of entry to buy our token and to bring further utility to the platform, we will build a decentralized bridge in between BTC and UTOPIA. This bridge will " />

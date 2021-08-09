@@ -30,6 +30,8 @@ export const ContentWrapper = styled.div`
 export const TeamMember = styled.div`
   width: 100%;
   font-family: var(--fontDosis);
+  position: relative;
+  margin-bottom: 40px;
 
   @media only screen and (min-width: 768px) {
     width: 50%;
