@@ -22,6 +22,7 @@ module.exports = {
     'react/forbid-prop-types': 'off',
     'react/prop-types': 'off',
     'global-require': 0,
+    'max-len': ['warn', { ignoreComments: true, code: 140 }],
   },
   settings: {
     'import/resolver': {

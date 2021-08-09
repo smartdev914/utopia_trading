@@ -110,7 +110,7 @@ export const TokenomicsWhaleHightlights = [
   {
     id: 3,
     title: 'Max cap per wallet',
-    description: 'set to 0,7%',
+    description: 'set to 0.7%',
   },
 ];
 
