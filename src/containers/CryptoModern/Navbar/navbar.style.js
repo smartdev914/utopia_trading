@@ -4,7 +4,7 @@ import { themeGet } from '@styled-system/theme-get';
 const NavbarWrapper = styled.nav`
   width: 100%;
   padding-top: 10px;
-  margin: 25px 0 26px;
+  margin: 0px 0 25px;
   background-color: transparent;
   position: fixed;
   z-index: 99;
