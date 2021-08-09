@@ -29,7 +29,7 @@ const Banner = () => {
       <Container>
         <BannerContent>
           <Fade up delay={50}>
-            <Image src="/assets/image/utoptia/Utopia_dark_full.png" alt="Utopia Banner" width={1258} height={316} priority />
+            <Image src="/assets/image/utoptia/Utopia_dark_full.png" alt="Utopia Banner" width={1258} height={316} priority unoptimized />
           </Fade>
           <Fade up delay={100}>
             <Text
