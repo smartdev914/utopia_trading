@@ -3,13 +3,15 @@ import { themeGet } from '@styled-system/theme-get';
 
 const NavbarWrapper = styled.nav`
   width: 100%;
-  padding: 25px 0 26px;
+  padding-top: 10px;
+  margin: 25px 0 26px;
   background-color: transparent;
   position: fixed;
-  z-index: 9999;
+  z-index: 99;
   transition: all 0.3s ease;
   @media only screen and (max-width: 1366px) {
-    padding: 20px 0 21px;
+    margin: 0px 0 20px;
+    padding-top: 10px;
   }
   > div.container {
     width: 100%;
@@ -122,6 +124,14 @@ export const MenuArea = styled.div`
         box-shadow: rgba(75, 109, 235, 0.78) 0px 12px 24px -10px;
       }
     }
+
+    @media only screen and (max-width: 400px) {
+      width: 50%;
+      font-size: 16px;
+    }
+  }
+  @media only screen and (max-width: 400px) {
+    width: 100%;
   }
 `;
 
@@ -133,7 +143,7 @@ export const SocialMediaButtonGroup = styled.div`
   }
 
   .social-icon {
-    margin: 10px 5px 10px;
+    margin: 5px 5px 5px;
   }
 `;
 
