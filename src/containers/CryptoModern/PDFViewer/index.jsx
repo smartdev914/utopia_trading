@@ -3,11 +3,12 @@ import React, { useState, useCallback, useEffect } from 'react';
 // import default react-pdf entry
 import { Document, Page, pdfjs } from 'react-pdf';
 // import pdf worker as a url, see `next.config.js` and `pdf-worker.js`
+import Button from 'common/components/Button';
 import workerSrc from '../../../../pdf-worker';
 
 pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
 
-export default function PDFViewer() {
+export default function PDFViewer({ toggleShowWhitePaper }) {
   const [file, setFile] = useState('../../../../assets/docs/Utopia_Whitepaper.pdf');
   const [pageWidth, setPageWidth] = useState(1000);
   const [numPages, setNumPages] = useState(null);
@@ -19,7 +20,7 @@ export default function PDFViewer() {
   const setPDFWidth = useCallback(() => {
     let windowWidth = window.innerWidth;
     if (windowWidth > 1000) {
-      windowWidth = 750;
+      windowWidth = 900;
     } else {
       windowWidth *= 0.9;
     }
@@ -35,8 +36,14 @@ export default function PDFViewer() {
   }, []);
 
   return (
-    <>
+    <div className="pdfViewer">
       <div className="greyedBackground" />
+      <Button
+        onClick={() => toggleShowWhitePaper(false)}
+        className="closeButton"
+        variant="textButton"
+        title="CLOSE"
+      />
       <div className="whitePaperContainer">
         <Document file={file} onLoadSuccess={onDocumentLoadSuccess}>
           {Array.from({ length: numPages }, (_, index) => (
@@ -49,7 +56,8 @@ export default function PDFViewer() {
             />
           ))}
         </Document>
+
       </div>
-    </>
+    </div>
   );
 }

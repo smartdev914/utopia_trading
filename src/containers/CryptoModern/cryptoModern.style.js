@@ -128,23 +128,42 @@ const GlobalStyle = createGlobalStyle`
     transform: scaleX(-1);
   }
 
-  .whitePaperContainer {
-    position: fixed;
-    top: 10em;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 100vh;
+  .react-pdf__Document {
+    position: relative;
+    display: flex;
+    top: 15vh;
+    flex-direction: column;
+    align-items: center;
+    height: 80vh;
     overflow: scroll;
+  }
+
+  .pdfViewer {
+    position: fixed;
+    height: 100vh;
+    top: 0;
+    width: 100%;
     z-index: 100;
-    padding-bottom: 10em;
+  }
+
+  .whitePaperContainer {
+    position: relative;
   }
 
   .greyedBackground {
-    position:fixed;
+    position: fixed;
     top: 0;
     width: 100%;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  .closeButton {
+    position: absolute;
+    z-index: 1;
+    top: 10vh;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   @media only screen and (max-width: 667px) {
