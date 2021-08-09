@@ -1,8 +1,5 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import { themeGet } from '@styled-system/theme-get';
-import emptyCheckbox from '../../../public/assets/image/cryptoModern/EmptyCheckbox.svg';
-import filledCheckbox from '../../../public/assets/image/cryptoModern/FilledCheckbox.svg';
-import utopiaFlyingCar from '../../../public/assets/image/utoptia/utopiaFlyingCar.svg';
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -60,7 +57,7 @@ const GlobalStyle = createGlobalStyle`
       height: 16px;
       content: "";
       display: inline-block;
-      background: url(${emptyCheckbox})
+      background: url('/assets/image/cryptoModern/EmptyCheckbox.svg')
     }
 
     &:checked:before {
@@ -68,7 +65,7 @@ const GlobalStyle = createGlobalStyle`
       height: 16px;
       content: "";
       display: inline-block;
-      background: url(${filledCheckbox})
+      background: url('/assets/image/cryptoModern/FilledCheckbox.svg')
     }
   }
 
@@ -113,7 +110,7 @@ const GlobalStyle = createGlobalStyle`
 
   .utopiaFlyingCarLeft {
     position: absolute;
-    background: url(${utopiaFlyingCar}) no-repeat;
+    background: url('/assets/image/utoptia/utopiaFlyingCar.svg') no-repeat;
     background-size: contain;
     width: 60px;
     height: 23px;
@@ -121,7 +118,7 @@ const GlobalStyle = createGlobalStyle`
 
   .utopiaFlyingCarRight {
     position: absolute;
-    background: url(${utopiaFlyingCar}) no-repeat;
+    background: url('/assets/image/utoptia/utopiaFlyingCar.svg') no-repeat;
     background-size: contain;
     width: 60px;
     height: 23px;

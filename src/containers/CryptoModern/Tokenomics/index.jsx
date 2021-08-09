@@ -8,9 +8,6 @@ import Container from 'common/components/UI/Container';
 import { TokenomicsData, TokenomicsTaxHightlights, TokenomicsWhaleHightlights } from 'common/data/CryptoModern';
 import Image from 'next/image';
 import SectionWrapper, { ContentWrapper, TokenomicsHighlight, TokenomicsNumber } from './tokenomics.style';
-import utopiaBuilding1 from '../../../../public/assets/image/utoptia/utopiaBuilding1.svg';
-import utopiaBuilding2 from '../../../../public/assets/image/utoptia/utopiaBuilding2.svg';
-import utopiaBuilding3 from '../../../../public/assets/image/utoptia/utopiaBuilding3.svg';
 
 const Tokenomics = ({
   sectionHeader, sectionSubTitle,
@@ -44,7 +41,7 @@ const Tokenomics = ({
               </div>
             ))}
             <div className="spaceNeedleOne">
-              <Image src={utopiaBuilding1} alt="futuristic space needle building" />
+              <Image src="/assets/image/utoptia/utopiaBuilding1.svg" alt="futuristic space needle building" width={141} height={280} />
             </div>
             <div className="utopiaFlyingCarRight carThree" />
 
@@ -60,10 +57,10 @@ const Tokenomics = ({
               </div>
             ))}
             <div className="spaceNeedleTwo">
-              <Image src={utopiaBuilding2} alt="futuristic space needle building" />
+              <Image src="/assets/image/utoptia/utopiaBuilding2.svg" alt="futuristic space needle building" width={107} height={190} />
             </div>
             <div className="spaceNeedleThree">
-              <Image src={utopiaBuilding3} alt="futuristic space needle building" />
+              <Image src="/assets/image/utoptia/utopiaBuilding3.svg" alt="futuristic space needle building" width={103} height={281} />
             </div>
             <div className="utopiaFlyingCarLeft carFour" />
 

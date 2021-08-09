@@ -5,7 +5,6 @@ import Image from 'next/image';
 import Button from 'common/components/Button';
 import Container from 'common/components/UI/Container';
 
-import UtopiaBanner from '../../../../public/assets/image/utoptia/Utopia_dark_full.png';
 import BannerWrapper, {
   BannerContent,
   ButtonGroup,
@@ -30,7 +29,7 @@ const Banner = () => {
       <Container>
         <BannerContent>
           <Fade up delay={50}>
-            <Image src={UtopiaBanner} alt="Utopia Banner" />
+            <Image src="/assets/image/utoptia/Utopia_dark_full.png" alt="Utopia Banner" width={1258} height={316} priority />
           </Fade>
           <Fade up delay={100}>
             <Text

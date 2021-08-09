@@ -6,7 +6,6 @@ import Fade from 'react-reveal/Fade';
 import Image from 'next/image';
 
 import SectionWrapper, { ContentWrapper } from './howToBuy.style';
-import utopiaTree from '../../../../public/assets/image/utoptia/utopiaTree.svg';
 
 const WalletPortal = () => (
   <SectionWrapper id="howToBuy">
@@ -59,7 +58,7 @@ const WalletPortal = () => (
           </Fade>
         </div>
         <div className="utopiaTree">
-          <Image src={utopiaTree} alt="utopia tree" />
+          <Image src="/assets/image/utoptia/utopiaTree.svg" alt="utopia tree" width={286} height={213} />
         </div>
       </ContentWrapper>
     </Container>

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { themeGet } from '@styled-system/theme-get';
 
 const BannerWrapper = styled.div`
-  padding-top: 100px;
+  padding: 80px 0;
   min-height: 802px;
   overflow: hidden;
   text-align: center;
@@ -22,7 +22,7 @@ const BannerWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: calc(802px - 100px);
+
     @media only screen and (min-width: 1201px) and (max-width: 1440px) {
       min-height: 100%;
     }
