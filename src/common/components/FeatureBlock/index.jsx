@@ -102,6 +102,14 @@ FeatureBlock.propTypes = {
 };
 
 FeatureBlock.defaultProps = {
+  className: '',
+  title: null,
+  description: null,
+  button: null,
+  wrapperStyle: {},
+  iconStyle: {},
+  contentStyle: {},
+  btnWrapperStyle: {},
   iconPosition: 'top',
 };
 
