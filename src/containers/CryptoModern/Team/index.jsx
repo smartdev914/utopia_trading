@@ -8,7 +8,7 @@ import SectionWrapper, { ContentWrapper, TeamMember } from './team.style';
 
 const PrivacyPortal = () => (
   <SectionWrapper>
-    <Container fullWidth>
+    <Container width="1300px">
       <ContentWrapper>
         <div className="content">
           <Heading content="TEAM" className="sectionHeaderStyle" />
@@ -43,7 +43,7 @@ const PrivacyPortal = () => (
             </div>
           </Fade>
         </TeamMember>
-        <TeamMember>
+        {/* <TeamMember>
           <Fade up delay={225}>
             <div>
               <Image src="/assets/image/TeamMembers/ProfilePic-Christian.png" alt="Christian Clayton" width={275} height={275} />
@@ -56,7 +56,7 @@ const PrivacyPortal = () => (
               <Text content="CO-FOUNDER / MARKETING" />
             </div>
           </Fade>
-        </TeamMember>
+        </TeamMember> */}
         <TeamMember>
           <Fade up delay={100}>
             <div>
