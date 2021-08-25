@@ -10,7 +10,7 @@ export default function notfound() {
           <h2>404</h2>
           <p>Oops something went wrong</p>
           <Link href="/">
-            <a className="btn">
+            <a href="/" className="btn">
               Back to Home <i className="icon ion-md-home" />
             </a>
           </Link>

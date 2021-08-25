@@ -8,7 +8,7 @@ export default function MarketNews() {
       <ul>
         <li>
           <Link href="/news-details">
-            <a>
+            <a href="/">
               <strong>KCS Pay Fees Feature is Coming Soon</strong>
               To accelerate the ecosystem construction of KuCoin Share (KCS) and
               promote the implementation of the KCS application.
@@ -18,7 +18,7 @@ export default function MarketNews() {
         </li>
         <li>
           <Link href="/news-details">
-            <a>
+            <a href="/">
               <strong>KCS Pay Fees Feature is Coming Soon</strong>
               To accelerate the ecosystem construction of KuCoin Share (KCS) and
               promote the implementation of the KCS application.
@@ -28,7 +28,7 @@ export default function MarketNews() {
         </li>
         <li>
           <Link href="/news-details">
-            <a>
+            <a href="/">
               <strong>KCS Pay Fees Feature is Coming Soon</strong>
               To accelerate the ecosystem construction of KuCoin Share (KCS) and
               promote the implementation of the KCS application.
@@ -38,7 +38,7 @@ export default function MarketNews() {
         </li>
         <li>
           <Link href="/news-details">
-            <a>
+            <a href="/">
               <strong>KCS Pay Fees Feature is Coming Soon</strong>
               To accelerate the ecosystem construction of KuCoin Share (KCS) and
               promote the implementation of the KCS application.
@@ -48,7 +48,7 @@ export default function MarketNews() {
         </li>
         <li>
           <Link href="/news-details">
-            <a>
+            <a href="/">
               <strong>KCS Pay Fees Feature is Coming Soon</strong>
               To accelerate the ecosystem construction of KuCoin Share (KCS) and
               promote the implementation of the KCS application.

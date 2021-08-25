@@ -13,7 +13,7 @@ export default function TermsAndConditions() {
 
               <p>
                 These terms and conditions outline the rules and regulations for
-                the use of Company Name's Website
+                the use of Company Name&apos;s Website
               </p>
 
               <p>
@@ -26,14 +26,14 @@ export default function TermsAndConditions() {
                 The following terminology applies to these Terms and Conditions,
                 Privacy Statement and Disclaimer Notice and all Agreements:
                 “Client”, “You” and “Your” refers to you, the person log on this
-                website and compliant to the Company's terms and conditions.
+                website and compliant to the Company&apos;s terms and conditions.
                 “The Company”, “Ourselves”, “We”, “Our” and “Us”, refers to our
                 Company. “Party”, “Parties”, or “Us”, refers to both the Client
                 and ourselves. All terms refer to the offer, acceptance and
                 consideration of payment necessary to undertake the process of
                 our assistance to the Client in the most appropriate manner for
-                the express purpose of meeting the Client's needs in respect of
-                provision of the Company's stated services, in accordance with
+                the express purpose of meeting the Client&apos;s needs in respect of
+                provision of the Company&apos;s stated services, in accordance with
                 and subject to, prevailing law of Netherlands. Any use of the
                 above terminology or other words in the singular, plural,
                 capitalization and/or he/she or they, are taken as
@@ -44,12 +44,12 @@ export default function TermsAndConditions() {
 
               <p>
                 We employ the use of cookies. By accessing Crypo, you agreed to
-                use cookies in agreement with the Crypo's Privacy Policy.
+                use cookies in agreement with the Crypo&apos;s Privacy Policy.
               </p>
 
               <p>
                 Most interactive websites use cookies to let us retrieve the
-                user's details for each visit. Cookies are used by our website
+                user&apos;s details for each visit. Cookies are used by our website
                 to enable the functionality of certain areas to make it easier
                 for people visiting our website. Some of our
                 affiliate/advertising partners may also use cookies.
@@ -85,7 +85,7 @@ export default function TermsAndConditions() {
                 We reserve the right to request that you remove all links or any
                 particular link to our Website. You approve to immediately
                 remove all links to our Website upon request. We also reserve
-                the right to amen these terms and conditions and it's linking
+                the right to amen these terms and conditions and it&apos;s linking
                 policy at any time. By continuously linking to our Website, you
                 agree to be bound to and follow these linking terms and
                 conditions.
