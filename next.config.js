@@ -1,5 +1,6 @@
 const withPlugins = require('next-compose-plugins');
 const withFonts = require('next-fonts');
+const path = require('path')
 
 const nextConfig = {
   // distDir: '../../dist/functions/next'
@@ -14,15 +15,6 @@ const nextConfig = {
         },
       }],
     });
-    // config.module.rules.push({
-    //   test: /\.worker\.js$/,
-    //   use: {
-    //     loader: 'worker-loader',
-    //     options: {
-    //       filename: '7.worker.js',
-    //     },
-    //   },
-    // });
     config.module.rules.unshift({
       test: /pdf\.worker\.(min\.)?js/,
       type: 'asset/resource',
@@ -33,6 +25,9 @@ const nextConfig = {
 
     // Important: return the modified config
     return config;
+  },
+  sassOptions: {
+    includePaths: [path.join(__dirname, 'styles')],
   },
 };
 
