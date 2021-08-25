@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
 import {
   Tab, Row, Col, Nav,
@@ -155,7 +156,7 @@ export default function wallet() {
                                     What was the name of your first pet?
                                   </option>
                                   <option>
-                                    What's your Mother's middle name?
+                                    What&amp;s your Mother&amp;s middle name?
                                   </option>
                                   <option>
                                     What was the name of your first school?
@@ -187,7 +188,7 @@ export default function wallet() {
                                     What was the name of your first pet?
                                   </option>
                                   <option>
-                                    What's your Mother's middle name?
+                                    What&amp;s your Mother&amp;s middle name?
                                   </option>
                                   <option>
                                     What was the name of your first school?
@@ -219,7 +220,7 @@ export default function wallet() {
                                     What was the name of your first pet?
                                   </option>
                                   <option>
-                                    What's your Mother's middle name?
+                                    What&amp;s your Mother&amp;s middle name?
                                   </option>
                                   <option>
                                     What was the name of your first school?
@@ -439,8 +440,8 @@ export default function wallet() {
                                       </div>
                                     </li>
                                   </ul>
-                                  <button className="btn green">Deposit</button>
-                                  <button className="btn red">Withdraw</button>
+                                  <button type="button" className="btn green">Deposit</button>
+                                  <button type="button" className="btn red">Withdraw</button>
                                 </div>
                               </div>
                               <div className="card">
@@ -464,7 +465,7 @@ export default function wallet() {
                                           value="Ad87deD4gEe8dG57Ede4eEg5dREs4d5e8f4e"
                                         />
                                         <div className="input-group-prepend">
-                                          <button className="btn btn-primary">
+                                          <button type="button" className="btn btn-primary">
                                             COPY
                                           </button>
                                         </div>

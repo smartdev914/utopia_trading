@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
 import Link from 'next/link';
 import Layout from '../../components/Layout';
@@ -43,7 +44,7 @@ export default function login() {
             </button>
           </form>
           <h2>
-            Don't have an account?
+            Don&apos;t have an account?
             {' '}
             <Link href="/signup">Sign up here</Link>
           </h2>

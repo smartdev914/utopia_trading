@@ -22,9 +22,9 @@ export default function otpVerify() {
               Send
             </button>
             <h2>
-              Don't get code?
+              Don&apos;t get code?
               {' '}
-              <Link href="#">Resend</Link>
+              <Link href="/">Resend</Link>
             </h2>
           </form>
         </div>

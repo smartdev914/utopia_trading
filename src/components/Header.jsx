@@ -28,7 +28,7 @@ export default class Header extends Component {
         <header className="light-bb">
           <Navbar expand="lg">
             <Link href="/">
-              <a className="navbar-brand">
+              <a href="/" className="navbar-brand">
                 <ThemeConsumer>
                   {({ data }) => data.theme === 'light' ? (
                       <img src="/img/logo-dark.svg" alt="logo" />
@@ -42,43 +42,43 @@ export default class Header extends Component {
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="navbar-nav mr-auto">
                 <Link href="/">
-                  <a className="nav-link">Exchange</a>
+                  <a href="/" className="nav-link">Exchange</a>
                 </Link>
                 <Link href="/markets">
-                  <a className="nav-link">Markets</a>
+                  <a href="/" className="nav-link">Markets</a>
                 </Link>
                 <NavDropdown title="Dashboard">
                   <Link href="/profile">
-                    <a className="dropdown-item">Profile</a>
+                    <a href="/" className="dropdown-item">Profile</a>
                   </Link>
                   <Link href="/wallet">
-                    <a className="dropdown-item">Wallet</a>
+                    <a href="/" className="dropdown-item">Wallet</a>
                   </Link>
                   <Link href="/settings">
-                    <a className="dropdown-item">Settings</a>
+                    <a href="/" className="dropdown-item">Settings</a>
                   </Link>
                 </NavDropdown>
                 <NavDropdown title="Others">
                   <Link href="/login">
-                    <a className="dropdown-item">Login</a>
+                    <a href="/" className="dropdown-item">Login</a>
                   </Link>
                   <Link href="/signup">
-                    <a className="dropdown-item">Sign up</a>
+                    <a href="/" className="dropdown-item">Sign up</a>
                   </Link>
                   <Link href="/lock">
-                    <a className="dropdown-item">Lock</a>
+                    <a href="/" className="dropdown-item">Lock</a>
                   </Link>
                   <Link href="/otp-number">
-                    <a className="dropdown-item">OTP Number</a>
+                    <a href="/" className="dropdown-item">OTP Number</a>
                   </Link>
                   <Link href="/otp-verify">
-                    <a className="dropdown-item">OTP Verify</a>
+                    <a href="/" className="dropdown-item">OTP Verify</a>
                   </Link>
                   <Link href="/reset">
-                    <a className="dropdown-item">Reset</a>
+                    <a href="/" className="dropdown-item">Reset</a>
                   </Link>
                   <Link href="/notfound">
-                    <a className="dropdown-item">404</a>
+                    <a href="/" className="dropdown-item">404</a>
                   </Link>
                 </NavDropdown>
               </Nav>
@@ -104,13 +104,13 @@ export default class Header extends Component {
                       <p className="mb-0 font-weight-medium">
                         6 New Notifications
                       </p>
-                      <Link href="#">
-                        <a className="text-muted">Clear all</a>
+                      <Link href="/">
+                        <a href="/" className="text-muted">Clear all</a>
                       </Link>
                     </div>
                     <div className="dropdown-body">
-                      <Link href="#">
-                        <a className="dropdown-item">
+                      <Link href="/">
+                        <a href="/" className="dropdown-item">
                           <div className="icon">
                             <i className="icon ion-md-lock" />
                           </div>
@@ -120,8 +120,8 @@ export default class Header extends Component {
                           </div>
                         </a>
                       </Link>
-                      <Link href="#">
-                        <a className="dropdown-item">
+                      <Link href="/">
+                        <a href="/" className="dropdown-item">
                           <div className="icon">
                             <i className="icon ion-md-alert" />
                           </div>
@@ -131,8 +131,8 @@ export default class Header extends Component {
                           </div>
                         </a>
                       </Link>
-                      <Link href="#">
-                        <a className="dropdown-item">
+                      <Link href="/">
+                        <a href="/" className="dropdown-item">
                           <div className="icon">
                             <i className="icon ion-logo-android" />
                           </div>
@@ -142,8 +142,8 @@ export default class Header extends Component {
                           </div>
                         </a>
                       </Link>
-                      <Link href="#">
-                        <a className="dropdown-item">
+                      <Link href="/">
+                        <a href="/" className="dropdown-item">
                           <div className="icon">
                             <i className="icon ion-logo-bitcoin" />
                           </div>
@@ -153,8 +153,8 @@ export default class Header extends Component {
                           </div>
                         </a>
                       </Link>
-                      <Link href="#">
-                        <a className="dropdown-item">
+                      <Link href="/">
+                        <a href="/" className="dropdown-item">
                           <div className="icon">
                             <i className="icon ion-logo-usd" />
                           </div>
@@ -166,8 +166,8 @@ export default class Header extends Component {
                       </Link>
                     </div>
                     <div className="dropdown-footer d-flex align-items-center justify-content-center">
-                      <Link href="#">
-                        <a>View all</a>
+                      <Link href="/">
+                        <a href="/">View all</a>
                       </Link>
                     </div>
                   </Dropdown.Menu>
@@ -192,7 +192,7 @@ export default class Header extends Component {
                       <ul className="profile-nav">
                         <li className="nav-item">
                           <Link href="/profile">
-                            <a className="nav-link">
+                            <a href="/" className="nav-link">
                               <i className="icon ion-md-person" />
                               <span>Profile</span>
                             </a>
@@ -200,7 +200,7 @@ export default class Header extends Component {
                         </li>
                         <li className="nav-item">
                           <Link href="/wallet">
-                            <a className="nav-link">
+                            <a href="/" className="nav-link">
                               <i className="icon ion-md-wallet" />
                               <span>My Wallet</span>
                             </a>
@@ -208,7 +208,7 @@ export default class Header extends Component {
                         </li>
                         <li className="nav-item">
                           <Link href="/settings">
-                            <a className="nav-link">
+                            <a href="/" className="nav-link">
                               <i className="icon ion-md-settings" />
                               <span>Settings</span>
                             </a>
@@ -216,7 +216,7 @@ export default class Header extends Component {
                         </li>
                         <li className="nav-item">
                           <Link href="/login">
-                            <a className="nav-link red">
+                            <a href="/" className="nav-link red">
                               <i className="icon ion-md-power" />
                               <span>Log Out</span>
                             </a>

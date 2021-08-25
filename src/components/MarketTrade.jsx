@@ -112,7 +112,7 @@ export default function MarketTrade() {
                 <p>
                   Fee: <span>0 BTC = 0 USD</span>
                 </p>
-                <button className="btn sell">Sell</button>
+                <button type="button" className="btn sell">Sell</button>
               </form>
             </div>
           </div>
@@ -224,7 +224,7 @@ export default function MarketTrade() {
                 <p>
                   Fee: <span>0 BTC = 0 USD</span>
                 </p>
-                <button className="btn sell">Sell</button>
+                <button type="button" className="btn sell">Sell</button>
               </form>
             </div>
           </div>
@@ -336,7 +336,7 @@ export default function MarketTrade() {
                 <p>
                   Fee: <span>0 BTC = 0 USD</span>
                 </p>
-                <button className="btn sell">Sell</button>
+                <button type="button" className="btn sell">Sell</button>
               </form>
             </div>
           </div>
@@ -448,7 +448,7 @@ export default function MarketTrade() {
                 <p>
                   Fee: <span>0 BTC = 0 USD</span>
                 </p>
-                <button className="btn sell">Sell</button>
+                <button type="button" className="btn sell">Sell</button>
               </form>
             </div>
           </div>

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
 import { Tab, Row, Col, Nav } from 'react-bootstrap';
 import Layout from '../../components/Layout';
@@ -30,7 +31,7 @@ export default function profile() {
                         <h5 className="card-title">General Information</h5>
                         <div className="settings-profile">
                           <form>
-                            <img src={'img/avatar.svg'} alt="avatar" />
+                            <img src="img/avatar.svg" alt="avatar" />
                             <div className="custom-file">
                               <input
                                 type="file"
@@ -152,7 +153,7 @@ export default function profile() {
                                     What was the name of your first pet?
                                   </option>
                                   <option>
-                                    What's your Mother's middle name?
+                                    What&apos;s your Mother&apos;s middle name?
                                   </option>
                                   <option>
                                     What was the name of your first school?
@@ -184,7 +185,7 @@ export default function profile() {
                                     What was the name of your first pet?
                                   </option>
                                   <option>
-                                    What's your Mother's middle name?
+                                    What&apos;s your Mother&apos;s middle name?
                                   </option>
                                   <option>
                                     What was the name of your first school?
@@ -216,7 +217,7 @@ export default function profile() {
                                     What was the name of your first pet?
                                   </option>
                                   <option>
-                                    What's your Mother's middle name?
+                                    What&apos;s your Mother&apos;s middle name?
                                   </option>
                                   <option>
                                     What was the name of your first school?
@@ -255,7 +256,7 @@ export default function profile() {
                                 className="d-flex justify-content-between align-items-center active"
                               >
                                 <div className="d-flex">
-                                  <img src={'img/icon/18.png'} alt="btc" />
+                                  <img src="img/icon/18.png" alt="btc" />
                                   <div>
                                     <h2>BTC</h2>
                                     <p>Bitcoin</p>
@@ -264,7 +265,7 @@ export default function profile() {
                                 <div>
                                   <h3>4.5484254</h3>
                                   <p className="text-right">
-                                    <i className="icon ion-md-lock"></i>{' '}
+                                    <i className="icon ion-md-lock" />{' '}
                                     0.0000000
                                   </p>
                                 </div>
@@ -276,7 +277,7 @@ export default function profile() {
                                 className="d-flex justify-content-between align-items-center"
                               >
                                 <div className="d-flex">
-                                  <img src={'img/icon/1.png'} alt="btc" />
+                                  <img src="img/icon/1.png" alt="btc" />
                                   <div>
                                     <h2>ETH</h2>
                                     <p>Ethereum</p>
@@ -285,7 +286,7 @@ export default function profile() {
                                 <div>
                                   <h3>13.454845</h3>
                                   <p className="text-right">
-                                    <i className="icon ion-md-lock"></i>{' '}
+                                    <i className="icon ion-md-lock" />{' '}
                                     0.0000000
                                   </p>
                                 </div>
@@ -297,7 +298,7 @@ export default function profile() {
                                 className="d-flex justify-content-between align-items-center"
                               >
                                 <div className="d-flex">
-                                  <img src={'img/icon/9.png'} alt="btc" />
+                                  <img src="img/icon/9.png" alt="btc" />
                                   <div>
                                     <h2>BNB</h2>
                                     <p>Binance</p>
@@ -306,7 +307,7 @@ export default function profile() {
                                 <div>
                                   <h3>35.4842458</h3>
                                   <p className="text-right">
-                                    <i className="icon ion-md-lock"></i>{' '}
+                                    <i className="icon ion-md-lock" />{' '}
                                     0.0000000
                                   </p>
                                 </div>
@@ -318,7 +319,7 @@ export default function profile() {
                                 className="d-flex justify-content-between align-items-center"
                               >
                                 <div className="d-flex">
-                                  <img src={'img/icon/6.png'} alt="btc" />
+                                  <img src="img/icon/6.png" alt="btc" />
                                   <div>
                                     <h2>TRX</h2>
                                     <p>Tron</p>
@@ -327,7 +328,7 @@ export default function profile() {
                                 <div>
                                   <h3>4.458941</h3>
                                   <p className="text-right">
-                                    <i className="icon ion-md-lock"></i>{' '}
+                                    <i className="icon ion-md-lock" />{' '}
                                     0.0000000
                                   </p>
                                 </div>
@@ -339,7 +340,7 @@ export default function profile() {
                                 className="d-flex justify-content-between align-items-center"
                               >
                                 <div className="d-flex">
-                                  <img src={'img/icon/2.png'} alt="btc" />
+                                  <img src="img/icon/2.png" alt="btc" />
                                   <div>
                                     <h2>EOS</h2>
                                     <p>Eosio</p>
@@ -348,7 +349,7 @@ export default function profile() {
                                 <div>
                                   <h3>33.478951</h3>
                                   <p className="text-right">
-                                    <i className="icon ion-md-lock"></i>{' '}
+                                    <i className="icon ion-md-lock" />{' '}
                                     0.0000000
                                   </p>
                                 </div>
@@ -360,7 +361,7 @@ export default function profile() {
                                 className="d-flex justify-content-between align-items-center"
                               >
                                 <div className="d-flex">
-                                  <img src={'img/icon/7.png'} alt="btc" />
+                                  <img src="img/icon/7.png" alt="btc" />
                                   <div>
                                     <h2>XMR</h2>
                                     <p>Monero</p>
@@ -369,7 +370,7 @@ export default function profile() {
                                 <div>
                                   <h3>99.465975</h3>
                                   <p className="text-right">
-                                    <i className="icon ion-md-lock"></i>{' '}
+                                    <i className="icon ion-md-lock" />{' '}
                                     0.0000000
                                   </p>
                                 </div>
@@ -381,7 +382,7 @@ export default function profile() {
                                 className="d-flex justify-content-between align-items-center"
                               >
                                 <div className="d-flex">
-                                  <img src={'img/icon/4.png'} alt="btc" />
+                                  <img src="img/icon/4.png" alt="btc" />
                                   <div>
                                     <h2>KCS</h2>
                                     <p>Kstarcoin</p>
@@ -390,7 +391,7 @@ export default function profile() {
                                 <div>
                                   <h3>114.57564</h3>
                                   <p className="text-right">
-                                    <i className="icon ion-md-lock"></i>{' '}
+                                    <i className="icon ion-md-lock" />{' '}
                                     0.0000000
                                   </p>
                                 </div>
@@ -412,7 +413,7 @@ export default function profile() {
                                   <ul>
                                     <li className="d-flex justify-content-between align-items-center">
                                       <div className="d-flex align-items-center">
-                                        <i className="icon ion-md-cash"></i>
+                                        <i className="icon ion-md-cash" />
                                         <h2>Total Equity</h2>
                                       </div>
                                       <div>
@@ -421,7 +422,7 @@ export default function profile() {
                                     </li>
                                     <li className="d-flex justify-content-between align-items-center">
                                       <div className="d-flex align-items-center">
-                                        <i className="icon ion-md-checkmark"></i>
+                                        <i className="icon ion-md-checkmark" />
                                         <h2>Available Margin</h2>
                                       </div>
                                       <div>
@@ -429,8 +430,8 @@ export default function profile() {
                                       </div>
                                     </li>
                                   </ul>
-                                  <button className="btn green">Deposit</button>
-                                  <button className="btn red">Withdraw</button>
+                                  <button type="button" className="btn green">Deposit</button>
+                                  <button type="button" className="btn red">Withdraw</button>
                                 </div>
                               </div>
                               <div className="card">
@@ -454,7 +455,7 @@ export default function profile() {
                                           value="Ad87deD4gEe8dG57Ede4eEg5dREs4d5e8f4e"
                                         />
                                         <div className="input-group-prepend">
-                                          <button className="btn btn-primary">
+                                          <button type="button" className="btn btn-primary">
                                             COPY
                                           </button>
                                         </div>
@@ -462,7 +463,7 @@ export default function profile() {
                                     </div>
                                     <div className="col-md-4">
                                       <img
-                                        src={'img/qr-code-dark.svg'}
+                                        src="img/qr-code-dark.svg"
                                         alt="qr-code"
                                       />
                                     </div>
@@ -489,7 +490,7 @@ export default function profile() {
                                           <td>1</td>
                                           <td>25-04-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>4.5454334</td>
                                         </tr>
@@ -497,7 +498,7 @@ export default function profile() {
                                           <td>2</td>
                                           <td>25-05-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>0.5484468</td>
                                         </tr>
@@ -505,7 +506,7 @@ export default function profile() {
                                           <td>3</td>
                                           <td>25-06-2019</td>
                                           <td>
-                                            <i className="icon ion-md-close-circle-outline red"></i>
+                                            <i className="icon ion-md-close-circle-outline red" />
                                           </td>
                                           <td>2.5454545</td>
                                         </tr>
@@ -513,7 +514,7 @@ export default function profile() {
                                           <td>4</td>
                                           <td>25-07-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>1.45894147</td>
                                         </tr>
@@ -521,7 +522,7 @@ export default function profile() {
                                           <td>3</td>
                                           <td>25-08-2019</td>
                                           <td>
-                                            <i className="icon ion-md-close-circle-outline red"></i>
+                                            <i className="icon ion-md-close-circle-outline red" />
                                           </td>
                                           <td>2.5454545</td>
                                         </tr>
@@ -542,7 +543,7 @@ export default function profile() {
                                   <ul>
                                     <li className="d-flex justify-content-between align-items-center">
                                       <div className="d-flex align-items-center">
-                                        <i className="icon ion-md-cash"></i>
+                                        <i className="icon ion-md-cash" />
                                         <h2>Total Equity</h2>
                                       </div>
                                       <div>
@@ -551,7 +552,7 @@ export default function profile() {
                                     </li>
                                     <li className="d-flex justify-content-between align-items-center">
                                       <div className="d-flex align-items-center">
-                                        <i className="icon ion-md-checkmark"></i>
+                                        <i className="icon ion-md-checkmark" />
                                         <h2>Available Margin</h2>
                                       </div>
                                       <div>
@@ -559,8 +560,8 @@ export default function profile() {
                                       </div>
                                     </li>
                                   </ul>
-                                  <button className="btn green">Deposit</button>
-                                  <button className="btn red">Withdraw</button>
+                                  <button type="button" className="btn green">Deposit</button>
+                                  <button type="button" className="btn red">Withdraw</button>
                                 </div>
                               </div>
                               <div className="card">
@@ -584,7 +585,7 @@ export default function profile() {
                                           value="Ad87deD4gEe8dG57Ede4eEg5dREs4d5e8f4e"
                                         />
                                         <div className="input-group-prepend">
-                                          <button className="btn btn-primary">
+                                          <button type="button" className="btn btn-primary">
                                             COPY
                                           </button>
                                         </div>
@@ -592,7 +593,7 @@ export default function profile() {
                                     </div>
                                     <div className="col-md-4">
                                       <img
-                                        src={'img/qr-code-dark.svg'}
+                                        src="img/qr-code-dark.svg"
                                         alt="qr-code"
                                       />
                                     </div>
@@ -619,7 +620,7 @@ export default function profile() {
                                           <td>1</td>
                                           <td>25-04-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>4.5454334</td>
                                         </tr>
@@ -627,7 +628,7 @@ export default function profile() {
                                           <td>2</td>
                                           <td>25-05-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>0.5484468</td>
                                         </tr>
@@ -635,7 +636,7 @@ export default function profile() {
                                           <td>3</td>
                                           <td>25-06-2019</td>
                                           <td>
-                                            <i className="icon ion-md-close-circle-outline red"></i>
+                                            <i className="icon ion-md-close-circle-outline red" />
                                           </td>
                                           <td>2.5454545</td>
                                         </tr>
@@ -643,7 +644,7 @@ export default function profile() {
                                           <td>4</td>
                                           <td>25-07-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>1.45894147</td>
                                         </tr>
@@ -651,7 +652,7 @@ export default function profile() {
                                           <td>3</td>
                                           <td>25-08-2019</td>
                                           <td>
-                                            <i className="icon ion-md-close-circle-outline red"></i>
+                                            <i className="icon ion-md-close-circle-outline red" />
                                           </td>
                                           <td>2.5454545</td>
                                         </tr>
@@ -672,7 +673,7 @@ export default function profile() {
                                   <ul>
                                     <li className="d-flex justify-content-between align-items-center">
                                       <div className="d-flex align-items-center">
-                                        <i className="icon ion-md-cash"></i>
+                                        <i className="icon ion-md-cash" />
                                         <h2>Total Equity</h2>
                                       </div>
                                       <div>
@@ -681,7 +682,7 @@ export default function profile() {
                                     </li>
                                     <li className="d-flex justify-content-between align-items-center">
                                       <div className="d-flex align-items-center">
-                                        <i className="icon ion-md-checkmark"></i>
+                                        <i className="icon ion-md-checkmark" />
                                         <h2>Available Margin</h2>
                                       </div>
                                       <div>
@@ -689,8 +690,8 @@ export default function profile() {
                                       </div>
                                     </li>
                                   </ul>
-                                  <button className="btn green">Deposit</button>
-                                  <button className="btn red">Withdraw</button>
+                                  <button type="button" className="btn green">Deposit</button>
+                                  <button type="button" className="btn red">Withdraw</button>
                                 </div>
                               </div>
                               <div className="card">
@@ -714,7 +715,7 @@ export default function profile() {
                                           value="Ad87deD4gEe8dG57Ede4eEg5dREs4d5e8f4e"
                                         />
                                         <div className="input-group-prepend">
-                                          <button className="btn btn-primary">
+                                          <button type="button" className="btn btn-primary">
                                             COPY
                                           </button>
                                         </div>
@@ -722,7 +723,7 @@ export default function profile() {
                                     </div>
                                     <div className="col-md-4">
                                       <img
-                                        src={'img/qr-code-dark.svg'}
+                                        src="img/qr-code-dark.svg"
                                         alt="qr-code"
                                       />
                                     </div>
@@ -749,7 +750,7 @@ export default function profile() {
                                           <td>1</td>
                                           <td>25-04-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>4.5454334</td>
                                         </tr>
@@ -757,7 +758,7 @@ export default function profile() {
                                           <td>2</td>
                                           <td>25-05-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>0.5484468</td>
                                         </tr>
@@ -765,7 +766,7 @@ export default function profile() {
                                           <td>3</td>
                                           <td>25-06-2019</td>
                                           <td>
-                                            <i className="icon ion-md-close-circle-outline red"></i>
+                                            <i className="icon ion-md-close-circle-outline red" />
                                           </td>
                                           <td>2.5454545</td>
                                         </tr>
@@ -773,7 +774,7 @@ export default function profile() {
                                           <td>4</td>
                                           <td>25-07-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>1.45894147</td>
                                         </tr>
@@ -781,7 +782,7 @@ export default function profile() {
                                           <td>3</td>
                                           <td>25-08-2019</td>
                                           <td>
-                                            <i className="icon ion-md-close-circle-outline red"></i>
+                                            <i className="icon ion-md-close-circle-outline red" />
                                           </td>
                                           <td>2.5454545</td>
                                         </tr>
@@ -802,7 +803,7 @@ export default function profile() {
                                   <ul>
                                     <li className="d-flex justify-content-between align-items-center">
                                       <div className="d-flex align-items-center">
-                                        <i className="icon ion-md-cash"></i>
+                                        <i className="icon ion-md-cash" />
                                         <h2>Total Equity</h2>
                                       </div>
                                       <div>
@@ -811,7 +812,7 @@ export default function profile() {
                                     </li>
                                     <li className="d-flex justify-content-between align-items-center">
                                       <div className="d-flex align-items-center">
-                                        <i className="icon ion-md-checkmark"></i>
+                                        <i className="icon ion-md-checkmark" />
                                         <h2>Available Margin</h2>
                                       </div>
                                       <div>
@@ -819,8 +820,8 @@ export default function profile() {
                                       </div>
                                     </li>
                                   </ul>
-                                  <button className="btn green">Deposit</button>
-                                  <button className="btn red">Withdraw</button>
+                                  <button type="button" className="btn green">Deposit</button>
+                                  <button type="button" className="btn red">Withdraw</button>
                                 </div>
                               </div>
                               <div className="card">
@@ -844,7 +845,7 @@ export default function profile() {
                                           value="Ad87deD4gEe8dG57Ede4eEg5dREs4d5e8f4e"
                                         />
                                         <div className="input-group-prepend">
-                                          <button className="btn btn-primary">
+                                          <button type="button" className="btn btn-primary">
                                             COPY
                                           </button>
                                         </div>
@@ -852,7 +853,7 @@ export default function profile() {
                                     </div>
                                     <div className="col-md-4">
                                       <img
-                                        src={'img/qr-code-dark.svg'}
+                                        src="img/qr-code-dark.svg"
                                         alt="qr-code"
                                       />
                                     </div>
@@ -879,7 +880,7 @@ export default function profile() {
                                           <td>1</td>
                                           <td>25-04-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>4.5454334</td>
                                         </tr>
@@ -887,7 +888,7 @@ export default function profile() {
                                           <td>2</td>
                                           <td>25-05-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>0.5484468</td>
                                         </tr>
@@ -895,7 +896,7 @@ export default function profile() {
                                           <td>3</td>
                                           <td>25-06-2019</td>
                                           <td>
-                                            <i className="icon ion-md-close-circle-outline red"></i>
+                                            <i className="icon ion-md-close-circle-outline red" />
                                           </td>
                                           <td>2.5454545</td>
                                         </tr>
@@ -903,7 +904,7 @@ export default function profile() {
                                           <td>4</td>
                                           <td>25-07-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>1.45894147</td>
                                         </tr>
@@ -911,7 +912,7 @@ export default function profile() {
                                           <td>3</td>
                                           <td>25-08-2019</td>
                                           <td>
-                                            <i className="icon ion-md-close-circle-outline red"></i>
+                                            <i className="icon ion-md-close-circle-outline red" />
                                           </td>
                                           <td>2.5454545</td>
                                         </tr>
@@ -932,7 +933,7 @@ export default function profile() {
                                   <ul>
                                     <li className="d-flex justify-content-between align-items-center">
                                       <div className="d-flex align-items-center">
-                                        <i className="icon ion-md-cash"></i>
+                                        <i className="icon ion-md-cash" />
                                         <h2>Total Equity</h2>
                                       </div>
                                       <div>
@@ -941,7 +942,7 @@ export default function profile() {
                                     </li>
                                     <li className="d-flex justify-content-between align-items-center">
                                       <div className="d-flex align-items-center">
-                                        <i className="icon ion-md-checkmark"></i>
+                                        <i className="icon ion-md-checkmark" />
                                         <h2>Available Margin</h2>
                                       </div>
                                       <div>
@@ -949,8 +950,8 @@ export default function profile() {
                                       </div>
                                     </li>
                                   </ul>
-                                  <button className="btn green">Deposit</button>
-                                  <button className="btn red">Withdraw</button>
+                                  <button type="button" className="btn green">Deposit</button>
+                                  <button type="button" className="btn red">Withdraw</button>
                                 </div>
                               </div>
                               <div className="card">
@@ -974,7 +975,7 @@ export default function profile() {
                                           value="Ad87deD4gEe8dG57Ede4eEg5dREs4d5e8f4e"
                                         />
                                         <div className="input-group-prepend">
-                                          <button className="btn btn-primary">
+                                          <button type="button" className="btn btn-primary">
                                             COPY
                                           </button>
                                         </div>
@@ -982,7 +983,7 @@ export default function profile() {
                                     </div>
                                     <div className="col-md-4">
                                       <img
-                                        src={'img/qr-code-dark.svg'}
+                                        src="img/qr-code-dark.svg"
                                         alt="qr-code"
                                       />
                                     </div>
@@ -1009,7 +1010,7 @@ export default function profile() {
                                           <td>1</td>
                                           <td>25-04-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>4.5454334</td>
                                         </tr>
@@ -1017,7 +1018,7 @@ export default function profile() {
                                           <td>2</td>
                                           <td>25-05-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>0.5484468</td>
                                         </tr>
@@ -1025,7 +1026,7 @@ export default function profile() {
                                           <td>3</td>
                                           <td>25-06-2019</td>
                                           <td>
-                                            <i className="icon ion-md-close-circle-outline red"></i>
+                                            <i className="icon ion-md-close-circle-outline red" />
                                           </td>
                                           <td>2.5454545</td>
                                         </tr>
@@ -1033,7 +1034,7 @@ export default function profile() {
                                           <td>4</td>
                                           <td>25-07-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>1.45894147</td>
                                         </tr>
@@ -1041,7 +1042,7 @@ export default function profile() {
                                           <td>3</td>
                                           <td>25-08-2019</td>
                                           <td>
-                                            <i className="icon ion-md-close-circle-outline red"></i>
+                                            <i className="icon ion-md-close-circle-outline red" />
                                           </td>
                                           <td>2.5454545</td>
                                         </tr>
@@ -1062,7 +1063,7 @@ export default function profile() {
                                   <ul>
                                     <li className="d-flex justify-content-between align-items-center">
                                       <div className="d-flex align-items-center">
-                                        <i className="icon ion-md-cash"></i>
+                                        <i className="icon ion-md-cash" />
                                         <h2>Total Equity</h2>
                                       </div>
                                       <div>
@@ -1071,7 +1072,7 @@ export default function profile() {
                                     </li>
                                     <li className="d-flex justify-content-between align-items-center">
                                       <div className="d-flex align-items-center">
-                                        <i className="icon ion-md-checkmark"></i>
+                                        <i className="icon ion-md-checkmark" />
                                         <h2>Available Margin</h2>
                                       </div>
                                       <div>
@@ -1079,8 +1080,8 @@ export default function profile() {
                                       </div>
                                     </li>
                                   </ul>
-                                  <button className="btn green">Deposit</button>
-                                  <button className="btn red">Withdraw</button>
+                                  <button type="button" className="btn green">Deposit</button>
+                                  <button type="button" className="btn red">Withdraw</button>
                                 </div>
                               </div>
                               <div className="card">
@@ -1104,7 +1105,7 @@ export default function profile() {
                                           value="Ad87deD4gEe8dG57Ede4eEg5dREs4d5e8f4e"
                                         />
                                         <div className="input-group-prepend">
-                                          <button className="btn btn-primary">
+                                          <button type="button" className="btn btn-primary">
                                             COPY
                                           </button>
                                         </div>
@@ -1112,7 +1113,7 @@ export default function profile() {
                                     </div>
                                     <div className="col-md-4">
                                       <img
-                                        src={'img/qr-code-dark.svg'}
+                                        src="img/qr-code-dark.svg"
                                         alt="qr-code"
                                       />
                                     </div>
@@ -1139,7 +1140,7 @@ export default function profile() {
                                           <td>1</td>
                                           <td>25-04-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>4.5454334</td>
                                         </tr>
@@ -1147,7 +1148,7 @@ export default function profile() {
                                           <td>2</td>
                                           <td>25-05-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>0.5484468</td>
                                         </tr>
@@ -1155,7 +1156,7 @@ export default function profile() {
                                           <td>3</td>
                                           <td>25-06-2019</td>
                                           <td>
-                                            <i className="icon ion-md-close-circle-outline red"></i>
+                                            <i className="icon ion-md-close-circle-outline red" />
                                           </td>
                                           <td>2.5454545</td>
                                         </tr>
@@ -1163,7 +1164,7 @@ export default function profile() {
                                           <td>4</td>
                                           <td>25-07-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>1.45894147</td>
                                         </tr>
@@ -1171,7 +1172,7 @@ export default function profile() {
                                           <td>3</td>
                                           <td>25-08-2019</td>
                                           <td>
-                                            <i className="icon ion-md-close-circle-outline red"></i>
+                                            <i className="icon ion-md-close-circle-outline red" />
                                           </td>
                                           <td>2.5454545</td>
                                         </tr>
@@ -1192,7 +1193,7 @@ export default function profile() {
                                   <ul>
                                     <li className="d-flex justify-content-between align-items-center">
                                       <div className="d-flex align-items-center">
-                                        <i className="icon ion-md-cash"></i>
+                                        <i className="icon ion-md-cash" />
                                         <h2>Total Equity</h2>
                                       </div>
                                       <div>
@@ -1201,7 +1202,7 @@ export default function profile() {
                                     </li>
                                     <li className="d-flex justify-content-between align-items-center">
                                       <div className="d-flex align-items-center">
-                                        <i className="icon ion-md-checkmark"></i>
+                                        <i className="icon ion-md-checkmark" />
                                         <h2>Available Margin</h2>
                                       </div>
                                       <div>
@@ -1209,8 +1210,8 @@ export default function profile() {
                                       </div>
                                     </li>
                                   </ul>
-                                  <button className="btn green">Deposit</button>
-                                  <button className="btn red">Withdraw</button>
+                                  <button type="button" className="btn green">Deposit</button>
+                                  <button type="button" className="btn red">Withdraw</button>
                                 </div>
                               </div>
                               <div className="card">
@@ -1234,7 +1235,7 @@ export default function profile() {
                                           value="Ad87deD4gEe8dG57Ede4eEg5dREs4d5e8f4e"
                                         />
                                         <div className="input-group-prepend">
-                                          <button className="btn btn-primary">
+                                          <button type="button" className="btn btn-primary">
                                             COPY
                                           </button>
                                         </div>
@@ -1242,7 +1243,7 @@ export default function profile() {
                                     </div>
                                     <div className="col-md-4">
                                       <img
-                                        src={'img/qr-code-dark.svg'}
+                                        src="img/qr-code-dark.svg"
                                         alt="qr-code"
                                       />
                                     </div>
@@ -1269,7 +1270,7 @@ export default function profile() {
                                           <td>1</td>
                                           <td>25-04-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>4.5454334</td>
                                         </tr>
@@ -1277,7 +1278,7 @@ export default function profile() {
                                           <td>2</td>
                                           <td>25-05-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>0.5484468</td>
                                         </tr>
@@ -1285,7 +1286,7 @@ export default function profile() {
                                           <td>3</td>
                                           <td>25-06-2019</td>
                                           <td>
-                                            <i className="icon ion-md-close-circle-outline red"></i>
+                                            <i className="icon ion-md-close-circle-outline red" />
                                           </td>
                                           <td>2.5454545</td>
                                         </tr>
@@ -1293,7 +1294,7 @@ export default function profile() {
                                           <td>4</td>
                                           <td>25-07-2019</td>
                                           <td>
-                                            <i className="icon ion-md-checkmark-circle-outline green"></i>
+                                            <i className="icon ion-md-checkmark-circle-outline green" />
                                           </td>
                                           <td>1.45894147</td>
                                         </tr>
@@ -1301,7 +1302,7 @@ export default function profile() {
                                           <td>3</td>
                                           <td>25-08-2019</td>
                                           <td>
-                                            <i className="icon ion-md-close-circle-outline red"></i>
+                                            <i className="icon ion-md-close-circle-outline red" />
                                           </td>
                                           <td>2.5454545</td>
                                         </tr>
@@ -1338,7 +1339,7 @@ export default function profile() {
                                 <label
                                   className="custom-control-label"
                                   htmlFor="notification1"
-                                ></label>
+                                 />
                               </div>
                             </li>
                             <li>
@@ -1358,7 +1359,7 @@ export default function profile() {
                                 <label
                                   className="custom-control-label"
                                   htmlFor="notification2"
-                                ></label>
+                                 />
                               </div>
                             </li>
                             <li>
@@ -1375,7 +1376,7 @@ export default function profile() {
                                 <label
                                   className="custom-control-label"
                                   htmlFor="notification3"
-                                ></label>
+                                 />
                               </div>
                             </li>
                             <li>
@@ -1393,7 +1394,7 @@ export default function profile() {
                                 <label
                                   className="custom-control-label"
                                   htmlFor="notification4"
-                                ></label>
+                                 />
                               </div>
                             </li>
                             <li>
@@ -1413,7 +1414,7 @@ export default function profile() {
                                 <label
                                   className="custom-control-label"
                                   htmlFor="notification5"
-                                ></label>
+                                 />
                               </div>
                             </li>
                           </ul>
@@ -1480,11 +1481,11 @@ export default function profile() {
                                     <label
                                       className="custom-control-label"
                                       htmlFor="apiStatus1"
-                                    ></label>
+                                     />
                                   </div>
                                 </td>
                                 <td>
-                                  <i className="icon ion-md-trash"></i>
+                                  <i className="icon ion-md-trash" />
                                 </td>
                               </tr>
                               <tr>
@@ -1500,11 +1501,11 @@ export default function profile() {
                                     <label
                                       className="custom-control-label"
                                       htmlFor="apiStatus2"
-                                    ></label>
+                                     />
                                   </div>
                                 </td>
                                 <td>
-                                  <i className="icon ion-md-trash"></i>
+                                  <i className="icon ion-md-trash" />
                                 </td>
                               </tr>
                               <tr>
@@ -1520,11 +1521,11 @@ export default function profile() {
                                     <label
                                       className="custom-control-label"
                                       htmlFor="apiStatus3"
-                                    ></label>
+                                     />
                                   </div>
                                 </td>
                                 <td>
-                                  <i className="icon ion-md-trash"></i>
+                                  <i className="icon ion-md-trash" />
                                 </td>
                               </tr>
                               <tr>
@@ -1540,11 +1541,11 @@ export default function profile() {
                                     <label
                                       className="custom-control-label"
                                       htmlFor="apiStatus4"
-                                    ></label>
+                                     />
                                   </div>
                                 </td>
                                 <td>
-                                  <i className="icon ion-md-trash"></i>
+                                  <i className="icon ion-md-trash" />
                                 </td>
                               </tr>
                             </tbody>
