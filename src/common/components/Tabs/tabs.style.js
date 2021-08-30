@@ -1,19 +1,19 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
-const TabWrapper = styled.div``;
+const TabWrapper = styled.div``
 
-export const TabMenu = styled.ul``;
+export const TabMenu = styled.ul``
 
 export const MenuItem = styled.li`
-  cursor: pointer;
+    cursor: pointer;
 
-  &.active {
-    font-weight: 700;
-  }
-`;
+    &.active {
+        font-weight: 700;
+    }
+`
 
-export const TabContent = styled.div``;
+export const TabContent = styled.div``
 
-export const TabPanel = styled.div``;
+export const TabPanel = styled.div``
 
-export default TabWrapper;
+export default TabWrapper

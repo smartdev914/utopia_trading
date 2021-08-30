@@ -1,4 +1,4 @@
-import { css, keyframes } from 'styled-components';
+import { css, keyframes } from 'styled-components'
 
 const spinner = keyframes`
   0% {
@@ -11,10 +11,10 @@ const spinner = keyframes`
   100% {
     transform: rotate(360deg);
   }
-`;
+`
 
 const AnimSpinner = css`
-  animation: ${spinner} 1s linear infinite;
-`;
+    animation: ${spinner} 1s linear infinite;
+`
 
-export { AnimSpinner };
+export { AnimSpinner }

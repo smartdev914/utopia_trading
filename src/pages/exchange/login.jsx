@@ -1,55 +1,39 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React from 'react';
-import Link from 'next/link';
-import Layout from '../../components/Layout';
+import React from 'react'
+import Link from 'next/link'
+import Layout from '../../components/Layout'
 
 export default function login() {
-  return (
-    <Layout>
-      <div className="vh-100 d-flex justify-content-center">
-        <div className="form-access my-auto">
-          <form>
-            <span>Sign In</span>
-            <div className="form-group">
-              <input
-                type="email"
-                className="form-control"
-                placeholder="Email Address"
-                required
-              />
+    return (
+        <Layout>
+            <div className="vh-100 d-flex justify-content-center">
+                <div className="form-access my-auto">
+                    <form>
+                        <span>Sign In</span>
+                        <div className="form-group">
+                            <input type="email" className="form-control" placeholder="Email Address" required />
+                        </div>
+                        <div className="form-group">
+                            <input type="password" className="form-control" placeholder="Password" required />
+                        </div>
+                        <div className="text-right">
+                            <Link href="/reset">Forgot Password?</Link>
+                        </div>
+                        <div className="custom-control custom-checkbox">
+                            <input type="checkbox" className="custom-control-input" id="form-checkbox" />
+                            <label className="custom-control-label" htmlFor="form-checkbox">
+                                Remember me
+                            </label>
+                        </div>
+                        <button type="submit" className="btn btn-primary">
+                            Sign In
+                        </button>
+                    </form>
+                    <h2>
+                        Don&apos;t have an account? <Link href="/signup">Sign up here</Link>
+                    </h2>
+                </div>
             </div>
-            <div className="form-group">
-              <input
-                type="password"
-                className="form-control"
-                placeholder="Password"
-                required
-              />
-            </div>
-            <div className="text-right">
-              <Link href="/reset">Forgot Password?</Link>
-            </div>
-            <div className="custom-control custom-checkbox">
-              <input
-                type="checkbox"
-                className="custom-control-input"
-                id="form-checkbox"
-              />
-              <label className="custom-control-label" htmlFor="form-checkbox">
-                Remember me
-              </label>
-            </div>
-            <button type="submit" className="btn btn-primary">
-              Sign In
-            </button>
-          </form>
-          <h2>
-            Don&apos;t have an account?
-            {' '}
-            <Link href="/signup">Sign up here</Link>
-          </h2>
-        </div>
-      </div>
-    </Layout>
-  );
+        </Layout>
+    )
 }

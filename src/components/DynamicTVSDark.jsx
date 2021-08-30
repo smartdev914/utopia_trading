@@ -1,12 +1,12 @@
-import React from 'react';
-import dynamic from 'next/dynamic';
+import React from 'react'
+import dynamic from 'next/dynamic'
 
-const MyChart = dynamic(() => import('./TradingChartDark'), { ssr: false });
+const MyChart = dynamic(() => import('./TradingChartDark'), { ssr: false })
 
 export default function DynamicTVS() {
-  return (
-    <div className="main-chart mb15">
-      <MyChart />
-    </div>
-  );
+    return (
+        <div className="main-chart mb15">
+            <MyChart />
+        </div>
+    )
 }
