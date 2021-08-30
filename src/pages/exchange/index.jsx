@@ -1,8 +1,6 @@
 import React from 'react';
 import Layout from '../../components/Layout';
-import HistoryOrder from '../../components/HistoryOrder';
 import MarketHistory from '../../components/MarketHistory';
-import MarketNews from '../../components/MarketNews';
 import MarketPairs from '../../components/MarketPairs';
 import MarketTrade from '../../components/MarketTrade';
 import OrderBook from '../../components/OrderBook';
@@ -26,17 +24,12 @@ export default function Home() {
                 <DynamicTVSDark />
               ))}
             </ThemeConsumer>
-            <MarketTrade />
-          </div>
-          <div className="col-md-3">
-            <OrderBook />
             <MarketHistory />
+
           </div>
           <div className="col-md-3">
-            <MarketNews />
-          </div>
-          <div className="col-md-9">
-            <HistoryOrder />
+            <MarketTrade />
+            <OrderBook />
           </div>
         </div>
       </div>

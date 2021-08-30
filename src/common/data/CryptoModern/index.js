@@ -25,17 +25,17 @@ export const navbar = {
 export const MissionData = [
   {
     id: 1,
+    icon: equalityIcon,
+    title: 'EQUALITY',
+    description:
+      'The whole philosophy of Utopia is equality and fairness. We represent this through our anti-bot and anti-whale features. We intend to take a stand against unfairness in the the DeFi space.',
+  },
+  {
+    id: 2,
     icon: charityIcon,
     title: 'CHARITY',
     description:
       'We seek to solve real-world problems through our charity donations/crowdfunding. We want to ensure everything we donate has the most impact per dollar.',
-  },
-  {
-    id: 2,
-    icon: equalityIcon,
-    title: 'EQUALITY',
-    description:
-      'The whole philosophy of Utopia is equality and fairness. We represent this through our anti-bot and anti-whale features. We intend to take a stand against unfairness in the DeFi space.',
   },
   {
     id: 3,
@@ -55,44 +55,54 @@ export const TokenomicsData = [
   {
     id: 2,
     title: 'Presale',
-    value: '400,000,000,000',
+    value: '350,000,000,000',
   },
   {
     id: 3,
     title: 'Pancakeswap Liquidity',
-    value: '400,000,000,000',
+    value: '450,000,000,000',
   },
   {
     id: 4,
     title: 'Team',
-    value: '42,000,000,000',
+    value: '35,000,000,000',
     description:
       'Locked and will be slowly released',
   },
   {
     id: 5,
     title: 'Locked Tokens',
-    value: '158,000,000,000',
+    value: '165,000,000,000',
     description:
-      'These tokens will primarily be used to provide liquidity to centralised exchanges for new listings and a store of value for the business as an asset',
+      '(These tokens will primarily be used to provide liquidity to centralised exchanges for new listings, for future hires and as a store of value for the business as an asset)',
   },
 ];
 
 export const TokenomicsTaxHightlights = [
   {
     id: 1,
-    title: '10%',
+    title: 'Total 10%',
     description: 'tax applied on each transaction.',
   },
   {
     id: 2,
-    title: '5%',
+    title: '2%',
     description: 'goes to existing holders allowing them to passively earn.',
   },
   {
     id: 3,
-    title: '5%',
-    description: 'goes towards token stability and charity.',
+    title: '4%',
+    description: 'goes towards Liquity pool',
+  },
+  {
+    id: 4,
+    title: '2%',
+    description: 'goes towards Businesss Development',
+  },
+  {
+    id: 5,
+    title: '2%',
+    description: 'goes towards Charity/Marketing',
   },
 ];
 
@@ -234,18 +244,34 @@ export const Q4RoadMap = [
 ];
 
 export const FutureRoadMap = [
+
   {
     id: 'F-1',
     checked: false,
-    label: 'Utopia wallet app with integrated DEX',
+    label: 'DeFi lending',
   },
   {
     id: 'F-2',
     checked: false,
-    label: 'Utopia Debit card',
+    label: 'Utopia world',
   },
   {
     id: 'F-3',
+    checked: false,
+    label: 'Utopia Poker',
+  },
+  {
+    id: 'F-4',
+    checked: false,
+    label: 'Utopia wallet app with integrated DEX',
+  },
+  {
+    id: 'F-5',
+    checked: false,
+    label: 'Utopia Debit card',
+  },
+  {
+    id: 'F-6',
     checked: false,
     label: 'Sister token on Ethereum Network',
   },

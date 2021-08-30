@@ -3,7 +3,7 @@ import { Tabs, Tab } from 'react-bootstrap';
 
 export default function MarketTrade() {
   return (
-    <div className="market-trade">
+    <div className="market-trade mb15">
       <Tabs defaultActiveKey="limit">
         <Tab eventKey="limit" title="Limit">
           <div className="d-flex justify-content-between">

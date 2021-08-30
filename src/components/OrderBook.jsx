@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function OrderBook() {
   return (
-    <div className="order-book mb15">
+    <div className="order-book">
       <h2 className="heading">Order Book</h2>
       <table className="table">
         <thead>

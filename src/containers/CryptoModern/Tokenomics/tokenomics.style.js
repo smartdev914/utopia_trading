@@ -101,7 +101,7 @@ export const TokenomicsHighlight = styled.div`
   }
 
   .highlight {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     z-index: 1;
 
     p {

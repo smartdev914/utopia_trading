@@ -21,9 +21,9 @@ const WalletPortal = () => (
               <Text as="p" className="step" content="Setup MetaMask (Computer/Laptop users) or TrustWallet (Phone users)" />
               <div className="stepDesc">
                 <a className="link" href="https://metamask.io/">MetaMask</a>
-                <Text as="span" content="&nbsp;can be added as a chrome browser extension and&nbsp;" />
+                <Text as="span" content="&nbsp;can be added as a chrome browser extension or downloaded from the app/playstore and&nbsp;" />
                 <a className="link" href="https://trustwallet.com/">TrustWallet</a>
-                <Text as="span" content="&nbsp;can be downloaded from the app store or play store. After that, for MetaMask, you will have to add the Binance Smart Chain to your network-list. " />
+                <Text as="span" content="&nbsp;can be downloaded from the play store. After that, for MetaMask, you will have to add the Binance Smart Chain to your network-list. " />
                 <a className="link" href="https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain/">(Click here for a step-by-step tutorial)</a>
               </div>
               <div className="stepNumber">1</div>
@@ -47,10 +47,12 @@ const WalletPortal = () => (
                 <p>
                   <Text as="span" content="For computer/laptop users, navigate to&nbsp;" />
                   <a className="link" href="https://pancakeswap.finance/">pancakeswap.finance</a>
-                  <Text as="span" content="&nbsp;and connect your MetaMask wallet. For phone users, access the Dapp browser within the trust wallet app and navigate to pancakeswap.finance and connect your wallet." />
+                  <Text as="span" content="&nbsp;and connect your MetaMask wallet. For phone users, access the Dapp browser within the trust wallet (android users only) or metamask app and navigate to&nbsp;"/>
+                  <a className="link" href="https://pancakeswap.finance">pancakeswap.finance</a>
+                  <Text as="span" content="&nbsp;and connect your wallet."/>
                 </p>
                 <p>
-                  <Text as="span" content="Once that is done, obtain the Utopia token address and paste into pancakeswap. Ensure to set slippage to 11% and if any error occurs try a higher slippage. Next swap BnB Smart Chain for Utopia token, which you should be able to view now in your wallet. To view Utopia token on MetaMask, you will have to manually add Utopia to your network list." />
+                  <Text as="span" content="Once that is done, obtain the Utopia token address and paste into the pancakeswap exchange. Ensure to set slippage to 11% and if any error occurs try a higher slippage. Next swap BnB Smart Chain for Utopia token, which you should be able to view now in your wallet. To view Utopia token on MetaMask, you will have to manually add Utopia to your network list." />
                 </p>
               </div>
               <div className="stepNumber">3</div>
