@@ -1,16 +1,16 @@
-import styled from 'styled-components';
-import { themeGet } from '@styled-system/theme-get';
-import { base } from '../base';
+import styled from 'styled-components'
+import { themeGet } from '@styled-system/theme-get'
+import { base } from '../base'
 
-const RangeBoxStyle = styled.div``;
+const RangeBoxStyle = styled.div``
 
 // prop types can also be added from the style functions
-RangeBoxStyle.propTypes = {};
+RangeBoxStyle.propTypes = {}
 
-RangeBoxStyle.displayName = 'RangeBoxStyle';
+RangeBoxStyle.displayName = 'RangeBoxStyle'
 
 RangeBoxStyle.defaultProps = {
-  as: 'div',
-};
+    as: 'div',
+}
 
-export default RangeBoxStyle;
+export default RangeBoxStyle

@@ -1,46 +1,46 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 import {
-  color,
-  width,
-  height,
-  display,
-  space,
-  borders,
-  borderColor,
-  boxShadow,
-  borderRadius,
-  flexWrap,
-  alignItems,
-  justifyContent,
-  flexDirection,
-  position,
-  overflow,
-  fontSize,
-  textAlign,
-} from 'styled-system';
+    color,
+    width,
+    height,
+    display,
+    space,
+    borders,
+    borderColor,
+    boxShadow,
+    borderRadius,
+    flexWrap,
+    alignItems,
+    justifyContent,
+    flexDirection,
+    position,
+    overflow,
+    fontSize,
+    textAlign,
+} from 'styled-system'
 
 // FeatureBlock wrapper style
 const FeatureBlockWrapper = styled.div`
-  &.icon_left {
-    display: flex;
-    .icon__wrapper {
-      flex-shrink: 0;
+    &.icon_left {
+        display: flex;
+        .icon__wrapper {
+            flex-shrink: 0;
+        }
     }
-  }
-  &.icon_right {
-    display: flex;
-    flex-direction: row-reverse;
-    .content__wrapper {
-      text-align: right;
+    &.icon_right {
+        display: flex;
+        flex-direction: row-reverse;
+        .content__wrapper {
+            text-align: right;
+        }
+        .icon__wrapper {
+            flex-shrink: 0;
+        }
     }
-    .icon__wrapper {
-      flex-shrink: 0;
-    }
-  }
 
-  /* styled system prop support */
-  ${display}
-  ${width}
+    /* styled system prop support */
+    ${display}
+    ${width}
   ${height}
   ${flexWrap}
   ${flexDirection}
@@ -54,12 +54,12 @@ const FeatureBlockWrapper = styled.div`
   ${boxShadow}
   ${borderRadius}
   ${overflow}
-`;
+`
 
 // Icon wrapper style
 const IconWrapper = styled.div`
-  ${display}
-  ${width}
+    ${display}
+    ${width}
   ${height}
   ${alignItems}
   ${justifyContent}
@@ -72,23 +72,23 @@ const IconWrapper = styled.div`
   ${borderRadius}
   ${overflow}
   ${fontSize}
-`;
+`
 
 // Content wrapper style
 const ContentWrapper = styled.div`
-  ${width}
-  ${space}
+    ${width}
+    ${space}
   ${textAlign}
-`;
+`
 
 // Button wrapper style
 const ButtonWrapper = styled.div`
-  ${display}
-  ${space}
+    ${display}
+    ${space}
   ${alignItems}
   ${flexDirection}
   ${justifyContent}
-`;
+`
 
-export { IconWrapper, ContentWrapper, ButtonWrapper };
-export default FeatureBlockWrapper;
+export { IconWrapper, ContentWrapper, ButtonWrapper }
+export default FeatureBlockWrapper

@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components'
 
 export const ResetCSS = createGlobalStyle`
   ::selection {
@@ -116,4 +116,4 @@ export const ResetCSS = createGlobalStyle`
       }
     }
   }
-`;
+`
