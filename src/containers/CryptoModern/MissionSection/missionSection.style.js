@@ -9,7 +9,7 @@ const MissionSectionWrapper = styled.section`
     padding: 60px 0 30px 0;
   }
   @media (max-width: 991px) {
-    .row {
+    .missionRow {
       justify-content: center;
     }
 
@@ -20,7 +20,7 @@ const MissionSectionWrapper = styled.section`
   }
   @media (min-width: 991px) {
     padding: 0 0 100px;
-    .row {
+    .missionRow {
       justify-content: space-around;
     }
   }

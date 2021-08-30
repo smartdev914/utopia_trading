@@ -6,7 +6,7 @@ export default function TradingChart() {
     <TradingViewWidget
       symbol="BITSTAMP:BTCUSD"
       theme={Themes.DARK}
-      locale="fr"
+      locale="en"
       autosize
     />
   );

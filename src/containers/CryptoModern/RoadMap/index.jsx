@@ -23,7 +23,7 @@ const RoadMap = ({ sectionHeader, sectionSubTitle }) => (
           <div className="utopiaFlyingCarLeft carOne" />
           <Fade down delay={100}>
             <div className="quarterSection quarterTwo">
-              <Text className="quarterHeader" as="div" content="Q2 / LAUNCH" />
+              <Text className="quarterHeader" as="div" content="Q4 / LAUNCH" />
               {Q2RoadMap.filter((item) => item.checked).map((roadMapItem) => (
                 <div key={roadMapItem.id} className="checkbox">
                   <input type="checkbox" id={roadMapItem.id} checked disabled />
@@ -44,7 +44,7 @@ const RoadMap = ({ sectionHeader, sectionSubTitle }) => (
           </Fade>
           <Fade down delay={200}>
             <div className="quarterSection quarterThree">
-              <Text className="quarterHeader" as="div" content="Q3" />
+              <Text className="quarterHeader" as="div" content="Q1 2022" />
               {Q3RoadMap.filter((item) => item.checked).map((roadMapItem) => (
                 <div key={roadMapItem.id} className="checkbox">
                   <input type="checkbox" id={roadMapItem.id} checked disabled />
@@ -63,7 +63,7 @@ const RoadMap = ({ sectionHeader, sectionSubTitle }) => (
           </Fade>
           <Fade down delay={300}>
             <div className="quarterSection quarterFour">
-              <Text className="quarterHeader" as="div" content="Q4" />
+              <Text className="quarterHeader" as="div" content="Q2 2022" />
               {Q4RoadMap.filter((item) => item.checked).map((roadMapItem) => (
                 <div key={roadMapItem.id} className="checkbox">
                   <input type="checkbox" id={roadMapItem.id} checked disabled />

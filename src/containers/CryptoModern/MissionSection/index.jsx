@@ -25,7 +25,7 @@ const MissionSection = ({
           <Heading content="MISSION" {...sectionSubTitle} />
         </Box>
       </Fade>
-      <Box className="row" {...row}>
+      <Box className="missionRow" {...row}>
         {MissionData.map((feature, index) => (
           <Fade up delay={index * 100} key={feature.id}>
             <Box className="col missionBlockItem">
