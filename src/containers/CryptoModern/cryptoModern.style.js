@@ -50,6 +50,7 @@ const GlobalStyle = createGlobalStyle`
     -moz-appearance: none;
     -o-appearance: none;
     appearance: none;
+    border: none;
 
 
     &:before {
@@ -57,6 +58,10 @@ const GlobalStyle = createGlobalStyle`
       height: 16px;
       content: "";
       display: inline-block;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      -o-appearance: none;
+      appearance: none;
       background: url('/assets/image/cryptoModern/EmptyCheckbox.svg')
     }
 
@@ -65,6 +70,10 @@ const GlobalStyle = createGlobalStyle`
       height: 16px;
       content: "";
       display: inline-block;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      -o-appearance: none;
+      appearance: none;
       background: url('/assets/image/cryptoModern/FilledCheckbox.svg')
     }
   }
