@@ -51,9 +51,10 @@ const GlobalStyle = createGlobalStyle`
     -o-appearance: none;
     appearance: none;
     border: none;
+    background: none;
 
 
-    &:before {
+    &:after {
       width: 16px;
       height: 16px;
       content: "";
@@ -65,7 +66,7 @@ const GlobalStyle = createGlobalStyle`
       background: url('/assets/image/cryptoModern/EmptyCheckbox.svg')
     }
 
-    &:checked:before {
+    &:checked:after {
       width: 16px;
       height: 16px;
       content: "";
