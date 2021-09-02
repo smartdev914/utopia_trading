@@ -161,13 +161,26 @@ export const TokenomicsHighlight = styled.div`
     }
 
     .spaceNeedleOne {
-        top: -280px;
-        left: 20px;
+        top: -248px;
+        left: -25px;
+        z-index: -1;
     }
 
     .spaceNeedleTwo {
-        top: -190px;
-        right: 100px;
+        top: -174px;
+        left: 0px;
+        z-index: -1;
+    }
+    @media only screen and (min-width: 992px) {
+        .spaceNeedleTwo {
+            top: -190px;
+            left: unset;
+            right: 100px;
+        }
+        .spaceNeedleOne {
+            top: -280px;
+            left: 20px;
+        }
     }
 
     .spaceNeedleThree {

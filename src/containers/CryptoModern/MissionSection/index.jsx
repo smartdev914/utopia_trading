@@ -107,7 +107,7 @@ MissionSection.defaultProps = {
     },
     // feature description default style
     featureDescription: {
-        fontSize: '18px',
+        fontSize: ['17px', '18px'],
         lineHeight: '1.6',
     },
 }

@@ -41,6 +41,11 @@ export const TeamMember = styled.div`
         width: 33%;
     }
 
+    a {
+        height: 32px;
+        flex-shrink: 0;
+    }
+
     h4 {
         display: inline-block;
         letter-spacing: 4px;

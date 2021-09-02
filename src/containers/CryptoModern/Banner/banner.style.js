@@ -94,7 +94,7 @@ export const ButtonGroup = styled.div`
         border-radius: 10px;
         padding-left: 16px;
         padding-right: 16px;
-        font-size: 20px;
+        font-size: 16px;
         font-weight: 500;
         text-transform: uppercase;
 
@@ -117,6 +117,10 @@ export const ButtonGroup = styled.div`
             &:hover {
                 box-shadow: #00dee6 0px 0px 24px 5px;
             }
+        }
+
+        @media only screen and (min-width: 992px) {
+            font-size: 20px;
         }
     }
 `
