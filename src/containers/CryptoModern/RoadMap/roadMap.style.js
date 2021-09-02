@@ -113,8 +113,8 @@ const SectionWrapper = styled.div`
             background: url('/assets/image/utoptia/utopiaBuilding4.svg') no-repeat;
             width: 290px;
             height: 531px;
-            top: -74%;
-            left: -18%;
+            top: -68%;
+            left: -29%;
             z-index: -1;
         }
 
@@ -123,8 +123,8 @@ const SectionWrapper = styled.div`
             background: url('/assets/image/utoptia/utopiaBuilding5.svg') no-repeat;
             width: 161px;
             height: 287px;
-            top: -34%;
-            left: 20%;
+            top: -17%;
+            left: 60%;
             z-index: -1;
         }
 
