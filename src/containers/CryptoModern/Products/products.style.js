@@ -54,8 +54,11 @@ export const ProductSectionWrapper = styled.div`
         letter-spacing: 0.25rem;
     }
 
-    span {
+    span,
+    p > span {
         font-size: 20px;
+        letter-spacing: initial;
+        font-weight: 500;
 
         &.highlightText {
             color: var(--tertiaryTextColor);
