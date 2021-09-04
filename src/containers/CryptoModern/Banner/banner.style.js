@@ -12,10 +12,12 @@ const BannerWrapper = styled.div`
     }
     @media only screen and (max-width: 1099px) {
         padding-top: 120px;
+        padding-bottom: 150px;
         min-height: 100%;
     }
     @media only screen and (max-width: 480px) {
         padding-top: 120px;
+        padding-bottom: 180px;
         min-height: 100%;
     }
     > div.container {
