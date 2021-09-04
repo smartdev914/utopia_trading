@@ -33,7 +33,7 @@ const Banner = () => {
                     </Fade>
                     <Fade up delay={150}>
                         <ButtonGroup>
-                            <Button className="text" variant="textButton" title="EXCHANGE" />
+                            {/* <Button className="text" variant="textButton" title="EXCHANGE" /> */}
                             <Button className="primary" title="HOW TO BUY" onClick={scrollTo} />
                         </ButtonGroup>
                     </Fade>
