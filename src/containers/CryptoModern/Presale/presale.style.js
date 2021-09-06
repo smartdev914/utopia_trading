@@ -119,16 +119,22 @@ export const BannerContent = styled.div`
     }
 
     .presaleBar {
-        div {
-            display: inline-block;
-        }
+        display: flex;
+        justify-content: center;
     }
 
     .presaleProgressBar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         position: relative;
         width: clamp(375px, 100%, 800px);
         height: 50px;
         border: 1px solid var(--primaryTextColor);
+
+        .progressText {
+            margin-bottom: 0;
+        }
 
         .filledBar {
             position: absolute;

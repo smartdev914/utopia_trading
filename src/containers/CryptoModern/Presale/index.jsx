@@ -124,7 +124,7 @@ const Presale = () => {
                             <div className="presaleBar">
                                 <div className="presaleProgressBar">
                                     <div className="filledBar" />
-                                    <Text content="~200 BNB / 600 BNB" />
+                                    <Text className="progressText" as="div" content="~200 BNB / 600 BNB" />
                                 </div>
                             </div>
                         </>
