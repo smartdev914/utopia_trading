@@ -63,6 +63,8 @@
         "styled-components": "^5.2.1",
         "styled-system": "5.1.5",
         "swiper": "^6.4.11",
+        "web3": "^1.5.2",
+        "web3-eth-contract": "^1.5.2",
         "worker-loader": "^3.0.8"
     },
     "devDependencies": {
