@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import InputField, { EyeButton } from './input.style'
-const Input = ({ label, value, onBlur, onFocus, onChange, inputType, isMaterial, icon, iconPosition, passwordShowHide, className, ...props }) => {
+const Input = ({externalValue, label, value, onBlur, onFocus, onChange, inputType, isMaterial, icon, iconPosition, passwordShowHide, className, ...props }) => {
     // use toggle hooks
     const [state, setState] = useState({
         toggle: false,
@@ -47,7 +47,7 @@ const Input = ({ label, value, onBlur, onFocus, onChange, inputType, isMaterial,
 
     // get input focus class
     const getInputFocusClass = () => {
-        if (state.focus === true || state.value !== '') {
+        if (state.focus === true || state.value !== '' || externalValue) {
             return 'is-focus'
         } else {
             return ''
@@ -89,7 +89,7 @@ const Input = ({ label, value, onBlur, onFocus, onChange, inputType, isMaterial,
     // Input type check
     switch (inputType) {
         case 'textarea':
-            inputElement = <textarea {...props} id={htmlFor} name={htmlFor} value={state.value} onChange={handleOnChange} onBlur={handleOnBlur} onFocus={handleOnFocus} />
+            inputElement = <textarea {...props} id={htmlFor} name={htmlFor} value={externalValue || state.value} onChange={handleOnChange} onBlur={handleOnBlur} onFocus={handleOnFocus} />
             break
 
         case 'password':
@@ -100,7 +100,7 @@ const Input = ({ label, value, onBlur, onFocus, onChange, inputType, isMaterial,
                         id={htmlFor}
                         name={htmlFor}
                         type={state.toggle ? 'password' : 'text'}
-                        value={state.value}
+                        value={estate.value}
                         onChange={handleOnChange}
                         onBlur={handleOnBlur}
                         onFocus={handleOnFocus}
@@ -117,7 +117,7 @@ const Input = ({ label, value, onBlur, onFocus, onChange, inputType, isMaterial,
         default:
             inputElement = (
                 <div className="field-wrapper">
-                    <input {...props} id={htmlFor} name={htmlFor} type={inputType} value={state.value} onChange={handleOnChange} onBlur={handleOnBlur} onFocus={handleOnFocus} />
+                    <input {...props} id={htmlFor} name={htmlFor} type={inputType} value={externalValue ||  state.value} onChange={handleOnChange} onBlur={handleOnBlur} onFocus={handleOnFocus} />
                     {icon && <span className="input-icon">{icon}</span>}
                 </div>
             )
@@ -142,7 +142,7 @@ Input.propTypes = {
     label: PropTypes.string,
 
     /** The input value, required for a controlled component. */
-    value: PropTypes.oneOf(['string', 'number']),
+    value: PropTypes.oneOf(PropTypes.string, PropTypes.number),
 
     /** Make default input into material style input. */
     isMaterial: PropTypes.bool,
