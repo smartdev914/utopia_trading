@@ -77,8 +77,9 @@ export const BannerContent = styled.div`
 
     .presale-module {
         display: flex;
+        align-items: center;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: space-around;
         height: clamp(350px, 30vh, 500px);
         width: clamp(350px, 80%, 700px);
         padding: 50px;
@@ -88,6 +89,10 @@ export const BannerContent = styled.div`
         left: 50%;
         transform: translateX(-50%);
         margin-bottom: 50px;
+
+        > div {
+            width: 100%;
+        }
 
         .field-wrapper {
             input {
@@ -134,13 +139,13 @@ export const BannerContent = styled.div`
 
         .progressText {
             margin-bottom: 0;
+            z-index: 1;
         }
 
         .filledBar {
             position: absolute;
             top: 0;
             left: 0;
-            width: 33%;
             height: 100%;
             background: #004fbf;
         }
