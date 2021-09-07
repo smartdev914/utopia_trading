@@ -18,6 +18,8 @@
         "@reach/accordion": "^0.11.2",
         "@redq/reuse-modal": "^1.1.9",
         "@styled-system/theme-get": "^5.1.2",
+        "bignumber": "^1.1.0",
+        "bignumber.js": "^9.0.1",
         "bootstrap": "^5.1.0",
         "eslint-config-prettier": "^8.3.0",
         "firebase-admin": "^9.4.1",
