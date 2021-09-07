@@ -18,7 +18,7 @@ const PrivacyPortal = () => (
                 <TeamMember>
                     <Fade up delay={100}>
                         <div>
-                            <Image src="/assets/image/TeamMembers/ProfilePic-Timmy.png" alt="Timmy Kuriakose" width={275} height={275} />
+                            <Image src="/assets/image/TeamMembers/ProfilePic-Timmy.png" alt="Timmy Kuriakose" width={275} height={275} priority unoptimized />
                             <div className="nameHeader">
                                 <Heading as="h4" content="TIMMY KURIAKOSE" />
                                 <a href="https://www.linkedin.com/in/timmy-kuriakose-5a6537145/">
@@ -46,7 +46,7 @@ const PrivacyPortal = () => (
                 {/* <TeamMember>
           <Fade up delay={225}>
             <div>
-              <Image src="/assets/image/TeamMembers/ProfilePic-Christian.png" alt="Christian Clayton" width={275} height={275} />
+              <Image src="/assets/image/TeamMembers/ProfilePic-Christian.png" alt="Christian Clayton" width={275} height={275} priority unoptimized />
               <div className="nameHeader">
                 <Heading as="h4" content="CHRISTIAN CLAYTON" />
                 <a href="https://www.instagram.com/onlineboss__/">
@@ -60,7 +60,7 @@ const PrivacyPortal = () => (
                 <TeamMember>
                     <Fade up delay={100}>
                         <div>
-                            <Image src="/assets/image/TeamMembers/ProfilePic-Derek.png" alt="Derek Chin Zhi Xian" width={275} height={275} />
+                            <Image src="/assets/image/TeamMembers/ProfilePic-Derek.png" alt="Derek Chin Zhi Xian" width={275} height={275} priority unoptimized />
                             <div className="nameHeader">
                                 <Heading as="h4" content="DEREK CHIN ZHI XIAN" />
                                 <a href="https://www.linkedin.com/in/derekzx/">
@@ -74,7 +74,7 @@ const PrivacyPortal = () => (
                 <TeamMember>
                     <Fade up delay={175}>
                         <div>
-                            <Image src="/assets/image/TeamMembers/ProfilePic-Jerry.png" alt="Jerry Ku" width={275} height={275} />
+                            <Image src="/assets/image/TeamMembers/ProfilePic-Jerry.png" alt="Jerry Ku" width={275} height={275} priority unoptimized />
                             <div className="nameHeader">
                                 <Heading as="h4" content="JERRY KU" />
                                 <a href="https://www.linkedin.com/in/jerry-ku/">
@@ -88,7 +88,7 @@ const PrivacyPortal = () => (
                 <TeamMember>
                     <Fade up delay={225}>
                         <div>
-                            <Image src="/assets/image/TeamMembers/ProfilePic-Lane.png" alt="Lane Ainbinder" width={275} height={275} />
+                            <Image src="/assets/image/TeamMembers/ProfilePic-Lane.png" alt="Lane Ainbinder" width={275} height={275} priority unoptimized />
                             <div className="nameHeader">
                                 <Heading as="h4" content="LANE AINBINDER" />
                                 <a href="https://www.linkedin.com/in/julia-ainbinder/">
