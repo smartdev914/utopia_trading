@@ -4,6 +4,7 @@ import Text from 'common/components/Text'
 import Image from 'next/image'
 import Button from 'common/components/Button'
 import Container from 'common/components/UI/Container'
+import Link from 'next/link'
 
 import BannerWrapper, { BannerContent, ButtonGroup } from './banner.style'
 
@@ -33,7 +34,9 @@ const Banner = () => {
                     </Fade>
                     <Fade up delay={150}>
                         <ButtonGroup>
-                            {/* <Button className="text" variant="textButton" title="EXCHANGE" /> */}
+                            <Link href="/presale">
+                                <Button className="text" variant="textButton" title="PRESALE" />
+                            </Link>
                             <Button className="primary" title="HOW TO BUY" onClick={scrollTo} />
                         </ButtonGroup>
                     </Fade>
