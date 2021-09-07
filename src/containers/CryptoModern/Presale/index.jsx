@@ -15,7 +15,7 @@ import BSC_ABI from './BSC_ABI'
 const Presale = () => {
     const router = useRouter()
     const { query } = router
-    const hasSecretLink = Object.keys(query)?.includes('716e5a7d-b5da-4cbf-9eb9-be908007fef7')
+    const presaleGUID = Object.keys(query)?.includes('716e5a7d-b5da-4cbf-9eb9-be908007fef7')
 
     const presaleTokens = 350000000000
     const presaleBNB = 600
@@ -28,13 +28,15 @@ const Presale = () => {
     const [loadingPurchase, setLoadingPurchase] = useState(false)
     const [errorMessage, setErrorMessage] = useState(false)
     const [totalPurchasedBnb, setTotalPurchasedBnb] = useState(0)
+    const [currentAccount, setCurrentAccount] = useState(null)
+    const [presaleFinalized, setPresaleFinalized] = useState(false)
+    const [presalePurchased, setPresalePurchased] = useState(false)
+    const [loadingWithdraw, setLoadingWithdraw] = useState(false)
+    const [maxPurchaseableTokens, setMaxPurchaseableTokens] = useState(1)
 
-    const loadBSCContract = async (account) => {
+    const loadBSCContract = async () => {
         const UtopiaPresaleBSC = '0x505a4897709b27AfE836F7770433Fb9492BFACf8'
         const UtopiaContract = new window.web3.eth.Contract(BSC_ABI, UtopiaPresaleBSC)
-        if (account) {
-            UtopiaContract.defaultAccount = account
-        }
         setContract(UtopiaContract)
     }
 
@@ -60,8 +62,25 @@ const Presale = () => {
             const tokensPurchasedInWei = await contract.methods.tokensAlreadyPurchased().call()
             const totalPurchasedTokens = window.web3.utils.fromWei(tokensPurchasedInWei)
             setTotalPurchasedBnb(totalPurchasedTokens)
+            const finalized = await contract.methods.finalized().call()
+            setPresaleFinalized(finalized)
         }
     }, [contract])
+
+    useEffect(async () => {
+        if (currentAccount && contract) {
+            const presalePurchasedValue = await contract.methods.purchasedBnb(currentAccount).call()
+            setPresalePurchased(Boolean(presalePurchasedValue))
+        }
+    }, [currentAccount, contract])
+
+    useEffect(async () => {
+        if (currentAccount && contract) {
+            const purchasedTokensInWei = await contract.methods.purchasedBnb(currentAccount).call()
+            const bnbPurchased = window.web3.utils.fromWei(purchasedTokensInWei)
+            setMaxPurchaseableTokens(1 - bnbPurchased)
+        }
+    }, [currentAccount, contract])
 
     const round = (value, decimals) => Number(`${Math.round(`${value}e${decimals}`)}e-${decimals}`)
 
@@ -80,6 +99,7 @@ const Presale = () => {
                 .then((accounts) => {
                     setAccessGranted(true)
                     const account = accounts[0]
+                    setCurrentAccount(account)
                     loadBSCContract(account)
                 })
         }
@@ -90,11 +110,12 @@ const Presale = () => {
         if (contract) {
             setLoadingPurchase(true)
             contract.methods
-                .buyTokens(contract.defaultAccount)
-                .send({ from: contract.defaultAccount, value: bnbAmount })
+                .buyTokens(currentAccount)
+                .send({ from: currentAccount, value: bnbAmount })
                 .then((result) => {
                     if (Object.keys(result).length !== 0) {
                         setPurchasedPresale(true)
+                        setMaxPurchaseableTokens(maxPurchaseableTokens - intendedBNBPurchaseAmount)
                     } else {
                         setErrorMessage(`You aren't white listed!`)
                     }
@@ -119,9 +140,9 @@ const Presale = () => {
                 }}
                 onBlur={(e) => {
                     let newValue = e.target.value
-                    if (newValue >= 1) {
-                        newValue = 1
-                        setIntendedBNBPurchaseAmount(1)
+                    if (newValue >= maxPurchaseableTokens) {
+                        newValue = maxPurchaseableTokens
+                        setIntendedBNBPurchaseAmount(maxPurchaseableTokens)
                     }
                     setIntendedUTPPurchaseAmount((presaleTokens / presaleBNB) * newValue)
                 }}
@@ -130,15 +151,15 @@ const Presale = () => {
             <Input
                 inputType="number"
                 isMaterial
-                label="UTC amount"
+                label="UTP amount"
                 externalValue={intendedUTPPurchaseAmount}
                 onChange={setIntendedUTPPurchaseAmount}
                 onBlur={(e) => {
                     let newValue = e.target.value
-                    if (newValue > presaleTokens / presaleBNB) {
-                        newValue = presaleTokens / presaleBNB
+                    if (newValue > (presaleTokens / presaleBNB) * maxPurchaseableTokens) {
+                        newValue = (presaleTokens / presaleBNB) * maxPurchaseableTokens
                         setIntendedUTPPurchaseAmount(newValue)
-                        setIntendedBNBPurchaseAmount(1)
+                        setIntendedBNBPurchaseAmount(maxPurchaseableTokens)
                     } else {
                         setIntendedBNBPurchaseAmount((presaleBNB / presaleTokens) * newValue)
                     }
@@ -147,6 +168,48 @@ const Presale = () => {
             <Button title="Purchase" onClick={handleBuyPresale} />
         </>
     )
+
+    const handleWithdraw = () => {
+        if (contract && currentAccount) {
+            setLoadingWithdraw(true)
+            contract.methods
+                .withdrawTokens()
+                .send({ from: currentAccount })
+                .then((result) => {
+                    setLoadingWithdraw(false)
+                    setErrorMessage('Tokens Withdrawn!')
+                })
+                .catch((err) => {
+                    setLoadingWithdraw(false)
+                    setErrorMessage('Something went wrong')
+                })
+        }
+    }
+
+    if (purchasedPresale) {
+        presaleModuleContent = (
+            <>
+                <Text content="Presale Purchased!" /> <Button title="Make another purchase" onClick={() => setPurchasedPresale(false)} />
+            </>
+        )
+    }
+
+    if (presaleFinalized) {
+        if (presalePurchased) {
+            presaleModuleContent = (
+                <>
+                    <Text content="Thank you. Presale has ended." />
+                    <Button title="Withdraw Purchased UTP" onClick={() => handleWithdraw()} />
+                </>
+            )
+        } else {
+            presaleModuleContent = (
+                <>
+                    <Text content="Thank you. Presale has ended." />
+                </>
+            )
+        }
+    }
 
     if (loadingPurchase) {
         presaleModuleContent = (
@@ -158,15 +221,20 @@ const Presale = () => {
             </>
         )
     }
-    if (purchasedPresale) {
+
+    if (loadingWithdraw) {
         presaleModuleContent = (
             <>
-                <Text content="Presale Purchased!" /> <Button title="Make another purchase" onClick={() => setPurchasedPresale(false)} />
+                <Text content="Loading Withdraw..." />
+                <p>
+                    <Spinner size="" animation="border" variant="primary" />
+                </p>
             </>
         )
     }
+
     if (errorMessage) {
-        presaleModuleContent = <Text content="Something went wrong with your purchase." />
+        presaleModuleContent = <Text content={errorMessage} />
     }
     return (
         <BannerWrapper id="home">
@@ -176,30 +244,33 @@ const Presale = () => {
                         <Image src="/assets/image/utoptia/Utopia_dark_full.png" alt="Utopia Banner" width={1258} height={316} priority unoptimized />
                     </Fade>
                     <Fade up delay={100}>
-                        <Text className="tagline" content="Be a part of our presale" />
+                        <Text className="tagline" content="Take part in our presale!" />
                     </Fade>
-                    {!hasSecretLink ? (
-                        <div>
-                            <Text className="notBegunPresale" content="Pre-sale has not begun yet!" />
-                        </div>
-                    ) : (
-                        <>
-                            {hasDappEnabled ? (
-                                <div className="presale-module">{accessGranted ? presaleModuleContent : <Button title="Connect MetaMask Wallet" onClick={loadPubKey} />}</div>
-                            ) : (
-                                <div className="presale-module dapp-disabled">
-                                    <Text content="Looks like you need a Dapp browser to get started." />
-                                    <Text content="Consider installing MetaMask!" />
-                                </div>
-                            )}
-                            <div className="presaleBar">
-                                <div className="presaleProgressBar">
-                                    <div className="filledBar" style={{ width: `${(totalPurchasedBnb / presaleBNB) * 100}%` }} />
-                                    <Text className="progressText" as="div" content={`${round(totalPurchasedBnb, 3)} BNB / 600 BNB`} />
-                                </div>
+                    <Fade up delay={100}>
+                        {!presaleGUID ? (
+                            <div>
+                                <Text className="notBegunPresale" content="Pre-sale has not begun yet!" />
+                                <Text className="notBegunPresale" content="Coming soon, Sept. 15th" />
                             </div>
-                        </>
-                    )}
+                        ) : (
+                            <>
+                                {hasDappEnabled ? (
+                                    <div className="presale-module">{accessGranted ? presaleModuleContent : <Button title="Connect MetaMask Wallet" onClick={loadPubKey} />}</div>
+                                ) : (
+                                    <div className="presale-module dapp-disabled">
+                                        <Text content="Looks like you need a Dapp browser to get started." />
+                                        <Text content="Consider installing MetaMask!" />
+                                    </div>
+                                )}
+                                <div className="presaleBar">
+                                    <div className="presaleProgressBar">
+                                        <div className="filledBar" style={{ width: `${(totalPurchasedBnb / presaleBNB) * 100}%` }} />
+                                        <Text className="progressText" as="div" content={`${round(totalPurchasedBnb, 3)} BNB / 600 BNB`} />
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                    </Fade>
                 </BannerContent>
             </Container>
         </BannerWrapper>
