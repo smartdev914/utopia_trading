@@ -3,7 +3,6 @@ export default [
         inputs: [
             { internalType: 'uint256', name: '_bnbUtopiaRate', type: 'uint256' },
             { internalType: 'contract IERC20', name: '_token', type: 'address' },
-            { internalType: 'uint256', name: '_max', type: 'uint256' },
             { internalType: 'uint256', name: '_openingTime', type: 'uint256' },
         ],
         stateMutability: 'nonpayable',
@@ -48,7 +47,6 @@ export default [
         stateMutability: 'view',
         type: 'function',
     },
-    { inputs: [{ internalType: 'address', name: '_address', type: 'address' }], name: 'addToWhitelist', outputs: [], stateMutability: 'nonpayable', type: 'function' },
     { inputs: [], name: 'bnbUtopiaRate', outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }], stateMutability: 'view', type: 'function' },
     { inputs: [{ internalType: 'address', name: '_beneficiary', type: 'address' }], name: 'buyTokens', outputs: [], stateMutability: 'payable', type: 'function' },
     { inputs: [], name: 'finalize', outputs: [], stateMutability: 'nonpayable', type: 'function' },
@@ -79,7 +77,16 @@ export default [
         stateMutability: 'view',
         type: 'function',
     },
-    { inputs: [{ internalType: 'address', name: '_address', type: 'address' }], name: 'removeFromWhitelist', outputs: [], stateMutability: 'nonpayable', type: 'function' },
+    {
+        inputs: [
+            { internalType: 'address', name: '_address', type: 'address' },
+            { internalType: 'uint256', name: 'weiAllowed', type: 'uint256' },
+        ],
+        name: 'setBnbAllowanceForUser',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+    },
     { inputs: [], name: 'token', outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }], stateMutability: 'view', type: 'function' },
     { inputs: [], name: 'tokensAlreadyPurchased', outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }], stateMutability: 'view', type: 'function' },
     {
@@ -92,7 +99,13 @@ export default [
         stateMutability: 'nonpayable',
         type: 'function',
     },
-    { inputs: [], name: 'weiMaxPurchaseBnb', outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }], stateMutability: 'view', type: 'function' },
+    {
+        inputs: [{ internalType: 'address', name: '_address', type: 'address' }],
+        name: 'viewBnbAllowanceForUser',
+        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        stateMutability: 'view',
+        type: 'function',
+    },
     { inputs: [], name: 'weiRaised', outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }], stateMutability: 'view', type: 'function' },
     { inputs: [], name: 'withdrawTokens', outputs: [], stateMutability: 'nonpayable', type: 'function' },
     { stateMutability: 'payable', type: 'receive' },
