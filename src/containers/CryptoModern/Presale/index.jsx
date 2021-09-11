@@ -35,7 +35,7 @@ const Presale = () => {
     const [maxPurchaseableTokens, setMaxPurchaseableTokens] = useState(1)
 
     const loadBSCContract = async () => {
-        const UtopiaPresaleBSC = '0x505a4897709b27AfE836F7770433Fb9492BFACf8'
+        const UtopiaPresaleBSC = '0x97fB38850D535a8DC81c3773e2566134A2E3C100'
         const UtopiaContract = new window.web3.eth.Contract(BSC_ABI, UtopiaPresaleBSC)
         setContract(UtopiaContract)
     }
@@ -76,7 +76,10 @@ const Presale = () => {
 
     useEffect(async () => {
         if (currentAccount && contract) {
+            // console.log(contract.methods)
+            // const bnbAllowance = await contract.methods.viewBnbAllowanceForUser(currentAccount).call()
             const purchasedTokensInWei = await contract.methods.purchasedBnb(currentAccount).call()
+            // const allowedBnb = window.web3.utils.fromWei(bnbAllowance)
             const bnbPurchased = window.web3.utils.fromWei(purchasedTokensInWei)
             setMaxPurchaseableTokens(1 - bnbPurchased)
         }
@@ -142,7 +145,7 @@ const Presale = () => {
                     let newValue = e.target.value
                     if (newValue >= maxPurchaseableTokens) {
                         newValue = maxPurchaseableTokens
-                        setIntendedBNBPurchaseAmount(maxPurchaseableTokens)
+                        setIntendedBNBPurchaseAmount(maxPurchaseableTokens.toFixed(6))
                     }
                     setIntendedUTPPurchaseAmount((presaleTokens / presaleBNB) * newValue)
                 }}
@@ -161,7 +164,7 @@ const Presale = () => {
                         setIntendedUTPPurchaseAmount(newValue)
                         setIntendedBNBPurchaseAmount(maxPurchaseableTokens)
                     } else {
-                        setIntendedBNBPurchaseAmount((presaleBNB / presaleTokens) * newValue)
+                        setIntendedBNBPurchaseAmount(((presaleBNB / presaleTokens) * newValue).toFixed(6))
                     }
                 }}
             />
@@ -177,11 +180,11 @@ const Presale = () => {
                 .send({ from: currentAccount })
                 .then((result) => {
                     setLoadingWithdraw(false)
-                    setErrorMessage('Tokens Withdrawn!')
+                    setErrorMessage('Tokens Successfully Withdrawn!')
                 })
                 .catch((err) => {
                     setLoadingWithdraw(false)
-                    setErrorMessage('Something went wrong')
+                    setErrorMessage('Error withdrawing tokens. (No Tokens left to withdraw)')
                 })
         }
     }
@@ -189,7 +192,14 @@ const Presale = () => {
     if (purchasedPresale) {
         presaleModuleContent = (
             <>
-                <Text content="Presale Purchased!" /> <Button title="Make another purchase" onClick={() => setPurchasedPresale(false)} />
+                <Text content="Presale Purchased!" />{' '}
+                <Button
+                    title="Make another purchase"
+                    onClick={() => {
+                        loadBSCContract()
+                        setPurchasedPresale(false)
+                    }}
+                />
             </>
         )
     }

@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 const BannerWrapper = styled.div`
-    padding: 80px 0;
     min-height: 802px;
     overflow: hidden;
     text-align: center;
