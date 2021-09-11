@@ -76,12 +76,11 @@ const Presale = () => {
 
     useEffect(async () => {
         if (currentAccount && contract) {
-            // console.log(contract.methods)
-            // const bnbAllowance = await contract.methods.viewBnbAllowanceForUser(currentAccount).call()
+            const bnbAllowance = await contract.methods.viewBnbAllowanceForUser(currentAccount).call()
             const purchasedTokensInWei = await contract.methods.purchasedBnb(currentAccount).call()
-            // const allowedBnb = window.web3.utils.fromWei(bnbAllowance)
+            const allowedBnb = window.web3.utils.fromWei(bnbAllowance)
             const bnbPurchased = window.web3.utils.fromWei(purchasedTokensInWei)
-            setMaxPurchaseableTokens(1 - bnbPurchased)
+            setMaxPurchaseableTokens(allowedBnb - bnbPurchased)
         }
     }, [currentAccount, contract])
 
