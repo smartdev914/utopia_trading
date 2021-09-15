@@ -120,7 +120,7 @@ const GlobalStyle = createGlobalStyle`
 
   .utopiaFlyingCarLeft {
     position: absolute;
-    background: url('/assets/image/utoptia/utopiaFlyingCar.svg') no-repeat;
+    background: url('/assets/image/utopia/utopiaFlyingCar.svg') no-repeat;
     background-size: contain;
     width: 60px;
     height: 23px;
@@ -128,7 +128,7 @@ const GlobalStyle = createGlobalStyle`
 
   .utopiaFlyingCarRight {
     position: absolute;
-    background: url('/assets/image/utoptia/utopiaFlyingCar.svg') no-repeat;
+    background: url('/assets/image/utopia/utopiaFlyingCar.svg') no-repeat;
     background-size: contain;
     width: 60px;
     height: 23px;

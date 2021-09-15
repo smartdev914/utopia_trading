@@ -88,7 +88,7 @@ const WalletPortal = () => (
                     </Fade>
                 </div>
                 <div className="utopiaTree">
-                    <Image src="/assets/image/utoptia/utopiaTree.svg" alt="utopia tree" width={286} height={213} />
+                    <Image src="/assets/image/utopia/utopiaTree.svg" alt="utopia tree" width={286} height={213} />
                 </div>
             </ContentWrapper>
         </Container>
