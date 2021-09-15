@@ -100,7 +100,7 @@ const SectionWrapper = styled.div`
     }
 
     .background {
-        background: url('/assets/image/utoptia/backgroundHill.svg') no-repeat;
+        background: url('/assets/image/utopia/backgroundHill.svg') no-repeat;
         background-size: cover;
         background-position: top;
         width: 100%;
@@ -110,7 +110,7 @@ const SectionWrapper = styled.div`
 
         .utopiaHouseOne {
             position: absolute;
-            background: url('/assets/image/utoptia/utopiaBuilding4.svg') no-repeat;
+            background: url('/assets/image/utopia/utopiaBuilding4.svg') no-repeat;
             width: 290px;
             height: 531px;
             top: -68%;
@@ -120,7 +120,7 @@ const SectionWrapper = styled.div`
 
         .utopiaHouseTwo {
             position: absolute;
-            background: url('/assets/image/utoptia/utopiaBuilding5.svg') no-repeat;
+            background: url('/assets/image/utopia/utopiaBuilding5.svg') no-repeat;
             width: 161px;
             height: 287px;
             top: -17%;

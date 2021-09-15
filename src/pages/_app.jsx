@@ -13,11 +13,14 @@ import '../assets/scss/style.scss'
 
 import { pdfjs } from 'react-pdf'
 import { ThemeProvider } from 'context/ThemeContext'
+import { BSCContextProvider } from 'context/BSCContext'
 
 pdfjs.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js'
 
 export default function CustomApp({ Component, pageProps }) {
-    const [theme, setTheme] = useState('light')
+    const [theme, setTheme] = useState('dark')
+
+    const [dexContract, setDexContract] = useState({})
 
     return (
         <ThemeProvider
@@ -28,9 +31,18 @@ export default function CustomApp({ Component, pageProps }) {
                 },
             }}
         >
-            <Modal>
-                <Component {...pageProps} />
-            </Modal>
+            <BSCContextProvider
+                value={{
+                    dexContract,
+                    setDexContract: (e) => {
+                        setDexContract(e)
+                    },
+                }}
+            >
+                <Modal>
+                    <Component {...pageProps} />
+                </Modal>
+            </BSCContextProvider>
         </ThemeProvider>
     )
 }

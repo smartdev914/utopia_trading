@@ -39,7 +39,7 @@ const Tokenomics = ({ sectionHeader, sectionSubTitle }) => (
                             </div>
                         ))}
                         <div className="spaceNeedleOne">
-                            <Image src="/assets/image/utoptia/utopiaBuilding1.svg" alt="futuristic space needle building" width={141} height={280} />
+                            <Image src="/assets/image/utopia/utopiaBuilding1.svg" alt="futuristic space needle building" width={141} height={280} />
                         </div>
                         <div className="utopiaFlyingCarRight carThree" />
                     </TokenomicsHighlight>
@@ -54,10 +54,10 @@ const Tokenomics = ({ sectionHeader, sectionSubTitle }) => (
                             </div>
                         ))}
                         <div className="spaceNeedleTwo">
-                            <Image src="/assets/image/utoptia/utopiaBuilding2.svg" alt="futuristic space needle building" width={107} height={190} />
+                            <Image src="/assets/image/utopia/utopiaBuilding2.svg" alt="futuristic space needle building" width={107} height={190} />
                         </div>
                         <div className="spaceNeedleThree">
-                            <Image src="/assets/image/utoptia/utopiaBuilding3.svg" alt="futuristic space needle building" width={103} height={281} />
+                            <Image src="/assets/image/utopia/utopiaBuilding3.svg" alt="futuristic space needle building" width={103} height={281} />
                         </div>
                         <div className="utopiaFlyingCarLeft carFour" />
                     </TokenomicsHighlight>
