@@ -259,7 +259,7 @@ const Presale = () => {
                         {!presaleGUID ? (
                             <div>
                                 <Text className="notBegunPresale" content="Pre-sale has not begun yet!" />
-                                <Text className="notBegunPresale" content="Coming soon..." />
+                                <Text className="notBegunPresale" content="Coming soon, Sept. 27th" />
                             </div>
                         ) : (
                             <>

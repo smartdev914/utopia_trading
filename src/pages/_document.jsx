@@ -32,7 +32,7 @@ export default class CustomDocument extends Document {
                 <Head>
                     <link rel="shortcut icon" type="image/x-icon" href="/assets/image/favicon-32x32.png" />
                 </Head>
-                <body className="dark">
+                <body>
                     <Main />
                     <NextScript />
                 </body>
