@@ -43,7 +43,7 @@ export const BannerContent = styled.div`
     margin-top: 60px;
     @media only screen and (max-width: 991px) {
         flex-shrink: 0;
-        max-width: 360px;
+        max-width: 500px;
     }
 
     h1 {
@@ -72,11 +72,11 @@ export const BannerContent = styled.div`
 
     .tagline {
         font-family: var(--fontDosis);
-        font-size: 48px;
+        font-size: 19px;
         font-weight: 500;
 
-        @media only screen and (max-width: 992px) {
-            font-size: 26px;
+        @media only screen and (min-width: 992px) {
+            font-size: 40px;
         }
     }
 `
