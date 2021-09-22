@@ -1,223 +1,96 @@
-import React from 'react'
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import Button from 'common/components/Button'
+import Image from 'next/image'
+import { supportedTokens } from 'common/data/exchangeData'
+import React, { useState } from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
+import TokenModal from './TokenModal'
 
 export default function MarketTrade() {
-    return (
-        <div className="market-trade mb15">
-            <Tabs defaultActiveKey="limit">
-                <Tab eventKey="market" title="Market">
-                    <div className="d-flex justify-content-between">
-                        <div className="market-trade-buy">
-                            <form action="#">
-                                <div className="input-group">
-                                    <input type="number" className="form-control" placeholder="Price" required />
-                                    <div className="input-group-append">
-                                        <span className="input-group-text">BTC</span>
-                                    </div>
-                                </div>
-                                <div className="input-group">
-                                    <input type="number" className="form-control" placeholder="Amount" required />
-                                    <div className="input-group-append">
-                                        <span className="input-group-text">ETH</span>
-                                    </div>
-                                </div>
-                                <button type="submit" className="btn buy">
-                                    Buy
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </Tab>
-                <Tab eventKey="limit" title="Limit">
-                    <div className="d-flex justify-content-between">
-                        <div className="market-trade-buy">
-                            <form action="#">
-                                <div className="input-group">
-                                    <input type="number" className="form-control" placeholder="Price" required />
-                                    <div className="input-group-append">
-                                        <span className="input-group-text">BTC</span>
-                                    </div>
-                                </div>
-                                <div className="input-group">
-                                    <input type="number" className="form-control" placeholder="Amount" required />
-                                    <div className="input-group-append">
-                                        <span className="input-group-text">ETH</span>
-                                    </div>
-                                </div>
-                                <ul className="market-trade-list">
-                                    <li>
-                                        <a href="#!">25%</a>
-                                    </li>
-                                    <li>
-                                        <a href="#!">50%</a>
-                                    </li>
-                                    <li>
-                                        <a href="#!">75%</a>
-                                    </li>
-                                    <li>
-                                        <a href="#!">100%</a>
-                                    </li>
-                                </ul>
-                                <p>
-                                    Available: <span>0 BTC = 0 USD</span>
-                                </p>
-                                <p>
-                                    Volume: <span>0 BTC = 0 USD</span>
-                                </p>
-                                <p>
-                                    Margin: <span>0 BTC = 0 USD</span>
-                                </p>
-                                <p>
-                                    Fee: <span>0 BTC = 0 USD</span>
-                                </p>
-                                <button type="submit" className="btn buy">
-                                    Buy
-                                </button>
-                            </form>
-                        </div>
-                        <div className="market-trade-sell">
-                            <form action="#">
-                                <div className="input-group">
-                                    <input type="number" className="form-control" placeholder="Price" required />
-                                    <div className="input-group-append">
-                                        <span className="input-group-text">BTC</span>
-                                    </div>
-                                </div>
-                                <div className="input-group">
-                                    <input type="number" className="form-control" placeholder="Amount" required />
-                                    <div className="input-group-append">
-                                        <span className="input-group-text">ETH</span>
-                                    </div>
-                                </div>
-                                <ul className="market-trade-list">
-                                    <li>
-                                        <a href="#!">25%</a>
-                                    </li>
-                                    <li>
-                                        <a href="#!">50%</a>
-                                    </li>
-                                    <li>
-                                        <a href="#!">75%</a>
-                                    </li>
-                                    <li>
-                                        <a href="#!">100%</a>
-                                    </li>
-                                </ul>
-                                <p>
-                                    Available: <span>0 BTC = 0 USD</span>
-                                </p>
-                                <p>
-                                    Volume: <span>0 BTC = 0 USD</span>
-                                </p>
-                                <p>
-                                    Margin: <span>0 BTC = 0 USD</span>
-                                </p>
-                                <p>
-                                    Fee: <span>0 BTC = 0 USD</span>
-                                </p>
-                                <button type="button" className="btn sell">
-                                    Sell
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </Tab>
+    const [fromBNB, toggleFromBnb] = useState(true)
+    const [tokenA, setTokenA] = useState(supportedTokens[0])
+    const [tokenB, setTokenB] = useState(supportedTokens[2])
+    const [showTokenModal, toggleShowTokenModal] = useState(false)
 
-                <Tab eventKey="stop-limit" title="Stop Loss">
-                    <div className="d-flex justify-content-between">
-                        <div className="market-trade-buy">
-                            <form action="#">
-                                <div className="input-group">
-                                    <input type="number" className="form-control" placeholder="Price" required />
-                                    <div className="input-group-append">
-                                        <span className="input-group-text">BTC</span>
+    const clickToggleFromBNB = () => {
+        toggleFromBnb(!fromBNB)
+        const tempToken = tokenA
+        setTokenA(tokenB)
+        setTokenB(tempToken)
+    }
+
+    return (
+        <>
+            <div className="market-trade mb15">
+                <h3>SWAP</h3>
+                {/* <div>Get the best price for your trade from multiple DEX&apos;s with no additional fees.</div> */}
+                <Tabs defaultActiveKey="market">
+                    <Tab eventKey="market" title="MARKET">
+                        <div className="d-flex justify-content-between">
+                            <div className="market-trade-buy">
+                                <form action="#">
+                                    <div className="input-group">
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            placeholder="From"
+                                            required
+                                            onWheel={() => {
+                                                document.activeElement.blur()
+                                            }}
+                                        />
+                                        <div className="input-group-append">
+                                            <Button title={tokenA.tokenSymbol} disabled={fromBNB} onClick={() => toggleShowTokenModal(!showTokenModal)} />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="input-group">
-                                    <input type="number" className="form-control" placeholder="Amount" required />
-                                    <div className="input-group-append">
-                                        <span className="input-group-text">ETH</span>
+                                    <div className="input-group">
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            placeholder="To (estimated)"
+                                            required
+                                            onWheel={() => {
+                                                document.activeElement.blur()
+                                            }}
+                                        />
+                                        <div className="input-group-append">
+                                            <Button title={tokenB.tokenSymbol} disabled={!fromBNB} onClick={() => toggleShowTokenModal(!showTokenModal)} />
+                                        </div>
                                     </div>
-                                </div>
-                                <ul className="market-trade-list">
-                                    <li>
-                                        <a href="#!">25%</a>
-                                    </li>
-                                    <li>
-                                        <a href="#!">50%</a>
-                                    </li>
-                                    <li>
-                                        <a href="#!">75%</a>
-                                    </li>
-                                    <li>
-                                        <a href="#!">100%</a>
-                                    </li>
-                                </ul>
-                                <p>
-                                    Available: <span>0 BTC = 0 USD</span>
-                                </p>
-                                <p>
-                                    Volume: <span>0 BTC = 0 USD</span>
-                                </p>
-                                <p>
-                                    Margin: <span>0 BTC = 0 USD</span>
-                                </p>
-                                <p>
-                                    Fee: <span>0 BTC = 0 USD</span>
-                                </p>
-                                <button type="submit" className="btn buy">
-                                    Buy
-                                </button>
-                            </form>
+                                    <div role="button" className="swap-coin-icon" onClick={clickToggleFromBNB} tabIndex="0">
+                                        <Image src="/assets/image/icons/swapCoins.svg" width={45} height={45} />
+                                    </div>
+                                    <button type="submit" className="btn buy">
+                                        Buy
+                                    </button>
+                                </form>
+                            </div>
                         </div>
-                        <div className="market-trade-sell">
-                            <form action="#">
-                                <div className="input-group">
-                                    <input type="number" className="form-control" placeholder="Price" required />
-                                    <div className="input-group-append">
-                                        <span className="input-group-text">BTC</span>
-                                    </div>
-                                </div>
-                                <div className="input-group">
-                                    <input type="number" className="form-control" placeholder="Amount" required />
-                                    <div className="input-group-append">
-                                        <span className="input-group-text">ETH</span>
-                                    </div>
-                                </div>
-                                <ul className="market-trade-list">
-                                    <li>
-                                        <a href="#!">25%</a>
-                                    </li>
-                                    <li>
-                                        <a href="#!">50%</a>
-                                    </li>
-                                    <li>
-                                        <a href="#!">75%</a>
-                                    </li>
-                                    <li>
-                                        <a href="#!">100%</a>
-                                    </li>
-                                </ul>
-                                <p>
-                                    Available: <span>0 BTC = 0 USD</span>
-                                </p>
-                                <p>
-                                    Volume: <span>0 BTC = 0 USD</span>
-                                </p>
-                                <p>
-                                    Margin: <span>0 BTC = 0 USD</span>
-                                </p>
-                                <p>
-                                    Fee: <span>0 BTC = 0 USD</span>
-                                </p>
-                                <button type="button" className="btn sell">
-                                    Sell
-                                </button>
-                            </form>
+                    </Tab>
+                    <Tab eventKey="limit" title="LIMIT">
+                        <div className="d-flex justify-content-between">
+                            <div className="coming-soon">Coming Soon...</div>
                         </div>
-                    </div>
-                </Tab>
-            </Tabs>
-        </div>
+                    </Tab>
+
+                    <Tab eventKey="stop-limit" title="STOP LOSS">
+                        <div className="d-flex justify-content-between">
+                            <div className="coming-soon">Coming Soon...</div>
+                        </div>
+                    </Tab>
+                </Tabs>
+            </div>
+            <TokenModal
+                show={showTokenModal}
+                onTokenSelect={(token) => {
+                    if (fromBNB) {
+                        setTokenB(token)
+                    } else {
+                        setTokenA(token)
+                    }
+                    toggleShowTokenModal(false)
+                }}
+            />
+        </>
     )
 }
