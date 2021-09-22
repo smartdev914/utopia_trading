@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Navbar, Nav, NavDropdown, Dropdown, Button } from 'react-bootstrap'
 import { ThemeConsumer } from '../context/ThemeContext'
 
@@ -26,7 +27,7 @@ export default class Header extends Component {
                     <Navbar expand="lg">
                         <Link href="/">
                             <a href="/" className="navbar-brand">
-                                <ThemeConsumer>{({ data }) => (data.theme === 'light' ? <img src="/img/logo-dark.svg" alt="logo" /> : <img src="/img/logo-light.svg" alt="logo" />)}</ThemeConsumer>
+                                <Image src="/assets/image/utopia/utopiaLogo.svg" alt="logo" width={190} height={24} />
                             </a>
                         </Link>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />

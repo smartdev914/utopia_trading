@@ -1,6 +1,21 @@
+:root {
+  --fontSyncopate: 'Syncopate', sans-serif;
+  --fontOswald: 'Oswald', sans-serif;
+  --fontDosis: 'Dosis', sans-serif;
+  --fontNotoSans: 'Noto Sans', sans-serif;
+}
+
 .dark,
 .dark header {
-    background: #131722;
+    background: #1B003B;
+}
+.dark h3 {
+  font-family: var(--fontSyncopate);
+  color: #F9DF00;
+  font-size: 24px;
+  font-weight: 550;
+  letter-spacing: 5px;
+  padding: 1rem 0 0 1rem;
 }
 .dark .light-bb,
 .dark .input-group-text,
@@ -12,6 +27,7 @@
     border: none;
 }
 .dark header nav a {
+    padding-left: 1rem;
     color: #ffffff !important;
 }
 .dark header nav a:hover {
@@ -28,10 +44,13 @@
 }
 .dark .market-pairs {
     border: 1px solid #2a2e39;
-    background: #131722;
+    background: #1D0E6B;
 }
 .dark tr {
-    background: #131722;
+    background: #1D0E6B;
+}
+.dark tr:nth-child(2n) {
+    background: #1B003B
 }
 .dark .market-pairs .table td,
 .dark .market-pairs .table th {
@@ -48,6 +67,7 @@
 .dark .market-history,
 .dark .market-news {
     border: 1px solid #2a2e39;
+    background: #1D0E6B
 }
 .dark tbody tr:hover {
     background: #2a2e39;
@@ -86,15 +106,15 @@
     color: #ff231f;
 }
 .dark .market-pairs .nav {
-    background: #1c2030;
+    background: #1D0E6B;
 }
 .dark .market-pairs input,
 .dark .market-pairs span {
     border-color: #2a2e39;
-    background: #2a2e39;
+    background: #ffffff;
 }
 .dark .market-pairs input {
-    color: #ffffff;
+    color: #1D0E6B;
 }
 .dark .heading {
     background: #1c2030;
@@ -122,7 +142,7 @@
     color: #ffffff;
 }
 .dark .market-history .nav {
-    background: #1c2030;
+    background: #1D0E6B;
 }
 .dark .market-history .nav-link.active {
     color: #ffffff;
@@ -162,7 +182,7 @@
 }
 .dark .market-trade {
     border: 1px solid #2a2e39;
-    background: #131722;
+    background: #1D0E6B;
 }
 .dark .market-trade .nav .nav-item .nav-link.active {
     background: transparent;
@@ -180,7 +200,7 @@
 }
 .dark .market-trade input {
     border: 1px solid #2a2e39;
-    background: #2a2e39;
+    background: #1B003B;
     color: #ffffff;
 }
 .dark .market-trade .input-group-text {

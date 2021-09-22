@@ -10,7 +10,7 @@ export default function MarketPairs() {
                         <i className="icon ion-md-search" />
                     </span>
                 </div>
-                <input type="text" className="form-control" placeholder="Search" aria-describedby="inputGroup-sizing-sm" />
+                <input type="text" className="form-control" placeholder="Search token name / address..." aria-describedby="inputGroup-sizing-sm" />
             </div>
             <Tabs defaultActiveKey="btc">
                 <Tab eventKey="star" title="★">

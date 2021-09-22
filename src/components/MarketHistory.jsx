@@ -4,8 +4,9 @@ import { Tabs, Tab } from 'react-bootstrap'
 export default function MarketHistory() {
     return (
         <div className="market-history">
+            <h3>TRADES</h3>
             <Tabs defaultActiveKey="recent-trades">
-                <Tab eventKey="recent-trades" title="Recent Trades">
+                <Tab eventKey="recent-trades">
                     <table className="table">
                         <thead>
                             <tr>
