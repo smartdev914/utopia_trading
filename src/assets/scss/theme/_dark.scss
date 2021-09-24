@@ -5,9 +5,11 @@
   --fontNotoSans: 'Noto Sans', sans-serif;
 }
 
-.dark,
-.dark header {
+.dark {
     background: #1B003B;
+}
+.dark header {
+    background: #1733AA;
 }
 .dark h3 {
   font-family: var(--fontSyncopate);

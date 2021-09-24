@@ -11,16 +11,16 @@ import '../assets/css/ionicons.min.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../assets/scss/style.scss'
 
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { pdfjs } from 'react-pdf'
 import { ThemeProvider } from 'context/ThemeContext'
 import { BSCContextProvider } from 'context/BSCContext'
 
 pdfjs.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js'
 
+const queryClient = new QueryClient()
 export default function CustomApp({ Component, pageProps }) {
     const [theme, setTheme] = useState('dark')
-
-    const [dexContract, setDexContract] = useState({})
 
     return (
         <ThemeProvider
@@ -31,18 +31,13 @@ export default function CustomApp({ Component, pageProps }) {
                 },
             }}
         >
-            <BSCContextProvider
-                value={{
-                    dexContract,
-                    setDexContract: (e) => {
-                        setDexContract(e)
-                    },
-                }}
-            >
-                <Modal>
-                    <Component {...pageProps} />
-                </Modal>
-            </BSCContextProvider>
+            <QueryClientProvider client={queryClient}>
+                <BSCContextProvider>
+                    <Modal>
+                        <Component {...pageProps} />
+                    </Modal>
+                </BSCContextProvider>
+            </QueryClientProvider>
         </ThemeProvider>
     )
 }

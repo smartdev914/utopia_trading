@@ -2,8 +2,9 @@
 import Button from 'common/components/Button'
 import Image from 'next/image'
 import { supportedTokens } from 'common/data/exchangeData'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
+import BSCContext from 'context/BSCContext'
 import TokenModal from './TokenModal'
 
 export default function MarketTrade() {
@@ -11,6 +12,8 @@ export default function MarketTrade() {
     const [tokenA, setTokenA] = useState(supportedTokens[0])
     const [tokenB, setTokenB] = useState(supportedTokens[2])
     const [showTokenModal, toggleShowTokenModal] = useState(false)
+
+    const bscContext = useContext(BSCContext)
 
     const clickToggleFromBNB = () => {
         toggleFromBnb(!fromBNB)
@@ -40,7 +43,7 @@ export default function MarketTrade() {
                                             }}
                                         />
                                         <div className="input-group-append">
-                                            <Button title={tokenA.tokenSymbol} disabled={fromBNB} onClick={() => toggleShowTokenModal(!showTokenModal)} />
+                                            <Button title={tokenA.symbol} disabled={fromBNB} onClick={() => toggleShowTokenModal(!showTokenModal)} />
                                         </div>
                                     </div>
                                     <div className="input-group">
@@ -54,15 +57,21 @@ export default function MarketTrade() {
                                             }}
                                         />
                                         <div className="input-group-append">
-                                            <Button title={tokenB.tokenSymbol} disabled={!fromBNB} onClick={() => toggleShowTokenModal(!showTokenModal)} />
+                                            <Button title={tokenB.symbol} disabled={!fromBNB} onClick={() => toggleShowTokenModal(!showTokenModal)} />
                                         </div>
                                     </div>
                                     <div role="button" className="swap-coin-icon" onClick={clickToggleFromBNB} tabIndex="0">
                                         <Image src="/assets/image/icons/swapCoins.svg" width={45} height={45} />
                                     </div>
-                                    <button type="submit" className="btn buy">
-                                        Buy
-                                    </button>
+                                    {bscContext.currentAccountAddress ? (
+                                        <button type="submit" className="btn buy">
+                                            Buy
+                                        </button>
+                                    ) : (
+                                        <button type="submit" className="btn buy">
+                                            Connect Wallet
+                                        </button>
+                                    )}
                                 </form>
                             </div>
                         </div>

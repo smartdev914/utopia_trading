@@ -36,10 +36,21 @@
   padding: 20px;
   border-radius: 20px;
   cursor: pointer;
+  max-height: 80%;
+  overflow: scroll;
+
+  .icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
 
   .token-option {
     font-size: 20px;
     padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
     &:hover {
       background-color: invert($color: #131722);
