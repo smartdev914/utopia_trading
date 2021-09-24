@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Fade from 'react-reveal/Fade'
 import Text from 'common/components/Text'
@@ -7,10 +7,9 @@ import Button from 'common/components/Button'
 import Container from 'common/components/UI/Container'
 
 import Input from 'common/components/Input'
-import Web3 from 'web3'
 import { Spinner } from 'react-bootstrap'
+import BSCContext from 'context/BSCContext'
 import BannerWrapper, { BannerContent } from './presale.style'
-import BSC_ABI from './BSC_ABI'
 
 const Presale = () => {
     const router = useRouter()
@@ -23,31 +22,16 @@ const Presale = () => {
     const [intendedUTPPurchaseAmount, setIntendedUTPPurchaseAmount] = useState(0)
     const [hasDappEnabled, setHasDappEnabled] = useState(false)
     const [accessGranted, setAccessGranted] = useState(false)
-    const [contract, setContract] = useState(null)
     const [purchasedPresale, setPurchasedPresale] = useState(false)
     const [loadingPurchase, setLoadingPurchase] = useState(false)
     const [errorMessage, setErrorMessage] = useState(false)
     const [totalPurchasedBnb, setTotalPurchasedBnb] = useState(0)
-    const [currentAccount, setCurrentAccount] = useState(null)
     const [presaleFinalized, setPresaleFinalized] = useState(false)
     const [presalePurchased, setPresalePurchased] = useState(false)
     const [loadingWithdraw, setLoadingWithdraw] = useState(false)
     const [maxPurchaseableTokens, setMaxPurchaseableTokens] = useState(1)
 
-    const loadBSCContract = async () => {
-        const UtopiaPresaleBSC = '0x97fB38850D535a8DC81c3773e2566134A2E3C100'
-        const UtopiaContract = new window.web3.eth.Contract(BSC_ABI, UtopiaPresaleBSC)
-        setContract(UtopiaContract)
-    }
-
-    useEffect(() => {
-        if (typeof window.web3 !== 'undefined') {
-            window.web3 = new Web3(window.web3.currentProvider)
-        } else {
-            window.web3 = new Web3(new Web3.providers.HttpProvider('https://localhost:8545'))
-        }
-        loadBSCContract()
-    }, [])
+    const bscContext = useContext(BSCContext)
 
     useEffect(() => {
         if (typeof window.ethereum === 'undefined') {
@@ -58,31 +42,31 @@ const Presale = () => {
     }, [])
 
     useEffect(async () => {
-        if (contract) {
-            const tokensPurchasedInWei = await contract.methods.tokensAlreadyPurchased().call()
+        if (bscContext.presaleContract) {
+            const tokensPurchasedInWei = await bscContext.presaleContract.methods.tokensAlreadyPurchased().call()
             const totalPurchasedTokens = window.web3.utils.fromWei(tokensPurchasedInWei)
             setTotalPurchasedBnb(totalPurchasedTokens)
-            const finalized = await contract.methods.finalized().call()
+            const finalized = await bscContext.presaleContract.methods.finalized().call()
             setPresaleFinalized(finalized)
         }
-    }, [contract])
+    }, [bscContext.presaleContract])
 
     useEffect(async () => {
-        if (currentAccount && contract) {
-            const presalePurchasedValue = await contract.methods.purchasedBnb(currentAccount).call()
+        if (bscContext.currentAccountAddress && bscContext.presaleContract) {
+            const presalePurchasedValue = await bscContext.presaleContract.methods.purchasedBnb(bscContext.currentAccountAddress).call()
             setPresalePurchased(Boolean(presalePurchasedValue))
         }
-    }, [currentAccount, contract])
+    }, [bscContext.currentAccountAddress, bscContext.presaleContract])
 
     useEffect(async () => {
-        if (currentAccount && contract) {
-            const bnbAllowance = await contract.methods.viewBnbAllowanceForUser(currentAccount).call()
-            const purchasedTokensInWei = await contract.methods.purchasedBnb(currentAccount).call()
+        if (bscContext.currentAccountAddress && bscContext.presaleContract) {
+            const bnbAllowance = await bscContext.presaleContract.methods.viewBnbAllowanceForUser(bscContext.currentAccountAddress).call()
+            const purchasedTokensInWei = await bscContext.presaleContract.methods.purchasedBnb(bscContext.currentAccountAddress).call()
             const allowedBnb = window.web3.utils.fromWei(bnbAllowance)
             const bnbPurchased = window.web3.utils.fromWei(purchasedTokensInWei)
             setMaxPurchaseableTokens(allowedBnb - bnbPurchased)
         }
-    }, [currentAccount, contract])
+    }, [bscContext.currentAccountAddress, bscContext.presaleContract])
 
     const round = (value, decimals) => Number(`${Math.round(`${value}e${decimals}`)}e-${decimals}`)
 
@@ -101,19 +85,18 @@ const Presale = () => {
                 .then((accounts) => {
                     setAccessGranted(true)
                     const account = accounts[0]
-                    setCurrentAccount(account)
-                    loadBSCContract(account)
+                    bscContext.setCurrentAccountAddress(account)
                 })
         }
     }
 
     const handleBuyPresale = () => {
         const bnbAmount = window.web3.utils.toWei(intendedBNBPurchaseAmount.toString())
-        if (contract) {
+        if (bscContext.presaleContract) {
             setLoadingPurchase(true)
-            contract.methods
-                .buyTokens(currentAccount)
-                .send({ from: currentAccount, value: bnbAmount })
+            bscContext.presaleContract.methods
+                .buyTokens(bscContext.currentAccountAddress)
+                .send({ from: bscContext.currentAccountAddress, value: bnbAmount })
                 .then((result) => {
                     if (Object.keys(result).length !== 0) {
                         setPurchasedPresale(true)
@@ -172,11 +155,11 @@ const Presale = () => {
     )
 
     const handleWithdraw = () => {
-        if (contract && currentAccount) {
+        if (bscContext.presaleContract && bscContext.currentAccountAddress) {
             setLoadingWithdraw(true)
-            contract.methods
+            bscContext.presaleContract.methods
                 .withdrawTokens()
-                .send({ from: currentAccount })
+                .send({ from: bscContext.currentAccountAddress })
                 .then((result) => {
                     setLoadingWithdraw(false)
                     setErrorMessage('Tokens Successfully Withdrawn!')
@@ -195,7 +178,6 @@ const Presale = () => {
                 <Button
                     title="Make another purchase"
                     onClick={() => {
-                        loadBSCContract()
                         setPurchasedPresale(false)
                     }}
                 />
@@ -259,7 +241,7 @@ const Presale = () => {
                         {!presaleGUID ? (
                             <div>
                                 <Text className="notBegunPresale" content="Pre-sale has not begun yet!" />
-                                <Text className="notBegunPresale" content="Coming soon, Sept. 27th" />
+                                <Text className="notBegunPresale" content="Coming soon, Sept. 29th" />
                             </div>
                         ) : (
                             <>

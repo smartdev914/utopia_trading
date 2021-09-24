@@ -19,8 +19,8 @@ export default class Header extends Component {
         return (
             <>
                 <Head>
-                    <title>Crypo</title>
-                    <meta name="description" content="Cryptocurrency Exchange Dashboard" />
+                    <title>Utopia Dex</title>
+                    <meta name="description" content="Utopia Decentralised Exchange Dashboard" />
                     <link rel="icon" href="/favicon.png" />
                 </Head>
                 <header className="light-bb">
