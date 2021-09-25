@@ -10,7 +10,7 @@ export default function DynamicTVS() {
                 interval: '1D', // default interval
                 container: 'tv_chart_container',
                 datafeed: Datafeed,
-                library_path: '/libs/charting_library_clonned_data/charting_library/',
+                library_path: '/libs/charting_library_cloned_data/charting_library/',
                 height: '100%',
                 width: '100%',
                 theme: 'Dark',
