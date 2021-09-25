@@ -1,12 +1,31 @@
-import React from 'react'
-import dynamic from 'next/dynamic'
-
-const MyChart = dynamic(() => import('./TradingChartDark'), { ssr: false })
+/* eslint-disable new-cap */
+import React, { useEffect } from 'react'
+import Datafeed from '../common/data/chartUtils/datafeed'
 
 export default function DynamicTVS() {
+    useEffect(() => {
+        const initTVwidget = () => {
+            window.tvWidget = new window.TradingView.widget({
+                symbol: 'Utopia:CAKE/BNB', // default symbol
+                interval: '1D', // default interval
+                container: 'tv_chart_container',
+                datafeed: Datafeed,
+                library_path: '/libs/charting_library_clonned_data/charting_library/',
+                height: '100%',
+                width: '100%',
+                theme: 'Dark',
+            })
+        }
+        window.addEventListener('load', initTVwidget)
+
+        return () => {
+            window.removeEventListener('load', initTVwidget)
+        }
+    }, [])
+
     return (
         <div className="main-chart mb15">
-            <MyChart />
+            <div id="tv_chart_container" />
         </div>
     )
 }
