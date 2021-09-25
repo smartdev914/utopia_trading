@@ -36,7 +36,6 @@ export default class CustomDocument extends Document {
                     <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;500;700&family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet" />
                     <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet" />
                     <script type="text/javascript" src="/libs/charting_library_clonned_data/charting_library/charting_library.js" />
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js" />
                 </Head>
                 <body>
                     <Main />

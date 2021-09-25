@@ -2,7 +2,7 @@
 import Button from 'common/components/Button'
 import Image from 'next/image'
 import { supportedTokens } from 'common/data/exchangeData'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
 import BSCContext from 'context/BSCContext'
 import TokenModal from './TokenModal'
@@ -21,6 +21,10 @@ export default function MarketTrade() {
         setTokenA(tokenB)
         setTokenB(tempToken)
     }
+
+    useEffect(() => {
+        bscContext.setLoadDexContract(true)
+    }, [])
 
     return (
         <>

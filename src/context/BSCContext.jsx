@@ -9,6 +9,8 @@ const BSCContextProvider = ({ children }) => {
     const [dexContract, setDexContract] = useState(null)
     const [presaleContract, setPresaleContract] = useState(null)
     const [currentAccountAddress, setCurrentAccountAddress] = useState('')
+    const [loadDexContract, setLoadDexContract] = useState(false)
+    const [loadPresaleContract, setLoadPresaleContract] = useState(false)
     const UtopiaPresaleBSCAddress = '0x97fB38850D535a8DC81c3773e2566134A2E3C100'
     const utopiaDexContractAddress = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
 
@@ -37,8 +39,12 @@ const BSCContextProvider = ({ children }) => {
         } else {
             window.web3 = new Web3(new Web3.providers.HttpProvider('https://localhost:8545'))
         }
-        loadBSCContract()
-        loadBSCDexContract()
+        if (loadPresaleContract) {
+            loadBSCContract()
+        }
+        if (loadDexContract) {
+            loadBSCDexContract()
+        }
     }, [])
 
     return (
@@ -48,6 +54,8 @@ const BSCContextProvider = ({ children }) => {
                 currentAccountAddress,
                 presaleContract,
                 setCurrentAccountAddress,
+                setLoadDexContract,
+                setLoadPresaleContract,
             }}
         >
             {children}
