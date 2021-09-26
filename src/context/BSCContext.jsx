@@ -80,7 +80,7 @@ const BSCContextProvider = ({ children }) => {
             loadBSCDexContract()
             setToBSCNet()
         }
-    }, [])
+    }, [loadPresaleContract, loadDexContract])
 
     return (
         <BSCContext.Provider

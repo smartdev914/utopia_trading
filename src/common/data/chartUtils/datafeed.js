@@ -5,7 +5,7 @@ import { subscribeOnStream, unsubscribeFromStream } from './streaming'
 const lastBarsCache = new Map()
 
 const configurationData = {
-    supported_resolutions: ['1D'],
+    supported_resolutions: ['1D', '5', '240'],
     exchanges: [
         {
             value: 'Utopia',
@@ -110,7 +110,7 @@ export default {
             exchange: symbolItem.exchange,
             minmov: 1,
             pricescale: 100,
-            has_intraday: false,
+            has_intraday: true,
             has_no_volume: true,
             has_weekly_and_monthly: false,
             supported_resolutions: configurationData.supported_resolutions,
@@ -123,9 +123,23 @@ export default {
     },
     getBars: async (symbolInfo, resolution, periodParams, onHistoryCallback, onErrorCallback) => {
         const { from, to, firstDataRequest } = periodParams
-
+        let resolutionTime
+        switch (resolution) {
+            case '5':
+                resolutionTime = '300'
+                break
+            case '240':
+                resolutionTime = '14400'
+                break
+            case '1D':
+                resolutionTime = '86400'
+                break
+            default: {
+                resolutionTime = '86400'
+            }
+        }
         try {
-            const data = await makeUtopiaApiRequest(`retrievePrice/${symbolInfo.address}/86400/${from}/${to}`)
+            const data = await makeUtopiaApiRequest(`retrievePrice/${symbolInfo.address}/${resolutionTime}/${from}/${to}`)
             if ((data && data.status === 'Not Found') || data.length === 0) {
                 // "noData" should be set if there is no data in the requested period.
                 onHistoryCallback([], { noData: true })
