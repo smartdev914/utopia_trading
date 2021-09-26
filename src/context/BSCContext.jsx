@@ -24,6 +24,39 @@ const BSCContextProvider = ({ children }) => {
         setPresaleContract(UtopiaContract)
     }, [UtopiaPresaleBSCAddress])
 
+    const setToBSCNet = async () => {
+        if (window.ethereum) {
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: '0x38' }],
+                })
+            } catch (switchError) {
+                // This error code indicates that the chain has not been added to MetaMask.
+                if (switchError.code === 4902) {
+                    try {
+                        await window.ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [
+                                {
+                                    chainId: '0x38',
+                                    chainName: 'Binance Smart Chain',
+                                    nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+                                    rpcUrls: ['https://bsc-dataseed.binance.org/'],
+                                    blockExplorerUrls: ['https://bscscan.com/'],
+                                },
+                            ],
+                        })
+                    } catch (addError) {
+                        // eslint-disable-next-line no-alert
+                        window.alert('Error adding Binance Smart Chain')
+                    }
+                }
+                // handle other "switch" errors
+            }
+        }
+    }
+
     const loadBSCDexContract = async () => {
         if (window.web3) {
             const currentDexContract = new window.web3.eth.Contract(utopiaDexABI, utopiaDexContractAddress)
@@ -41,9 +74,11 @@ const BSCContextProvider = ({ children }) => {
         }
         if (loadPresaleContract) {
             loadBSCContract()
+            setToBSCNet()
         }
         if (loadDexContract) {
             loadBSCDexContract()
+            setToBSCNet()
         }
     }, [])
 

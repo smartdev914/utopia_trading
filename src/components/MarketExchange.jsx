@@ -26,6 +26,10 @@ export default function MarketTrade() {
         bscContext.setLoadDexContract(true)
     }, [])
 
+    const onConnectWalletClick = () => {
+        console.log('connect wallet')
+    }
+
     return (
         <>
             <div className="market-trade mb15">
@@ -72,7 +76,7 @@ export default function MarketTrade() {
                                             Buy
                                         </button>
                                     ) : (
-                                        <button type="submit" className="btn buy">
+                                        <button type="button" className="btn buy" onClick={onConnectWalletClick}>
                                             Connect Wallet
                                         </button>
                                     )}

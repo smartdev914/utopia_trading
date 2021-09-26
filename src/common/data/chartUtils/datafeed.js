@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-syntax */
-import { makeUtopiaApiRequest } from './helpers'
+import { makeApiRequest, makeUtopiaApiRequest } from './helpers'
 import { subscribeOnStream, unsubscribeFromStream } from './streaming'
 
 const lastBarsCache = new Map()
@@ -126,18 +126,18 @@ export default {
 
         try {
             const data = await makeUtopiaApiRequest(`retrievePrice/${symbolInfo.address}/86400/${from}/${to}`)
-            if ((data.Response && data.Response === 'Error') || data.Data.length === 0) {
+            if ((data && data.status === 'Not Found') || data.length === 0) {
                 // "noData" should be set if there is no data in the requested period.
                 onHistoryCallback([], { noData: true })
                 return
             }
             let bars = []
-            data.Data.forEach((bar) => {
-                if (bar.time >= from && bar.time < to) {
+            data.forEach((bar) => {
+                if (bar.startTime >= from && bar.startTime < to) {
                     bars = [
                         ...bars,
                         {
-                            time: bar.time * 1000,
+                            time: bar.startTime * 1000,
                             low: bar.low,
                             high: bar.high,
                             open: bar.open,
