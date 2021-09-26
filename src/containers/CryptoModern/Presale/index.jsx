@@ -20,7 +20,6 @@ const Presale = () => {
     const presaleBNB = 600
     const [intendedBNBPurchaseAmount, setIntendedBNBPurchaseAmount] = useState(0)
     const [intendedUTPPurchaseAmount, setIntendedUTPPurchaseAmount] = useState(0)
-    const [hasDappEnabled, setHasDappEnabled] = useState(false)
     const [accessGranted, setAccessGranted] = useState(false)
     const [purchasedPresale, setPurchasedPresale] = useState(false)
     const [loadingPurchase, setLoadingPurchase] = useState(false)
@@ -32,14 +31,6 @@ const Presale = () => {
     const [maxPurchaseableTokens, setMaxPurchaseableTokens] = useState(1)
 
     const bscContext = useContext(BSCContext)
-
-    useEffect(() => {
-        if (typeof window.ethereum === 'undefined') {
-            setHasDappEnabled(false)
-        } else {
-            setHasDappEnabled(true)
-        }
-    }, [])
 
     useEffect(async () => {
         if (bscContext.presaleContract) {
@@ -72,7 +63,6 @@ const Presale = () => {
 
     const loadPubKey = () => {
         if (window.ethereum) {
-            setHasDappEnabled(true)
             window.ethereum
                 .enable()
                 .catch((reason) => {
@@ -245,7 +235,7 @@ const Presale = () => {
                             </div>
                         ) : (
                             <>
-                                {hasDappEnabled ? (
+                                {window.ethereum ? (
                                     <div className="presale-module">{accessGranted ? presaleModuleContent : <Button title="Connect MetaMask Wallet" onClick={loadPubKey} />}</div>
                                 ) : (
                                     <div className="presale-module dapp-disabled">

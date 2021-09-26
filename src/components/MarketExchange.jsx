@@ -26,8 +26,20 @@ export default function MarketTrade() {
         bscContext.setLoadDexContract(true)
     }, [])
 
-    const onConnectWalletClick = () => {
-        console.log('connect wallet')
+    const loadPubKey = () => {
+        if (window.ethereum) {
+            window.ethereum
+                .enable()
+                .catch((reason) => {
+                    if (reason === 'User rejected provider access') {
+                        console.warn('User Rejected Access')
+                    }
+                })
+                .then((accounts) => {
+                    const account = accounts[0]
+                    bscContext.setCurrentAccountAddress(account)
+                })
+        }
     }
 
     return (
@@ -51,7 +63,7 @@ export default function MarketTrade() {
                                             }}
                                         />
                                         <div className="input-group-append">
-                                            <Button title={tokenA.symbol} disabled={fromBNB} onClick={() => toggleShowTokenModal(!showTokenModal)} />
+                                            <Button className={!fromBNB ? 'token-swap-to' : ''} title={tokenA.symbol} disabled={fromBNB} onClick={() => toggleShowTokenModal(!showTokenModal)} />
                                         </div>
                                     </div>
                                     <div className="input-group">
@@ -65,7 +77,7 @@ export default function MarketTrade() {
                                             }}
                                         />
                                         <div className="input-group-append">
-                                            <Button title={tokenB.symbol} disabled={!fromBNB} onClick={() => toggleShowTokenModal(!showTokenModal)} />
+                                            <Button className={fromBNB ? 'token-swap-to' : ''} title={tokenB.symbol} disabled={!fromBNB} onClick={() => toggleShowTokenModal(!showTokenModal)} />
                                         </div>
                                     </div>
                                     <div role="button" className="swap-coin-icon" onClick={clickToggleFromBNB} tabIndex="0">
@@ -76,7 +88,7 @@ export default function MarketTrade() {
                                             Buy
                                         </button>
                                     ) : (
-                                        <button type="button" className="btn buy" onClick={onConnectWalletClick}>
+                                        <button type="button" className="btn buy" onClick={loadPubKey}>
                                             Connect Wallet
                                         </button>
                                     )}

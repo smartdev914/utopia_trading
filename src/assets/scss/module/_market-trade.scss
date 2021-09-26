@@ -148,3 +148,15 @@
 .market-trade .coming-soon{
     color: white;
 }
+
+.market-trade .token-swap-to::after {
+  content: "\25BC"
+}
+
+.market-trade .input-group-append button{
+  cursor: auto;
+}
+
+.market-trade .input-group-append button.token-swap-to {
+  cursor: pointer;
+}
