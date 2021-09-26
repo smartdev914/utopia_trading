@@ -10,14 +10,7 @@ export async function makeApiRequest(path) {
 
 export async function makeUtopiaApiRequest(path) {
     try {
-        const response = await fetch(`https://price-retriever-dot-utopia-315014.uw.r.appspot.com/${path}`, {
-            headers: {
-                'Access-Control-Allow-Credentials': 'true',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET,OPTIONS,PATCH,DELETE,POST,PUT',
-                'Access-Control-Allow-Headers': 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
-            },
-        })
+        const response = await fetch(`https://price-retriever-dot-utopia-315014.uw.r.appspot.com/${path}`)
         return response.json()
     } catch (error) {
         throw new Error(`CryptoCompare request error: ${error.status}`)
