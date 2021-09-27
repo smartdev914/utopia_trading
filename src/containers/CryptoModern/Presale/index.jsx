@@ -16,12 +16,11 @@ const Presale = () => {
     const { query } = router
     const presaleGUID = Object.keys(query)?.includes('716e5a7d-b5da-4cbf-9eb9-be908007fef7')
 
-    const presaleTokens = 350000000000
-    const presaleBNB = 600
+    const presaleTokens = 300000000000
+    const presaleBNB = 500
     const [intendedBNBPurchaseAmount, setIntendedBNBPurchaseAmount] = useState(0)
     const [intendedUTPPurchaseAmount, setIntendedUTPPurchaseAmount] = useState(0)
     const [accessGranted, setAccessGranted] = useState(false)
-    const [purchasedPresale, setPurchasedPresale] = useState(false)
     const [loadingPurchase, setLoadingPurchase] = useState(false)
     const [errorMessage, setErrorMessage] = useState(false)
     const [totalPurchasedBnb, setTotalPurchasedBnb] = useState(0)
@@ -95,10 +94,9 @@ const Presale = () => {
                 .send({ from: bscContext.currentAccountAddress, value: bnbAmount })
                 .then((result) => {
                     if (Object.keys(result).length !== 0) {
-                        setPurchasedPresale(true)
                         setMaxPurchaseableTokens(maxPurchaseableTokens - intendedBNBPurchaseAmount)
                     } else {
-                        setErrorMessage(`You aren't white listed!`)
+                        setErrorMessage(`This wallet is not white listed!`)
                     }
                     setLoadingPurchase(false)
                 })
@@ -165,20 +163,6 @@ const Presale = () => {
                     setErrorMessage('Error withdrawing tokens. (No Tokens left to withdraw)')
                 })
         }
-    }
-
-    if (purchasedPresale) {
-        presaleModuleContent = (
-            <>
-                <Text content="Presale Purchased!" />{' '}
-                <Button
-                    title="Make another purchase"
-                    onClick={() => {
-                        setPurchasedPresale(false)
-                    }}
-                />
-            </>
-        )
     }
 
     if (presaleFinalized) {
@@ -252,7 +236,7 @@ const Presale = () => {
                                 <div className="presaleBar">
                                     <div className="presaleProgressBar">
                                         <div className="filledBar" style={{ width: `${(totalPurchasedBnb / presaleBNB) * 100}%` }} />
-                                        <Text className="progressText" as="div" content={`${round(totalPurchasedBnb, 3)} BNB / 600 BNB`} />
+                                        <Text className="progressText" as="div" content={`${round(totalPurchasedBnb, 3)} BNB / ${presaleBNB} BNB`} />
                                     </div>
                                 </div>
                             </>
