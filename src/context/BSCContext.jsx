@@ -89,7 +89,7 @@ const BSCContextProvider = ({ children }) => {
         }
     }
 
-    useEffect(async () => {
+    const triggerDappModal = async () => {
         if ((loadPresaleContract || loadDexContract) && typeof window.web3 !== 'undefined') {
             const providerOptions = {
                 walletconnect: {
@@ -115,6 +115,7 @@ const BSCContextProvider = ({ children }) => {
                 network: 'mainnet', // optional
                 cacheProvider: false, // optional
                 providerOptions, // required
+                theme: 'dark',
             })
 
             const provider = await web3Modal.connect()
@@ -137,7 +138,7 @@ const BSCContextProvider = ({ children }) => {
             setToBSCNet()
             loadPancakeSwapV2Contract()
         }
-    }, [loadPresaleContract, loadDexContract])
+    }
 
     return (
         <BSCContext.Provider
@@ -150,6 +151,7 @@ const BSCContextProvider = ({ children }) => {
                 setLoadPresaleContract,
                 pancakeSwapContract,
                 hasDappBrowser,
+                triggerDappModal,
             }}
         >
             {children}

@@ -117,7 +117,13 @@ export default function MarketTrade() {
                                             Swap
                                         </button>
                                     ) : (
-                                        <button type="button" className="btn buy" onClick={loadPubKey}>
+                                        <button
+                                            type="button"
+                                            className="btn buy"
+                                            onClick={async () => {
+                                                await bscContext.triggerDappModal()
+                                            }}
+                                        >
                                             Connect Wallet
                                         </button>
                                     )}
