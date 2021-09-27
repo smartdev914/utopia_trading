@@ -5,6 +5,7 @@ import { supportedTokens } from 'common/data/exchangeData'
 import React, { useContext, useEffect, useState } from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
 import BSCContext from 'context/BSCContext'
+import axios from 'axios'
 import TokenModal from './TokenModal'
 
 export default function MarketTrade() {
@@ -12,6 +13,8 @@ export default function MarketTrade() {
     const [tokenA, setTokenA] = useState(supportedTokens[0])
     const [tokenB, setTokenB] = useState(supportedTokens[2])
     const [showTokenModal, toggleShowTokenModal] = useState(false)
+
+    const [pancakePairContract, setPancakePairContract] = useState('')
 
     const bscContext = useContext(BSCContext)
 
@@ -26,6 +29,26 @@ export default function MarketTrade() {
         bscContext.setLoadDexContract(true)
     }, [])
 
+    useEffect(async () => {
+        if (bscContext.pancakeSwapContract) {
+            const currentPancakePairAddress = fromBNB
+                ? await bscContext.pancakeSwapContract.methods.getPair(tokenA.address, tokenB.address).call()
+                : await bscContext.pancakeSwapContract.methods.getPair(tokenB.address, tokenA.address).call()
+            if (window.web3) {
+                const contractABI = await axios.get('https://api.bscscan.com/api', {
+                    params: {
+                        module: 'contract',
+                        action: 'getabi',
+                        address: currentPancakePairAddress,
+                        apiKey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
+                    },
+                })
+                const currentContract = new window.web3.eth.Contract(JSON.parse(contractABI.data.result), currentPancakePairAddress)
+                setPancakePairContract(currentContract)
+            }
+        }
+    }, [tokenA, tokenB, fromBNB])
+
     const loadPubKey = () => {
         if (window.ethereum) {
             window.ethereum
@@ -39,6 +62,12 @@ export default function MarketTrade() {
                     const account = accounts[0]
                     bscContext.setCurrentAccountAddress(account)
                 })
+        }
+    }
+
+    const onSwapClick = () => {
+        if (pancakePairContract && bscContext.currentAccountAddress) {
+            pancakePairContract.methods.approve(bscContext.currentAccountAddress)
         }
     }
 
@@ -84,8 +113,8 @@ export default function MarketTrade() {
                                         <Image src="/assets/image/icons/swapCoins.svg" width={45} height={45} />
                                     </div>
                                     {bscContext.currentAccountAddress ? (
-                                        <button type="submit" className="btn buy">
-                                            Buy
+                                        <button type="submit" className="btn buy" onClick={onSwapClick}>
+                                            Swap
                                         </button>
                                     ) : (
                                         <button type="button" className="btn buy" onClick={loadPubKey}>
