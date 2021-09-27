@@ -97,12 +97,14 @@ const Presale = () => {
             {bscContext.currentAccountAddress && bscContext.currentBnbBalance && (
                 <>
                     <div className="available-bnb">
-                        <Text as="span" content="Available BNB:&nbsp;" />
-                        <Text className="available-bnb-value" as="span" content={`${window.web3.utils.fromWei(bscContext.currentBnbBalance)}`} onClick={maxOutBNB} />
-                    </div>
-                    <div className="available-bnb">
-                        <Text as="span" content="Allowed Contribution:&nbsp;" />
-                        <Text className="available-bnb-value" as="span" content={`${round(maxPurchaseableTokens, 3)}`} onClick={maxOutBNB} />
+                        <div className="balance-row">
+                            <Text as="span" content="Available Balance:&nbsp;" />
+                            <Text className="available-bnb-value" as="span" content={`${window.web3.utils.fromWei(bscContext.currentBnbBalance)} BNB`} onClick={maxOutBNB} />
+                        </div>
+                        <div className="balance-row">
+                            <Text as="span" content="Allowed Contribution:&nbsp;" />
+                            <Text className="available-bnb-value" as="span" content={`${round(maxPurchaseableTokens, 3)} BNB`} onClick={maxOutBNB} />
+                        </div>
                     </div>
                 </>
             )}

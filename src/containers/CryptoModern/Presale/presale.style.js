@@ -161,6 +161,12 @@ export const BannerContent = styled.div`
     .available-bnb {
         font-size: 20px;
         display: flex;
+        flex-direction: column;
+
+        .balance-row {
+            display: flex;
+            flex-direction: row;
+        }
     }
 `
 
