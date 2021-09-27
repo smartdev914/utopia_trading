@@ -226,7 +226,7 @@ const Presale = () => {
                         ) : (
                             <>
                                 {bscContext.hasDappBrowser ? (
-                                    <div className="presale-module">{bscContext.currentAccountAddress ? presaleModuleContent : <Button title="Connect Wallet" onClick={loadPubKey} />}</div>
+                                    <div className="presale-module">{bscContext.currentAccountAddress ? presaleModuleContent : <Text content="No wallet connected" />}</div>
                                 ) : (
                                     <div className="presale-module dapp-disabled">
                                         <Text content="Looks like you need a Dapp browser to get started." />
