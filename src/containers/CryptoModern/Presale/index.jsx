@@ -66,25 +66,6 @@ const Presale = () => {
 
     const round = (value, decimals) => Number(`${Math.round(`${value}e${decimals}`)}e-${decimals}`)
 
-    const loadPubKey = () => {
-        if (window.ethereum) {
-            window.ethereum
-                .enable()
-                .catch((reason) => {
-                    if (reason === 'User rejected provider access') {
-                        setAccessGranted(false)
-                    } else {
-                        setAccessGranted(false)
-                    }
-                })
-                .then((accounts) => {
-                    setAccessGranted(true)
-                    const account = accounts[0]
-                    bscContext.setCurrentAccountAddress(account)
-                })
-        }
-    }
-
     const handleBuyPresale = () => {
         const bnbAmount = window.web3.utils.toWei(intendedBNBPurchaseAmount.toString())
         if (bscContext.presaleContract) {
