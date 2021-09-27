@@ -20,7 +20,6 @@ const Presale = () => {
     const presaleBNB = 500
     const [intendedBNBPurchaseAmount, setIntendedBNBPurchaseAmount] = useState(0)
     const [intendedUTPPurchaseAmount, setIntendedUTPPurchaseAmount] = useState(0)
-    const [accessGranted, setAccessGranted] = useState(false)
     const [loadingPurchase, setLoadingPurchase] = useState(false)
     const [errorMessage, setErrorMessage] = useState(false)
     const [totalPurchasedBnb, setTotalPurchasedBnb] = useState(0)
@@ -207,11 +206,16 @@ const Presale = () => {
                         ) : (
                             <>
                                 {bscContext.hasDappBrowser ? (
-                                    <div className="presale-module">{bscContext.currentAccountAddress ? presaleModuleContent : <Text content="No wallet connected" />}</div>
+                                    <div className="presale-module">{bscContext.currentAccountAddress ? presaleModuleContent : <Text content="No Wallet Address Provided" />}</div>
                                 ) : (
                                     <div className="presale-module dapp-disabled">
-                                        <Text content="Looks like you need a Dapp browser to get started." />
-                                        <Text content="Consider installing MetaMask!" />
+                                        <Text content="Please connect your wallet to continue" />
+                                        <Button
+                                            title="Connect Wallet"
+                                            onClick={async () => {
+                                                await bscContext.triggerDappModal()
+                                            }}
+                                        />
                                     </div>
                                 )}
                                 <div className="presaleBar">
