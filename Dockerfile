@@ -3,7 +3,7 @@ WORKDIR /app
 
 COPY . /app
 
-RUN apk --no-cache add pkgconfig autoconf automake libtool nasm build-base zlib-dev
+RUN apk --no-cache add pkgconfig autoconf automake libtool nasm build-base zlib-dev git
 RUN yarn && yarn build
 
 ARG PORT=3000
