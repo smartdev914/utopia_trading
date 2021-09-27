@@ -126,11 +126,11 @@ const Presale = () => {
                     setIntendedUTPPurchaseAmount((presaleTokens / presaleBNB) * newValue)
                 }}
             />
-            <Image src="/assets/image/icons/UpAndDownArrows.svg" width={50} height={50} />
+            <Image src="/assets/image/icons/swapCoins.svg" width={50} height={50} />
             <Input
                 inputType="number"
                 isMaterial
-                label="UTP amount"
+                label="UTP amount (estimated)"
                 externalValue={intendedUTPPurchaseAmount}
                 onChange={setIntendedUTPPurchaseAmount}
                 onBlur={(e) => {
