@@ -87,8 +87,25 @@ const Presale = () => {
         }
     }
 
+    const maxOutBNB = () => {
+        setIntendedBNBPurchaseAmount(Math.min(bscContext.currentBnbBalance, maxPurchaseableTokens.toFixed(6)))
+        setIntendedUTPPurchaseAmount((presaleTokens / presaleBNB) * Math.min(bscContext.currentBnbBalance, maxPurchaseableTokens.toFixed(6)))
+    }
+
     let presaleModuleContent = (
         <>
+            {bscContext.currentAccountAddress && bscContext.currentBnbBalance && (
+                <>
+                    <div className="available-bnb">
+                        <Text as="span" content="Available BNB:&nbsp;" />
+                        <Text className="available-bnb-value" as="span" content={`${window.web3.utils.fromWei(bscContext.currentBnbBalance)}`} onClick={maxOutBNB} />
+                    </div>
+                    <div className="available-bnb">
+                        <Text as="span" content="Allowed Contribution:&nbsp;" />
+                        <Text className="available-bnb-value" as="span" content={`${round(maxPurchaseableTokens, 3)}`} onClick={maxOutBNB} />
+                    </div>
+                </>
+            )}
             <Input
                 inputType="number"
                 isMaterial

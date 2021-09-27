@@ -78,16 +78,19 @@ export const BannerContent = styled.div`
         display: flex;
         align-items: center;
         flex-direction: column;
-        justify-content: space-around;
-        height: clamp(350px, 30vh, 500px);
+        justify-content: space-between;
         width: clamp(350px, 80%, 700px);
-        padding: 50px;
+        padding: 30px 50px;
         border-radius: 10px;
         background-color: #004fbf;
         position: relative;
         left: 50%;
         transform: translateX(-50%);
         margin-bottom: 50px;
+
+        > * {
+            margin-bottom: 20px !important;
+        }
 
         > div {
             width: 100%;
@@ -120,6 +123,11 @@ export const BannerContent = styled.div`
         &.dapp-disabled {
             justify-content: center;
         }
+
+        .available-bnb-value {
+            text-decoration: underline;
+            cursor: pointer;
+        }
     }
 
     .presaleBar {
@@ -148,6 +156,11 @@ export const BannerContent = styled.div`
             height: 100%;
             background: #004fbf;
         }
+    }
+
+    .available-bnb {
+        font-size: 20px;
+        display: flex;
     }
 `
 
