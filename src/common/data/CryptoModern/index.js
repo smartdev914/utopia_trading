@@ -53,12 +53,12 @@ export const TokenomicsData = [
     {
         id: 2,
         title: 'Presale',
-        value: '350,000,000,000',
+        value: '300,000,000,000',
     },
     {
         id: 3,
         title: 'Pancakeswap Liquidity',
-        value: '450,000,000,000',
+        value: '300,000,000,000',
     },
     {
         id: 4,
@@ -69,7 +69,7 @@ export const TokenomicsData = [
     {
         id: 5,
         title: 'Locked Tokens',
-        value: '165,000,000,000',
+        value: '365,000,000,000',
         description: '(These tokens will primarily be used to provide liquidity to centralised exchanges for new listings, for future hires and as a store of value for the business as an asset)',
     },
 ]

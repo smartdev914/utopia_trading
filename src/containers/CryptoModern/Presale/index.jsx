@@ -32,6 +32,12 @@ const Presale = () => {
 
     const bscContext = useContext(BSCContext)
 
+    useEffect(() => {
+        if (presaleGUID) {
+            bscContext.setLoadPresaleContract(true)
+        }
+    })
+
     useEffect(async () => {
         if (bscContext.presaleContract) {
             const tokensPurchasedInWei = await bscContext.presaleContract.methods.tokensAlreadyPurchased().call()

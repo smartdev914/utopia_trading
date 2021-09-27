@@ -21,7 +21,7 @@ export const useBSCScanAccountInfo = ({ address }, options) =>
             enabled: Boolean(address),
         }
     )
-export const useBSCScanABI = ({ address }, options) =>
+export const useBSCScanABI = (address) =>
     useQuery(
         ['getABI', address],
         () =>
