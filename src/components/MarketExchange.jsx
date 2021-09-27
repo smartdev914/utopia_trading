@@ -49,22 +49,6 @@ export default function MarketTrade() {
         }
     }, [tokenA, tokenB, fromBNB])
 
-    const loadPubKey = () => {
-        if (window.ethereum) {
-            window.ethereum
-                .enable()
-                .catch((reason) => {
-                    if (reason === 'User rejected provider access') {
-                        console.warn('User Rejected Access')
-                    }
-                })
-                .then((accounts) => {
-                    const account = accounts[0]
-                    bscContext.setCurrentAccountAddress(account)
-                })
-        }
-    }
-
     const onSwapClick = () => {
         if (pancakePairContract && bscContext.currentAccountAddress) {
             pancakePairContract.methods.approve(bscContext.currentAccountAddress)
