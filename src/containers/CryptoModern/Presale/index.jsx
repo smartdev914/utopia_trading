@@ -225,8 +225,8 @@ const Presale = () => {
                             </div>
                         ) : (
                             <>
-                                {window.ethereum ? (
-                                    <div className="presale-module">{accessGranted ? presaleModuleContent : <Button title="Connect MetaMask Wallet" onClick={loadPubKey} />}</div>
+                                {bscContext.hasDappBrowser ? (
+                                    <div className="presale-module">{bscContext.currentAccountAddress ? presaleModuleContent : <Button title="Connect Wallet" onClick={loadPubKey} />}</div>
                                 ) : (
                                     <div className="presale-module dapp-disabled">
                                         <Text content="Looks like you need a Dapp browser to get started." />

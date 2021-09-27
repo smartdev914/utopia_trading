@@ -18,6 +18,7 @@
         "@reach/accordion": "^0.11.2",
         "@redq/reuse-modal": "^1.1.9",
         "@styled-system/theme-get": "^5.1.2",
+        "@walletconnect/web3-provider": "^1.6.5",
         "axios": "^0.21.4",
         "bignumber": "^1.1.0",
         "bignumber.js": "^9.0.1",
@@ -68,8 +69,9 @@
         "styled-components": "^5.2.1",
         "styled-system": "5.1.5",
         "swiper": "^6.4.11",
-        "web3": "^1.5.2",
+        "web3": "^1.5.3",
         "web3-eth-contract": "^1.5.2",
+        "web3modal": "^1.9.4",
         "worker-loader": "^3.0.8"
     },
     "devDependencies": {
