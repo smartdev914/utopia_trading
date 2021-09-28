@@ -5,6 +5,8 @@ import Text from 'common/components/Text'
 import Image from 'next/image'
 import Button from 'common/components/Button'
 import Container from 'common/components/UI/Container'
+import isAfter from 'date-fns/isAfter'
+import fromUnixTime from 'date-fns/fromUnixTime'
 
 import { Spinner } from 'react-bootstrap'
 import BSCContext from 'context/BSCContext'
@@ -119,7 +121,7 @@ const Presale = () => {
     }
 
     if (presaleFinalized) {
-        if (presalePurchased) {
+        if (presalePurchased && isAfter(Date.now(), fromUnixTime('1633050000'))) {
             presaleModuleContent = (
                 <>
                     <Text content="Thank you. Presale has ended." />
