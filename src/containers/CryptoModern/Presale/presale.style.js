@@ -89,7 +89,7 @@ export const BannerContent = styled.div`
         margin-bottom: 50px;
 
         > * {
-            margin-bottom: 20px !important;
+            margin-bottom: 15px !important;
         }
 
         > div {
@@ -113,7 +113,7 @@ export const BannerContent = styled.div`
             padding-left: 10px;
         }
         button {
-            background-color: var(--primaryTextColor);
+            background-color: #f9df00;
             span {
                 font-weight: 500;
                 color: var(--primaryBackgroundColor);
@@ -158,6 +158,10 @@ export const BannerContent = styled.div`
         }
     }
 
+    .highlight {
+        color: #f9df00;
+    }
+
     .available-bnb {
         font-size: 20px;
         display: flex;
@@ -169,8 +173,9 @@ export const BannerContent = styled.div`
         }
     }
 
-    .wallet-address {
-        font-size: 16px;
+    .wallet-address,
+    .max-contribution {
+        font-size: 18px;
     }
 `
 

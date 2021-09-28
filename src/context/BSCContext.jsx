@@ -1,6 +1,6 @@
 import utopiaDexABI from 'ABI/utopiaDexABI'
 import axios from 'axios'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import Web3 from 'web3'
 import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'

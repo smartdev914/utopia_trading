@@ -91,12 +91,10 @@ const Presale = () => {
                 </>
             ) : (
                 <>
-                    <p>
-                        <Text as="div" content="Max Contribution:" />
-                        <Text as="span" content={`${maxPurchaseableTokens} BNB = ${maxPurchaseableTokens * (presaleTokens / presaleBNB)} UTP`} />
-                    </p>
+                    <Text className="max-contribution" as="div" content="Max Contribution:" />
+                    <Text className="highlight" as="p" content={`${maxPurchaseableTokens} BNB = ${maxPurchaseableTokens * (presaleTokens / presaleBNB)} UTP`} />
                     <Text className="wallet-address" content={`Wallet Address: ${bscContext.currentAccountAddress}`} />
-                    <Text as="div" content={`Current Balance: ${window.web3.utils.fromWei(bscContext.currentBnbBalance)} BNB`} />
+                    <Text as="div" content={`Current Balance: ${round(window.web3.utils.fromWei(bscContext.currentBnbBalance), 4)} BNB`} />
                     {bscContext.currentBnbBalance > maxPurchaseableTokens ? <Button title="Contribute to the Presale!" onClick={handleBuyPresale} /> : <Text content="Insufficient Funds..." />}
                 </>
             )}

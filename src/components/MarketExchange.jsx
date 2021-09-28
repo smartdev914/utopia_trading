@@ -12,6 +12,8 @@ export default function MarketTrade() {
     const [fromBNB, toggleFromBnb] = useState(true)
     const [tokenA, setTokenA] = useState(supportedTokens[0])
     const [tokenB, setTokenB] = useState(supportedTokens[2])
+    const [tokenAAmount, setTokenAAmount] = useState('')
+    const [tokenBAmount, setTokenBAmount] = useState('')
     const [showTokenModal, toggleShowTokenModal] = useState(false)
 
     const [pancakePairContract, setPancakePairContract] = useState('')
@@ -23,6 +25,9 @@ export default function MarketTrade() {
         const tempToken = tokenA
         setTokenA(tokenB)
         setTokenB(tempToken)
+
+        console.log(tokenAAmount)
+        console.log(tokenBAmount)
     }
 
     useEffect(() => {
@@ -45,9 +50,10 @@ export default function MarketTrade() {
                 })
                 const currentContract = new window.web3.eth.Contract(JSON.parse(contractABI.data.result), currentPancakePairAddress)
                 setPancakePairContract(currentContract)
+                console.log({ currentPancakePairAddress, tokenA, tokenB, currentContract })
             }
         }
-    }, [tokenA, tokenB, fromBNB])
+    }, [tokenA, tokenB, fromBNB, bscContext.pancakeSwapContract])
 
     const onSwapClick = () => {
         if (pancakePairContract && bscContext.currentAccountAddress) {
@@ -69,10 +75,13 @@ export default function MarketTrade() {
                                         <input
                                             type="number"
                                             className="form-control"
-                                            placeholder="From"
+                                            placeholder={fromBNB ? 'From' : 'To (estimated)'}
                                             required
                                             onWheel={() => {
                                                 document.activeElement.blur()
+                                            }}
+                                            onChange={(e) => {
+                                                setTokenAAmount(e.target.value)
                                             }}
                                         />
                                         <div className="input-group-append">
@@ -83,10 +92,13 @@ export default function MarketTrade() {
                                         <input
                                             type="number"
                                             className="form-control"
-                                            placeholder="To (estimated)"
+                                            placeholder={fromBNB ? 'To (estimated)' : 'From'}
                                             required
                                             onWheel={() => {
                                                 document.activeElement.blur()
+                                            }}
+                                            onChange={(e) => {
+                                                setTokenBAmount(e.target.value)
                                             }}
                                         />
                                         <div className="input-group-append">
