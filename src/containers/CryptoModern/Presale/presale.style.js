@@ -174,7 +174,8 @@ export const BannerContent = styled.div`
     }
 
     .wallet-address,
-    .max-contribution {
+    .max-contribution,
+    .current-balance {
         font-size: 18px;
     }
 `

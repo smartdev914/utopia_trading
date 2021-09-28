@@ -10,6 +10,7 @@ import fromUnixTime from 'date-fns/fromUnixTime'
 
 import { Spinner } from 'react-bootstrap'
 import BSCContext from 'context/BSCContext'
+import web3 from 'web3'
 import BannerWrapper, { BannerContent } from './presale.style'
 
 const Presale = () => {
@@ -38,7 +39,7 @@ const Presale = () => {
     useEffect(async () => {
         if (bscContext.presaleContract) {
             const tokensPurchasedInWei = await bscContext.presaleContract.methods.weiRaised().call()
-            const totalPurchasedTokens = window.web3.utils.fromWei(tokensPurchasedInWei)
+            const totalPurchasedTokens = web3.utils.fromWei(tokensPurchasedInWei)
             setTotalPurchasedBnb(totalPurchasedTokens)
             const finalized = await bscContext.presaleContract.methods.finalized().call()
             setPresaleFinalized(finalized)
@@ -55,7 +56,7 @@ const Presale = () => {
     useEffect(async () => {
         if (bscContext.currentAccountAddress && bscContext.presaleContract) {
             const bnbAllowance = await bscContext.presaleContract.methods.viewBnbAllowanceForUser(bscContext.currentAccountAddress).call()
-            const allowedBnb = window.web3.utils.fromWei(bnbAllowance)
+            const allowedBnb = web3.utils.fromWei(bnbAllowance)
             setMaxPurchaseableTokens(allowedBnb)
         }
     }, [bscContext.currentAccountAddress, bscContext.presaleContract])
@@ -63,7 +64,7 @@ const Presale = () => {
     const round = (value, decimals) => Number(`${Math.round(`${value}e${decimals}`)}e-${decimals}`)
 
     const handleBuyPresale = () => {
-        const bnbAmount = window.web3.utils.toWei(`${maxPurchaseableTokens}`)
+        const bnbAmount = web3.utils.toWei(`${maxPurchaseableTokens}`)
         if (bscContext.presaleContract) {
             setLoadingPurchase(true)
             bscContext.presaleContract.methods
@@ -92,9 +93,9 @@ const Presale = () => {
             ) : (
                 <>
                     <Text className="max-contribution" as="div" content="Max Contribution:" />
-                    <Text className="highlight" as="p" content={`${maxPurchaseableTokens} BNB = ${maxPurchaseableTokens * (presaleTokens / presaleBNB)} UTP`} />
+                    <Text className="highlight" as="p" content={`${maxPurchaseableTokens} BNB = ${(maxPurchaseableTokens * (presaleTokens / presaleBNB)).toLocaleString()} UTP`} />
                     <Text className="wallet-address" content={`Wallet Address: ${bscContext.currentAccountAddress}`} />
-                    <Text as="div" content={`Current Balance: ${round(window.web3.utils.fromWei(bscContext.currentBnbBalance), 4)} BNB`} />
+                    <Text className="current-balance" as="div" content={`Current Balance: ${round(web3.utils.fromWei(bscContext.currentBnbBalance), 4)} BNB`} />
                     {bscContext.currentBnbBalance > maxPurchaseableTokens ? <Button title="Contribute to the Presale!" onClick={handleBuyPresale} /> : <Text content="Insufficient Funds..." />}
                 </>
             )}
@@ -194,7 +195,7 @@ const Presale = () => {
                                 <div className="presaleBar">
                                     <div className="presaleProgressBar">
                                         <div className="filledBar" style={{ width: `${(totalPurchasedBnb / presaleBNB) * 100}%` }} />
-                                        <Text className="progressText" as="div" content={`${round(totalPurchasedBnb, 3)} BNB / ${presaleBNB} BNB`} />
+                                        <Text className="progressText" as="div" content={`${round(totalPurchasedBnb, 3)} BNB Raised/ ${presaleBNB} BNB Total`} />
                                     </div>
                                 </div>
                             </>
