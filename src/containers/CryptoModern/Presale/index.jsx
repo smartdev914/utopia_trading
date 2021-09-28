@@ -6,7 +6,6 @@ import Image from 'next/image'
 import Button from 'common/components/Button'
 import Container from 'common/components/UI/Container'
 
-import Input from 'common/components/Input'
 import { Spinner } from 'react-bootstrap'
 import BSCContext from 'context/BSCContext'
 import BannerWrapper, { BannerContent } from './presale.style'
@@ -18,15 +17,13 @@ const Presale = () => {
 
     const presaleTokens = 300000000000
     const presaleBNB = 500
-    const [intendedBNBPurchaseAmount, setIntendedBNBPurchaseAmount] = useState(0)
-    const [intendedUTPPurchaseAmount, setIntendedUTPPurchaseAmount] = useState(0)
     const [loadingPurchase, setLoadingPurchase] = useState(false)
     const [errorMessage, setErrorMessage] = useState(false)
     const [totalPurchasedBnb, setTotalPurchasedBnb] = useState(0)
     const [presaleFinalized, setPresaleFinalized] = useState(false)
     const [presalePurchased, setPresalePurchased] = useState(false)
     const [loadingWithdraw, setLoadingWithdraw] = useState(false)
-    const [maxPurchaseableTokens, setMaxPurchaseableTokens] = useState(1)
+    const [maxPurchaseableTokens, setMaxPurchaseableTokens] = useState(0)
 
     const bscContext = useContext(BSCContext)
 
@@ -38,7 +35,7 @@ const Presale = () => {
 
     useEffect(async () => {
         if (bscContext.presaleContract) {
-            const tokensPurchasedInWei = await bscContext.presaleContract.methods.tokensAlreadyPurchased().call()
+            const tokensPurchasedInWei = await bscContext.presaleContract.methods.weiRaised().call()
             const totalPurchasedTokens = window.web3.utils.fromWei(tokensPurchasedInWei)
             setTotalPurchasedBnb(totalPurchasedTokens)
             const finalized = await bscContext.presaleContract.methods.finalized().call()
@@ -56,26 +53,22 @@ const Presale = () => {
     useEffect(async () => {
         if (bscContext.currentAccountAddress && bscContext.presaleContract) {
             const bnbAllowance = await bscContext.presaleContract.methods.viewBnbAllowanceForUser(bscContext.currentAccountAddress).call()
-            const purchasedTokensInWei = await bscContext.presaleContract.methods.purchasedBnb(bscContext.currentAccountAddress).call()
             const allowedBnb = window.web3.utils.fromWei(bnbAllowance)
-            const bnbPurchased = window.web3.utils.fromWei(purchasedTokensInWei)
-            setMaxPurchaseableTokens(allowedBnb - bnbPurchased)
+            setMaxPurchaseableTokens(allowedBnb)
         }
     }, [bscContext.currentAccountAddress, bscContext.presaleContract])
 
     const round = (value, decimals) => Number(`${Math.round(`${value}e${decimals}`)}e-${decimals}`)
 
     const handleBuyPresale = () => {
-        const bnbAmount = window.web3.utils.toWei(intendedBNBPurchaseAmount.toString())
+        const bnbAmount = window.web3.utils.toWei(`${maxPurchaseableTokens}`)
         if (bscContext.presaleContract) {
             setLoadingPurchase(true)
             bscContext.presaleContract.methods
                 .buyTokens(bscContext.currentAccountAddress)
                 .send({ from: bscContext.currentAccountAddress, value: bnbAmount })
                 .then((result) => {
-                    if (Object.keys(result).length !== 0) {
-                        setMaxPurchaseableTokens(maxPurchaseableTokens - intendedBNBPurchaseAmount)
-                    } else {
+                    if (Object.keys(result).length === 0) {
                         setErrorMessage(`This wallet is not white listed!`)
                     }
                     setLoadingPurchase(false)
@@ -87,63 +80,24 @@ const Presale = () => {
         }
     }
 
-    const maxOutBNB = () => {
-        setIntendedBNBPurchaseAmount(Math.min(bscContext.currentBnbBalance, maxPurchaseableTokens.toFixed(6)))
-        setIntendedUTPPurchaseAmount((presaleTokens / presaleBNB) * Math.min(bscContext.currentBnbBalance, maxPurchaseableTokens.toFixed(6)))
-    }
-
-    let presaleModuleContent = (
+    let presaleModuleContent = bscContext.currentAccountAddress && (
         <>
-            {bscContext.currentAccountAddress && bscContext.currentBnbBalance && (
+            {maxPurchaseableTokens < 1 ? (
                 <>
-                    <div className="available-bnb">
-                        <div className="balance-row">
-                            <Text as="span" content="Available Balance:&nbsp;" />
-                            <Text className="available-bnb-value" as="span" content={`${window.web3.utils.fromWei(bscContext.currentBnbBalance)} BNB`} onClick={maxOutBNB} />
-                        </div>
-                        <div className="balance-row">
-                            <Text as="span" content="Allowed Contribution:&nbsp;" />
-                            <Text className="available-bnb-value" as="span" content={`${round(maxPurchaseableTokens, 3)} BNB`} onClick={maxOutBNB} />
-                        </div>
-                    </div>
+                    <Text content="Unable to contribute to presale!" />
+                    <Text content="This address is not white listed or you have already contributed!" />
+                </>
+            ) : (
+                <>
+                    <p>
+                        <Text as="div" content="Max Contribution:" />
+                        <Text as="span" content={`${maxPurchaseableTokens} BNB = ${maxPurchaseableTokens * (presaleTokens / presaleBNB)} UTP`} />
+                    </p>
+                    <Text className="wallet-address" content={`Wallet Address: ${bscContext.currentAccountAddress}`} />
+                    <Text as="div" content={`Current Balance: ${window.web3.utils.fromWei(bscContext.currentBnbBalance)} BNB`} />
+                    {bscContext.currentBnbBalance > maxPurchaseableTokens ? <Button title="Contribute to the Presale!" onClick={handleBuyPresale} /> : <Text content="Insufficient Funds..." />}
                 </>
             )}
-            <Input
-                inputType="number"
-                isMaterial
-                label="BNB amount"
-                externalValue={intendedBNBPurchaseAmount}
-                onChange={(e) => {
-                    setIntendedBNBPurchaseAmount(e)
-                }}
-                onBlur={(e) => {
-                    let newValue = e.target.value
-                    if (newValue >= maxPurchaseableTokens) {
-                        newValue = maxPurchaseableTokens
-                        setIntendedBNBPurchaseAmount(maxPurchaseableTokens.toFixed(6))
-                    }
-                    setIntendedUTPPurchaseAmount((presaleTokens / presaleBNB) * newValue)
-                }}
-            />
-            <Image src="/assets/image/icons/swapCoins.svg" width={50} height={50} />
-            <Input
-                inputType="number"
-                isMaterial
-                label="UTP amount (estimated)"
-                externalValue={intendedUTPPurchaseAmount}
-                onChange={setIntendedUTPPurchaseAmount}
-                onBlur={(e) => {
-                    let newValue = e.target.value
-                    if (newValue > (presaleTokens / presaleBNB) * maxPurchaseableTokens) {
-                        newValue = (presaleTokens / presaleBNB) * maxPurchaseableTokens
-                        setIntendedUTPPurchaseAmount(newValue)
-                        setIntendedBNBPurchaseAmount(maxPurchaseableTokens)
-                    } else {
-                        setIntendedBNBPurchaseAmount(((presaleBNB / presaleTokens) * newValue).toFixed(6))
-                    }
-                }}
-            />
-            <Button title="Purchase" onClick={handleBuyPresale} />
         </>
     )
 

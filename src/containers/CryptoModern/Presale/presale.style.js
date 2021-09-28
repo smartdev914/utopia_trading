@@ -168,6 +168,10 @@ export const BannerContent = styled.div`
             flex-direction: row;
         }
     }
+
+    .wallet-address {
+        font-size: 16px;
+    }
 `
 
 export const ButtonGroup = styled.div`
