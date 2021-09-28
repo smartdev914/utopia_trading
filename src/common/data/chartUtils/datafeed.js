@@ -29,6 +29,7 @@ const supportedChartTokens = [
         symbol: 'CAKE/BNB',
         type: 'crypto',
         address: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+        pricescale: 10 ** 9,
     },
     {
         description: 'BAKE/BNB',
@@ -37,6 +38,7 @@ const supportedChartTokens = [
         symbol: 'BAKE/BNB',
         type: 'crypto',
         address: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+        pricescale: 10 ** 9,
     },
     {
         description: 'SAFEMOON/BNB',
@@ -45,6 +47,7 @@ const supportedChartTokens = [
         symbol: 'SAFEMOON/BNB',
         type: 'crypto',
         address: '0x8076c74c5e3f5852037f31ff0093eeb8c8add8d3',
+        pricescale: 10 ** 12,
     },
     {
         description: 'COIN98/BNB',
@@ -53,6 +56,7 @@ const supportedChartTokens = [
         symbol: 'COIN98/BNB',
         type: 'crypto',
         address: '0xaec945e04baf28b135fa7c640f624f8d90f1c3a6',
+        pricescale: 10 ** 9,
     },
     {
         description: '1INCH/BNB',
@@ -61,6 +65,7 @@ const supportedChartTokens = [
         symbol: '1INCH/BNB',
         type: 'crypto',
         address: '0x111111111117dc0aa78b770fa6a738034120c302',
+        pricescale: 10 ** 9,
     },
     {
         description: 'ONT/BNB',
@@ -69,6 +74,7 @@ const supportedChartTokens = [
         symbol: 'ONT/BNB',
         type: 'crypto',
         address: '0xfd7b3a77848f1c2d67e05e54d78d174a0c850335',
+        pricescale: 10 ** 9,
     },
     {
         description: 'SXP/BNB',
@@ -77,6 +83,7 @@ const supportedChartTokens = [
         symbol: 'SXP/BNB',
         type: 'crypto',
         address: '0x47bead2563dcbf3bf2c9407fea4dc236faba485a',
+        pricescale: 10 ** 9,
     },
 ]
 
@@ -109,7 +116,7 @@ export default {
             timezone: 'Etc/UTC',
             exchange: symbolItem.exchange,
             minmov: 1,
-            pricescale: 10 ** 6,
+            pricescale: symbolItem.pricescale,
             has_intraday: true,
             has_no_volume: true,
             has_weekly_and_monthly: false,
@@ -117,6 +124,7 @@ export default {
             volume_precision: 2,
             data_status: 'streaming',
             address: symbolItem.address,
+            has_empty_bars: true
         }
 
         onSymbolResolvedCallback(symbolInfo)
