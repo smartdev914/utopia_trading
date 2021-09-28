@@ -4,9 +4,8 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { Document, Page, pdfjs } from 'react-pdf'
 // import pdf worker as a url, see `next.config.js` and `pdf-worker.js`
 import Button from 'common/components/Button'
-import workerSrc from '../../../../pdf-worker'
 
-pdfjs.GlobalWorkerOptions.workerSrc = workerSrc
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
 
 export default function PDFViewer({ toggleShowWhitePaper }) {
     const [file, setFile] = useState('../../../../assets/docs/Utopia_Whitepaper.pdf')
