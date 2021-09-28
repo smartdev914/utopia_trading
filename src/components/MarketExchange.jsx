@@ -6,13 +6,21 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
 import BSCContext from 'context/BSCContext'
 import axios from 'axios'
+import web3 from 'web3'
+import { round } from 'common/utils/numbers'
 import TokenModal from './TokenModal'
 
 export default function MarketTrade() {
     const [fromBNB, toggleFromBnb] = useState(true)
     const [tokenA, setTokenA] = useState(supportedTokens[0])
     const [tokenB, setTokenB] = useState(supportedTokens[2])
+    const [tokenAAmount, setTokenAAmount] = useState('')
+    const [tokenBAmount, setTokenBAmount] = useState('')
     const [showTokenModal, toggleShowTokenModal] = useState(false)
+    const [tokenAEstimated, setTokenAEstimated] = useState(false)
+
+    const [currentPricingInterval, setCurrentPricingInterval] = useState(null)
+    const [bnbToTokenRatio, setBnbToTokenRatio] = useState(0)
 
     const [pancakePairContract, setPancakePairContract] = useState('')
 
@@ -20,9 +28,16 @@ export default function MarketTrade() {
 
     const clickToggleFromBNB = () => {
         toggleFromBnb(!fromBNB)
+
         const tempToken = tokenA
         setTokenA(tokenB)
         setTokenB(tempToken)
+
+        const tempTokenAmount = tokenAAmount
+        setTokenAAmount(tokenBAmount)
+        setTokenBAmount(tempTokenAmount)
+
+        setTokenAEstimated(!tokenAEstimated)
     }
 
     useEffect(() => {
@@ -30,6 +45,7 @@ export default function MarketTrade() {
     }, [])
 
     useEffect(async () => {
+        // gets new pancake swap contract if tokens change
         if (bscContext.pancakeSwapContract) {
             const currentPancakePairAddress = fromBNB
                 ? await bscContext.pancakeSwapContract.methods.getPair(tokenA.address, tokenB.address).call()
@@ -47,7 +63,37 @@ export default function MarketTrade() {
                 setPancakePairContract(currentContract)
             }
         }
-    }, [tokenA, tokenB, fromBNB])
+        // update values of inputs
+    }, [tokenA, tokenB, fromBNB, bscContext.pancakeSwapContract])
+
+    useEffect(async () => {
+        if (currentPricingInterval) {
+            clearInterval(currentPricingInterval)
+        }
+        const getAndSetRatio = async () => {
+            const moralisResponse = await axios.get(`https://deep-index.moralis.io/api/v2/erc20/${fromBNB ? tokenB.address : tokenA.address}/price?chain=bsc`, {
+                headers: {
+                    accept: 'application/json',
+                    'X-API-Key': 'c2YpyMVhR0Kg1Oyjw0AuwFAnv3DcqmtDAmp8o3Wne4m9V2gUg47fjSjZLbgg8ZNs',
+                },
+            })
+            const ratio = web3.utils.fromWei(moralisResponse.data.nativePrice.value)
+            setBnbToTokenRatio(round(ratio, 6))
+        }
+        await getAndSetRatio()
+        const interval = setInterval(async () => {
+            await getAndSetRatio()
+        }, 7500)
+        setCurrentPricingInterval(interval)
+    }, [fromBNB, tokenA.address, tokenB.address])
+
+    useEffect(() => {
+        if (tokenAEstimated) {
+            setTokenAAmount(round(fromBNB ? round(tokenBAmount, 6) * bnbToTokenRatio : round(tokenBAmount, 6) * (1 / bnbToTokenRatio), 6))
+        } else {
+            setTokenBAmount(round(fromBNB ? round(tokenAAmount, 6) * (1 / bnbToTokenRatio) : round(tokenAAmount, 6) * bnbToTokenRatio, 6))
+        }
+    }, [bnbToTokenRatio])
 
     const onSwapClick = () => {
         if (pancakePairContract && bscContext.currentAccountAddress) {
@@ -69,10 +115,18 @@ export default function MarketTrade() {
                                         <input
                                             type="number"
                                             className="form-control"
-                                            placeholder="From"
+                                            placeholder={`${fromBNB ? 'From ' : 'To '}  ${tokenAEstimated ? '(Estimated)' : ''}`}
                                             required
                                             onWheel={() => {
                                                 document.activeElement.blur()
+                                            }}
+                                            value={tokenAAmount}
+                                            onBlur={(e) => {
+                                                setTokenAEstimated(false)
+                                                setTokenBAmount(round(fromBNB ? round(e.target.value, 6) * (1 / bnbToTokenRatio) : round(e.target.value, 6) * bnbToTokenRatio, 6))
+                                            }}
+                                            onChange={(e) => {
+                                                setTokenAAmount(e.target.value)
                                             }}
                                         />
                                         <div className="input-group-append">
@@ -83,10 +137,18 @@ export default function MarketTrade() {
                                         <input
                                             type="number"
                                             className="form-control"
-                                            placeholder="To (estimated)"
+                                            placeholder={`${fromBNB ? 'To ' : 'From '}  ${tokenAEstimated ? '' : '(Estimated)'}`}
                                             required
+                                            value={tokenBAmount}
                                             onWheel={() => {
                                                 document.activeElement.blur()
+                                            }}
+                                            onChange={(e) => {
+                                                setTokenBAmount(e.target.value)
+                                            }}
+                                            onBlur={(e) => {
+                                                setTokenAEstimated(true)
+                                                setTokenAAmount(round(fromBNB ? round(e.target.value, 6) * bnbToTokenRatio : round(e.target.value, 6) * (1 / bnbToTokenRatio), 6))
                                             }}
                                         />
                                         <div className="input-group-append">
@@ -96,6 +158,8 @@ export default function MarketTrade() {
                                     <div role="button" className="swap-coin-icon" onClick={clickToggleFromBNB} tabIndex="0">
                                         <Image src="/assets/image/icons/swapCoins.svg" width={45} height={45} />
                                     </div>
+                                    <div>{`${bnbToTokenRatio} ${!fromBNB ? tokenB.symbol : tokenA.symbol} per ${fromBNB ? tokenB.symbol : tokenA.symbol}`}</div>
+                                    <div>{`${round(1 / bnbToTokenRatio, 6)} ${!fromBNB ? tokenA.symbol : tokenB.symbol} per ${fromBNB ? tokenA.symbol : tokenB.symbol}`}</div>
                                     {bscContext.currentAccountAddress ? (
                                         <button type="submit" className="btn buy" onClick={onSwapClick}>
                                             Swap

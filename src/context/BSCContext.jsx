@@ -1,6 +1,6 @@
 import utopiaDexABI from 'ABI/utopiaDexABI'
 import axios from 'axios'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import Web3 from 'web3'
 import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
@@ -22,11 +22,6 @@ const BSCContextProvider = ({ children }) => {
     const pancakeSwapV2ContractAddress = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
 
     const loadUTPPresaleContract = useCallback(() => {
-        window.web3.eth.net.getId().then((netId) => {
-            if (netId !== 56) {
-                console.log('Please connect to the BSC Mainnet')
-            }
-        })
         const UtopiaContract = new window.web3.eth.Contract(bscPresaleABI, UtopiaPresaleBSCAddress)
         setPresaleContract(UtopiaContract)
     }, [UtopiaPresaleBSCAddress])
