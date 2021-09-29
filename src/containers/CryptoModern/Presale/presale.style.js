@@ -160,10 +160,11 @@ export const BannerContent = styled.div`
     }
 
     button {
-        background-color: #f9df00;
+        background-color: transparent;
+        border: 1px #f9df00 solid;
         span {
             font-weight: 500;
-            color: var(--primaryBackgroundColor);
+            color: #f9df00;
         }
     }
 
