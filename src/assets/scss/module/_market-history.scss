@@ -29,13 +29,16 @@
   color: #A3FFFF !important
 }
 
-.market-history .tabel-container>table>thead>tr{
-  visibility: hidden !important;
-  line-height: 0;
-  font-size: 1px;
-}
-
 .market-history a {
   color: #fff;
   text-decoration: none;
+}
+
+.market-history .table-wrapper {
+  position: relative;
+}
+
+.market-history .table-header {
+  position: absolute;
+  width: 100%
 }
