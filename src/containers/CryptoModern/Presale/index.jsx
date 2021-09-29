@@ -123,7 +123,7 @@ const Presale = () => {
             <>
                 <Text content="Thank you for Participating!" />
                 <Text content="Please return here after launch on Sept 30th to withdraw your UTP" />
-                <Text content="Welcome to Utopaia" />
+                <Text content="Welcome to Utopia" />
             </>
         )
     }
