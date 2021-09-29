@@ -43,7 +43,7 @@ export default function MarketHistory() {
                 },
             }
         )
-        return bitQueryResponse.data.data.ethereum.dexTrades[0].quotePrice
+        return bitQueryResponse?.data?.data?.ethereum?.dexTrades?.[0]?.quotePrice
     }
 
     useEffect(async () => {
@@ -71,7 +71,7 @@ export default function MarketHistory() {
                                 <th>Time</th>
                                 <th>Amount(BNB)</th>
                                 <th>Amount({`${appContext.currentlySelectedToken.symbol}`})</th>
-                                <th>Value (USD)</th>
+                                {currentTokenPriceInUSD && <th>Value (USD)</th>}
                             </tr>
                         </thead>
                     </table>
@@ -86,7 +86,7 @@ export default function MarketHistory() {
                                                 <td>{timeSince === 0 ? 'Just Now' : `${timeSince}m`}</td>
                                                 <td className="green">{transaction.sellAmount.toFixed(3)}</td>
                                                 <td className="green">{transaction.buyAmount.toFixed(3)}</td>
-                                                <td>{(transaction.buyAmount * currentTokenPriceInUSD).toFixed(2)}</td>
+                                                {currentTokenPriceInUSD && <td>{(transaction.buyAmount * currentTokenPriceInUSD).toFixed(2)}</td>}
                                             </tr>
                                         )
                                     }
@@ -96,7 +96,7 @@ export default function MarketHistory() {
                                             <td>{timeSince === 0 ? 'Just Now' : `${timeSince}m`}</td>
                                             <td className="red">{transaction.buyAmount.toFixed(3)}</td>
                                             <td className="red">{transaction.sellAmount.toFixed(3)}</td>
-                                            <td>{(transaction.buyAmount * currentTokenPriceInUSD).toFixed(2)}</td>
+                                            {currentTokenPriceInUSD && <td>{(transaction.buyAmount * currentTokenPriceInUSD).toFixed(2)}</td>}
                                         </tr>
                                     )
                                 })}

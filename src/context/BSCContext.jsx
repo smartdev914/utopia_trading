@@ -29,7 +29,7 @@ const BSCContextProvider = ({ children }) => {
     const [hasDappBrowser, setHasDappBrowser] = useState(false)
     const [currentBnbBalance, setBNBBalance] = useState('')
     const [pancakeSwapRouterV2, setPancakeSwapRouterV2] = useState(null)
-    const UtopiaPresaleBSCAddress = '0x97fB38850D535a8DC81c3773e2566134A2E3C100'
+    const UtopiaPresaleBSCAddress = '0xb89B1b9090063210726eBdd1fF999559a7Ac2D5d'
     const utopiaDexContractAddress = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
     const pancakeSwapV2ContractAddress = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
     const pancakeSwapRouterV2Address = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
