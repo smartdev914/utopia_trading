@@ -8,6 +8,17 @@ import bscPresaleABI from '../ABI/bscPresaleABI'
 
 const BSCContext = React.createContext()
 
+const nodes = [
+    // # 10+ nodes balanced, US/EU
+    'https://bsc-dataseed1.ninicoin.io',
+    // # 10+ nodes balanced, US/EU
+    'https://bsc-dataseed1.defibit.io',
+    // # 10+ nodes balanced in each region, global
+    'https://bsc-dataseed.binance.org',
+    // # Google Cloud Infrastructure Endpoint - Global
+    'https://nodes.pancakeswap.com/',
+]
+
 const BSCContextProvider = ({ children }) => {
     const [dexContract, setDexContract] = useState(null)
     const [pancakeSwapContract, setPancakeswapContract] = useState(null)
@@ -26,36 +37,35 @@ const BSCContextProvider = ({ children }) => {
         setPresaleContract(UtopiaContract)
     }, [UtopiaPresaleBSCAddress])
 
-    const setToBSCNet = async () => {
-        if (window.ethereum) {
+    const setupNetwork = async () => {
+        const provider = window.ethereum
+        if (provider) {
+            const chainId = 56
             try {
-                await window.ethereum.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: '0x38' }],
+                await provider.request({
+                    method: 'wallet_addEthereumChain',
+                    params: [
+                        {
+                            chainId: `0x${chainId.toString(16)}`,
+                            chainName: 'Binance Smart Chain Mainnet',
+                            nativeCurrency: {
+                                name: 'BNB',
+                                symbol: 'bnb',
+                                decimals: 18,
+                            },
+                            rpcUrls: nodes,
+                            blockExplorerUrls: [`https://bscscan.com/`],
+                        },
+                    ],
                 })
-            } catch (switchError) {
-                // This error code indicates that the chain has not been added to MetaMask.
-                if (switchError.code === 4902) {
-                    try {
-                        await window.ethereum.request({
-                            method: 'wallet_addEthereumChain',
-                            params: [
-                                {
-                                    chainId: '0x38',
-                                    chainName: 'Binance Smart Chain',
-                                    nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
-                                    rpcUrls: ['https://bsc-dataseed.binance.org/'],
-                                    blockExplorerUrls: ['https://bscscan.com/'],
-                                },
-                            ],
-                        })
-                    } catch (addError) {
-                        // eslint-disable-next-line no-alert
-                        window.alert('Error adding Binance Smart Chain')
-                    }
-                }
-                // handle other "switch" errors
+                return true
+            } catch (error) {
+                console.error('Failed to setup the network in Metamask:', error)
+                return false
             }
+        } else {
+            console.error("Can't setup the BSC network on metamask because window.ethereum is undefined")
+            return false
         }
     }
 
@@ -115,6 +125,10 @@ const BSCContextProvider = ({ children }) => {
 
         const provider = await web3Modal.connect()
 
+        console.log(window.ethereum)
+
+        const hasSetup = await setupNetwork()
+
         window.web3 = new Web3(provider)
         if (window.web3) {
             const accounts = await window.web3.eth.getAccounts()
@@ -125,11 +139,9 @@ const BSCContextProvider = ({ children }) => {
         }
         if (loadPresaleContract) {
             loadUTPPresaleContract()
-            setToBSCNet()
         }
         if (loadDexContract) {
             loadBSCDexContract()
-            setToBSCNet()
             loadPancakeSwapV2Contract()
         }
     }
