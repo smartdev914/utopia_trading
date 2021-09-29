@@ -28,9 +28,11 @@ const BSCContextProvider = ({ children }) => {
     const [loadPresaleContract, setLoadPresaleContract] = useState(false)
     const [hasDappBrowser, setHasDappBrowser] = useState(false)
     const [currentBnbBalance, setBNBBalance] = useState('')
+    const [pancakeSwapRouterV2, setPancakeSwapRouterV2] = useState(null)
     const UtopiaPresaleBSCAddress = '0x97fB38850D535a8DC81c3773e2566134A2E3C100'
     const utopiaDexContractAddress = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
     const pancakeSwapV2ContractAddress = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
+    const pancakeSwapRouterV2Address = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
 
     const loadUTPPresaleContract = useCallback(() => {
         const UtopiaContract = new window.web3.eth.Contract(bscPresaleABI, UtopiaPresaleBSCAddress)
@@ -95,6 +97,23 @@ const BSCContextProvider = ({ children }) => {
         }
     }
 
+    const loadPancakeSwapRouterV2Contract = async () => {
+        if (window.web3) {
+            const contractABI = await axios.get('https://api.bscscan.com/api', {
+                params: {
+                    module: 'contract',
+                    action: 'getabi',
+                    address: pancakeSwapRouterV2Address,
+                    apiKey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
+                },
+            })
+            const currentContract = new window.web3.eth.Contract(JSON.parse(contractABI.data.result), pancakeSwapRouterV2Address)
+            if (!pancakeSwapRouterV2) {
+                setPancakeSwapRouterV2(currentContract)
+            }
+        }
+    }
+
     const triggerDappModal = async () => {
         const providerOptions = {
             walletconnect: {
@@ -143,6 +162,7 @@ const BSCContextProvider = ({ children }) => {
         if (loadDexContract) {
             loadBSCDexContract()
             loadPancakeSwapV2Contract()
+            loadPancakeSwapRouterV2Contract()
         }
     }
 

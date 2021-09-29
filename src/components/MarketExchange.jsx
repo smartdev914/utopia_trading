@@ -60,7 +60,11 @@ export default function MarketTrade() {
                     },
                 })
                 const currentContract = new window.web3.eth.Contract(JSON.parse(contractABI.data.result), currentPancakePairAddress)
-                setPancakePairContract(currentContract)
+                // setPancakePairContract(currentContract)
+                // console.log(currentPancakePairAddress)
+                // console.log("abcde")
+                // console.log(currentContract)
+                // console.log(currentPancakePairAddress)
             }
         }
         // update values of inputs
@@ -96,8 +100,14 @@ export default function MarketTrade() {
     }, [bnbToTokenRatio])
 
     const onSwapClick = () => {
-        if (pancakePairContract && bscContext.currentAccountAddress) {
-            pancakePairContract.methods.approve(bscContext.currentAccountAddress)
+
+        // Also verify pancakeSwapRouterV2Address
+        if (pancakePairContract && bscContext.currentAccountAddress && bscContext.pancakeSwapRouterV2) {
+            // TODO: Check tokenA is approved for swap (Maybe put this logic in another function?)
+
+            // TODO: Change 0 to value depending on desired slippage
+            // TODO: Consider changing deadline value to something else in the future (for slower executing times?)
+            bscContext.pancakeSwapRouterV2.swapExactETHForTokensSupportingFeeOnTransferTokens(tokenAAmount, 0, [tokenA, tokenB], bscContext.currentAccountAddres, Math.floor(Date.now() / 1000) + 30)
         }
     }
 
