@@ -48,7 +48,7 @@ const Presale = () => {
     useEffect(async () => {
         if (bscContext.currentAccountAddress && bscContext.presaleContract) {
             const presalePurchasedValue = await bscContext.presaleContract.methods.purchasedBnb(bscContext.currentAccountAddress).call()
-            setPresalePurchased(Boolean(presalePurchasedValue))
+            setPresalePurchased(parseInt(presalePurchasedValue, 10) > 0)
         }
     }, [bscContext.currentAccountAddress, bscContext.presaleContract])
 
@@ -122,7 +122,8 @@ const Presale = () => {
         presaleModuleContent = (
             <>
                 <Text content="Thank you for Participating!" />
-                <Text content="Please return here on Sept 30th to withdraw your UTP" />
+                <Text content="Please return here after launch on Sept 30th to withdraw your UTP" />
+                <Text content="Welcome to Utopia" />
             </>
         )
     }
@@ -200,12 +201,15 @@ const Presale = () => {
                                     <Text className="progressText" as="div" content={`${round(totalPurchasedBnb, 3)} BNB Raised/ ${presaleBNB} BNB Total`} />
                                 </div>
                             </div>
+                            <Text content="For MetaMask Users Only:" />
                             <Button
                                 title="Register UTP to your Wallet!"
                                 onClick={async () => {
                                     await bscContext.registerUTPToken()
                                 }}
                             />
+                            <Text content="If not using Metamask add the token address:" />
+                            <Text content="0x1a1d7c7A92e8d7f0de10Ae532ECD9f63B7EAf67c" />
                         </>
                     </Fade>
                 </BannerContent>
