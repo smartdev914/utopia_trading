@@ -25,6 +25,16 @@
     border-radius: 8px;
 }
 
+.market-history th {
+  color: #A3FFFF !important
+}
+
+.market-history .tabel-container>table>thead>tr{
+  visibility: hidden !important;
+  line-height: 0;
+  font-size: 1px;
+}
+
 .market-history a {
   color: #fff;
   text-decoration: none;
