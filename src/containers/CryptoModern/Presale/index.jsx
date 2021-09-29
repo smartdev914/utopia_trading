@@ -32,8 +32,8 @@ const Presale = () => {
     const bscContext = useContext(BSCContext)
 
     useEffect(() => {
-        const triggerAppRefreshOnFocus = async (address, contract) => {
-            if ((address, contract)) {
+        const interval = setInterval(async () => {
+            if ((bscContext.currentAccountAddress, bscContext.presaleContract)) {
                 const presalePurchasedValue = await bscContext.presaleContract.methods.purchasedBnb(bscContext.currentAccountAddress).call()
                 setPresalePurchased(parseInt(presalePurchasedValue, 10) > 0)
                 const bnbAllowance = await bscContext.presaleContract.methods.viewBnbAllowanceForUser(bscContext.currentAccountAddress).call()
@@ -44,13 +44,16 @@ const Presale = () => {
                 setTotalPurchasedBnb(totalPurchasedTokens)
                 const finalized = await bscContext.presaleContract.methods.finalized().call()
                 setPresaleFinalized(finalized)
+                if (parseInt(presalePurchasedValue, 10) > 0) {
+                    clearInterval(interval)
+                }
             }
-        }
+        }, 1000)
 
-        window.addEventListener('focus', () => {
-            triggerAppRefreshOnFocus(bscContext.currentAccountAddress, bscContext.presaleContract)
-        })
-    }, [])
+        return () => {
+            clearInterval(interval)
+        }
+    }, [bscContext.currentAccountAddress, bscContext.presaleContract])
 
     useEffect(() => {
         bscContext.setLoadPresaleContract(true)
