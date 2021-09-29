@@ -33,6 +33,7 @@ const Presale = () => {
 
     useEffect(() => {
         bscContext.setLoadPresaleContract(true)
+        localStorage.removeItem('walletconnect')
     }, [])
 
     useEffect(async () => {

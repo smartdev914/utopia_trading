@@ -144,10 +144,6 @@ const BSCContextProvider = ({ children }) => {
 
         const provider = await web3Modal.connect()
 
-        console.log(window.ethereum)
-
-        const hasSetup = await setupNetwork()
-
         window.web3 = new Web3(provider)
         if (window.web3) {
             const accounts = await window.web3.eth.getAccounts()
