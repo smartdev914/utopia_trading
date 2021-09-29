@@ -32,10 +32,8 @@ const Presale = () => {
     const bscContext = useContext(BSCContext)
 
     useEffect(() => {
-        if (presaleGUID || millisecondsToSeconds(Date.now()) > 1632945600) {
-            bscContext.setLoadPresaleContract(true)
-        }
-    })
+        bscContext.setLoadPresaleContract(true)
+    }, [])
 
     useEffect(async () => {
         if (bscContext.presaleContract) {
@@ -173,40 +171,33 @@ const Presale = () => {
                         <Text className="tagline" content="Take part in our presale!" />
                     </Fade>
                     <Fade up delay={100}>
-                        {!presaleGUID ? (
-                            <div>
-                                <Text className="notBegunPresale" content="Pre-sale has not begun yet!" />
-                                <Text className="notBegunPresale" content="Coming soon, Sept. 29th" />
-                            </div>
-                        ) : (
-                            <>
-                                {bscContext.hasDappBrowser ? (
-                                    <div className="presale-module">{bscContext.currentAccountAddress ? presaleModuleContent : <Text content="No Wallet Address Provided" />}</div>
-                                ) : (
-                                    <div className="presale-module dapp-disabled">
-                                        <Text content="Please connect your wallet to continue" />
-                                        <Button
-                                            title="Connect Wallet"
-                                            onClick={async () => {
-                                                await bscContext.triggerDappModal()
-                                            }}
-                                        />
-                                    </div>
-                                )}
-                                <div className="presaleBar">
-                                    <div className="presaleProgressBar">
-                                        <div className="filledBar" style={{ width: `${(totalPurchasedBnb / presaleBNB) * 100}%` }} />
-                                        <Text className="progressText" as="div" content={`${round(totalPurchasedBnb, 3)} BNB Raised/ ${presaleBNB} BNB Total`} />
-                                    </div>
+                        <>
+                            {bscContext.hasDappBrowser ? (
+                                <div className="presale-module">{bscContext.currentAccountAddress ? presaleModuleContent : <Text content="No Wallet Address Provided" />}</div>
+                            ) : (
+                                <div className="presale-module dapp-disabled">
+                                    <Text content="Please connect your wallet to continue" />
+                                    <Button
+                                        title="Connect Wallet"
+                                        onClick={async () => {
+                                            await bscContext.triggerDappModal()
+                                        }}
+                                    />
                                 </div>
-                                <Button
-                                    title="Register UTP to your Wallet!"
-                                    onClick={async () => {
-                                        await bscContext.registerUTPToken()
-                                    }}
-                                />
-                            </>
-                        )}
+                            )}
+                            <div className="presaleBar">
+                                <div className="presaleProgressBar">
+                                    <div className="filledBar" style={{ width: `${(totalPurchasedBnb / presaleBNB) * 100}%` }} />
+                                    <Text className="progressText" as="div" content={`${round(totalPurchasedBnb, 3)} BNB Raised/ ${presaleBNB} BNB Total`} />
+                                </div>
+                            </div>
+                            <Button
+                                title="Register UTP to your Wallet!"
+                                onClick={async () => {
+                                    await bscContext.registerUTPToken()
+                                }}
+                            />
+                        </>
                     </Fade>
                 </BannerContent>
             </Container>
