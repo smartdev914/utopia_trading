@@ -32,10 +32,8 @@ const Presale = () => {
     const bscContext = useContext(BSCContext)
 
     useEffect(() => {
-        if (presaleGUID || millisecondsToSeconds(Date.now()) > 1632945600) {
-            bscContext.setLoadPresaleContract(true)
-        }
-    })
+        bscContext.setLoadPresaleContract(true)
+    }, [])
 
     useEffect(async () => {
         if (bscContext.presaleContract) {
