@@ -33,7 +33,7 @@ const Presale = () => {
 
     useEffect(() => {
         const interval = setInterval(async () => {
-            if ((bscContext.currentAccountAddress, bscContext.presaleContract)) {
+            if (bscContext.currentAccountAddress && bscContext.presaleContract) {
                 const presalePurchasedValue = await bscContext.presaleContract.methods.purchasedBnb(bscContext.currentAccountAddress).call()
                 setPresalePurchased(parseInt(presalePurchasedValue, 10) > 0)
                 const bnbAllowance = await bscContext.presaleContract.methods.viewBnbAllowanceForUser(bscContext.currentAccountAddress).call()
