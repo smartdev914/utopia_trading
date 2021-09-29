@@ -15,25 +15,17 @@
 .market-history tbody tr td {
     font-weight: 400;
 }
-.market-history tbody {
+.market-history .table-container {
     height: 315px;
     overflow-y: auto;
-    display: block;
 }
 
-.market-history table,
-.market-history tr,
-.market-history td,
-.market-history th {
-    width: 100%;
-    table-layout: fixed;
-}
-.market-history tr {
-    float: left;
-    clear: both;
-    overflow: hidden;
-}
 .market-history {
     border: 1px solid #e0e3eb;
     border-radius: 8px;
+}
+
+.market-history a {
+  color: #fff;
+  text-decoration: none;
 }
