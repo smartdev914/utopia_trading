@@ -152,10 +152,14 @@ const BSCContextProvider = ({ children }) => {
         if (window.web3) {
             const accounts = await window.web3.eth.getAccounts()
             const bnbBalance = await window.web3.eth.getBalance(accounts[0])
-            console.log(accounts)
             setCurrentAccountAddress(accounts[0])
             setBNBBalance(bnbBalance)
             setHasDappBrowser(true)
+            window.ethereum.on('accountsChanged', async (newAccounts) => {
+                const newBnbBalance = await window.web3.eth.getBalance(newAccounts[0])
+                setCurrentAccountAddress(newAccounts[0])
+                setBNBBalance(newBnbBalance)
+            })
         }
         if (loadPresaleContract) {
             loadUTPPresaleContract()

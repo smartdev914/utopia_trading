@@ -201,15 +201,17 @@ const Presale = () => {
                                     <Text className="progressText" as="div" content={`${round(totalPurchasedBnb, 3)} BNB Raised/ ${presaleBNB} BNB Total`} />
                                 </div>
                             </div>
-                            <Text content="For MetaMask Users Only:" />
+
+                            <Text content="REGISTER THE UTOPIA TOKEN ADDRESS TO YOUR WALLET" />
+                            <Text content="For Metamask users:" />
                             <Button
-                                title="Register UTP to your Wallet!"
+                                title="Click here to register token"
                                 onClick={async () => {
                                     await bscContext.registerUTPToken()
                                 }}
                             />
-                            <Text content="If not using Metamask add the token address:" />
-                            <Text content="0x1a1d7c7A92e8d7f0de10Ae532ECD9f63B7EAf67c" />
+                            <Text content="For all other users, manually add the following address:" />
+                            <Text className="highlight" content="0x1a1d7c7A92e8d7f0de10Ae532ECD9f63B7EAf67c" />
                         </>
                     </Fade>
                 </BannerContent>
