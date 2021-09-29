@@ -8,6 +8,7 @@ export default function MarketHistory() {
     const appContext = useContext(AppContext)
     const [recentTransactions, setRecentTransactions] = useState([])
     const [currentInterval, setCurrentInterval] = useState(null)
+    const [currentTokenPriceInUSD, setCurrentTokenPriceInUSD] = useState(0)
 
     const getRecentTrades = async (address) => {
         const recentTransactionsResponse = await axios.post(
@@ -24,6 +25,31 @@ export default function MarketHistory() {
         )
         setRecentTransactions(recentTransactionsResponse.data.data.ethereum.dexTrades)
     }
+
+    const getCurrentPriceOfTokeninUSD = async (address) => {
+        const bitQueryResponse = await axios.post(
+            'https://graphql.bitquery.io',
+            {
+                query: 'query($token: String, $currency: String){ ethereum(network: bsc) { address(address: {is: $token}) { smartContract { currency { symbol name decimals tokenType } } } dexTrades( baseCurrency: {is: $token} quoteCurrency: {is: $currency} options: {desc: ["block.height", "transaction.index"], limit: 1} ) { block { height timestamp { time(format: "%Y-%m-%d %H:%M:%S") } } transaction { index } baseCurrency { symbol } quoteCurrency { symbol } quotePrice } } }',
+                variables: {
+                    token: address,
+                    currency: '0x55d398326f99059ff775485246999027b3197955',
+                },
+            },
+            {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'X-API-KEY': 'BQYmsfh6zyChKKHtKogwvrjXLw8AJkdP',
+                },
+            }
+        )
+        return bitQueryResponse.data.data.ethereum.dexTrades[0].quotePrice
+    }
+
+    useEffect(async () => {
+        const currentPriceOfToken = await getCurrentPriceOfTokeninUSD(appContext.currentlySelectedToken.address)
+        setCurrentTokenPriceInUSD(currentPriceOfToken)
+    }, [appContext.currentlySelectedToken.address])
 
     useEffect(async () => {
         await getRecentTrades(appContext.currentlySelectedToken.address)
@@ -45,6 +71,7 @@ export default function MarketHistory() {
                                 <th>Time</th>
                                 <th>Amount(BNB)</th>
                                 <th>Amount({`${appContext.currentlySelectedToken.symbol}`})</th>
+                                <th>Value (USD)</th>
                             </tr>
                         </thead>
                     </table>
@@ -59,6 +86,7 @@ export default function MarketHistory() {
                                                 <td>{timeSince === 0 ? 'Just Now' : `${timeSince}m`}</td>
                                                 <td className="green">{transaction.sellAmount.toFixed(3)}</td>
                                                 <td className="green">{transaction.buyAmount.toFixed(3)}</td>
+                                                <td>{(transaction.buyAmount * currentTokenPriceInUSD).toFixed(2)}</td>
                                             </tr>
                                         )
                                     }
@@ -68,6 +96,7 @@ export default function MarketHistory() {
                                             <td>{timeSince === 0 ? 'Just Now' : `${timeSince}m`}</td>
                                             <td className="red">{transaction.buyAmount.toFixed(3)}</td>
                                             <td className="red">{transaction.sellAmount.toFixed(3)}</td>
+                                            <td>{(transaction.buyAmount * currentTokenPriceInUSD).toFixed(2)}</td>
                                         </tr>
                                     )
                                 })}
