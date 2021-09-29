@@ -112,6 +112,18 @@ const BSCContextProvider = ({ children }) => {
                 setPancakeSwapRouterV2(currentContract)
             }
         }
+
+        /*
+        ?module=account
+        &action=txlist
+        &address=0xF426a8d0A94bf039A35CEE66dBf0227A7a12D11e
+        &startblock=0
+        &endblock=99999999
+        &page=1
+        &offset=10
+        &sort=asc
+        &apikey=YourApiKeyToken
+        */
     }
 
     const triggerDappModal = async () => {
@@ -160,9 +172,9 @@ const BSCContextProvider = ({ children }) => {
             loadUTPPresaleContract()
         }
         if (loadDexContract) {
-            loadBSCDexContract()
-            loadPancakeSwapV2Contract()
-            loadPancakeSwapRouterV2Contract()
+            await loadBSCDexContract()
+            await loadPancakeSwapV2Contract()
+            await loadPancakeSwapRouterV2Contract()
         }
     }
 
@@ -179,6 +191,7 @@ const BSCContextProvider = ({ children }) => {
                 hasDappBrowser,
                 triggerDappModal,
                 currentBnbBalance,
+                pancakeSwapRouterV2,
             }}
         >
             {children}

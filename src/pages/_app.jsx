@@ -15,6 +15,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { pdfjs } from 'react-pdf'
 import { ThemeProvider } from 'context/ThemeContext'
 import { BSCContextProvider } from 'context/BSCContext'
+import { AppContextProvider } from 'context/AppContext'
 
 pdfjs.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js'
 
@@ -32,11 +33,13 @@ export default function CustomApp({ Component, pageProps }) {
             }}
         >
             <QueryClientProvider client={queryClient}>
-                <BSCContextProvider>
-                    <Modal>
-                        <Component {...pageProps} />
-                    </Modal>
-                </BSCContextProvider>
+                <AppContextProvider>
+                    <BSCContextProvider>
+                        <Modal>
+                            <Component {...pageProps} />
+                        </Modal>
+                    </BSCContextProvider>
+                </AppContextProvider>
             </QueryClientProvider>
         </ThemeProvider>
     )

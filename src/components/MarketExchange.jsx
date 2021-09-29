@@ -22,8 +22,6 @@ export default function MarketTrade() {
     const [currentPricingInterval, setCurrentPricingInterval] = useState(null)
     const [bnbToTokenRatio, setBnbToTokenRatio] = useState(0)
 
-    const [pancakePairContract, setPancakePairContract] = useState('')
-
     const bscContext = useContext(BSCContext)
 
     const clickToggleFromBNB = () => {
@@ -43,32 +41,6 @@ export default function MarketTrade() {
     useEffect(() => {
         bscContext.setLoadDexContract(true)
     }, [])
-
-    useEffect(async () => {
-        // gets new pancake swap contract if tokens change
-        if (bscContext.pancakeSwapContract) {
-            const currentPancakePairAddress = fromBNB
-                ? await bscContext.pancakeSwapContract.methods.getPair(tokenA.address, tokenB.address).call()
-                : await bscContext.pancakeSwapContract.methods.getPair(tokenB.address, tokenA.address).call()
-            if (window.web3) {
-                const contractABI = await axios.get('https://api.bscscan.com/api', {
-                    params: {
-                        module: 'contract',
-                        action: 'getabi',
-                        address: currentPancakePairAddress,
-                        apiKey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
-                    },
-                })
-                const currentContract = new window.web3.eth.Contract(JSON.parse(contractABI.data.result), currentPancakePairAddress)
-                // setPancakePairContract(currentContract)
-                // console.log(currentPancakePairAddress)
-                // console.log("abcde")
-                // console.log(currentContract)
-                // console.log(currentPancakePairAddress)
-            }
-        }
-        // update values of inputs
-    }, [tokenA, tokenB, fromBNB, bscContext.pancakeSwapContract])
 
     useEffect(async () => {
         if (currentPricingInterval) {
@@ -99,15 +71,19 @@ export default function MarketTrade() {
         }
     }, [bnbToTokenRatio])
 
-    const onSwapClick = () => {
-
+    const onSwapClick = async () => {
         // Also verify pancakeSwapRouterV2Address
-        if (pancakePairContract && bscContext.currentAccountAddress && bscContext.pancakeSwapRouterV2) {
+        if (bscContext.currentAccountAddress && bscContext.pancakeSwapRouterV2) {
             // TODO: Check tokenA is approved for swap (Maybe put this logic in another function?)
 
             // TODO: Change 0 to value depending on desired slippage
             // TODO: Consider changing deadline value to something else in the future (for slower executing times?)
-            bscContext.pancakeSwapRouterV2.swapExactETHForTokensSupportingFeeOnTransferTokens(tokenAAmount, 0, [tokenA, tokenB], bscContext.currentAccountAddres, Math.floor(Date.now() / 1000) + 30)
+            await bscContext.pancakeSwapRouterV2.methods
+                .swapExactETHForTokensSupportingFeeOnTransferTokens(0, [tokenA.address, tokenB.address], bscContext.currentAccountAddress, Math.floor(Date.now() / 1000) + 30)
+                .send({
+                    from: bscContext.currentAccountAddress,
+                    value: web3.utils.toWei(`${tokenAAmount}`),
+                })
         }
     }
 
@@ -171,7 +147,7 @@ export default function MarketTrade() {
                                     <div>{`${bnbToTokenRatio} ${!fromBNB ? tokenB.symbol : tokenA.symbol} per ${fromBNB ? tokenB.symbol : tokenA.symbol}`}</div>
                                     <div>{`${round(1 / bnbToTokenRatio, 6)} ${!fromBNB ? tokenA.symbol : tokenB.symbol} per ${fromBNB ? tokenA.symbol : tokenB.symbol}`}</div>
                                     {bscContext.currentAccountAddress ? (
-                                        <button type="submit" className="btn buy" onClick={onSwapClick}>
+                                        <button type="button" className="btn buy" onClick={onSwapClick}>
                                             Swap
                                         </button>
                                     ) : (
