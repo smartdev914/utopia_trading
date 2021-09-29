@@ -118,6 +118,15 @@ const Presale = () => {
         }
     }
 
+    if (presalePurchased) {
+        presaleModuleContent = (
+            <>
+                <Text content="Thank you for Participating!" />
+                <Text content="Please return here on Sept 30th to withdraw your UTP" />
+            </>
+        )
+    }
+
     if (presaleFinalized) {
         if (presalePurchased && isAfter(Date.now(), fromUnixTime('1633050000'))) {
             presaleModuleContent = (
