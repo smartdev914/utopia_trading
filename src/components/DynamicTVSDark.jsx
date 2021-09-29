@@ -7,7 +7,7 @@ export default function DynamicTVS() {
         const initTVwidget = () => {
             window.tvWidget = new window.TradingView.widget({
                 symbol: 'Utopia:CAKE/BNB', // default symbol
-                interval: '1D', // default interval
+                interval: '5', // default interval
                 container: 'tv_chart_container',
                 datafeed: Datafeed,
                 library_path: '/libs/charting_library_cloned_data/charting_library/',

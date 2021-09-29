@@ -168,6 +168,12 @@ td {
 .news-details p {
     font-size: 16px;
 }
+@media (min-width: 992px) {
+  .navbar-expand-lg .navbar-collapse {
+    padding-right: 1rem;
+    flex-direction: row-reverse
+  }
+}
 
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {

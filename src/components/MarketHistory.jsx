@@ -65,43 +65,53 @@ export default function MarketHistory() {
             <h3>TRADES</h3>
             <Tabs defaultActiveKey="recent-trades">
                 <Tab eventKey="recent-trades">
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Amount(BNB)</th>
-                                <th>Amount({`${appContext.currentlySelectedToken.symbol}`})</th>
-                                {currentTokenPriceInUSD && <th>Value (USD)</th>}
-                            </tr>
-                        </thead>
-                    </table>
-                    <div className="table-container">
-                        <table className="table">
-                            <tbody>
-                                {recentTransactions?.map((transaction) => {
-                                    if (transaction.buyCurrency.symbol.toLowerCase() === appContext.currentlySelectedToken.symbol.toLowerCase()) {
+                    <div className="table-wrapper">
+                        <table className="table-header">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Amount(BNB)</th>
+                                    <th>Amount({`${appContext.currentlySelectedToken.symbol}`})</th>
+                                    {currentTokenPriceInUSD && <th>Value (USD)</th>}
+                                </tr>
+                            </thead>
+                        </table>
+                        <div className="table-container">
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Amount(BNB)</th>
+                                        <th>Amount({`${appContext.currentlySelectedToken.symbol}`})</th>
+                                        {currentTokenPriceInUSD && <th>Value (USD)</th>}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {recentTransactions?.map((transaction) => {
+                                        if (transaction.buyCurrency.symbol.toLowerCase() === appContext.currentlySelectedToken.symbol.toLowerCase()) {
+                                            const timeSince = secondsToMinutes(millisecondsToSeconds(Date.now()) - getUnixTime(new Date(`${transaction.block.timestamp.time} GMT`)))
+                                            return (
+                                                <tr onClick={() => window.open(`https://bscscan.com/tx/${transaction.transaction.hash}`, '_blank')} key={transaction.transaction.hash}>
+                                                    <td>{timeSince === 0 ? 'Just Now' : `${timeSince}m`}</td>
+                                                    <td className="green">{transaction.sellAmount.toFixed(3)}</td>
+                                                    <td className="green">{transaction.buyAmount.toFixed(3)}</td>
+                                                    {currentTokenPriceInUSD && <td>{(transaction.buyAmount * currentTokenPriceInUSD).toFixed(2)}</td>}
+                                                </tr>
+                                            )
+                                        }
                                         const timeSince = secondsToMinutes(millisecondsToSeconds(Date.now()) - getUnixTime(new Date(`${transaction.block.timestamp.time} GMT`)))
                                         return (
                                             <tr onClick={() => window.open(`https://bscscan.com/tx/${transaction.transaction.hash}`, '_blank')} key={transaction.transaction.hash}>
                                                 <td>{timeSince === 0 ? 'Just Now' : `${timeSince}m`}</td>
-                                                <td className="green">{transaction.sellAmount.toFixed(3)}</td>
-                                                <td className="green">{transaction.buyAmount.toFixed(3)}</td>
+                                                <td className="red">{transaction.buyAmount.toFixed(3)}</td>
+                                                <td className="red">{transaction.sellAmount.toFixed(3)}</td>
                                                 {currentTokenPriceInUSD && <td>{(transaction.buyAmount * currentTokenPriceInUSD).toFixed(2)}</td>}
                                             </tr>
                                         )
-                                    }
-                                    const timeSince = secondsToMinutes(millisecondsToSeconds(Date.now()) - getUnixTime(new Date(`${transaction.block.timestamp.time} GMT`)))
-                                    return (
-                                        <tr onClick={() => window.open(`https://bscscan.com/tx/${transaction.transaction.hash}`, '_blank')} key={transaction.transaction.hash}>
-                                            <td>{timeSince === 0 ? 'Just Now' : `${timeSince}m`}</td>
-                                            <td className="red">{transaction.buyAmount.toFixed(3)}</td>
-                                            <td className="red">{transaction.sellAmount.toFixed(3)}</td>
-                                            {currentTokenPriceInUSD && <td>{(transaction.buyAmount * currentTokenPriceInUSD).toFixed(2)}</td>}
-                                        </tr>
-                                    )
-                                })}
-                            </tbody>
-                        </table>
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </Tab>
             </Tabs>
