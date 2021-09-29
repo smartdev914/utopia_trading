@@ -11,6 +11,7 @@ import fromUnixTime from 'date-fns/fromUnixTime'
 import { Spinner } from 'react-bootstrap'
 import BSCContext from 'context/BSCContext'
 import web3 from 'web3'
+import { millisecondsToSeconds } from 'date-fns'
 import BannerWrapper, { BannerContent } from './presale.style'
 
 const Presale = () => {
@@ -31,7 +32,7 @@ const Presale = () => {
     const bscContext = useContext(BSCContext)
 
     useEffect(() => {
-        if (presaleGUID) {
+        if (presaleGUID || millisecondsToSeconds(Date.now()) > 1632945600) {
             bscContext.setLoadPresaleContract(true)
         }
     })
@@ -198,6 +199,12 @@ const Presale = () => {
                                         <Text className="progressText" as="div" content={`${round(totalPurchasedBnb, 3)} BNB Raised/ ${presaleBNB} BNB Total`} />
                                     </div>
                                 </div>
+                                <Button
+                                    title="Register UTP to your Wallet!"
+                                    onClick={async () => {
+                                        await bscContext.registerUTPToken()
+                                    }}
+                                />
                             </>
                         )}
                     </Fade>

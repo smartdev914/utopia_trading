@@ -133,6 +133,7 @@ export const BannerContent = styled.div`
     .presaleBar {
         display: flex;
         justify-content: center;
+        margin-bottom: 20px;
     }
 
     .presaleProgressBar {
@@ -155,6 +156,14 @@ export const BannerContent = styled.div`
             left: 0;
             height: 100%;
             background: #004fbf;
+        }
+    }
+
+    button {
+        background-color: #f9df00;
+        span {
+            font-weight: 500;
+            color: var(--primaryBackgroundColor);
         }
     }
 

@@ -29,7 +29,7 @@ const BSCContextProvider = ({ children }) => {
     const [hasDappBrowser, setHasDappBrowser] = useState(false)
     const [currentBnbBalance, setBNBBalance] = useState('')
     const [pancakeSwapRouterV2, setPancakeSwapRouterV2] = useState(null)
-    const UtopiaPresaleBSCAddress = '0xb89B1b9090063210726eBdd1fF999559a7Ac2D5d'
+    const UtopiaPresaleBSCAddress = '0x609692D1A4c45FB8f535269f4339b7880296baa0'
     const utopiaDexContractAddress = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
     const pancakeSwapV2ContractAddress = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
     const pancakeSwapRouterV2Address = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
@@ -166,6 +166,23 @@ const BSCContextProvider = ({ children }) => {
         }
     }
 
+    const registerUTPToken = async () => {
+        const tokenAdded = await window.ethereum.request({
+            method: 'wallet_watchAsset',
+            params: {
+                type: 'ERC20',
+                options: {
+                    address: '0x1a1d7c7A92e8d7f0de10Ae532ECD9f63B7EAf67c',
+                    symbol: 'UTP',
+                    decimals: 9,
+                    image: `https://github.com/utopia-eco/utp-token/blob/master/utp-logo.jpeg?raw=true`,
+                },
+            },
+        })
+
+        return tokenAdded
+    }
+
     return (
         <BSCContext.Provider
             value={{
@@ -180,6 +197,7 @@ const BSCContextProvider = ({ children }) => {
                 triggerDappModal,
                 currentBnbBalance,
                 pancakeSwapRouterV2,
+                registerUTPToken,
             }}
         >
             {children}
