@@ -32,6 +32,27 @@ const Presale = () => {
     const bscContext = useContext(BSCContext)
 
     useEffect(() => {
+        const triggerAppRefreshOnFocus = async (address, contract) => {
+            if ((address, contract)) {
+                const presalePurchasedValue = await bscContext.presaleContract.methods.purchasedBnb(bscContext.currentAccountAddress).call()
+                setPresalePurchased(parseInt(presalePurchasedValue, 10) > 0)
+                const bnbAllowance = await bscContext.presaleContract.methods.viewBnbAllowanceForUser(bscContext.currentAccountAddress).call()
+                const allowedBnb = web3.utils.fromWei(bnbAllowance)
+                setMaxPurchaseableTokens(allowedBnb)
+                const tokensPurchasedInWei = await bscContext.presaleContract.methods.weiRaised().call()
+                const totalPurchasedTokens = web3.utils.fromWei(tokensPurchasedInWei)
+                setTotalPurchasedBnb(totalPurchasedTokens)
+                const finalized = await bscContext.presaleContract.methods.finalized().call()
+                setPresaleFinalized(finalized)
+            }
+        }
+
+        window.addEventListener('focus', () => {
+            triggerAppRefreshOnFocus(bscContext.currentAccountAddress, bscContext.presaleContract)
+        })
+    }, [])
+
+    useEffect(() => {
         bscContext.setLoadPresaleContract(true)
         localStorage.removeItem('walletconnect')
     }, [])
