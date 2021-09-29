@@ -22,7 +22,7 @@ const RoadMap = ({ sectionHeader, sectionSubTitle }) => (
                     <Fade down delay={300}>
                         <div className="quarterSection quarterTwo">
                             <Fade clear delay={1000}>
-                                <Text className="quarterHeader" as="div" content="Q3 / LAUNCH" />
+                                <Text className="quarterHeader" as="div" content="Q4 / LAUNCH" />
                                 {Q2RoadMap.filter((item) => item.checked).map((roadMapItem) => (
                                     <div key={roadMapItem.id} className="checkbox">
                                         <input type="checkbox" id={roadMapItem.id} checked disabled />
@@ -45,7 +45,7 @@ const RoadMap = ({ sectionHeader, sectionSubTitle }) => (
                     <Fade down delay={300}>
                         <div className="quarterSection quarterThree">
                             <Fade clear delay={1000}>
-                                <Text className="quarterHeader" as="div" content="Q4 2021" />
+                                <Text className="quarterHeader" as="div" content="Q1 2022" />
                                 {Q3RoadMap.filter((item) => item.checked).map((roadMapItem) => (
                                     <div key={roadMapItem.id} className="checkbox">
                                         <input type="checkbox" id={roadMapItem.id} checked disabled />
@@ -66,7 +66,7 @@ const RoadMap = ({ sectionHeader, sectionSubTitle }) => (
                     <Fade down delay={300}>
                         <div className="quarterSection quarterFour">
                             <Fade clear delay={1000}>
-                                <Text className="quarterHeader" as="div" content="Q1 2022" />
+                                <Text className="quarterHeader" as="div" content="Q2 2022" />
                                 {Q4RoadMap.filter((item) => item.checked).map((roadMapItem) => (
                                     <div key={roadMapItem.id} className="checkbox">
                                         <input type="checkbox" id={roadMapItem.id} checked disabled />

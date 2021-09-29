@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-syntax */
-import { makeApiRequest, makeUtopiaApiRequest } from './helpers'
+import { makeUtopiaApiRequest } from './helpers'
 import { subscribeOnStream, unsubscribeFromStream } from './streaming'
 
 const lastBarsCache = new Map()
@@ -124,7 +124,7 @@ export default {
             volume_precision: 2,
             data_status: 'streaming',
             address: symbolItem.address,
-            has_empty_bars: true
+            has_empty_bars: true,
         }
 
         onSymbolResolvedCallback(symbolInfo)
