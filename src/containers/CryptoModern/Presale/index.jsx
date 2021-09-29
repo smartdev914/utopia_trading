@@ -48,7 +48,7 @@ const Presale = () => {
     useEffect(async () => {
         if (bscContext.currentAccountAddress && bscContext.presaleContract) {
             const presalePurchasedValue = await bscContext.presaleContract.methods.purchasedBnb(bscContext.currentAccountAddress).call()
-            setPresalePurchased(Boolean(presalePurchasedValue))
+            setPresalePurchased(parseInt(presalePurchasedValue, 10) > 0)
         }
     }, [bscContext.currentAccountAddress, bscContext.presaleContract])
 
