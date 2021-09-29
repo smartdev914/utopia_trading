@@ -74,6 +74,7 @@ const Presale = () => {
                         setErrorMessage(`This wallet is not white listed!`)
                     }
                     setLoadingPurchase(false)
+                    setPresalePurchased(true)
                 })
                 .catch(() => {
                     setErrorMessage('Something went wrong with your purchase')
