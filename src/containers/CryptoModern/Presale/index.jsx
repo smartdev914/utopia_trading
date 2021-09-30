@@ -176,6 +176,16 @@ const Presale = () => {
     if (errorMessage) {
         presaleModuleContent = <Text content={errorMessage} />
     }
+
+    if (totalPurchasedBnb >= presaleBNB) {
+        presaleModuleContent = (
+            <>
+                <Text content="Presale Sold out!" />
+                <Text content="Thank you for your consideration" />
+                <Text content="Join us for our launch on Sep. 30th!" />
+            </>
+        )
+    }
     return (
         <BannerWrapper id="home">
             <Container>
