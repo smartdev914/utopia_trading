@@ -207,8 +207,8 @@ const Presale = () => {
                             )}
                             <div className="presaleBar">
                                 <div className="presaleProgressBar">
-                                    <div className="filledBar" style={{ width: `${(totalPurchasedBnb / presaleBNB) * 100}%` }} />
-                                    <Text className="progressText" as="div" content={`${round(totalPurchasedBnb, 3)} BNB Raised/ ${presaleBNB} BNB Total`} />
+                                    <div className="filledBar" style={{ width: `${(Math.min(totalPurchasedBnb, 400) / presaleBNB) * 100}%` }} />
+                                    <Text className="progressText" as="div" content={`${Math.min(totalPurchasedBnb, 400)} BNB Raised/ ${presaleBNB} BNB Total`} />
                                 </div>
                             </div>
 
