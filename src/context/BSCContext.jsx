@@ -202,6 +202,7 @@ const BSCContextProvider = ({ children }) => {
                 currentBnbBalance,
                 pancakeSwapRouterV2,
                 registerUTPToken,
+                pancakeSwapV2ContractAddress,
             }}
         >
             {children}
