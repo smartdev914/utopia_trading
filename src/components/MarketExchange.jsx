@@ -105,10 +105,10 @@ export default function MarketTrade() {
                         from: bscContext.currentAccountAddress,
                         value: web3.utils.toWei(`${tokenAAmount}`),
                     })
-                    .then((result) => {
+                    .then(() => {
                         setSwapInProgress(false)
                     })
-                    .catch((err) => {
+                    .catch(() => {
                         setSwapInProgress(false)
                     })
             } else {
@@ -129,7 +129,6 @@ export default function MarketTrade() {
 
                 if (transactionApproved) {
                     setSwapInProgress(true)
-                    console.log({ tokenA: tokenA.address, tokenB: tokenB.address })
                     await bscContext.pancakeSwapRouterV2.methods
                         .swapExactTokensForETHSupportingFeeOnTransferTokens(
                             web3.utils.toWei(`${tokenAAmount}`),
@@ -141,10 +140,10 @@ export default function MarketTrade() {
                         .send({
                             from: bscContext.currentAccountAddress,
                         })
-                        .then((result) => {
+                        .then(() => {
                             setSwapInProgress(false)
                         })
-                        .catch((err) => {
+                        .catch(() => {
                             setSwapInProgress(false)
                         })
                 }
@@ -228,7 +227,7 @@ export default function MarketTrade() {
                                                                     .send({
                                                                         from: bscContext.currentAccountAddress,
                                                                     })
-                                                                    .then((result) => {
+                                                                    .then(() => {
                                                                         setNeedsApproval(false)
                                                                     })
                                                                     .catch((err) => {
