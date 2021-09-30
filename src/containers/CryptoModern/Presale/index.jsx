@@ -7,7 +7,7 @@ import Container from 'common/components/UI/Container'
 import isAfter from 'date-fns/isAfter'
 import fromUnixTime from 'date-fns/fromUnixTime'
 
-import { CloseButton, Modal, Spinner } from 'react-bootstrap'
+import { Modal, Spinner } from 'react-bootstrap'
 import BSCContext from 'context/BSCContext'
 import web3 from 'web3'
 import { round } from 'common/utils/numbers'
@@ -196,19 +196,15 @@ const Presale = () => {
                                 <div className="presale-module">{bscContext.currentAccountAddress ? presaleModuleContent : <Text content="No Wallet Address Provided" />}</div>
                             ) : (
                                 <div className="presale-module dapp-disabled">
-                                    <Text content="Please connect your wallet to continue" />
-                                    <Button
-                                        title="Connect Wallet"
-                                        onClick={async () => {
-                                            await bscContext.triggerDappModal()
-                                        }}
-                                    />
+                                    <Text content="Presale Sold out!" />
+                                    <Text content="Thank you for your consideration." />
+                                    <Text content="Join us for our launch on Oct. 1st" />
                                 </div>
                             )}
                             <div className="presaleBar">
                                 <div className="presaleProgressBar">
-                                    <div className="filledBar" style={{ width: `${(Math.min(totalPurchasedBnb, 400) / presaleBNB) * 100}%` }} />
-                                    <Text className="progressText" as="div" content={`${Math.min(totalPurchasedBnb, 400)} BNB Raised/ ${presaleBNB} BNB Total`} />
+                                    <div className="filledBar" style={{ width: `100%` }} />
+                                    <Text className="progressText" as="div" content="FULLY FUNDED!" />
                                 </div>
                             </div>
 
