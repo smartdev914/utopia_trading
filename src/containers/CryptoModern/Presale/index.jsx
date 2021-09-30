@@ -198,7 +198,7 @@ const Presale = () => {
                                 <div className="presale-module dapp-disabled">
                                     <Text content="Presale Sold out!" />
                                     <Text content="Thank you for your consideration." />
-                                    <Text content="Join us for our launch on Oct. 2nd" />
+                                    <Text content="For those who participated in the Presale, please return here on Oct. 2nd to withdraw your UTP tokens!" />
                                 </div>
                             )}
                             <div className="presaleBar">
