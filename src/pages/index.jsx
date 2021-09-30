@@ -28,7 +28,7 @@ const CryptoModern = () => {
                     <title>Utopia | Built today, for a better tomorrow</title>
                     <meta name="Description" content="Utopia Landing Page" />
                     <meta name="theme-color" content="#2563FF" />
-                    <meta name="keywords" content="React, React js, Next, Next js, Super fast next js landing, Modren landing, Next js landing" />
+                    <meta name="keywords" content="Utopia, UTP, Decentralised, Exchange, DEX" />
                     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&display=swap" rel="stylesheet" />
                     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet" />
                     <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;500;700&family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet" />
