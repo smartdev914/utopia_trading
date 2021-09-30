@@ -86,22 +86,8 @@ export default function MarketTrade() {
                         from: bscContext.currentAccountAddress,
                         value: web3.utils.toWei(`${tokenAAmount}`),
                     })
-            } else { // if swapping to BNB
-
-                // Check if approval is required
-                if (typeof tokenA.methods.Approve === 'function') {
-                    // Maybe render approval button?
-
-                    // Check if approval is ready
-                    var approved = await tokenA.methods.allowance(currentAccountAddress, pancakeSwapRouterV2.address).call()
-                    if (approved < MAX_SAFE_INTEGER) {// Maybe another value? 
-                        await tokenA.methods.approve(pancakeSwapRouterV2.address, "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff").send({
-                            from: bscContext.currentAccountAddress,
-                        }) // Please verify that we can use hexa as input for the web3 provider
-                    }
-
-                }
-
+            } else {
+                // if swapping to BNB
                 await bscContext.pancakeSwapRouterV2.methods
                     .swapExactTokensForETHSupportingFeeOnTransferTokens(
                         web3.utils.toWei(`${tokenAAmount}`),

@@ -7,9 +7,10 @@ import Container from 'common/components/UI/Container'
 import isAfter from 'date-fns/isAfter'
 import fromUnixTime from 'date-fns/fromUnixTime'
 
-import { Spinner } from 'react-bootstrap'
+import { Modal, Spinner } from 'react-bootstrap'
 import BSCContext from 'context/BSCContext'
 import web3 from 'web3'
+import { round } from 'common/utils/numbers'
 import BannerWrapper, { BannerContent } from './presale.style'
 
 const Presale = () => {
@@ -22,6 +23,7 @@ const Presale = () => {
     const [presalePurchased, setPresalePurchased] = useState(false)
     const [loadingWithdraw, setLoadingWithdraw] = useState(false)
     const [maxPurchaseableTokens, setMaxPurchaseableTokens] = useState(0)
+    const [showModal, setShowModal] = useState(true)
 
     const bscContext = useContext(BSCContext)
 
@@ -34,7 +36,7 @@ const Presale = () => {
         if (bscContext.presaleContract) {
             const tokensPurchasedInWei = await bscContext.presaleContract.methods.weiRaised().call()
             const totalPurchasedTokens = web3.utils.fromWei(tokensPurchasedInWei)
-            setTotalPurchasedBnb(totalPurchasedTokens)
+            setTotalPurchasedBnb(round(totalPurchasedTokens, 0))
             const finalized = await bscContext.presaleContract.methods.finalized().call()
             setPresaleFinalized(finalized)
         }
@@ -54,8 +56,6 @@ const Presale = () => {
             setMaxPurchaseableTokens(allowedBnb)
         }
     }, [bscContext.currentAccountAddress, bscContext.presaleContract])
-
-    const round = (value, decimals) => Number(`${Math.round(`${value}e${decimals}`)}e-${decimals}`)
 
     const handleBuyPresale = () => {
         const bnbAmount = web3.utils.toWei(`${maxPurchaseableTokens}`)
@@ -176,7 +176,7 @@ const Presale = () => {
             <>
                 <Text content="Presale Sold out!" />
                 <Text content="Thank you for your consideration." />
-                <Text content="Join us for our launch on Sep. 30th!" />
+                <Text content="Join us for our launch on Oct. 1st" />
             </>
         )
     }
@@ -226,6 +226,16 @@ const Presale = () => {
                     </Fade>
                 </BannerContent>
             </Container>
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Updates Regarding Launch and Presale</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Due to some unforseen technical issues with our presale platform and whitelisted users not having the minimum required BNB, we have decided to reduce our hard cap so that only a
+                    few public Whitelist spots will be given away and we can retain most of the originally Whitelisted individuals. Participants will receive the same amount of UTP upon launch and the
+                    excess tokens initially reserved for the Presale will be burned.
+                </Modal.Body>
+            </Modal>
         </BannerWrapper>
     )
 }
