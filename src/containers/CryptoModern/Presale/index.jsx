@@ -97,7 +97,11 @@ const Presale = () => {
                     <Text className="highlight" as="p" content={`${maxPurchaseableTokens} BNB = ${(maxPurchaseableTokens * (presaleTokens / presaleBNB)).toLocaleString()} UTP`} />
                     <Text className="wallet-address" content={`Wallet Address: ${bscContext.currentAccountAddress}`} />
                     <Text className="current-balance" as="div" content={`Current Balance: ${round(web3.utils.fromWei(bscContext.currentBnbBalance), 4)} BNB`} />
-                    {bscContext.currentBnbBalance > maxPurchaseableTokens ? <Button title="Contribute to the Presale!" onClick={handleBuyPresale} /> : <Text content="Insufficient Funds..." />}
+                    {parseInt(bscContext.currentBnbBalance, 10) > maxPurchaseableTokens ? (
+                        <Button title="Contribute to the Presale!" onClick={handleBuyPresale} />
+                    ) : (
+                        <Text content="Insufficient Funds..." />
+                    )}
                 </>
             )}
         </>
