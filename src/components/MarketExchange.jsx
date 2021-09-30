@@ -78,12 +78,28 @@ export default function MarketTrade() {
 
             // TODO: Change 0 to value depending on desired slippage
             // TODO: Consider changing deadline value to something else in the future (for slower executing times?)
-            await bscContext.pancakeSwapRouterV2.methods
-                .swapExactETHForTokensSupportingFeeOnTransferTokens(0, [tokenA.address, tokenB.address], bscContext.currentAccountAddress, Math.floor(Date.now() / 1000) + 30)
-                .send({
-                    from: bscContext.currentAccountAddress,
-                    value: web3.utils.toWei(`${tokenAAmount}`),
-                })
+            if (fromBNB) {
+                // if swapping from BNB to token
+                await bscContext.pancakeSwapRouterV2.methods
+                    .swapExactETHForTokensSupportingFeeOnTransferTokens(0, [tokenA.address, tokenB.address], bscContext.currentAccountAddress, Math.floor(Date.now() / 1000) + 30)
+                    .send({
+                        from: bscContext.currentAccountAddress,
+                        value: web3.utils.toWei(`${tokenAAmount}`),
+                    })
+            } else {
+                // if swapping to BNB
+                await bscContext.pancakeSwapRouterV2.methods
+                    .swapExactTokensForETHSupportingFeeOnTransferTokens(
+                        web3.utils.toWei(`${tokenAAmount}`),
+                        0,
+                        [tokenA.address, tokenB.address],
+                        bscContext.currentAccountAddress,
+                        Math.floor(Date.now() / 1000) + 30
+                    )
+                    .send({
+                        from: bscContext.currentAccountAddress,
+                    })
+            }
         }
     }
 

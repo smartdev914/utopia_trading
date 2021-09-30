@@ -183,3 +183,26 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
     -moz-appearance: textfield;
 }
+
+.modal.show  .modal-dialog {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.modal-content {
+  background: #2D75DC;
+
+  span {
+    font-size: 30px;
+  }
+
+}
+
+.modal-content button {
+    background: #2D75DC;
+    border: none;
+}
+
+.modal-content .sr-only {
+  display: none;
+}
