@@ -122,7 +122,7 @@ const Presale = () => {
         presaleModuleContent = (
             <>
                 <Text content="Thank you for Participating!" />
-                <Text content="Please return here after launch on Oct 1st to withdraw your UTP" />
+                <Text content="Please return here after launch on Oct. 2nd to withdraw your UTP" />
                 <Text content="Welcome to Utopia" />
             </>
         )
@@ -176,7 +176,7 @@ const Presale = () => {
             <>
                 <Text content="Presale Sold out!" />
                 <Text content="Thank you for your consideration." />
-                <Text content="Join us for our launch on Oct. 1st" />
+                <Text content="Join us for our launch on Oct. 2nd" />
             </>
         )
     }
@@ -196,19 +196,15 @@ const Presale = () => {
                                 <div className="presale-module">{bscContext.currentAccountAddress ? presaleModuleContent : <Text content="No Wallet Address Provided" />}</div>
                             ) : (
                                 <div className="presale-module dapp-disabled">
-                                    <Text content="Please connect your wallet to continue" />
-                                    <Button
-                                        title="Connect Wallet"
-                                        onClick={async () => {
-                                            await bscContext.triggerDappModal()
-                                        }}
-                                    />
+                                    <Text content="Presale Sold out!" />
+                                    <Text content="Thank you for your consideration." />
+                                    <Text content="Join us for our launch on Oct. 2nd" />
                                 </div>
                             )}
                             <div className="presaleBar">
                                 <div className="presaleProgressBar">
-                                    <div className="filledBar" style={{ width: `${(Math.min(totalPurchasedBnb, 400) / presaleBNB) * 100}%` }} />
-                                    <Text className="progressText" as="div" content={`${Math.min(totalPurchasedBnb, 400)} BNB Raised/ ${presaleBNB} BNB Total`} />
+                                    <div className="filledBar" style={{ width: `100%` }} />
+                                    <Text className="progressText" as="div" content="FULLY FUNDED!" />
                                 </div>
                             </div>
 
