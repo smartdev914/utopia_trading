@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import Fade from 'react-reveal/Fade'
 import Text from 'common/components/Text'
 import Image from 'next/image'
@@ -11,16 +10,11 @@ import fromUnixTime from 'date-fns/fromUnixTime'
 import { Spinner } from 'react-bootstrap'
 import BSCContext from 'context/BSCContext'
 import web3 from 'web3'
-import { millisecondsToSeconds } from 'date-fns'
 import BannerWrapper, { BannerContent } from './presale.style'
 
 const Presale = () => {
-    const router = useRouter()
-    const { query } = router
-    const presaleGUID = Object.keys(query)?.includes('716e5a7d-b5da-4cbf-9eb9-be908007fef7')
-
     const presaleTokens = 300000000000
-    const presaleBNB = 500
+    const presaleBNB = 400
     const [loadingPurchase, setLoadingPurchase] = useState(false)
     const [errorMessage, setErrorMessage] = useState(false)
     const [totalPurchasedBnb, setTotalPurchasedBnb] = useState(0)
@@ -94,7 +88,7 @@ const Presale = () => {
             ) : (
                 <>
                     <Text className="max-contribution" as="div" content="Max Contribution:" />
-                    <Text className="highlight" as="p" content={`${maxPurchaseableTokens} BNB = ${(maxPurchaseableTokens * (presaleTokens / presaleBNB)).toLocaleString()} UTP`} />
+                    <Text className="highlight" as="p" content={`${maxPurchaseableTokens} BNB = ${(maxPurchaseableTokens * (presaleTokens / 500)).toLocaleString()} UTP`} />
                     <Text className="wallet-address" content={`Wallet Address: ${bscContext.currentAccountAddress}`} />
                     <Text className="current-balance" as="div" content={`Current Balance: ${round(web3.utils.fromWei(bscContext.currentBnbBalance), 4)} BNB`} />
                     {parseFloat(bscContext.currentBnbBalance) > parseInt(maxPurchaseableTokens, 10) ? (
@@ -128,7 +122,7 @@ const Presale = () => {
         presaleModuleContent = (
             <>
                 <Text content="Thank you for Participating!" />
-                <Text content="Please return here after launch on Sept 30th to withdraw your UTP" />
+                <Text content="Please return here after launch on Oct 1st to withdraw your UTP" />
                 <Text content="Welcome to Utopia" />
             </>
         )
