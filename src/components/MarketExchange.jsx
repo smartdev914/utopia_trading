@@ -8,7 +8,7 @@ import BSCContext from 'context/BSCContext'
 import axios from 'axios'
 import web3 from 'web3'
 import { round } from 'common/utils/numbers'
-import Slider, { Range } from 'rc-slider'
+import Slider from 'rc-slider'
 import TokenModal from './TokenModal'
 import 'rc-slider/assets/index.css'
 
