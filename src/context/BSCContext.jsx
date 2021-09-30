@@ -157,6 +157,7 @@ const BSCContextProvider = ({ children }) => {
                     setCurrentAccountAddress(newAccounts[0])
                     setBNBBalance(newBnbBalance)
                 })
+                setupNetwork()
             }
         }
         if (loadPresaleContract) {
