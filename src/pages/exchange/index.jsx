@@ -30,7 +30,7 @@ const Home = ({ query }) => {
                     <div className="col-md-3">
                         <MarketExchange />
                         <div className="utopia-logo-u-main">
-                            <Image src="/assets/image/utopia/utopiaUDarkbg.svg" width={500} height={500} alt="utopia Logo" priority />
+                            <Image src="/assets/gifs/utopiaLogoGif1.gif" width={600} height={600} alt="utopia Logo" priority />
                         </div>
                     </div>
                 </div>
