@@ -221,3 +221,20 @@
 .market-trade .input-group-append button.token-swap-to {
   cursor: pointer;
 }
+
+.market-trade-buy .slippage-container {
+  padding-right: 1rem;
+}
+
+.market-trade-buy .slippage-settings {
+  display: flex;
+  justify-content: space-between;
+}
+
+.market-trade .market-trade-buy input.slippage-percentage-input {
+  width: 48px;
+  height: 19px;
+  border-radius: 4px;
+  color: #F9DF00;
+  text-align: center;
+}

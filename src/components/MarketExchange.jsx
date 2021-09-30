@@ -8,7 +8,9 @@ import BSCContext from 'context/BSCContext'
 import axios from 'axios'
 import web3 from 'web3'
 import { round } from 'common/utils/numbers'
+import Slider, { Range } from 'rc-slider'
 import TokenModal from './TokenModal'
+import 'rc-slider/assets/index.css'
 
 export default function MarketTrade() {
     const [fromBNB, toggleFromBnb] = useState(true)
@@ -21,6 +23,8 @@ export default function MarketTrade() {
     const [needsApproval, setNeedsApproval] = useState(false)
     const [tokenAContract, setTokenAContract] = useState()
     const [swapInProgress, setSwapInProgress] = useState(false)
+    const [approveInProgress, setApproveInProgress] = useState(false)
+    const [slippagePercentage, setSlippagePercentage] = useState('0%')
 
     const [currentPricingInterval, setCurrentPricingInterval] = useState(null)
     const [bnbToTokenRatio, setBnbToTokenRatio] = useState(0)
@@ -99,8 +103,14 @@ export default function MarketTrade() {
             if (fromBNB) {
                 // if swapping from BNB to token
                 setSwapInProgress(true)
+                const parsedSlippagePercentage = (100 - parseInt(slippagePercentage, 10)) / 100
                 await bscContext.pancakeSwapRouterV2.methods
-                    .swapExactETHForTokensSupportingFeeOnTransferTokens(0, [tokenA.address, tokenB.address], bscContext.currentAccountAddress, Math.floor(Date.now() / 1000) + 30)
+                    .swapExactETHForTokensSupportingFeeOnTransferTokens(
+                        web3.utils.toWei(`${tokenBAmount * parsedSlippagePercentage}`),
+                        [tokenA.address, tokenB.address],
+                        bscContext.currentAccountAddress,
+                        Math.floor(Date.now() / 1000) + 30
+                    )
                     .send({
                         from: bscContext.currentAccountAddress,
                         value: web3.utils.toWei(`${tokenAAmount}`),
@@ -127,12 +137,14 @@ export default function MarketTrade() {
                     }
                 }
 
+                const parsedSlippagePercentage = (100 - parseInt(slippagePercentage, 10)) / 100
+
                 if (transactionApproved) {
                     setSwapInProgress(true)
                     await bscContext.pancakeSwapRouterV2.methods
                         .swapExactTokensForETHSupportingFeeOnTransferTokens(
                             web3.utils.toWei(`${tokenAAmount}`),
-                            0,
+                            web3.utils.toWei(`${tokenBAmount * parsedSlippagePercentage}`),
                             [tokenA.address, tokenB.address],
                             bscContext.currentAccountAddress,
                             Math.floor(Date.now() / 1000) + 30
@@ -209,11 +221,24 @@ export default function MarketTrade() {
                                     <div role="button" className="swap-coin-icon" onClick={clickToggleFromBNB} tabIndex="0">
                                         <Image src="/assets/image/icons/swapCoins.svg" width={45} height={45} />
                                     </div>
-                                    <div>{`${bnbToTokenRatio} ${!fromBNB ? tokenB.symbol : tokenA.symbol} per ${fromBNB ? tokenB.symbol : tokenA.symbol}`}</div>
-                                    <div>{`${round(1 / bnbToTokenRatio, 6)} ${!fromBNB ? tokenA.symbol : tokenB.symbol} per ${fromBNB ? tokenA.symbol : tokenB.symbol}`}</div>
+                                    <div className="slippage-container">
+                                        <div className="slippage-settings">
+                                            <span>SLIPPAGE</span>
+                                            <input className="slippage-percentage-input" type="text" value={slippagePercentage} />
+                                        </div>
+                                        <Slider
+                                            min={0}
+                                            max={50}
+                                            marks={{ 10: '10', 20: '20', 30: '30', 40: '40', 50: '50' }}
+                                            onChange={(e) => {
+                                                setSlippagePercentage(`${e}%`)
+                                            }}
+                                        />
+                                    </div>
+
                                     {bscContext.currentAccountAddress ? (
                                         <>
-                                            {swapInProgress ? (
+                                            {swapInProgress || approveInProgress ? (
                                                 <Spinner size="" animation="border" variant="primary" />
                                             ) : (
                                                 <>
@@ -222,6 +247,7 @@ export default function MarketTrade() {
                                                             type="button"
                                                             className="btn buy"
                                                             onClick={async () => {
+                                                                setApproveInProgress(true)
                                                                 await tokenAContract.methods
                                                                     .approve(bscContext.pancakeSwapRouterV2Address, '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
                                                                     .send({
@@ -229,9 +255,11 @@ export default function MarketTrade() {
                                                                     })
                                                                     .then(() => {
                                                                         setNeedsApproval(false)
+                                                                        setApproveInProgress(false)
                                                                     })
-                                                                    .catch((err) => {
-                                                                        console.log(err)
+                                                                    .catch(() => {
+                                                                        // alert approval error
+                                                                        setApproveInProgress(false)
                                                                     })
                                                             }}
                                                         >
