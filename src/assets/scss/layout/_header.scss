@@ -39,7 +39,13 @@
 
 .navbar .navbar-nav .reusecore__button {
   background-color: #1FC08E;
-  box-shadow: 0px 0px 15px 0px #26de81ad
+  box-shadow: 0px 0px 15px 0px #26de81ad;
+  font-family: var(--fontDosis);
+  height: 30px;
+  letter-spacing: 1px;
+  border-radius: 20px;
+  width: 160px;
+  font-size: 14px
 }
 
 header nav a {

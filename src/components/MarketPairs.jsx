@@ -22,7 +22,7 @@ export default function MarketPairs() {
             <div className="selected-token">
                 <img src={tokenContext.currentlySelectedToken.logoURI} alt="token logo" />
                 <div className="selected-token-info">
-                    <span>{`${tokenContext.currentlySelectedToken.name} (${tokenContext.currentlySelectedToken.symbol} / BNB)`}</span>
+                    <span>{`${tokenContext.currentlySelectedToken.name} (${tokenContext.currentlySelectedToken.symbol} / BNB)`}</span>
                     <span className="price">{`$${tokenContext.currentTokenPriceInUSD ? tokenContext.currentTokenPriceInUSD : '-'}`}</span>
                 </div>
             </div>
