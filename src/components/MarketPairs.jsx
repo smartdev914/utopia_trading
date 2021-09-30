@@ -1,3 +1,4 @@
+/* eslint-disable no-irregular-whitespace */
 import SearchAutocomplete from 'common/components/SearchAutocomplete'
 import TokenContext from 'context/TokenContext'
 import React, { useContext } from 'react'
