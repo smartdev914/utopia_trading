@@ -66,20 +66,20 @@ export default function MarketHistory() {
                                             const timeSince = secondsToMinutes(millisecondsToSeconds(Date.now()) - getUnixTime(new Date(`${transaction.block.timestamp.time} GMT`)))
                                             return (
                                                 <tr onClick={() => window.open(`https://bscscan.com/tx/${transaction.transaction.hash}`, '_blank')} key={transaction.transaction.hash}>
-                                                    <td>{timeSince === 0 ? 'Just Now' : `${timeSince}m`}</td>
+                                                    <td className="green">{timeSince === 0 ? 'Just Now' : `${timeSince}m ago`}</td>
                                                     <td className="green">{transaction.sellAmount.toFixed(3)}</td>
                                                     <td className="green">{transaction.buyAmount.toFixed(3)}</td>
-                                                    {tokenContext.currentTokenPriceInUSD && <td>{(transaction.buyAmount * tokenContext.currentTokenPriceInUSD).toFixed(2)}</td>}
+                                                    {tokenContext.currentTokenPriceInUSD && <td className="green">{(transaction.buyAmount * tokenContext.currentTokenPriceInUSD).toFixed(2)}</td>}
                                                 </tr>
                                             )
                                         }
                                         const timeSince = secondsToMinutes(millisecondsToSeconds(Date.now()) - getUnixTime(new Date(`${transaction.block.timestamp.time} GMT`)))
                                         return (
                                             <tr onClick={() => window.open(`https://bscscan.com/tx/${transaction.transaction.hash}`, '_blank')} key={transaction.transaction.hash}>
-                                                <td>{timeSince === 0 ? 'Just Now' : `${timeSince}m`}</td>
+                                                <td className="red">{timeSince === 0 ? 'Just Now' : `${timeSince}m ago`}</td>
                                                 <td className="red">{transaction.buyAmount.toFixed(3)}</td>
                                                 <td className="red">{transaction.sellAmount.toFixed(3)}</td>
-                                                {tokenContext.currentTokenPriceInUSD && <td>{(transaction.buyAmount * tokenContext.currentTokenPriceInUSD).toFixed(2)}</td>}
+                                                {tokenContext.currentTokenPriceInUSD && <td className="red">{(transaction.buyAmount * tokenContext.currentTokenPriceInUSD).toFixed(2)}</td>}
                                             </tr>
                                         )
                                     })}

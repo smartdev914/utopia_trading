@@ -1,3 +1,11 @@
+.market-trade {
+  font-family: var(--fontDosis);
+
+  .input-group>.form-control:focus, .input-group>.form-select:focus {
+    z-index: unset;
+  }
+}
+
 .market-trade input {
     border: 1px solid #e0e3eb;
     font-weight: 300;
@@ -32,14 +40,62 @@
 }
 
 .market-trade .input-group {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
+    position: relative;
 
     .input-group-append button{
-      width: 75px;
       font-size: 14px;
       background: #F9DF00;
       color: #1733AA;
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      height: 24px;
+      min-height: unset;
+      min-width: unset;
+      border-radius: 15px;
+      padding: 4px;
     }
+
+    .form-control {
+      height: 75px;
+      position: relative;
+      padding-top: 30px;
+      padding-left: 17px;
+      font-weight: 500;
+      font-size: 24px;
+      color: #F9DF00;
+      border-radius: 12px !important;
+    }
+
+}
+
+.market-trade {
+  .input-group.from::after {
+    content: "FROM";
+    position: absolute;
+    top: 12px;
+    left: 18px;
+    color: #A3FFFF;
+
+    &.estimated{
+      content: 'FROM (estimated)'
+    }
+  }
+  .input-group.to::after {
+    content: "TO";
+    position: absolute;
+    top: 12px;
+    left: 18px;
+    color: #A3FFFF;
+  }
+
+  .input-group.to.estimated::after {
+    content: 'TO ( Estimated )'
+  }
+  .input-group.from.estimated::after {
+    content: 'FROM  ( Estimated )'
+  }
 }
 
 
@@ -64,6 +120,7 @@
 }
 .market-trade .nav-tabs {
     border-bottom: 1px solid transparent;
+    padding-left: 1rem;
 }
 .market-trade-list li a {
     background: #eff2f6;
@@ -94,10 +151,14 @@
 
 .market-trade button.buy,
 .market-trade button.sell {
+    font-family: var(--fontDosis);
+    letter-spacing: 1px;
+    border-radius: 20px;
+    height: 30px;
     background: #1FC08E;
     color: #fff;
     text-transform: uppercase;
-    padding: 10px;
+    padding: 0;
     margin-top: 30px;
     width: 100%;
     box-shadow: 0px 0px 15px 0px #26de81ad;
@@ -130,7 +191,7 @@
 
 .market-trade-buy .swap-coin-icon {
   position: absolute;
-  top: 40px;
+  top: 60px;
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;

@@ -97,16 +97,18 @@ export default function MarketTrade() {
                         <div className="d-flex justify-content-between">
                             <div className="market-trade-buy">
                                 <form action="#">
-                                    <div className="input-group">
+                                    <div className={`input-group from ${tokenAEstimated ? 'estimated' : ''}`}>
                                         <input
                                             type="number"
                                             className="form-control"
-                                            placeholder={`${fromBNB ? 'From ' : 'To '}  ${tokenAEstimated ? '(Estimated)' : ''}`}
                                             required
                                             onWheel={() => {
                                                 document.activeElement.blur()
                                             }}
                                             value={tokenAAmount}
+                                            onFocus={() => {
+                                                setTokenAEstimated(false)
+                                            }}
                                             onBlur={(e) => {
                                                 setTokenAEstimated(false)
                                                 setTokenBAmount(round(fromBNB ? round(e.target.value, 6) * (1 / bnbToTokenRatio) : round(e.target.value, 6) * bnbToTokenRatio, 6))
@@ -119,13 +121,13 @@ export default function MarketTrade() {
                                             <Button className={!fromBNB ? 'token-swap-to' : ''} title={tokenA.symbol} disabled={fromBNB} onClick={() => toggleShowTokenModal(!showTokenModal)} />
                                         </div>
                                     </div>
-                                    <div className="input-group">
+                                    <div className={`input-group to ${!tokenAEstimated ? 'estimated' : ''}`}>
                                         <input
                                             type="number"
                                             className="form-control"
-                                            placeholder={`${fromBNB ? 'To ' : 'From '}  ${tokenAEstimated ? '' : '(Estimated)'}`}
                                             required
                                             value={tokenBAmount}
+                                            onFocus={() => setTokenAEstimated(true)}
                                             onWheel={() => {
                                                 document.activeElement.blur()
                                             }}
@@ -133,7 +135,6 @@ export default function MarketTrade() {
                                                 setTokenBAmount(e.target.value)
                                             }}
                                             onBlur={(e) => {
-                                                setTokenAEstimated(true)
                                                 setTokenAAmount(round(fromBNB ? round(e.target.value, 6) * bnbToTokenRatio : round(e.target.value, 6) * (1 / bnbToTokenRatio), 6))
                                             }}
                                         />
