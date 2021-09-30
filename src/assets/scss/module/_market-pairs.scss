@@ -2,13 +2,36 @@
     border: 1px solid #e0e3eb;
     padding-top: 14px;
     border-radius: 8px;
+
+    font-family: var(--fontDosis);
 }
+.market-pairs .selected-token {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 25px 1rem;
+
+  img {
+    width: 50px;
+    margin-right: 20px
+  }
+
+  .selected-token-info span {
+    display: flex;
+    flex-direction: column;
+    color: #ffffff;
+    font-size: 24px;
+
+    &.price {
+      color: #26de81;
+    }
+  }
+}
+
 .market-pairs .input-group {
     padding: 0 14px;
     align-items: center;
-}
-.market-pairs span {
-    background: transparent;
+    flex-wrap: nowrap;
 }
 
 .market-pairs input {

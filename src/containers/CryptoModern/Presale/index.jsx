@@ -49,7 +49,7 @@ const Presale = () => {
     useEffect(async () => {
         if (bscContext.currentAccountAddress && bscContext.presaleContract) {
             const presalePurchasedValue = await bscContext.presaleContract.methods.purchasedBnb(bscContext.currentAccountAddress).call()
-            setPresalePurchased(parseInt(presalePurchasedValue, 10) > 0)
+            setPresalePurchased(parseFloat(presalePurchasedValue) > 0)
         }
     }, [bscContext.currentAccountAddress, bscContext.presaleContract])
 
@@ -97,7 +97,7 @@ const Presale = () => {
                     <Text className="highlight" as="p" content={`${maxPurchaseableTokens} BNB = ${(maxPurchaseableTokens * (presaleTokens / presaleBNB)).toLocaleString()} UTP`} />
                     <Text className="wallet-address" content={`Wallet Address: ${bscContext.currentAccountAddress}`} />
                     <Text className="current-balance" as="div" content={`Current Balance: ${round(web3.utils.fromWei(bscContext.currentBnbBalance), 4)} BNB`} />
-                    {parseInt(bscContext.currentBnbBalance, 10) > maxPurchaseableTokens ? (
+                    {parseFloat(bscContext.currentBnbBalance) > parseInt(maxPurchaseableTokens, 10) ? (
                         <Button title="Contribute to the Presale!" onClick={handleBuyPresale} />
                     ) : (
                         <Text content="Insufficient Funds..." />
@@ -181,7 +181,7 @@ const Presale = () => {
         presaleModuleContent = (
             <>
                 <Text content="Presale Sold out!" />
-                <Text content="Thank you for your consideration" />
+                <Text content="Thank you for your consideration." />
                 <Text content="Join us for our launch on Sep. 30th!" />
             </>
         )

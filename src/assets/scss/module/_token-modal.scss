@@ -23,6 +23,7 @@
 }
 
 .token-modal {
+  min-height: 500px;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -39,6 +40,10 @@
   max-height: 80%;
   overflow: scroll;
 
+  .form-control {
+    margin-bottom: 10px;
+  }
+
   .icon {
     width: 40px;
     height: 40px;
@@ -50,7 +55,7 @@
     padding: 5px 10px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
 
     &:hover {
       background-color: invert($color: #131722);

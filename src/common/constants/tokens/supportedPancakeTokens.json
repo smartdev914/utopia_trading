@@ -9,14 +9,6 @@
   "timestamp": "2021-05-06T00:00:00Z",
   "tokens": [
     {
-      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c.png",
-      "name": "WBNB Token",
-      "symbol": "WBNB"
-    },
-    {
       "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
       "chainId": 56,
       "decimals": 18,
@@ -29,7 +21,7 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x2170ed0880ac9a755fd29b2688956bd959f933f8.png",
-      "name": "Ethereum Token",
+      "name": "Ethereum",
       "symbol": "ETH"
     },
     {
@@ -53,7 +45,7 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82.png",
-      "name": "PancakeSwap Token",
+      "name": "PancakeSwap",
       "symbol": "CAKE"
     },
     {
