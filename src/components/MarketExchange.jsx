@@ -26,6 +26,7 @@ export default function MarketTrade() {
     const [approveInProgress, setApproveInProgress] = useState(false)
     const [slippagePercentage, setSlippagePercentage] = useState('0%')
     const [tokenABalance, setTokenABalance] = useState()
+    // eslint-disable-next-line no-unused-vars
     const [tokenBBalance, setTokenBBalance] = useState()
 
     const [currentPricingInterval, setCurrentPricingInterval] = useState(null)
@@ -105,17 +106,16 @@ export default function MarketTrade() {
                 tag: 'latest',
                 apikey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
             })
-            console
             const currentTokenBBalance = await axios.get('https://api.bscscan.com/api', {
                 module: 'account',
                 action: 'tokenbalance',
-                contractaddress: tokenA.address,
+                contractaddress: tokenB.address,
                 address: bscContext.currentAccountAddress,
                 tag: 'latest',
                 apikey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
             })
             setTokenABalance(currentTokenABalance)
-            setTokenABalance(currentTokenBBalance)
+            setTokenBBalance(currentTokenBBalance)
         }
     }, [bscContext.currentAccountAddress, tokenA.address])
 

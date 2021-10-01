@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import Link from 'next/link'
 import axios from 'axios'
 import TokenContext from 'context/TokenContext'
 import { round } from 'common/utils/numbers'
@@ -8,8 +7,8 @@ const MarketNews = () => {
     const tokenContext = useContext(TokenContext)
     const [twentyFourHourVolume, setTwentyFourHourVolume] = useState('$-')
     const [twentyFourHourTransactions, setTwentyFourHourTransactions] = useState('-')
-    const [liquidity, setLiquidity] = useState('$-')
-    const [marketCap, setMarketCap] = useState('-')
+    // const [liquidity, setLiquidity] = useState('$-')
+    // const [marketCap, setMarketCap] = useState('-')
     useEffect(async () => {
         const twentyFourHourInfo = await axios.post(
             `https://graphql.bitquery.io`,
