@@ -11,11 +11,16 @@ import { Modal, Spinner } from 'react-bootstrap'
 import BSCContext from 'context/BSCContext'
 import web3 from 'web3'
 import { round } from 'common/utils/numbers'
+import { useRouter } from 'next/dist/client/router'
 import BannerWrapper, { BannerContent } from './presale.style'
 
 const Presale = () => {
+    const router = useRouter()
+    const { query } = router
+    const presaleGUID = Object.keys(query)?.includes('fb3ca69d-0bab-4110-8b2b-4fcf11a60298')
+
     const presaleTokens = 300000000000
-    const presaleBNB = 400
+    const presaleBNB = presaleGUID ? 420 : 400
     const [loadingPurchase, setLoadingPurchase] = useState(false)
     const [errorMessage, setErrorMessage] = useState(false)
     const [totalPurchasedBnb, setTotalPurchasedBnb] = useState(0)
@@ -188,25 +193,48 @@ const Presale = () => {
                         <Image src="/assets/image/utopia/Utopia_dark_full.png" alt="Utopia Banner" width={1258} height={316} priority unoptimized />
                     </Fade>
                     <Fade up delay={100}>
-                        <Text className="tagline" content="Take part in our presale!" />
+                        {presaleGUID ? <Text className="tagline" content="Take part in our Special Presale!" /> : <Text className="tagline" content="Take part in our Presale!" />}
                     </Fade>
                     <Fade up delay={100}>
                         <>
                             {bscContext.hasDappBrowser ? (
                                 <div className="presale-module">{bscContext.currentAccountAddress ? presaleModuleContent : <Text content="No Wallet Address Provided" />}</div>
                             ) : (
-                                <div className="presale-module dapp-disabled">
-                                    <Text content="Presale Sold out!" />
-                                    <Text content="Thank you for your consideration." />
-                                    <Text content="For those who participated in the Presale, please return here on Oct. 2nd to withdraw your UTP tokens!" />
+                                <>
+                                    {presaleGUID ? (
+                                        <div className="presale-module dapp-disabled">
+                                            <Text content="Please connect your wallet to continue" />
+                                            <Button
+                                                title="Connect Wallet"
+                                                onClick={async () => {
+                                                    await bscContext.triggerDappModal()
+                                                }}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="presale-module dapp-disabled">
+                                            <Text content="Presale Sold out!" />
+                                            <Text content="Thank you for your consideration." />
+                                            <Text content="For those who participated in the Presale, please return here on Oct. 2nd to withdraw your UTP tokens!" />
+                                        </div>
+                                    )}
+                                </>
+                            )}
+                            {presaleGUID ? (
+                                <div className="presaleBar">
+                                    <div className="presaleProgressBar">
+                                        <div className="filledBar" style={{ width: `${(totalPurchasedBnb / presaleBNB) * 100}%` }} />
+                                        <Text className="progressText" as="div" content={`${round(totalPurchasedBnb, 0)} BNB Raised/ ${presaleBNB} BNB Total`} />
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="presaleBar">
+                                    <div className="presaleProgressBar">
+                                        <div className="filledBar" style={{ width: `100%` }} />
+                                        <Text className="progressText" as="div" content="FULLY FUNDED!" />
+                                    </div>
                                 </div>
                             )}
-                            <div className="presaleBar">
-                                <div className="presaleProgressBar">
-                                    <div className="filledBar" style={{ width: `100%` }} />
-                                    <Text className="progressText" as="div" content="FULLY FUNDED!" />
-                                </div>
-                            </div>
 
                             <Text content="REGISTER THE UTOPIA TOKEN ADDRESS TO YOUR WALLET" />
                             <Text content="For Metamask users:" />
@@ -222,16 +250,18 @@ const Presale = () => {
                     </Fade>
                 </BannerContent>
             </Container>
-            <Modal show={showModal} onHide={() => setShowModal(false)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Updates Regarding Launch and Presale</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    Due to some unforseen technical issues with our presale platform and whitelisted users not having the minimum required BNB, we have decided to reduce our hard cap so that only a
-                    few public Whitelist spots will be given away and we can retain most of the originally Whitelisted individuals. Participants will receive the same amount of UTP upon launch and the
-                    excess tokens initially reserved for the Presale will be burned.
-                </Modal.Body>
-            </Modal>
+            {presaleGUID ? null : (
+                <Modal show={showModal} onHide={() => setShowModal(false)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Updates Regarding Launch and Presale</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        Due to some unforseen technical issues with our presale platform and whitelisted users not having the minimum required BNB, we have decided to reduce our hard cap so that only
+                        a few public Whitelist spots will be given away and we can retain most of the originally Whitelisted individuals. Participants will receive the same amount of UTP upon launch
+                        and the excess tokens initially reserved for the Presale will be burned.
+                    </Modal.Body>
+                </Modal>
+            )}
         </BannerWrapper>
     )
 }
