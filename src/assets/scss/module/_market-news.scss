@@ -1,39 +1,33 @@
-.market-news {
-    border: 1px solid #e0e3eb;
-    border-radius: 8px;
-}
+.token-info {
+  padding: 20px;
+  margin-top: 1rem;
 
-.market-news li a {
-    color: #4a4a4a;
-    font-size: 11px;
-    display: block;
-    text-decoration: none;
-}
-.market-news li:hover {
-    background: #f6f8f9;
-}
-.market-news li strong {
-    display: block;
-    font-size: 13px;
-    margin-bottom: 2px;
-    color: #4a4a4ac7;
-}
+  h3 {
+    padding: 0
+  }
 
-.market-news li span {
-    display: block;
-    margin-top: 5px;
-}
+  .info-row {
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
 
-.market-news li {
-    border-bottom: 1px solid #f0f3fa;
-    padding: 10px 13px;
-}
+  .info-stat {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    flex-shrink: 0;
+    margin-right: 20%;
+  }
 
-.market-news li:last-child {
-    border: 0;
-}
+  .info-header {
+    font-size: 18px;
+    color: #00DEE6
+  }
 
-.market-news ul {
-    height: 348px;
-    overflow-y: auto;
+  .info-value {
+    color: #fff;
+    font-size: 24px;
+  }
 }
