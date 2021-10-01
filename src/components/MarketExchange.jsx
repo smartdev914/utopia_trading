@@ -25,6 +25,7 @@ export default function MarketTrade() {
     const [swapInProgress, setSwapInProgress] = useState(false)
     const [approveInProgress, setApproveInProgress] = useState(false)
     const [slippagePercentage, setSlippagePercentage] = useState('0%')
+    // eslint-disable-next-line no-unused-vars
     const [tokenABalance, setTokenABalance] = useState()
     // eslint-disable-next-line no-unused-vars
     const [tokenBBalance, setTokenBBalance] = useState()
@@ -96,28 +97,28 @@ export default function MarketTrade() {
         }
     }, [tokenA, bscContext.currentAccountAddress])
 
-    useEffect(async () => {
-        if (bscContext.currentAccountAddress) {
-            const currentTokenABalance = await axios.get('https://api.bscscan.com/api', {
-                module: 'account',
-                action: 'tokenbalance',
-                contractaddress: tokenA.address,
-                address: bscContext.currentAccountAddress,
-                tag: 'latest',
-                apikey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
-            })
-            const currentTokenBBalance = await axios.get('https://api.bscscan.com/api', {
-                module: 'account',
-                action: 'tokenbalance',
-                contractaddress: tokenB.address,
-                address: bscContext.currentAccountAddress,
-                tag: 'latest',
-                apikey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
-            })
-            setTokenABalance(currentTokenABalance)
-            setTokenBBalance(currentTokenBBalance)
-        }
-    }, [bscContext.currentAccountAddress, tokenA.address])
+    // useEffect(async () => {
+    //     if (bscContext.currentAccountAddress) {
+    //         const currentTokenABalance = await axios.get('https://api.bscscan.com/api', {
+    //             module: 'account',
+    //             action: 'tokenbalance',
+    //             contractaddress: tokenA.address,
+    //             address: bscContext.currentAccountAddress,
+    //             tag: 'latest',
+    //             apikey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
+    //         })
+    //         const currentTokenBBalance = await axios.get('https://api.bscscan.com/api', {
+    //             module: 'account',
+    //             action: 'tokenbalance',
+    //             contractaddress: tokenB.address,
+    //             address: bscContext.currentAccountAddress,
+    //             tag: 'latest',
+    //             apikey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
+    //         })
+    //         setTokenABalance(currentTokenABalance)
+    //         setTokenBBalance(currentTokenBBalance)
+    //     }
+    // }, [bscContext.currentAccountAddress, tokenA.address])
 
     const onSwapClick = async () => {
         // Also verify pancakeSwapRouterV2Address
