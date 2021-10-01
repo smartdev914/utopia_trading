@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import Text from 'common/components/Text'
 import Image from 'next/image'
+import MarketNews from 'components/MarketNews'
 import Layout from '../../components/Layout'
 import MarketHistory from '../../components/MarketHistory'
 import MarketPairs from '../../components/MarketPairs'
@@ -22,6 +23,7 @@ const Home = ({ query }) => {
                 <div className="row sm-gutters">
                     <div className="col-sm-12 col-md-3">
                         <MarketPairs />
+                        <MarketNews />
                     </div>
                     <div className="col-sm-12 col-md-6">
                         <ThemeConsumer>{({ data }) => (data.theme === 'light' ? <DynamicTVS /> : <DynamicTVSDark />)}</ThemeConsumer>

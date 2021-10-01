@@ -25,6 +25,8 @@ export default function MarketTrade() {
     const [swapInProgress, setSwapInProgress] = useState(false)
     const [approveInProgress, setApproveInProgress] = useState(false)
     const [slippagePercentage, setSlippagePercentage] = useState('0%')
+    const [tokenABalance, setTokenABalance] = useState()
+    const [tokenBBalance, setTokenBBalance] = useState()
 
     const [currentPricingInterval, setCurrentPricingInterval] = useState(null)
     const [bnbToTokenRatio, setBnbToTokenRatio] = useState(0)
@@ -92,6 +94,30 @@ export default function MarketTrade() {
             setTokenAContract(tokenContract)
         }
     }, [tokenA, bscContext.currentAccountAddress])
+
+    useEffect(async () => {
+        if (bscContext.currentAccountAddress) {
+            const currentTokenABalance = await axios.get('https://api.bscscan.com/api', {
+                module: 'account',
+                action: 'tokenbalance',
+                contractaddress: tokenA.address,
+                address: bscContext.currentAccountAddress,
+                tag: 'latest',
+                apikey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
+            })
+            console
+            const currentTokenBBalance = await axios.get('https://api.bscscan.com/api', {
+                module: 'account',
+                action: 'tokenbalance',
+                contractaddress: tokenA.address,
+                address: bscContext.currentAccountAddress,
+                tag: 'latest',
+                apikey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
+            })
+            setTokenABalance(currentTokenABalance)
+            setTokenABalance(currentTokenBBalance)
+        }
+    }, [bscContext.currentAccountAddress, tokenA.address])
 
     const onSwapClick = async () => {
         // Also verify pancakeSwapRouterV2Address
@@ -197,6 +223,7 @@ export default function MarketTrade() {
                                             <Button className={!fromBNB ? 'token-swap-to' : ''} title={tokenA.symbol} disabled={fromBNB} onClick={() => toggleShowTokenModal(!showTokenModal)} />
                                         </div>
                                     </div>
+                                    {tokenABalance}
                                     <div className={`input-group to ${!tokenAEstimated ? 'estimated' : ''}`}>
                                         <input
                                             type="number"
@@ -214,6 +241,7 @@ export default function MarketTrade() {
                                                 setTokenAAmount(round(fromBNB ? round(e.target.value, 6) * bnbToTokenRatio : round(e.target.value, 6) * (1 / bnbToTokenRatio), 6))
                                             }}
                                         />
+                                        {tokenBBalance}
                                         <div className="input-group-append">
                                             <Button className={fromBNB ? 'token-swap-to' : ''} title={tokenB.symbol} disabled={!fromBNB} onClick={() => toggleShowTokenModal(!showTokenModal)} />
                                         </div>
@@ -224,12 +252,19 @@ export default function MarketTrade() {
                                     <div className="slippage-container">
                                         <div className="slippage-settings">
                                             <span>SLIPPAGE</span>
-                                            <input className="slippage-percentage-input" type="text" value={slippagePercentage} />
+                                            <input
+                                                className="slippage-percentage-input"
+                                                type="text"
+                                                value={slippagePercentage}
+                                                onChange={(e) => setSlippagePercentage(e.target.value)}
+                                                onBlur={(e) => e.target.value && setSlippagePercentage(`${parseInt(e.target.value, 10)}%`)}
+                                            />
                                         </div>
                                         <Slider
                                             min={0}
                                             max={50}
                                             marks={{ 10: '10', 20: '20', 30: '30', 40: '40', 50: '50' }}
+                                            value={parseInt(slippagePercentage, 10)}
                                             onChange={(e) => {
                                                 setSlippagePercentage(`${e}%`)
                                             }}
