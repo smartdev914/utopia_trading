@@ -5,7 +5,7 @@ import { subscribeOnStream, unsubscribeFromStream } from './streaming'
 const lastBarsCache = new Map()
 
 const configurationData = {
-    supported_resolutions: ['1D', '5', '240'],
+    supported_resolutions: ['1D', '5', '15', '240'],
     exchanges: [
         {
             value: 'Utopia',
@@ -135,6 +135,9 @@ export default {
         switch (resolution) {
             case '5':
                 resolutionTime = '300'
+                break
+            case '15':
+                resolutionTime = '900'
                 break
             case '240':
                 resolutionTime = '14400'
