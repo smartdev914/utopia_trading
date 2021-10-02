@@ -7,17 +7,19 @@ import Container from 'common/components/UI/Container'
 import isAfter from 'date-fns/isAfter'
 import fromUnixTime from 'date-fns/fromUnixTime'
 
-import { Modal, Spinner } from 'react-bootstrap'
+import { Spinner } from 'react-bootstrap'
 import BSCContext from 'context/BSCContext'
 import web3 from 'web3'
 import { round } from 'common/utils/numbers'
 import { useRouter } from 'next/dist/client/router'
+import { millisecondsToSeconds } from 'date-fns'
 import BannerWrapper, { BannerContent } from './presale.style'
 
 const Presale = () => {
     const router = useRouter()
     const { query } = router
     const presaleGUID = Object.keys(query)?.includes('fb3ca69d-0bab-4110-8b2b-4fcf11a60298')
+    const withdrawGUID = Object.keys(query)?.includes('8405945e-c2e4-4777-81be-e31a11106754')
 
     const presaleTokens = 300000000000
     const presaleBNB = presaleGUID ? 425 : 400
@@ -28,7 +30,6 @@ const Presale = () => {
     const [presalePurchased, setPresalePurchased] = useState(false)
     const [loadingWithdraw, setLoadingWithdraw] = useState(false)
     const [maxPurchaseableTokens, setMaxPurchaseableTokens] = useState(0)
-    const [showModal, setShowModal] = useState(true)
 
     const bscContext = useContext(BSCContext)
 
@@ -133,11 +134,11 @@ const Presale = () => {
         )
     }
 
-    if (presaleFinalized) {
-        if (presalePurchased && isAfter(Date.now(), fromUnixTime('1633050000'))) {
+    if (true && withdrawGUID) {
+        if (presalePurchased && millisecondsToSeconds(Date.now()) > 1633208400) {
             presaleModuleContent = (
                 <>
-                    <Text content="Thank you. Presale has ended." />
+                    <Text content="Thank you for waiting!" />
                     <Button title="Withdraw Purchased UTP" onClick={() => handleWithdraw()} />
                 </>
             )
@@ -145,6 +146,7 @@ const Presale = () => {
             presaleModuleContent = (
                 <>
                     <Text content="Thank you. Presale has ended." />
+                    <Text content="Available to Withdraw after 9PM GMT" />
                 </>
             )
         }
@@ -176,7 +178,7 @@ const Presale = () => {
         presaleModuleContent = <Text content={errorMessage} />
     }
 
-    if (totalPurchasedBnb >= presaleBNB) {
+    if (totalPurchasedBnb >= presaleBNB && !presaleFinalized && !withdrawGUID) {
         presaleModuleContent = (
             <>
                 <Text content="Presale Sold out!" />
@@ -201,9 +203,10 @@ const Presale = () => {
                                 <div className="presale-module">{bscContext.currentAccountAddress ? presaleModuleContent : <Text content="No Wallet Address Provided" />}</div>
                             ) : (
                                 <>
-                                    {presaleGUID ? (
+                                    {presaleGUID || presaleFinalized || withdrawGUID ? (
                                         <div className="presale-module dapp-disabled">
-                                            <Text content="Please connect your wallet to continue" />
+                                            {presaleFinalized && <Text content="Presale Concluded!" />}
+                                            <Text content={presaleFinalized ? 'Please connect your wallet to Withdraw' : 'Please connect your wallet to continue'} />
                                             <Button
                                                 title="Connect Wallet"
                                                 onClick={async () => {
@@ -220,21 +223,12 @@ const Presale = () => {
                                     )}
                                 </>
                             )}
-                            {presaleGUID ? (
-                                <div className="presaleBar">
-                                    <div className="presaleProgressBar">
-                                        <div className="filledBar" style={{ width: `${(totalPurchasedBnb / presaleBNB) * 100}%` }} />
-                                        <Text className="progressText" as="div" content={`${round(totalPurchasedBnb, 0)} BNB Raised/ ${presaleBNB} BNB Total`} />
-                                    </div>
+                            <div className="presaleBar">
+                                <div className="presaleProgressBar">
+                                    <div className="filledBar" style={{ width: `100%` }} />
+                                    <Text className="progressText" as="div" content="FULLY FUNDED!" />
                                 </div>
-                            ) : (
-                                <div className="presaleBar">
-                                    <div className="presaleProgressBar">
-                                        <div className="filledBar" style={{ width: `100%` }} />
-                                        <Text className="progressText" as="div" content="FULLY FUNDED!" />
-                                    </div>
-                                </div>
-                            )}
+                            </div>
 
                             <Text content="REGISTER THE UTOPIA TOKEN ADDRESS TO YOUR WALLET" />
                             <Text content="For Metamask users:" />
@@ -250,7 +244,7 @@ const Presale = () => {
                     </Fade>
                 </BannerContent>
             </Container>
-            {presaleGUID ? null : (
+            {/* {presaleGUID ? null : (
                 <Modal show={showModal} onHide={() => setShowModal(false)}>
                     <Modal.Header closeButton>
                         <Modal.Title>Updates Regarding Launch and Presale</Modal.Title>
@@ -261,7 +255,7 @@ const Presale = () => {
                         and the excess tokens initially reserved for the Presale will be burned.
                     </Modal.Body>
                 </Modal>
-            )}
+            )} */}
         </BannerWrapper>
     )
 }
