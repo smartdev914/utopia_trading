@@ -16,11 +16,7 @@ export default function DynamicTVS() {
                 theme: 'Dark',
             })
         }
-        window.addEventListener('load', initTVwidget)
-
-        return () => {
-            window.removeEventListener('load', initTVwidget)
-        }
+        initTVwidget()
     }, [])
 
     return (

@@ -95,7 +95,7 @@ export default function MarketTrade() {
     }, [bnbToTokenRatio])
 
     useEffect(async () => {
-        if (window.web3.eth) {
+        if (window.web3 && window.web3.eth) {
             const tokenABI = await axios.get('https://api.bscscan.com/api', {
                 params: {
                     module: 'contract',
