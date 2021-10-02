@@ -13,6 +13,7 @@ import HowToBuy from 'containers/CryptoModern/HowToBuy'
 import Team from 'containers/CryptoModern/Team'
 import GlobalStyle, { CryptoWrapper, ContentWrapper } from 'containers/CryptoModern/cryptoModern.style'
 import dynamic from 'next/dynamic'
+import { ToastContainer } from 'react-toastify'
 import { ResetCSS } from '../../public/assets/css/style'
 import UtopiaWhitePaper from '../../public/assets/docs/Utopia_Whitepaper.pdf'
 
@@ -59,6 +60,7 @@ const CryptoModern = () => {
                 </CryptoWrapper>
                 {/* end of app classic landing */}
             </>
+            <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         </ThemeProvider>
     )
 }

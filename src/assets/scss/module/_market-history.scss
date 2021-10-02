@@ -1,4 +1,5 @@
 .market-history {
+  padding: 1rem;
   font-family: var(--fontDosis);
 }
 .market-history .nav {
@@ -17,6 +18,10 @@
 .market-history thead tr th,
 .market-history tbody tr td {
     font-weight: 400;
+}
+
+.market-history tr {
+  cursor: pointer;
 }
 .market-history .table-container {
     height: 315px;
@@ -43,5 +48,10 @@
 
 .market-history .table-header {
   position: absolute;
-  width: 100%
+  width: 100%;
+  pointer-events: none;
+}
+
+.market-history .table-header tbody {
+    visibility: hidden;
 }

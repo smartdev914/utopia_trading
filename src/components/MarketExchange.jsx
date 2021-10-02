@@ -11,6 +11,18 @@ import { round } from 'common/utils/numbers'
 import Slider from 'rc-slider'
 import TokenModal from './TokenModal'
 import 'rc-slider/assets/index.css'
+import { toast } from 'react-toastify'
+
+const toastSettings = {
+    position: 'top-right',
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: false,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: 'colored',
+}
 
 export default function MarketTrade() {
     const [fromBNB, toggleFromBnb] = useState(true)
@@ -24,7 +36,7 @@ export default function MarketTrade() {
     const [tokenAContract, setTokenAContract] = useState()
     const [swapInProgress, setSwapInProgress] = useState(false)
     const [approveInProgress, setApproveInProgress] = useState(false)
-    const [slippagePercentage, setSlippagePercentage] = useState('0%')
+    const [slippagePercentage, setSlippagePercentage] = useState('0.5%')
     // eslint-disable-next-line no-unused-vars
     const [tokenABalance, setTokenABalance] = useState()
     // eslint-disable-next-line no-unused-vars
@@ -130,7 +142,7 @@ export default function MarketTrade() {
             if (fromBNB) {
                 // if swapping from BNB to token
                 setSwapInProgress(true)
-                const parsedSlippagePercentage = (100 - parseInt(slippagePercentage, 10)) / 100
+                const parsedSlippagePercentage = (100 - parseFloat(slippagePercentage)) / 100
                 await bscContext.pancakeSwapRouterV2.methods
                     .swapExactETHForTokensSupportingFeeOnTransferTokens(
                         web3.utils.toWei(`${tokenBAmount * parsedSlippagePercentage}`),
@@ -143,9 +155,15 @@ export default function MarketTrade() {
                         value: web3.utils.toWei(`${tokenAAmount}`),
                     })
                     .then(() => {
+                        toast.success('Transaction Successful!', toastSettings)
                         setSwapInProgress(false)
                     })
-                    .catch(() => {
+                    .catch((err) => {
+                        if (err.code === 4001) {
+                            toast.error('Transaction Rejected!', toastSettings)
+                        } else {
+                            toast.error('Transaction Failed!', toastSettings)
+                        }
                         setSwapInProgress(false)
                     })
             } else {
@@ -159,12 +177,13 @@ export default function MarketTrade() {
                     const approved = await tokenAContract.methods.allowance(bscContext.currentAccountAddress, bscContext.pancakeSwapV2ContractAddress).call()
                     if (approved < Number.MAX_SAFE_INTEGER) {
                         setNeedsApproval(true)
+                        toast.info('Please Approve the Swap', toastSettings)
                     } else {
                         transactionApproved = true
                     }
                 }
 
-                const parsedSlippagePercentage = (100 - parseInt(slippagePercentage, 10)) / 100
+                const parsedSlippagePercentage = (100 - parseFloat(slippagePercentage)) / 100
 
                 if (transactionApproved) {
                     setSwapInProgress(true)
@@ -179,10 +198,18 @@ export default function MarketTrade() {
                         .send({
                             from: bscContext.currentAccountAddress,
                         })
-                        .then(() => {
+                        .then((result) => {
+                            console.log(result)
+                            toast.success('Transaction Successful!', toastSettings)
                             setSwapInProgress(false)
                         })
-                        .catch(() => {
+                        .catch((err) => {
+                            if (err.code === 4001) {
+                                toast.error('Transaction Rejected!', toastSettings)
+                            } else {
+                                toast.error('Transaction Failed!', toastSettings)
+                            }
+
                             setSwapInProgress(false)
                         })
                 }
@@ -258,14 +285,14 @@ export default function MarketTrade() {
                                                 type="text"
                                                 value={slippagePercentage}
                                                 onChange={(e) => setSlippagePercentage(e.target.value)}
-                                                onBlur={(e) => e.target.value && setSlippagePercentage(`${parseInt(e.target.value, 10)}%`)}
+                                                onBlur={(e) => e.target.value && setSlippagePercentage(`${parseFloat(e.target.value)}%`)}
                                             />
                                         </div>
                                         <Slider
                                             min={0}
                                             max={50}
                                             marks={{ 10: '10', 20: '20', 30: '30', 40: '40', 50: '50' }}
-                                            value={parseInt(slippagePercentage, 10)}
+                                            value={parseFloat(slippagePercentage)}
                                             onChange={(e) => {
                                                 setSlippagePercentage(`${e}%`)
                                             }}
@@ -275,7 +302,9 @@ export default function MarketTrade() {
                                     {bscContext.currentAccountAddress ? (
                                         <>
                                             {swapInProgress || approveInProgress ? (
-                                                <Spinner size="" animation="border" variant="primary" />
+                                                <div className="spinner-container">
+                                                    <Spinner size="" animation="border" variant="primary" />
+                                                </div>
                                             ) : (
                                                 <>
                                                     {needsApproval && (
@@ -292,9 +321,10 @@ export default function MarketTrade() {
                                                                     .then(() => {
                                                                         setNeedsApproval(false)
                                                                         setApproveInProgress(false)
+                                                                        toast.success('Swap Approved', toastSettings)
                                                                     })
                                                                     .catch(() => {
-                                                                        // alert approval error
+                                                                        toast.error('Error Approving', toastSettings)
                                                                         setApproveInProgress(false)
                                                                     })
                                                             }}

@@ -40,7 +40,7 @@ export default function MarketHistory() {
             <Tabs defaultActiveKey="recent-trades">
                 <Tab eventKey="recent-trades">
                     <div className="table-wrapper">
-                        <table className="table-header">
+                        <table className="table-header table">
                             <thead>
                                 <tr>
                                     <th>Time</th>
@@ -49,6 +49,16 @@ export default function MarketHistory() {
                                     {tokenContext.currentTokenPriceInUSD && <th>Value (USD)</th>}
                                 </tr>
                             </thead>
+                            <tbody>
+                                <tr key={recentTransactions?.[0]?.transaction?.hash}>
+                                    <td className="green">0m ago</td>
+                                    <td className="green">{recentTransactions?.[0]?.transaction?.sellAmount?.toFixed(3)}</td>
+                                    <td className="green">{recentTransactions?.[0]?.transaction?.buyAmount?.toFixed(3)}</td>
+                                    {tokenContext.currentTokenPriceInUSD && (
+                                        <td className="green">{(recentTransactions?.[0]?.transaction?.buyAmount * tokenContext.currentTokenPriceInUSD)?.toFixed(2)}</td>
+                                    )}
+                                </tr>
+                            </tbody>
                         </table>
                         <div className="table-container">
                             <table className="table">

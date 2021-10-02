@@ -7,7 +7,7 @@ const MarketNews = () => {
     const tokenContext = useContext(TokenContext)
     const [twentyFourHourVolume, setTwentyFourHourVolume] = useState('$-')
     const [twentyFourHourTransactions, setTwentyFourHourTransactions] = useState('-')
-    // const [liquidity, setLiquidity] = useState('$-')
+    const [liquidity, setLiquidity] = useState('$-')
     // const [marketCap, setMarketCap] = useState('-')
     useEffect(async () => {
         const twentyFourHourInfo = await axios.post(
@@ -26,6 +26,15 @@ const MarketNews = () => {
         const summedTransactions = twentyFourHourInfo?.data?.data?.ethereum?.dexTrades.reduce((currSum, currentValue) => currSum + currentValue.count, 0)
         setTwentyFourHourVolume(`$${round(summedValue / 1000000, 3)}M`)
         setTwentyFourHourTransactions(summedTransactions.toLocaleString())
+    }, [tokenContext.currentlySelectedToken])
+
+    useEffect(async () => {
+        const currentlLiquidity = await axios.get(
+            `https://liquidity-calculator-dot-utopia-315014.uw.r.appspot.com/liquidity/${tokenContext.currentlySelectedToken.address}/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c`
+        )
+        if (currentlLiquidity.data) {
+            setLiquidity(`$${round(currentlLiquidity.data / 1000000, 3)}M`)
+        }
     }, [tokenContext.currentlySelectedToken])
 
     // useEffect(async () => {
@@ -67,7 +76,7 @@ const MarketNews = () => {
             <div className="info-row">
                 <div className="info-stat">
                     <div className="info-header">Liquidity</div>
-                    <div className="info-value">{twentyFourHourVolume}</div>
+                    <div className="info-value">{liquidity}</div>
                 </div>
                 <div className="info-stat">
                     <div className="info-header">Marketcap</div>
