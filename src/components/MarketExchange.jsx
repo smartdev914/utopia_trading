@@ -14,6 +14,7 @@ import { round } from 'common/utils/numbers'
 import Slider from 'rc-slider'
 import TokenModal from './TokenModal'
 import 'rc-slider/assets/index.css'
+import supportedPancakeTokens from '../common/constants/tokens/supportedPancakeTokens.json'
 
 const toastSettings = {
     position: 'top-right',
@@ -29,7 +30,7 @@ const toastSettings = {
 export default function MarketTrade() {
     const [fromBNB, toggleFromBnb] = useState(true)
     const [tokenA, setTokenA] = useState(supportedTokens[0])
-    const [tokenB, setTokenB] = useState(supportedTokens[2])
+    const [tokenB, setTokenB] = useState(supportedPancakeTokens.tokens[0])
     const [tokenAAmount, setTokenAAmount] = useState('')
     const [tokenBAmount, setTokenBAmount] = useState('')
     const [showTokenModal, toggleShowTokenModal] = useState(false)
@@ -42,7 +43,7 @@ export default function MarketTrade() {
     const [tokenABalance, setTokenABalance] = useState()
     const [tokenBBalance, setTokenBBalance] = useState()
 
-    const [currentPricingIntervals, setCurrentPricingIntervals] = useState([])
+    const [currentPricingInterval, setCurrentPricingInterval] = useState()
     const [bnbToTokenRatio, setBnbToTokenRatio] = useState(0)
 
     const bscContext = useContext(BSCContext)
@@ -66,18 +67,16 @@ export default function MarketTrade() {
         bscContext.setLoadDexContract(true)
     }, [])
 
-    // useEffect(() => {
-    //     if (fromBNB) {
-    //         setTokenB(tokenContext.currentlySelectedToken)
-    //     } else {
-    //         setTokenA(tokenContext.currentlySelectedToken)
-    //     }
-    // }, [tokenContext.currentlySelectedToken])
+    useEffect(() => {
+        if (fromBNB) {
+            setTokenB(tokenContext.currentlySelectedToken)
+        } else {
+            setTokenA(tokenContext.currentlySelectedToken)
+        }
+    }, [tokenContext.currentlySelectedToken])
 
     useEffect(async () => {
-        currentPricingIntervals.forEach((interval) => {
-            clearInterval(interval)
-        })
+        clearInterval(currentPricingInterval)
 
         const getAndSetRatio = async () => {
             const moralisResponse = await axios.get(`https://deep-index.moralis.io/api/v2/erc20/${fromBNB ? tokenB.address : tokenA.address}/price?chain=bsc`, {
@@ -93,17 +92,18 @@ export default function MarketTrade() {
         const intervalId = setInterval(async () => {
             await getAndSetRatio()
         }, 7500)
-        const newPricingIntervals = [...currentPricingIntervals, intervalId]
-        setCurrentPricingIntervals(newPricingIntervals)
+        setCurrentPricingInterval(intervalId)
     }, [fromBNB, tokenA.address, tokenB.address])
 
     useEffect(() => {
-        if (tokenAEstimated) {
-            setTokenAAmount(round(fromBNB ? round(tokenBAmount, 6) * bnbToTokenRatio : round(tokenBAmount, 6) * (1 / bnbToTokenRatio), 6))
-        } else {
-            setTokenBAmount(round(fromBNB ? round(tokenAAmount, 6) * (1 / bnbToTokenRatio) : round(tokenAAmount, 6) * bnbToTokenRatio, 6))
+        if (bnbToTokenRatio) {
+            if (tokenAEstimated) {
+                setTokenAAmount(round(fromBNB ? round(tokenBAmount, 6) * bnbToTokenRatio : round(tokenBAmount, 6) * (1 / bnbToTokenRatio), 6))
+            } else {
+                setTokenBAmount(round(fromBNB ? round(tokenAAmount, 6) * (1 / bnbToTokenRatio) : round(tokenAAmount, 6) * bnbToTokenRatio, 6))
+            }
         }
-    }, [bnbToTokenRatio])
+    }, [bnbToTokenRatio, tokenAAmount, tokenBAmount])
 
     useEffect(async () => {
         if (window.web3 && window.web3.eth) {
@@ -122,14 +122,17 @@ export default function MarketTrade() {
 
     useEffect(async () => {
         if (bscContext.currentAccountAddress) {
-            const currentlySelectedTokenBalance = bscContext.tokenBalances.find((token) => token.TokenAddress.toLowerCase() === tokenContext.currentlySelectedToken.address.toLowerCase())
-
+            const currentlySelectedTokenBalance = bscContext.tokenBalances.find((token) => token.TokenAddress.toLowerCase() === (fromBNB ? tokenB.address.toLowerCase() : tokenA.address.toLowerCase()))
+            const tokenQuantity =
+                currentlySelectedTokenBalance?.TokenDivisor === '9'
+                    ? round(web3.utils.fromWei(currentlySelectedTokenBalance?.TokenQuantity || '0', 'gwei'), 0)
+                    : web3.utils.fromWei(currentlySelectedTokenBalance?.TokenQuantity || '0')
             if (fromBNB) {
                 setTokenABalance(web3.utils.fromWei(bscContext.currentBnbBalance))
-                setTokenBBalance(web3.utils.fromWei(currentlySelectedTokenBalance.TokenQuantity))
+                setTokenBBalance(tokenQuantity)
             } else {
                 setTokenBBalance(web3.utils.fromWei(bscContext.currentBnbBalance))
-                setTokenABalance(web3.utils.fromWei(currentlySelectedTokenBalance.TokenQuantity))
+                setTokenABalance(tokenQuantity)
             }
         }
     }, [fromBNB, tokenA.address, tokenB.address, bscContext.tokenBalances])
@@ -339,7 +342,7 @@ export default function MarketTrade() {
                                                             Approve
                                                         </button>
                                                     )}
-                                                    <button type="button" className="btn buy" onClick={onSwapClick}>
+                                                    <button type="button" className="btn buy" onClick={onSwapClick} disabled={tokenAAmount >= tokenABalance}>
                                                         Swap
                                                     </button>
                                                 </>

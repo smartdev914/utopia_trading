@@ -42,6 +42,7 @@ const Presale = () => {
             const totalPurchasedTokens = web3.utils.fromWei(tokensPurchasedInWei)
             setTotalPurchasedBnb(round(totalPurchasedTokens, 0))
             const finalized = await bscContext.presaleContract.methods.finalized().call()
+            console.log(finalized)
             setPresaleFinalized(finalized)
         }
     }, [bscContext.presaleContract])

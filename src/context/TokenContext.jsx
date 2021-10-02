@@ -45,7 +45,11 @@ const TokenContextProvider = ({ children }) => {
             setCurrentTokenPriceInUSD(round(1.0, 2))
         } else {
             const currentPriceOfToken = await getCurrentPriceOfTokeninUSD(currentlySelectedToken.address)
-            setCurrentTokenPriceInUSD(round(parseFloat(currentPriceOfToken), 2).toLocaleString(undefined, { minimumFractionDigits: 2 }))
+            if (currentPriceOfToken) {
+                setCurrentTokenPriceInUSD(round(parseFloat(currentPriceOfToken), 2).toLocaleString(undefined, { minimumFractionDigits: 2 }))
+            } else {
+                setCurrentTokenPriceInUSD(`-`)
+            }
         }
     }, [currentlySelectedToken.address])
 
