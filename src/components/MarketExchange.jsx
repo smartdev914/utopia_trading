@@ -42,7 +42,7 @@ export default function MarketTrade() {
     const [tokenABalance, setTokenABalance] = useState()
     const [tokenBBalance, setTokenBBalance] = useState()
 
-    const [currentPricingInterval, setCurrentPricingInterval] = useState(null)
+    const [currentPricingIntervals, setCurrentPricingIntervals] = useState([])
     const [bnbToTokenRatio, setBnbToTokenRatio] = useState(0)
 
     const bscContext = useContext(BSCContext)
@@ -66,10 +66,19 @@ export default function MarketTrade() {
         bscContext.setLoadDexContract(true)
     }, [])
 
+    // useEffect(() => {
+    //     if (fromBNB) {
+    //         setTokenB(tokenContext.currentlySelectedToken)
+    //     } else {
+    //         setTokenA(tokenContext.currentlySelectedToken)
+    //     }
+    // }, [tokenContext.currentlySelectedToken])
+
     useEffect(async () => {
-        if (currentPricingInterval) {
-            clearInterval(currentPricingInterval)
-        }
+        currentPricingIntervals.forEach((interval) => {
+            clearInterval(interval)
+        })
+
         const getAndSetRatio = async () => {
             const moralisResponse = await axios.get(`https://deep-index.moralis.io/api/v2/erc20/${fromBNB ? tokenB.address : tokenA.address}/price?chain=bsc`, {
                 headers: {
@@ -81,10 +90,11 @@ export default function MarketTrade() {
             setBnbToTokenRatio(round(ratio, 6))
         }
         await getAndSetRatio()
-        const interval = setInterval(async () => {
+        const intervalId = setInterval(async () => {
             await getAndSetRatio()
         }, 7500)
-        setCurrentPricingInterval(interval)
+        const newPricingIntervals = [...currentPricingIntervals, intervalId]
+        setCurrentPricingIntervals(newPricingIntervals)
     }, [fromBNB, tokenA.address, tokenB.address])
 
     useEffect(() => {

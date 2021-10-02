@@ -134,7 +134,7 @@ const Presale = () => {
         )
     }
 
-    if (true && withdrawGUID) {
+    if (presaleFinalized || withdrawGUID) {
         if (presalePurchased && millisecondsToSeconds(Date.now()) > 1633208400) {
             presaleModuleContent = (
                 <>
