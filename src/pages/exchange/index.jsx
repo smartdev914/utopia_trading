@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Text from 'common/components/Text'
 import Image from 'next/image'
 import MarketNews from 'components/MarketNews'
 import { ToastContainer } from 'react-toastify'
+// import dexWhiteListWallets from 'common/data/dexWhiteListWallets'
+import BSCContext from 'context/BSCContext'
 import Layout from '../../components/Layout'
 import MarketHistory from '../../components/MarketHistory'
 import MarketPairs from '../../components/MarketPairs'
@@ -13,6 +15,8 @@ import DynamicTVSDark from '../../components/DynamicTVSDark'
 
 const Home = ({ query }) => {
     const hasSecretLink = Object.keys(query).includes('716e5a7d-b5da-4cbf-9eb9-be908007fef7')
+    const bscContext = useContext(BSCContext)
+    // const isDexWhiteListed = dexWhiteListWallets.includes(bscContext.currentAccountAddress)
 
     useEffect(() => {
         document.querySelector('body').classList.add('dark')
@@ -41,7 +45,19 @@ const Home = ({ query }) => {
             <ToastContainer />
         </Layout>
     ) : (
-        <Text as="p" content="Exchange Under Development." />
+        <div className="dex-beta-modal">
+            <Text as="p" content="Exchange is Currently In Closed Beta" />
+            <Text as="div" content="Connect a whitelisted wallet to use the Beta" />
+            <button
+                type="button"
+                className="btn buy"
+                onClick={async () => {
+                    await bscContext.triggerDappModal()
+                }}
+            >
+                Connect Wallet
+            </button>
+        </div>
     )
 }
 

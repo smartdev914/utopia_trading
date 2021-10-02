@@ -243,11 +243,12 @@
   display: flex;
   justify-content: space-between;
   margin: 0.5rem 0;
+  align-items: center;
 }
 
 .market-trade .market-trade-buy input.slippage-percentage-input {
   width: 48px;
-  height: 19px;
+  height: 36px;
   border-radius: 4px;
   color: #F9DF00;
   text-align: center;
