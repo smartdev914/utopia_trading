@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import Button from 'common/components/Button'
 import Image from 'next/image'
+import { toast } from 'react-toastify'
 import { supportedTokens } from 'common/data/exchangeData'
 import React, { useContext, useEffect, useState } from 'react'
 import { Tabs, Tab, Spinner } from 'react-bootstrap'
