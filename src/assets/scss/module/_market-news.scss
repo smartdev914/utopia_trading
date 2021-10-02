@@ -2,7 +2,7 @@
   padding: 20px;
   margin-top: 1rem;
 
-  h3 {
+  &.market-history h3 {
     padding: 0
   }
 
@@ -19,6 +19,7 @@
     width: 30%;
     flex-shrink: 0;
     margin-right: 20%;
+    min-width: 70px;
   }
 
   .info-header {

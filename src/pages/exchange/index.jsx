@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import Text from 'common/components/Text'
 import Image from 'next/image'
 import MarketNews from 'components/MarketNews'
+import { toast, ToastContainer } from 'react-toastify'
 import Layout from '../../components/Layout'
 import MarketHistory from '../../components/MarketHistory'
 import MarketPairs from '../../components/MarketPairs'
@@ -37,6 +38,7 @@ const Home = ({ query }) => {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </Layout>
     ) : (
         <Text as="p" content="Exchange Under Development." />

@@ -10,6 +10,7 @@ import 'slick-carousel/slick/slick-theme.css'
 import '../assets/css/ionicons.min.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../assets/scss/style.scss'
+import 'react-toastify/dist/ReactToastify.min.css'
 
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { pdfjs } from 'react-pdf'
