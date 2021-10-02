@@ -207,13 +207,17 @@ const BSCContextProvider = ({ children }) => {
         return tokenAdded
     }
 
+    const logout = () => {
+        setCurrentAccountAddress(null)
+    }
+
     return (
         <BSCContext.Provider
             value={{
                 dexContract,
                 currentAccountAddress,
                 presaleContract,
-                setCurrentAccountAddress,
+                logout,
                 setLoadDexContract,
                 setLoadPresaleContract,
                 pancakeSwapContract,

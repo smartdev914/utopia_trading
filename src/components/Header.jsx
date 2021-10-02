@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useContext, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -77,13 +79,9 @@ const Header = () => {
                                                         </a>
                                                     </Link>
                                                 </li> */}
-                                                <li className="nav-item">
-                                                    <Link href="/login">
-                                                        <a href="/" className="nav-link red">
-                                                            <i className="icon ion-md-power" />
-                                                            <span>Log Out</span>
-                                                        </a>
-                                                    </Link>
+                                                <li className="nav-item" onClick={() => bscContext.logout()}>
+                                                    <i className="icon ion-md-power" />
+                                                    <span>Log Out</span>
                                                 </li>
                                             </ul>
                                         </div>

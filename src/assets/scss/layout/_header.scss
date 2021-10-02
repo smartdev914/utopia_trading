@@ -66,8 +66,11 @@ header .navbar-brand img {
     padding-right: 1rem;
     padding-left: 1rem;
 }
-header nav .nav-item.active a {
-    color: #007bff;
+header nav .nav-item {
+    display: flex;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
 }
 header .nav-link.btn {
     padding: 5px 0;
