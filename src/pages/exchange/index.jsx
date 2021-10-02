@@ -46,7 +46,7 @@ const Home = ({ query }) => {
         </Layout>
     ) : (
         <div className="dex-beta-modal">
-            <Text as="p" content="Exchange is Currently In Closed Beta" />
+            {/* <Text as="p" content="Exchange is Currently In Closed Beta" />
             <Text as="div" content="Connect a whitelisted wallet to use the Beta" />
             <button
                 type="button"
@@ -56,7 +56,8 @@ const Home = ({ query }) => {
                 }}
             >
                 Connect Wallet
-            </button>
+            </button> */}
+            <Text as="p" content="Exchange is Currently In Development" />
         </div>
     )
 }
