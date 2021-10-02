@@ -206,3 +206,30 @@ input[type="number"] {
 .modal-content .sr-only {
   display: none;
 }
+
+.dex-beta-modal {
+  background: #1733AA;
+  color: #A3FFFF;
+  font-family: var(--fontDosis);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2rem;
+  font-size: 30px;
+  text-align: center;
+  border-radius: 15px;
+
+  div {
+    font-size: 26px;
+    color: #F9DF00
+  }
+
+  button {
+    background: #F9DF00;
+    color: #1733AA;
+    padding: 0.25rem 1rem;
+    border-radius: 10px;
+    font-size: 26px
+  }
+}

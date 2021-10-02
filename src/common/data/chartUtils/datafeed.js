@@ -175,6 +175,7 @@ export default {
                 lastBarsCache.set(symbolInfo.full_name, { ...bars[bars.length - 1] })
             }
             onHistoryCallback(bars, { noData: false })
+            console.log(lastBarsCache)
         } catch (error) {
             onErrorCallback(error)
         }
@@ -182,7 +183,7 @@ export default {
     subscribeBars: (symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback) => {
         subscribeOnStream(symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback, lastBarsCache.get(symbolInfo.full_name))
     },
-    unsubscribeBars: (subscriberUID) => (subscriberUID) => {
+    unsubscribeBars: (subscriberUID) => {
         unsubscribeFromStream(subscriberUID)
     },
 }

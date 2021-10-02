@@ -2,7 +2,7 @@
 import { io } from 'socket.io-client'
 import { parseFullSymbol } from './helpers'
 
-const socket = io('wss://streamer.cryptocompare.com')
+const socket = io('https://price-retriever-dot-utopia-315014.uw.r.appspot.com')
 
 const channelToSubscription = new Map()
 
@@ -26,7 +26,7 @@ socket.on('error', (error) => {
 
 export function subscribeOnStream(symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback, lastDailyBar) {
     const parsedSymbol = parseFullSymbol(symbolInfo.full_name)
-    const channelString = `0~${parsedSymbol.exchange}~${parsedSymbol.fromSymbol}~${parsedSymbol.toSymbol}`
+    const channelString = `0~${parsedSymbol.exchange}~${symbolInfo.address}~0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c`
     const handler = {
         id: subscribeUID,
         callback: onRealtimeCallback,
@@ -66,6 +66,7 @@ socket.on('m', (data) => {
     const { lastDailyBar } = subscriptionItem
     const nextDailyBarTime = getNextDailyBarTime(lastDailyBar.startTime)
     let bar
+    console.log(nextDailyBarTime)
     if (tradeTime >= nextDailyBarTime) {
         bar = {
             time: nextDailyBarTime,
