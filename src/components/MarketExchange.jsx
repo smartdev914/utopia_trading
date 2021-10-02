@@ -11,7 +11,6 @@ import { round } from 'common/utils/numbers'
 import Slider from 'rc-slider'
 import TokenModal from './TokenModal'
 import 'rc-slider/assets/index.css'
-import { toast } from 'react-toastify'
 
 const toastSettings = {
     position: 'top-right',
