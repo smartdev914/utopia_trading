@@ -35,8 +35,10 @@ const BSCContextProvider = ({ children }) => {
     const pancakeSwapRouterV2Address = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
 
     const loadUTPPresaleContract = useCallback(() => {
-        const UtopiaContract = new window.web3.eth.Contract(bscPresaleABI, UtopiaPresaleBSCAddress)
-        setPresaleContract(UtopiaContract)
+        if (window.web3) {
+            const UtopiaContract = new window.web3.eth.Contract(bscPresaleABI, UtopiaPresaleBSCAddress)
+            setPresaleContract(UtopiaContract)
+        }
     }, [UtopiaPresaleBSCAddress])
 
     const setupNetwork = async () => {
