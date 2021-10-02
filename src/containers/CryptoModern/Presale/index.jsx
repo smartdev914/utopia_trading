@@ -4,8 +4,6 @@ import Text from 'common/components/Text'
 import Image from 'next/image'
 import Button from 'common/components/Button'
 import Container from 'common/components/UI/Container'
-import isAfter from 'date-fns/isAfter'
-import fromUnixTime from 'date-fns/fromUnixTime'
 
 import { Spinner } from 'react-bootstrap'
 import BSCContext from 'context/BSCContext'
@@ -135,7 +133,7 @@ const Presale = () => {
     }
 
     if (presaleFinalized || withdrawGUID) {
-        if (presalePurchased && millisecondsToSeconds(Date.now()) > 1633208400) {
+        if ((presalePurchased && millisecondsToSeconds(Date.now()) > 1633208400) || withdrawGUID) {
             presaleModuleContent = (
                 <>
                     <Text content="Thank you for waiting!" />
@@ -203,24 +201,16 @@ const Presale = () => {
                                 <div className="presale-module">{bscContext.currentAccountAddress ? presaleModuleContent : <Text content="No Wallet Address Provided" />}</div>
                             ) : (
                                 <>
-                                    {presaleGUID || presaleFinalized || withdrawGUID ? (
-                                        <div className="presale-module dapp-disabled">
-                                            {presaleFinalized && <Text content="Presale Concluded!" />}
-                                            <Text content={presaleFinalized ? 'Please connect your wallet to Withdraw' : 'Please connect your wallet to continue'} />
-                                            <Button
-                                                title="Connect Wallet"
-                                                onClick={async () => {
-                                                    await bscContext.triggerDappModal()
-                                                }}
-                                            />
-                                        </div>
-                                    ) : (
-                                        <div className="presale-module dapp-disabled">
-                                            <Text content="Presale Sold out!" />
-                                            <Text content="Thank you for your consideration." />
-                                            <Text content="For those who participated in the Presale, please return here on Oct. 2nd to withdraw your UTP tokens!" />
-                                        </div>
-                                    )}
+                                    <div className="presale-module dapp-disabled">
+                                        {presaleFinalized && <Text content="Presale Concluded!" />}
+                                        <Text content={presaleFinalized ? 'Please connect your wallet to Withdraw' : 'Please connect your wallet to continue'} />
+                                        <Button
+                                            title="Connect Wallet"
+                                            onClick={async () => {
+                                                await bscContext.triggerDappModal()
+                                            }}
+                                        />
+                                    </div>
                                 </>
                             )}
                             <div className="presaleBar">
