@@ -20,7 +20,7 @@ const Presale = () => {
     const presaleGUID = Object.keys(query)?.includes('fb3ca69d-0bab-4110-8b2b-4fcf11a60298')
 
     const presaleTokens = 300000000000
-    const presaleBNB = presaleGUID ? 420 : 400
+    const presaleBNB = presaleGUID ? 425 : 400
     const [loadingPurchase, setLoadingPurchase] = useState(false)
     const [errorMessage, setErrorMessage] = useState(false)
     const [totalPurchasedBnb, setTotalPurchasedBnb] = useState(0)

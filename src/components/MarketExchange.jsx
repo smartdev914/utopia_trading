@@ -6,6 +6,7 @@ import { supportedTokens } from 'common/data/exchangeData'
 import React, { useContext, useEffect, useState } from 'react'
 import { Tabs, Tab, Spinner } from 'react-bootstrap'
 import BSCContext from 'context/BSCContext'
+import TokenContext from 'context/TokenContext'
 import axios from 'axios'
 import web3 from 'web3'
 import { round } from 'common/utils/numbers'
@@ -37,15 +38,14 @@ export default function MarketTrade() {
     const [swapInProgress, setSwapInProgress] = useState(false)
     const [approveInProgress, setApproveInProgress] = useState(false)
     const [slippagePercentage, setSlippagePercentage] = useState('0.5%')
-    // eslint-disable-next-line no-unused-vars
     const [tokenABalance, setTokenABalance] = useState()
-    // eslint-disable-next-line no-unused-vars
     const [tokenBBalance, setTokenBBalance] = useState()
 
     const [currentPricingInterval, setCurrentPricingInterval] = useState(null)
     const [bnbToTokenRatio, setBnbToTokenRatio] = useState(0)
 
     const bscContext = useContext(BSCContext)
+    const tokenContext = useContext(TokenContext)
 
     const clickToggleFromBNB = () => {
         toggleFromBnb(!fromBNB)
@@ -109,28 +109,19 @@ export default function MarketTrade() {
         }
     }, [tokenA, bscContext.currentAccountAddress])
 
-    // useEffect(async () => {
-    //     if (bscContext.currentAccountAddress) {
-    //         const currentTokenABalance = await axios.get('https://api.bscscan.com/api', {
-    //             module: 'account',
-    //             action: 'tokenbalance',
-    //             contractaddress: tokenA.address,
-    //             address: bscContext.currentAccountAddress,
-    //             tag: 'latest',
-    //             apikey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
-    //         })
-    //         const currentTokenBBalance = await axios.get('https://api.bscscan.com/api', {
-    //             module: 'account',
-    //             action: 'tokenbalance',
-    //             contractaddress: tokenB.address,
-    //             address: bscContext.currentAccountAddress,
-    //             tag: 'latest',
-    //             apikey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
-    //         })
-    //         setTokenABalance(currentTokenABalance)
-    //         setTokenBBalance(currentTokenBBalance)
-    //     }
-    // }, [bscContext.currentAccountAddress, tokenA.address])
+    useEffect(async () => {
+        if (bscContext.currentAccountAddress) {
+            const currentlySelectedTokenBalance = bscContext.tokenBalances.find((token) => token.TokenAddress.toLowerCase() === tokenContext.currentlySelectedToken.address.toLowerCase())
+
+            if (fromBNB) {
+                setTokenABalance(web3.utils.fromWei(bscContext.currentBnbBalance))
+                setTokenBBalance(web3.utils.fromWei(currentlySelectedTokenBalance.TokenQuantity))
+            } else {
+                setTokenBBalance(web3.utils.fromWei(bscContext.currentBnbBalance))
+                setTokenABalance(web3.utils.fromWei(currentlySelectedTokenBalance.TokenQuantity))
+            }
+        }
+    }, [fromBNB, tokenA.address, tokenB.address, bscContext.tokenBalances])
 
     const onSwapClick = async () => {
         // Also verify pancakeSwapRouterV2Address
@@ -202,6 +193,7 @@ export default function MarketTrade() {
                             console.log(result)
                             toast.success('Transaction Successful!', toastSettings)
                             setSwapInProgress(false)
+                            bscContext.refreshTokens(true)
                         })
                         .catch((err) => {
                             if (err.code === 4001) {
@@ -221,6 +213,8 @@ export default function MarketTrade() {
         <>
             <div className="market-trade mb15">
                 <h3>SWAP</h3>
+                <div>{tokenABalance}</div>
+                <div>{tokenBBalance}</div>
                 {/* <div>Get the best price for your trade from multiple DEX&apos;s with no additional fees.</div> */}
                 <Tabs defaultActiveKey="market">
                     <Tab eventKey="market" title="MARKET">

@@ -1,6 +1,6 @@
 import utopiaDexABI from 'ABI/utopiaDexABI'
 import axios from 'axios'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Web3 from 'web3'
 import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
@@ -33,6 +33,24 @@ const BSCContextProvider = ({ children }) => {
     const utopiaDexContractAddress = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
     const pancakeSwapV2ContractAddress = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
     const pancakeSwapRouterV2Address = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
+    const [tokenBalances, setTokenBalances] = useState([])
+    const [refreshTokens, setRefreshTokens] = useState(false)
+
+    useEffect(async () => {
+        if (currentAccountAddress) {
+            const currenTokenBalances = await axios.get('https://api.bscscan.com/api', {
+                params: {
+                    module: 'account',
+                    action: 'addresstokenbalance',
+                    address: currentAccountAddress,
+                    tag: 'latest',
+                    apikey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
+                },
+            })
+            setTokenBalances(currenTokenBalances.data.result)
+            setRefreshTokens(false)
+        }
+    }, [currentAccountAddress, refreshTokens])
 
     const loadUTPPresaleContract = useCallback(() => {
         if (window.web3) {
@@ -205,6 +223,8 @@ const BSCContextProvider = ({ children }) => {
                 pancakeSwapRouterV2,
                 registerUTPToken,
                 pancakeSwapV2ContractAddress,
+                tokenBalances,
+                refreshTokens,
             }}
         >
             {children}

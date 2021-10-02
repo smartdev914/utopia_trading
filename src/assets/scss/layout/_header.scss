@@ -102,7 +102,7 @@ header .nav-link.btn {
     margin-top: 5px;
 }
 .header-img-icon button {
-    padding: 0 0 0 15px;
+    padding: 0px 1rem;
 }
 .header-custom-icon button:after,
 .header-img-icon button:after {
@@ -284,4 +284,7 @@ header .nav-link.btn {
 }
 .header-img-icon .profile-nav .nav-item .nav-link i {
     margin-right: 15px;
+}
+.navbar-collapse .navbar-nav {
+  align-items: flex-end;
 }

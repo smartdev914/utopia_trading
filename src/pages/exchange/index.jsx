@@ -3,7 +3,7 @@ import Text from 'common/components/Text'
 import Image from 'next/image'
 import MarketNews from 'components/MarketNews'
 import { ToastContainer } from 'react-toastify'
-import dexWhiteListWallets from 'common/data/dexWhiteListWallets'
+// import dexWhiteListWallets from 'common/data/dexWhiteListWallets'
 import BSCContext from 'context/BSCContext'
 import Layout from '../../components/Layout'
 import MarketHistory from '../../components/MarketHistory'
@@ -16,13 +16,13 @@ import DynamicTVSDark from '../../components/DynamicTVSDark'
 const Home = ({ query }) => {
     const hasSecretLink = Object.keys(query).includes('716e5a7d-b5da-4cbf-9eb9-be908007fef7')
     const bscContext = useContext(BSCContext)
-    const isDexWhiteListed = dexWhiteListWallets.includes(bscContext.currentAccountAddress)
+    // const isDexWhiteListed = dexWhiteListWallets.includes(bscContext.currentAccountAddress)
 
     useEffect(() => {
         document.querySelector('body').classList.add('dark')
     }, [])
 
-    return hasSecretLink || isDexWhiteListed ? (
+    return hasSecretLink ? (
         <Layout>
             <div className="container-fluid mtb15 no-fluid">
                 <div className="row sm-gutters">
