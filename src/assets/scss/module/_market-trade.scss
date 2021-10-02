@@ -49,6 +49,10 @@
     margin-bottom: 10px;
     position: relative;
 
+    &.top {
+      margin-bottom: 70px;
+    }
+
     .input-group-append button{
       font-size: 14px;
       background: #F9DF00;
@@ -203,7 +207,7 @@
 
 .market-trade-buy .swap-coin-icon {
   position: absolute;
-  top: 60px;
+  top: 88px;
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;
@@ -259,4 +263,13 @@
   justify-content: center;
   align-items: flex-end;
   height: 65px;
+}
+
+.market-trade .token-A-balance,
+.market-trade .token-B-balance {
+  position: absolute;
+  top: 75px;
+  right: 20px;
+  font-size: 16px;
+  cursor: pointer;
 }

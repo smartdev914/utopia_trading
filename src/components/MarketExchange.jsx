@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/interactive-supports-focus */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import Button from 'common/components/Button'
 import Image from 'next/image'
@@ -213,15 +214,13 @@ export default function MarketTrade() {
         <>
             <div className="market-trade mb15">
                 <h3>SWAP</h3>
-                <div>{tokenABalance}</div>
-                <div>{tokenBBalance}</div>
                 {/* <div>Get the best price for your trade from multiple DEX&apos;s with no additional fees.</div> */}
                 <Tabs defaultActiveKey="market">
                     <Tab eventKey="market" title="MARKET">
                         <div className="d-flex justify-content-between">
                             <div className="market-trade-buy">
                                 <form action="#">
-                                    <div className={`input-group from ${tokenAEstimated ? 'estimated' : ''}`}>
+                                    <div className={`input-group top from ${tokenAEstimated ? 'estimated' : ''}`}>
                                         <input
                                             type="number"
                                             className="form-control"
@@ -241,11 +240,13 @@ export default function MarketTrade() {
                                                 setTokenAAmount(e.target.value)
                                             }}
                                         />
+                                        <div role="button" className="token-A-balance" onClick={() => setTokenAAmount(tokenABalance)}>
+                                            Current Balance: {tokenABalance ? round(parseFloat(tokenABalance), 5) : '-'}
+                                        </div>
                                         <div className="input-group-append">
                                             <Button className={!fromBNB ? 'token-swap-to' : ''} title={tokenA.symbol} disabled={fromBNB} onClick={() => toggleShowTokenModal(!showTokenModal)} />
                                         </div>
                                     </div>
-                                    {tokenABalance}
                                     <div className={`input-group to ${!tokenAEstimated ? 'estimated' : ''}`}>
                                         <input
                                             type="number"
@@ -263,7 +264,9 @@ export default function MarketTrade() {
                                                 setTokenAAmount(round(fromBNB ? round(e.target.value, 6) * bnbToTokenRatio : round(e.target.value, 6) * (1 / bnbToTokenRatio), 6))
                                             }}
                                         />
-                                        {tokenBBalance}
+                                        <div role="button" className="token-B-balance" onClick={() => setTokenBAmount(tokenBBalance)}>
+                                            Current Balance: {tokenBBalance ? round(parseFloat(tokenBBalance), 5) : '-'}
+                                        </div>
                                         <div className="input-group-append">
                                             <Button className={fromBNB ? 'token-swap-to' : ''} title={tokenB.symbol} disabled={!fromBNB} onClick={() => toggleShowTokenModal(!showTokenModal)} />
                                         </div>
