@@ -1,10 +1,7 @@
-import React, { useContext, useEffect } from 'react'
-import Text from 'common/components/Text'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
 import MarketNews from 'components/MarketNews'
 import { ToastContainer } from 'react-toastify'
-import dexWhiteListWallets from 'common/data/dexWhiteListWallets'
-import BSCContext from 'context/BSCContext'
 import Layout from '../../components/Layout'
 import MarketHistory from '../../components/MarketHistory'
 import MarketPairs from '../../components/MarketPairs'
@@ -13,16 +10,12 @@ import { ThemeConsumer } from '../../context/ThemeContext'
 import DynamicTVS from '../../components/DynamicTVS'
 import DynamicTVSDark from '../../components/DynamicTVSDark'
 
-const Home = ({ query }) => {
-    const hasSecretLink = Object.keys(query).includes('716e5a7d-b5da-4cbf-9eb9-be908007fef7')
-    const bscContext = useContext(BSCContext)
-    const isDexWhiteListed = dexWhiteListWallets.find((wallet) => wallet.toLowerCase() === bscContext.currentAccountAddress.toLowerCase())
-
+const Home = () => {
     useEffect(() => {
         document.querySelector('body').classList.add('dark')
     }, [])
 
-    return hasSecretLink || isDexWhiteListed ? (
+    return (
         <Layout>
             <div className="container-fluid mtb15 no-fluid">
                 <div className="row sm-gutters">
@@ -44,29 +37,6 @@ const Home = ({ query }) => {
             </div>
             <ToastContainer />
         </Layout>
-    ) : (
-        <div className="dex-beta-modal">
-            {bscContext.currentAccountAddress ? (
-                <>
-                    <Text as="p" content="This Address has not been Whitelisted." />
-                    <Text as="div" content="Connect a whitelisted wallet to use the Beta" />
-                </>
-            ) : (
-                <>
-                    <Text as="p" content="Exchange is Currently In Closed Beta" />
-                    <Text as="div" content="Connect a whitelisted wallet to use the Beta" />
-                    <button
-                        type="button"
-                        className="btn buy"
-                        onClick={async () => {
-                            await bscContext.triggerDappModal()
-                        }}
-                    >
-                        Connect Wallet
-                    </button>
-                </>
-            )}
-        </div>
     )
 }
 
