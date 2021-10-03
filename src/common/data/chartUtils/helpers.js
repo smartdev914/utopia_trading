@@ -11,6 +11,7 @@ export async function makeApiRequest(path) {
 export async function makeUtopiaApiRequest(path) {
     try {
         const response = await fetch(`https://price-retriever-dot-utopia-315014.uw.r.appspot.com/${path}`)
+        // const response = await fetch(`http://localhost:3001/${path}`) // For local testing
         return response.json()
     } catch (error) {
         throw new Error(`CryptoCompare request error: ${error.status}`)
