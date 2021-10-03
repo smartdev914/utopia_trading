@@ -26,7 +26,10 @@ const nextConfig = {
         })
 
         // eslint-disable-next-line no-param-reassign
-        config.resolve.alias['bignumber.js'] = 'bignumber.js/bignumber.js'
+        config.resolve.alias = {
+            ...config.resolve.alias,
+            ABI: path.resolve(__dirname, 'src/ABI'),
+        }
 
         // Important: return the modified config
         return config

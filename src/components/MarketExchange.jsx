@@ -9,8 +9,7 @@ import { Tabs, Tab, Spinner } from 'react-bootstrap'
 import BSCContext from 'context/BSCContext'
 import TokenContext from 'context/TokenContext'
 import axios from 'axios'
-import web3 from 'web3'
-import { getBalanceAmount, round } from 'common/utils/numbers'
+import { getBalanceAmount, getDecimalAmount, round } from 'common/utils/numbers'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import { BigNumber } from 'bignumber.js'
@@ -168,14 +167,14 @@ export default function MarketTrade() {
                 const parsedSlippagePercentage = (100 - parseFloat(slippagePercentage)) / 100
                 await bscContext.pancakeSwapRouterV2.methods
                     .swapExactETHForTokensSupportingFeeOnTransferTokens(
-                        web3.utils.toWei(`${tokenBAmount * parsedSlippagePercentage}`),
+                        getDecimalAmount(tokenBAmount * parsedSlippagePercentage, tokenB.decimals).toFixed(),
                         [tokenA.address, tokenB.address],
                         bscContext.currentAccountAddress,
                         Math.floor(Date.now() / 1000) + 30
                     )
                     .send({
                         from: bscContext.currentAccountAddress,
-                        value: web3.utils.toWei(`${tokenAAmount}`),
+                        value: getDecimalAmount(tokenAAmount, tokenA.decimals),
                     })
                     .then(() => {
                         toast.success('Transaction Successful!', toastSettings)
@@ -212,8 +211,8 @@ export default function MarketTrade() {
                     setSwapInProgress(true)
                     await bscContext.pancakeSwapRouterV2.methods
                         .swapExactTokensForETHSupportingFeeOnTransferTokens(
-                            web3.utils.toWei(`${tokenAAmount}`),
-                            web3.utils.toWei(`${tokenBAmount * parsedSlippagePercentage}`),
+                            getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
+                            getDecimalAmount(tokenBAmount * parsedSlippagePercentage, tokenB.decimals).toFixed(),
                             [tokenA.address, tokenB.address],
                             bscContext.currentAccountAddress,
                             Math.floor(Date.now() / 1000) + 30
