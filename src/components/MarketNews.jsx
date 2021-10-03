@@ -14,7 +14,10 @@ const MarketNews = () => {
         if (number / 1000000 > 1000) {
             return `${round(number / 1000000000, 3)}B`
         }
-        return `${round(number / 1000000, 3)}M`
+        if (number / 1000 > 1000) {
+            return `${round(number / 1000000, 3)}M`
+        }
+        return `${round(number, 0)}`
     }
     useEffect(async () => {
         const twentyFourHourInfo = await axios.post(
@@ -31,7 +34,7 @@ const MarketNews = () => {
         )
         const summedValue = twentyFourHourInfo?.data?.data?.ethereum?.dexTrades.reduce((currSum, currentValue) => currSum + currentValue.tradeAmount, 0)
         const summedTransactions = twentyFourHourInfo?.data?.data?.ethereum?.dexTrades.reduce((currSum, currentValue) => currSum + currentValue.count, 0)
-        setTwentyFourHourVolume(`$${parseToMorB(summedValue)}M`)
+        setTwentyFourHourVolume(`$${parseToMorB(summedValue)}`)
         setTwentyFourHourTransactions(summedTransactions.toLocaleString())
     }, [tokenContext.currentlySelectedToken])
 
@@ -62,7 +65,8 @@ const MarketNews = () => {
             },
         })
         const currentMarketCap = Web3.utils.fromWei(tokenCirculatingSupply?.data?.result) * tokenInfo.data.result[0].tokenPriceUSD
-        setMarketCap(`$${parseToMorB(currentMarketCap)}`)
+
+        setMarketCap(currentMarketCap ? `$${parseToMorB(currentMarketCap)}` : `$-`)
     }, [tokenContext.currentlySelectedToken])
 
     return (
