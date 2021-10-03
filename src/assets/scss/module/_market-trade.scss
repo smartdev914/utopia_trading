@@ -50,7 +50,7 @@
     position: relative;
 
     &.top {
-      margin-bottom: 70px;
+      margin-bottom: 80px;
     }
 
     .input-group-append button{
@@ -207,7 +207,7 @@
 
 .market-trade-buy .swap-coin-icon {
   position: absolute;
-  top: 88px;
+  top: 100px;
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;
@@ -240,7 +240,7 @@
 
 .market-trade-buy .slippage-container {
   padding-right: 1rem;
-  margin: 1.5rem 0;
+  margin: 2rem 0 1rem;
 }
 
 .market-trade-buy .slippage-settings {

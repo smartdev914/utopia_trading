@@ -85,6 +85,69 @@ const supportedChartTokens = [
         address: '0x47bead2563dcbf3bf2c9407fea4dc236faba485a',
         pricescale: 10 ** 9,
     },
+    {
+        description: 'UTOPIA/BNB',
+        exchange: 'Utopia',
+        full_name: 'Utopia:UTOPIA/BNB',
+        symbol: 'UTOPIA/BNB',
+        type: 'crypto',
+        address: '0x1a1d7c7A92e8d7f0de10Ae532ECD9f63B7EAf67c',
+        pricescale: 10 ** 12,
+    },
+    {
+        description: 'ETH/BNB',
+        exchange: 'Utopia',
+        full_name: 'Utopia:ETH/BNB',
+        symbol: 'ETH/BNB',
+        type: 'crypto',
+        address: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
+        pricescale: 10 ** 9,
+    },
+    {
+        description: 'BTCB/BNB',
+        exchange: 'Utopia',
+        full_name: 'Utopia:BTCB/BNB',
+        symbol: 'BTCB/BNB',
+        type: 'crypto',
+        address: '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c',
+        pricescale: 10 ** 9,
+    },
+    {
+        description: 'BUSD/BNB',
+        exchange: 'Utopia',
+        full_name: 'Utopia:BUSD/BNB',
+        symbol: 'BUSD/BNB',
+        type: 'crypto',
+        address: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
+        pricescale: 10 ** 9,
+    },
+    {
+        description: 'USDT/BNB',
+        exchange: 'Utopia',
+        full_name: 'Utopia:USDT/BNB',
+        symbol: 'USDT/BNB',
+        type: 'crypto',
+        address: '0x55d398326f99059ff775485246999027b3197955',
+        pricescale: 10 ** 9,
+    },
+    {
+        description: 'XVS/BNB',
+        exchange: 'Utopia',
+        full_name: 'Utopia:XVS/BNB',
+        symbol: 'XVS/BNB',
+        type: 'crypto',
+        address: '0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63',
+        pricescale: 10 ** 9,
+    },
+    {
+        description: 'VAI/BNB',
+        exchange: 'Utopia',
+        full_name: 'Utopia:VAI/BNB',
+        symbol: 'VAI/BNB',
+        type: 'crypto',
+        address: '0x4bd17003473389a42daf6a0a729f6fdb328bbbd7',
+        pricescale: 10 ** 9,
+    },
 ]
 
 export default {
@@ -175,7 +238,6 @@ export default {
                 lastBarsCache.set(symbolInfo.full_name, { ...bars[bars.length - 1] })
             }
             onHistoryCallback(bars, { noData: false })
-            console.log(lastBarsCache)
         } catch (error) {
             onErrorCallback(error)
         }
