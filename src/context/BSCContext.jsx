@@ -197,9 +197,9 @@ const BSCContextProvider = ({ children }) => {
                 type: 'ERC20',
                 options: {
                     address: '0x1a1d7c7A92e8d7f0de10Ae532ECD9f63B7EAf67c',
-                    symbol: 'UTP',
+                    symbol: 'UTOPIA',
                     decimals: 9,
-                    image: `https://github.com/utopia-eco/utp-token/blob/master/utp-logo.jpeg?raw=true`,
+                    image: `https://utopia.cc/assets/image/utopia/utopiaUDarkbg.svg`,
                 },
             },
         })

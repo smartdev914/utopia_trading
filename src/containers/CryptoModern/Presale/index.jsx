@@ -92,7 +92,7 @@ const Presale = () => {
             ) : (
                 <>
                     <Text className="max-contribution" as="div" content="Max Contribution:" />
-                    <Text className="highlight" as="p" content={`${maxPurchaseableTokens} BNB = ${(maxPurchaseableTokens * (presaleTokens / 500)).toLocaleString()} UTP`} />
+                    <Text className="highlight" as="p" content={`${maxPurchaseableTokens} BNB = ${(maxPurchaseableTokens * (presaleTokens / 500)).toLocaleString()} UTOPIA`} />
                     <Text className="wallet-address" content={`Wallet Address: ${bscContext.currentAccountAddress}`} />
                     <Text className="current-balance" as="div" content={`Current Balance: ${round(web3.utils.fromWei(bscContext.currentBnbBalance), 4)} BNB`} />
                     {parseFloat(bscContext.currentBnbBalance) > parseInt(maxPurchaseableTokens, 10) ? (
@@ -126,7 +126,7 @@ const Presale = () => {
         presaleModuleContent = (
             <>
                 <Text content="Thank you for Participating!" />
-                <Text content="Please return here after launch on Oct. 2nd to withdraw your UTP" />
+                <Text content="Please return here after launch on Oct. 2nd to withdraw your UTOPIA" />
                 <Text content="Welcome to Utopia" />
             </>
         )
@@ -137,7 +137,7 @@ const Presale = () => {
             presaleModuleContent = (
                 <>
                     <Text content="Thank you for waiting!" />
-                    <Button title="Withdraw Purchased UTP" onClick={() => handleWithdraw()} />
+                    <Button title="Withdraw Purchased UTOPIA" onClick={() => handleWithdraw()} />
                 </>
             )
         } else {
