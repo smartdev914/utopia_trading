@@ -2,7 +2,8 @@
 import { io } from 'socket.io-client'
 import { parseFullSymbol } from './helpers'
 
-const socket = io('https://price-retriever-dot-utopia-315014.uw.r.appspot.com')
+const socket = io('https://price-retriever-dot-utopia-315014.uw.r.appspot.com', {origins:"*"});
+// const socket = io('localhost:3001'); // For local testing
 
 const channelToSubscription = new Map()
 
@@ -64,9 +65,8 @@ socket.on('m', (data) => {
         return
     }
     const { lastDailyBar } = subscriptionItem
-    const nextDailyBarTime = getNextDailyBarTime(lastDailyBar.startTime)
+    const nextDailyBarTime = subscriptionItem.lastDailyBar.startTime + subscriptionItem.resolution
     let bar
-    console.log(nextDailyBarTime)
     if (tradeTime >= nextDailyBarTime) {
         bar = {
             time: nextDailyBarTime,
