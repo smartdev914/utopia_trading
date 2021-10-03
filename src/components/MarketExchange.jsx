@@ -151,8 +151,11 @@ export default function MarketTrade() {
                 setTokenBBalance(getBalanceAmount(bscContext.currentBnbBalance))
                 setTokenABalance(tokenQuantity)
             }
+        } else {
+            setTokenABalance('-')
+            setTokenBBalance('-')
         }
-    }, [fromBNB, tokenA.address, tokenB.address, bscContext.tokenBalances])
+    }, [bscContext.currentAccountAddress, fromBNB, tokenA.address, tokenB.address, bscContext.tokenBalances])
 
     const onSwapClick = async () => {
         // Also verify pancakeSwapRouterV2Address

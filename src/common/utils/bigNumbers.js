@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
 
 export const BIG_ZERO = new BigNumber(0)
 export const BIG_ONE = new BigNumber(1)
