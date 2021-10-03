@@ -124,7 +124,7 @@ export const TokenomicsWhaleHightlights = [
 export const Q2RoadMap = [
     {
         id: 'Q2-1',
-        checked: false,
+        checked: true,
         label: 'Presale',
     },
     {
@@ -134,7 +134,7 @@ export const Q2RoadMap = [
     },
     {
         id: 'Q2-3',
-        checked: false,
+        checked: true,
         label: 'Pancakeswap Launch',
     },
     {
@@ -172,14 +172,14 @@ export const Q2RoadMap = [
         checked: false,
         label: '1st Charity Donation',
     },
-]
-
-export const Q3RoadMap = [
     {
-        id: 'Q3-1',
+        id: 'Q2-11',
         checked: false,
         label: 'CMC / Coingecko / Blockfolio Listings',
     },
+]
+
+export const Q3RoadMap = [
     {
         id: 'Q3-2',
         checked: false,
