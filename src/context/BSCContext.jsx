@@ -244,6 +244,7 @@ const BSCContextProvider = ({ children }) => {
                 pancakeSwapRouterV2,
                 registerUTPToken,
                 pancakeSwapV2ContractAddress,
+                pancakeSwapRouterV2Address,
                 tokenBalances,
                 refreshTokens,
             }}

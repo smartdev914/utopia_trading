@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Text from 'common/components/Text'
 import Image from 'next/image'
 import MarketNews from 'components/MarketNews'
 import { ToastContainer } from 'react-toastify'
-// import dexWhiteListWallets from 'common/data/dexWhiteListWallets'
-// import BSCContext from 'context/BSCContext'
+import dexWhiteListWallets from 'common/data/dexWhiteListWallets'
+import BSCContext from 'context/BSCContext'
 import Layout from '../../components/Layout'
 import MarketHistory from '../../components/MarketHistory'
 import MarketPairs from '../../components/MarketPairs'
@@ -15,14 +15,14 @@ import DynamicTVSDark from '../../components/DynamicTVSDark'
 
 const Home = ({ query }) => {
     const hasSecretLink = Object.keys(query).includes('716e5a7d-b5da-4cbf-9eb9-be908007fef7')
-    // const bscContext = useContext(BSCContext)
-    // const isDexWhiteListed = dexWhiteListWallets.includes(bscContext.currentAccountAddress)
+    const bscContext = useContext(BSCContext)
+    const isDexWhiteListed = dexWhiteListWallets.find((wallet) => wallet.toLowerCase() === bscContext.currentAccountAddress.toLowerCase())
 
     useEffect(() => {
         document.querySelector('body').classList.add('dark')
     }, [])
 
-    return hasSecretLink ? (
+    return hasSecretLink || isDexWhiteListed ? (
         <Layout>
             <div className="container-fluid mtb15 no-fluid">
                 <div className="row sm-gutters">
@@ -46,7 +46,7 @@ const Home = ({ query }) => {
         </Layout>
     ) : (
         <div className="dex-beta-modal">
-            {/* <Text as="p" content="Exchange is Currently In Closed Beta" />
+            <Text as="p" content="Exchange is Currently In Closed Beta" />
             <Text as="div" content="Connect a whitelisted wallet to use the Beta" />
             <button
                 type="button"
@@ -56,8 +56,7 @@ const Home = ({ query }) => {
                 }}
             >
                 Connect Wallet
-            </button> */}
-            <Text as="p" content="Exchange is Currently In Development" />
+            </button>
         </div>
     )
 }
