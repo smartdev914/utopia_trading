@@ -16,7 +16,7 @@ import DynamicTVSDark from '../../components/DynamicTVSDark'
 const Home = ({ query }) => {
     const hasSecretLink = Object.keys(query).includes('716e5a7d-b5da-4cbf-9eb9-be908007fef7')
     const bscContext = useContext(BSCContext)
-    const isDexWhiteListed = dexWhiteListWallets.includes(bscContext.currentAccountAddress)
+    const isDexWhiteListed = dexWhiteListWallets.find((wallet) => wallet.toLowerCase() === bscContext.currentAccountAddress.toLowerCase())
 
     useEffect(() => {
         document.querySelector('body').classList.add('dark')
