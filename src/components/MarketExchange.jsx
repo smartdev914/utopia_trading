@@ -362,7 +362,7 @@ export default function MarketTrade() {
                                                             Approve
                                                         </button>
                                                     )}
-                                                    <button type="button" className="btn buy" onClick={onSwapClick} disabled={tokenAAmount >= tokenABalance}>
+                                                    <button type="button" className="btn buy" onClick={onSwapClick} disabled={tokenAAmount > tokenABalance}>
                                                         Swap
                                                     </button>
                                                 </>
