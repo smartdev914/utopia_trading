@@ -215,7 +215,7 @@ export default function MarketTrade() {
                     await bscContext.pancakeSwapRouterV2.methods
                         .swapExactTokensForETHSupportingFeeOnTransferTokens(
                             getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
-                            getDecimalAmount(tokenBAmount * parsedSlippagePercentage, tokenB.decimals).toFixed(),
+                            getDecimalAmount(parseInt(tokenBAmount * parsedSlippagePercentage, tokenB.decimals)).toFixed(),
                             [tokenA.address, tokenB.address],
                             bscContext.currentAccountAddress,
                             Math.floor(Date.now() / 1000) + 30
