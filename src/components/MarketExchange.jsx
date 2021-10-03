@@ -10,10 +10,13 @@ import BSCContext from 'context/BSCContext'
 import TokenContext from 'context/TokenContext'
 import axios from 'axios'
 import web3 from 'web3'
-import { round } from 'common/utils/numbers'
+import { getBalanceAmount, round } from 'common/utils/numbers'
 import Slider from 'rc-slider'
-import TokenModal from './TokenModal'
 import 'rc-slider/assets/index.css'
+import { BigNumber } from 'bignumber.js'
+import { useDebouncedCallback } from 'common/hooks/useDebouncedCallback'
+import TokenModal from './TokenModal'
+
 import supportedPancakeTokens from '../common/constants/tokens/supportedPancakeTokens.json'
 
 const toastSettings = {
@@ -75,32 +78,47 @@ export default function MarketTrade() {
         }
     }, [tokenContext.currentlySelectedToken])
 
-    useEffect(async () => {
-        clearInterval(currentPricingInterval)
+    const debouncedCallback = useDebouncedCallback(async (address, lastIntervalId) => {
+        clearInterval(lastIntervalId)
 
         const getAndSetRatio = async () => {
-            const moralisResponse = await axios.get(`https://deep-index.moralis.io/api/v2/erc20/${fromBNB ? tokenB.address : tokenA.address}/price?chain=bsc`, {
-                headers: {
-                    accept: 'application/json',
-                    'X-API-Key': 'c2YpyMVhR0Kg1Oyjw0AuwFAnv3DcqmtDAmp8o3Wne4m9V2gUg47fjSjZLbgg8ZNs',
-                },
-            })
-            const ratio = web3.utils.fromWei(moralisResponse.data.nativePrice.value)
-            setBnbToTokenRatio(round(ratio, 6))
+            const pricingResponse = await axios.get(`https://price-retriever-dot-utopia-315014.uw.r.appspot.com/retrievePrice/${address}`)
+            const ratio = pricingResponse.data
+            setBnbToTokenRatio(ratio)
         }
         await getAndSetRatio()
         const intervalId = setInterval(async () => {
             await getAndSetRatio()
-        }, 7500)
+        }, 7000)
         setCurrentPricingInterval(intervalId)
+    }, 1000)
+
+    useEffect(async () => {
+        debouncedCallback(fromBNB ? tokenB.address : tokenA.address, currentPricingInterval)
     }, [fromBNB, tokenA.address, tokenB.address])
 
     useEffect(() => {
         if (bnbToTokenRatio) {
+            const tokenAAmountBN = new BigNumber(tokenAAmount)
+            const tokenBAmountBN = new BigNumber(tokenBAmount)
+            const bnbRatioBN = new BigNumber(bnbToTokenRatio)
+
             if (tokenAEstimated) {
-                setTokenAAmount(round(fromBNB ? round(tokenBAmount, 6) * bnbToTokenRatio : round(tokenBAmount, 6) * (1 / bnbToTokenRatio), 6))
+                if (fromBNB) {
+                    const newTokenAAmount = tokenBAmountBN.multipliedBy(bnbRatioBN)
+                    setTokenAAmount(newTokenAAmount.toFixed(6))
+                } else {
+                    const ratio = new BigNumber(1).dividedBy(bnbRatioBN)
+                    const newTokenAAmount = tokenBAmountBN.multipliedBy(ratio)
+                    setTokenAAmount(newTokenAAmount.toFixed(6))
+                }
+            } else if (fromBNB) {
+                const ratio = new BigNumber(1).dividedBy(bnbRatioBN)
+                const newTokenBAmount = tokenAAmountBN.multipliedBy(ratio)
+                setTokenBAmount(newTokenBAmount.toFixed(6))
             } else {
-                setTokenBAmount(round(fromBNB ? round(tokenAAmount, 6) * (1 / bnbToTokenRatio) : round(tokenAAmount, 6) * bnbToTokenRatio, 6))
+                const newTokenBAmount = tokenAAmountBN.multipliedBy(bnbRatioBN)
+                setTokenBAmount(newTokenBAmount.toFixed(6))
             }
         }
     }, [bnbToTokenRatio, tokenAAmount, tokenBAmount])
@@ -125,13 +143,13 @@ export default function MarketTrade() {
             const currentlySelectedTokenBalance = bscContext.tokenBalances.find((token) => token.TokenAddress.toLowerCase() === (fromBNB ? tokenB.address.toLowerCase() : tokenA.address.toLowerCase()))
             const tokenQuantity =
                 currentlySelectedTokenBalance?.TokenDivisor === '9'
-                    ? round(web3.utils.fromWei(currentlySelectedTokenBalance?.TokenQuantity || '0', 'gwei'), 0)
-                    : web3.utils.fromWei(currentlySelectedTokenBalance?.TokenQuantity || '0')
+                    ? round(getBalanceAmount(currentlySelectedTokenBalance?.TokenQuantity, 9), 0)
+                    : getBalanceAmount(currentlySelectedTokenBalance?.TokenQuantity)
             if (fromBNB) {
-                setTokenABalance(web3.utils.fromWei(bscContext.currentBnbBalance))
+                setTokenABalance(getBalanceAmount(bscContext.currentBnbBalance))
                 setTokenBBalance(tokenQuantity)
             } else {
-                setTokenBBalance(web3.utils.fromWei(bscContext.currentBnbBalance))
+                setTokenBBalance(getBalanceAmount(bscContext.currentBnbBalance))
                 setTokenABalance(tokenQuantity)
             }
         }

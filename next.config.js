@@ -25,6 +25,9 @@ const nextConfig = {
             },
         })
 
+        // eslint-disable-next-line no-param-reassign
+        config.resolve.alias['bignumber.js'] = 'bignumber.js/bignumber.js'
+
         // Important: return the modified config
         return config
     },

@@ -66,7 +66,6 @@ socket.on('m', (data) => {
     const { lastDailyBar } = subscriptionItem
     const nextDailyBarTime = getNextDailyBarTime(lastDailyBar.startTime)
     let bar
-    console.log(nextDailyBarTime)
     if (tradeTime >= nextDailyBarTime) {
         bar = {
             time: nextDailyBarTime,
