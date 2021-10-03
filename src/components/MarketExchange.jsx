@@ -199,7 +199,7 @@ export default function MarketTrade() {
                 if (tokenAContract.methods.approve) {
                     // Maybe render approval button?
                     // Check if approval is ready
-                    const approved = await tokenAContract.methods.allowance(bscContext.currentAccountAddress, bscContext.pancakeSwapV2ContractAddress).call()
+                    const approved = await tokenAContract.methods.allowance(bscContext.currentAccountAddress, bscContext.pancakeSwapRouterV2Address).call()
                     if (approved < Number.MAX_SAFE_INTEGER) {
                         setNeedsApproval(true)
                         toast.info('Please Approve the Swap', toastSettings)
@@ -344,7 +344,7 @@ export default function MarketTrade() {
                                                             onClick={async () => {
                                                                 setApproveInProgress(true)
                                                                 await tokenAContract.methods
-                                                                    .approve(bscContext.pancakeSwapV2ContractAddress, '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
+                                                                    .approve(bscContext.pancakeSwapRouterV2Address, '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
                                                                     .send({
                                                                         from: bscContext.currentAccountAddress,
                                                                     })
