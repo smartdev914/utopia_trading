@@ -46,17 +46,26 @@ const Home = ({ query }) => {
         </Layout>
     ) : (
         <div className="dex-beta-modal">
-            <Text as="p" content="Exchange is Currently In Closed Beta" />
-            <Text as="div" content="Connect a whitelisted wallet to use the Beta" />
-            <button
-                type="button"
-                className="btn buy"
-                onClick={async () => {
-                    await bscContext.triggerDappModal()
-                }}
-            >
-                Connect Wallet
-            </button>
+            {bscContext.currentAccountAddress ? (
+                <>
+                    <Text as="p" content="This Address has not been Whitelisted." />
+                    <Text as="div" content="Connect a whitelisted wallet to use the Beta" />
+                </>
+            ) : (
+                <>
+                    <Text as="p" content="Exchange is Currently In Closed Beta" />
+                    <Text as="div" content="Connect a whitelisted wallet to use the Beta" />
+                    <button
+                        type="button"
+                        className="btn buy"
+                        onClick={async () => {
+                            await bscContext.triggerDappModal()
+                        }}
+                    >
+                        Connect Wallet
+                    </button>
+                </>
+            )}
         </div>
     )
 }
