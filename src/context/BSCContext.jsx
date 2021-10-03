@@ -38,7 +38,7 @@ const BSCContextProvider = ({ children }) => {
 
     useEffect(async () => {
         if (currentAccountAddress) {
-            const currenTokenBalances = await axios.get('https://api.bscscan.com/api', {
+            const currentTokenBalancesResponse = await axios.get('https://api.bscscan.com/api', {
                 params: {
                     module: 'account',
                     action: 'addresstokenbalance',
@@ -47,7 +47,24 @@ const BSCContextProvider = ({ children }) => {
                     apikey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
                 },
             })
-            setTokenBalances(currenTokenBalances.data.result)
+            const currentTokenBalances = currentTokenBalancesResponse.data.result
+            const newTokenBalances = await currentTokenBalances.map(async (token) => {
+                try {
+                    const abi = await import(`../ABI/tokenABI/${token.TokenSymbol.toUpperCase()}.js`)
+                    const tokenContract = new window.web3.eth.Contract(abi.default, token.TokenAddress)
+                    if (tokenContract.methods.balanceOf) {
+                        const balance = await tokenContract.methods.balanceOf(currentAccountAddress).call()
+                        return {
+                            ...token,
+                            TokenQuantity: balance,
+                        }
+                    }
+                } catch (e) {}
+                return token
+            })
+            Promise.all(newTokenBalances).then((values) => {
+                setTokenBalances(values)
+            })
             setRefreshTokens(false)
         }
     }, [currentAccountAddress, refreshTokens])

@@ -9,7 +9,6 @@ import { Tabs, Tab, Spinner } from 'react-bootstrap'
 import BSCContext from 'context/BSCContext'
 import TokenContext from 'context/TokenContext'
 import axios from 'axios'
-import web3 from 'web3'
 import { getBalanceAmount, getDecimalAmount, round } from 'common/utils/numbers'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
@@ -210,8 +209,6 @@ export default function MarketTrade() {
 
                 if (transactionApproved) {
                     setSwapInProgress(true)
-                    console.log(getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed())
-                    console.log(getDecimalAmount(tokenBAmount * parsedSlippagePercentage, tokenB.decimals).toFixed())
                     await bscContext.pancakeSwapRouterV2.methods
                         .swapExactTokensForETHSupportingFeeOnTransferTokens(
                             getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
