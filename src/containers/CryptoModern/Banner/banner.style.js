@@ -90,6 +90,16 @@ export const ButtonGroup = styled.div`
         margin-left: 0;
     }
 
+    .reusecore__button.text.exchange {
+        border: 2px solid #f9df00;
+        &:hover {
+            box-shadow: #ffef6a 0px 0px 24px 5px;
+        }
+        span {
+            color: #ffef6a;
+        }
+    }
+
     .reusecore__button {
         width: 250px;
         text-transform: inherit;

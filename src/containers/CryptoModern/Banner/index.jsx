@@ -27,6 +27,11 @@ const Banner = () => (
                             <Button className="primary" title="BUY UTOPIA" />
                         </Link>
                     </ButtonGroup>
+                    <ButtonGroup>
+                        <Link href="/exchange">
+                            <Button className="text exchange" variant="textButton" title="EXCHANGE (beta)" />
+                        </Link>
+                    </ButtonGroup>
                 </Fade>
             </BannerContent>
         </Container>
