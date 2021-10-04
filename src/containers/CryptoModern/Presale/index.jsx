@@ -10,7 +10,6 @@ import BSCContext from 'context/BSCContext'
 import web3 from 'web3'
 import { round } from 'common/utils/numbers'
 import { useRouter } from 'next/dist/client/router'
-import { millisecondsToSeconds } from 'date-fns'
 import BannerWrapper, { BannerContent } from './presale.style'
 
 const Presale = () => {
@@ -122,32 +121,13 @@ const Presale = () => {
         }
     }
 
-    if (presalePurchased) {
+    if (presaleFinalized || withdrawGUID) {
         presaleModuleContent = (
             <>
                 <Text content="Thank you for Participating!" />
-                <Text content="Please return here after launch on Oct. 2nd to withdraw your UTOPIA" />
-                <Text content="Welcome to Utopia" />
+                <Button title="Withdraw Purchased UTOPIA" onClick={() => handleWithdraw()} />
             </>
         )
-    }
-
-    if (presaleFinalized || withdrawGUID) {
-        if ((presalePurchased && millisecondsToSeconds(Date.now()) > 1633208400) || withdrawGUID) {
-            presaleModuleContent = (
-                <>
-                    <Text content="Thank you for waiting!" />
-                    <Button title="Withdraw Purchased UTOPIA" onClick={() => handleWithdraw()} />
-                </>
-            )
-        } else {
-            presaleModuleContent = (
-                <>
-                    <Text content="Thank you. Presale has ended." />
-                    <Text content="Available to Withdraw after 9PM GMT" />
-                </>
-            )
-        }
     }
 
     if (loadingPurchase) {
