@@ -147,31 +147,6 @@ const BSCContextProvider = ({ children }) => {
         }
     }
 
-    const triggerMetaMaskModal = async () => {
-        window.web3 = new Web3(window.ethereum)
-        const accounts = await window.web3.eth.getAccounts()
-        const bnbBalance = await window.web3.eth.getBalance(accounts[0])
-        setCurrentAccountAddress(accounts[0])
-        setBNBBalance(bnbBalance)
-        setHasDappBrowser(true)
-        if (window.ethereum) {
-            window.ethereum.on('accountsChanged', async (newAccounts) => {
-                const newBnbBalance = await window.web3.eth.getBalance(newAccounts[0])
-                setCurrentAccountAddress(newAccounts[0])
-                setBNBBalance(newBnbBalance)
-            })
-            setupNetwork()
-        }
-        if (loadPresaleContract) {
-            loadUTPPresaleContract()
-        }
-        if (loadDexContract) {
-            await loadBSCDexContract()
-            await loadPancakeSwapV2Contract()
-            await loadPancakeSwapRouterV2Contract()
-        }
-    }
-
     const triggerDappModal = async () => {
         const providerOptions = {
             walletconnect: {
@@ -259,7 +234,6 @@ const BSCContextProvider = ({ children }) => {
                 pancakeSwapContract,
                 hasDappBrowser,
                 triggerDappModal,
-                triggerMetaMaskModal,
                 currentBnbBalance,
                 pancakeSwapRouterV2,
                 registerUTPToken,

@@ -91,11 +91,7 @@ const Header = () => {
                                 <Button
                                     title="CONNECT WALLET"
                                     onClick={async () => {
-                                        if (window.ethereum) {
-                                            await bscContext.triggerMetaMaskModal()
-                                        } else {
-                                            await bscContext.triggerDappModal()
-                                        }
+                                        await bscContext.triggerDappModal()
                                     }}
                                 />
                             )}
