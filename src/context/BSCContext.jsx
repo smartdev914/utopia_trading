@@ -6,6 +6,10 @@ import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import bscPresaleABI from '../ABI/bscPresaleABI'
 
+const Contract = require('web3-eth-contract')
+// set provider for all later instances to use
+Contract.setProvider('wss://ws-nd-219-979-765.p2pify.com/c2317b27ad9bde72c2d30764cf359fa3')
+
 const BSCContext = React.createContext()
 
 const nodes = [
@@ -70,10 +74,8 @@ const BSCContextProvider = ({ children }) => {
     }, [currentAccountAddress, refreshTokens])
 
     const loadUTPPresaleContract = useCallback(() => {
-        if (window.web3) {
-            const UtopiaContract = new window.web3.eth.Contract(bscPresaleABI, UtopiaPresaleBSCAddress)
-            setPresaleContract(UtopiaContract)
-        }
+        const UtopiaContract = new window.web3.eth.Contract(bscPresaleABI, UtopiaPresaleBSCAddress)
+        setPresaleContract(UtopiaContract)
     }, [UtopiaPresaleBSCAddress])
 
     const setupNetwork = async () => {
@@ -109,45 +111,64 @@ const BSCContextProvider = ({ children }) => {
     }
 
     const loadBSCDexContract = async () => {
-        if (window.web3) {
-            const currentDexContract = new window.web3.eth.Contract(utopiaDexABI, utopiaDexContractAddress)
-            if (!dexContract) {
-                setDexContract(currentDexContract)
-            }
+        const currentDexContract = new window.web3.eth.Contract(utopiaDexABI, utopiaDexContractAddress)
+        if (!dexContract) {
+            setDexContract(currentDexContract)
         }
     }
 
     const loadPancakeSwapV2Contract = async () => {
-        if (window.web3) {
-            const contractABI = await axios.get('https://api.bscscan.com/api', {
-                params: {
-                    module: 'contract',
-                    action: 'getabi',
-                    address: pancakeSwapV2ContractAddress,
-                    apiKey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
-                },
-            })
-            const currentContract = new window.web3.eth.Contract(JSON.parse(contractABI.data.result), pancakeSwapV2ContractAddress)
-            if (!pancakeSwapContract) {
-                setPancakeswapContract(currentContract)
-            }
+        const contractABI = await axios.get('https://api.bscscan.com/api', {
+            params: {
+                module: 'contract',
+                action: 'getabi',
+                address: pancakeSwapV2ContractAddress,
+                apiKey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
+            },
+        })
+        const currentContract = new window.web3.eth.Contract(JSON.parse(contractABI.data.result), pancakeSwapV2ContractAddress)
+        if (!pancakeSwapContract) {
+            setPancakeswapContract(currentContract)
         }
     }
 
     const loadPancakeSwapRouterV2Contract = async () => {
-        if (window.web3) {
-            const contractABI = await axios.get('https://api.bscscan.com/api', {
-                params: {
-                    module: 'contract',
-                    action: 'getabi',
-                    address: pancakeSwapRouterV2Address,
-                    apiKey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
-                },
+        const contractABI = await axios.get('https://api.bscscan.com/api', {
+            params: {
+                module: 'contract',
+                action: 'getabi',
+                address: pancakeSwapRouterV2Address,
+                apiKey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
+            },
+        })
+        const currentContract = new window.web3.eth.Contract(JSON.parse(contractABI.data.result), pancakeSwapRouterV2Address)
+        if (!pancakeSwapRouterV2) {
+            setPancakeSwapRouterV2(currentContract)
+        }
+    }
+
+    const triggerMetaMaskModal = async () => {
+        window.web3 = new Web3(window.ethereum)
+        const accounts = await window.web3.eth.getAccounts()
+        const bnbBalance = await window.web3.eth.getBalance(accounts[0])
+        setCurrentAccountAddress(accounts[0])
+        setBNBBalance(bnbBalance)
+        setHasDappBrowser(true)
+        if (window.ethereum) {
+            window.ethereum.on('accountsChanged', async (newAccounts) => {
+                const newBnbBalance = await window.web3.eth.getBalance(newAccounts[0])
+                setCurrentAccountAddress(newAccounts[0])
+                setBNBBalance(newBnbBalance)
             })
-            const currentContract = new window.web3.eth.Contract(JSON.parse(contractABI.data.result), pancakeSwapRouterV2Address)
-            if (!pancakeSwapRouterV2) {
-                setPancakeSwapRouterV2(currentContract)
-            }
+            setupNetwork()
+        }
+        if (loadPresaleContract) {
+            loadUTPPresaleContract()
+        }
+        if (loadDexContract) {
+            await loadBSCDexContract()
+            await loadPancakeSwapV2Contract()
+            await loadPancakeSwapRouterV2Contract()
         }
     }
 
@@ -182,20 +203,18 @@ const BSCContextProvider = ({ children }) => {
         const provider = await web3Modal.connect()
 
         window.web3 = new Web3(provider)
-        if (window.web3) {
-            const accounts = await window.web3.eth.getAccounts()
-            const bnbBalance = await window.web3.eth.getBalance(accounts[0])
-            setCurrentAccountAddress(accounts[0])
-            setBNBBalance(bnbBalance)
-            setHasDappBrowser(true)
-            if (window.ethereum) {
-                window.ethereum.on('accountsChanged', async (newAccounts) => {
-                    const newBnbBalance = await window.web3.eth.getBalance(newAccounts[0])
-                    setCurrentAccountAddress(newAccounts[0])
-                    setBNBBalance(newBnbBalance)
-                })
-                setupNetwork()
-            }
+        const accounts = await window.web3.eth.getAccounts()
+        const bnbBalance = await window.web3.eth.getBalance(accounts[0])
+        setCurrentAccountAddress(accounts[0])
+        setBNBBalance(bnbBalance)
+        setHasDappBrowser(true)
+        if (window.ethereum) {
+            window.ethereum.on('accountsChanged', async (newAccounts) => {
+                const newBnbBalance = await window.web3.eth.getBalance(newAccounts[0])
+                setCurrentAccountAddress(newAccounts[0])
+                setBNBBalance(newBnbBalance)
+            })
+            setupNetwork()
         }
         if (loadPresaleContract) {
             loadUTPPresaleContract()
@@ -240,6 +259,7 @@ const BSCContextProvider = ({ children }) => {
                 pancakeSwapContract,
                 hasDappBrowser,
                 triggerDappModal,
+                triggerMetaMaskModal,
                 currentBnbBalance,
                 pancakeSwapRouterV2,
                 registerUTPToken,

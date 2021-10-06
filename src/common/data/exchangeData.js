@@ -2,6 +2,7 @@ export const supportedTokens = [
     {
         name: 'WBNB Token',
         symbol: 'WBNB',
+        displaySymbol: 'BNB',
         address: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
         chainId: 56,
         decimals: 18,
