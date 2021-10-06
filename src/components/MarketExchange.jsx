@@ -346,23 +346,7 @@ export default function MarketTrade() {
                                             }}
                                         />
                                         <div className="token-B-balance">
-                                            <Button
-                                                title="MAX"
-                                                onClick={() => {
-                                                    setTokenAEstimated(true)
-                                                    setTokenBAmount(tokenBBalance)
-                                                }}
-                                            />
-                                            <div
-                                                role="button"
-                                                className="balance"
-                                                onClick={() => {
-                                                    setTokenAEstimated(true)
-                                                    setTokenBAmount(tokenBBalance)
-                                                }}
-                                            >
-                                                Balance: {BigNumber.isBigNumber(tokenBBalance) ? tokenBBalance.toFixed(6) : '-'}
-                                            </div>
+                                            <div className="balance">Balance: {BigNumber.isBigNumber(tokenBBalance) ? tokenBBalance.toFixed(6) : '-'}</div>
                                         </div>
                                         <div className="input-group-append">
                                             <Button
