@@ -214,18 +214,6 @@ const Presale = () => {
                     </Fade>
                 </BannerContent>
             </Container>
-            {/* {presaleGUID ? null : (
-                <Modal show={showModal} onHide={() => setShowModal(false)}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Updates Regarding Launch and Presale</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        Due to some unforseen technical issues with our presale platform and whitelisted users not having the minimum required BNB, we have decided to reduce our hard cap so that only
-                        a few public Whitelist spots will be given away and we can retain most of the originally Whitelisted individuals. Participants will receive the same amount of UTP upon launch
-                        and the excess tokens initially reserved for the Presale will be burned.
-                    </Modal.Body>
-                </Modal>
-            )} */}
         </BannerWrapper>
     )
 }
