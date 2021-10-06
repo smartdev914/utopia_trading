@@ -422,11 +422,7 @@ export default function MarketTrade() {
                                             type="button"
                                             className="btn buy"
                                             onClick={async () => {
-                                                if (window.ethereum) {
-                                                    await bscContext.triggerMetaMaskModal()
-                                                } else {
-                                                    await bscContext.triggerDappModal()
-                                                }
+                                                await bscContext.triggerDappModal()
                                             }}
                                         >
                                             Connect Wallet
