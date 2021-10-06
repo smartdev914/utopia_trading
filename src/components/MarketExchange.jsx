@@ -300,8 +300,24 @@ export default function MarketTrade() {
                                                 setTokenAAmount(e.target.value)
                                             }}
                                         />
-                                        <div role="button" className="token-A-balance" onClick={() => setTokenAAmount(tokenABalance)}>
-                                            Current Balance: {BigNumber.isBigNumber(tokenABalance) ? tokenABalance.toFixed(5) : '-'}
+                                        <div className="token-A-balance">
+                                            <Button
+                                                title="MAX"
+                                                onClick={() => {
+                                                    setTokenAEstimated(false)
+                                                    setTokenAAmount(tokenABalance)
+                                                }}
+                                            />
+                                            <div
+                                                role="button"
+                                                className="balance"
+                                                onClick={() => {
+                                                    setTokenAEstimated(false)
+                                                    setTokenAAmount(tokenABalance)
+                                                }}
+                                            >
+                                                Balance: {BigNumber.isBigNumber(tokenABalance) ? tokenABalance.toFixed(6) : '-'}
+                                            </div>
                                         </div>
                                         <div className="input-group-append">
                                             <Button
@@ -329,8 +345,24 @@ export default function MarketTrade() {
                                                 setTokenAAmount(round(fromBNB ? round(e.target.value, 6) * bnbToTokenRatio : round(e.target.value, 6) * (1 / bnbToTokenRatio), 6))
                                             }}
                                         />
-                                        <div role="button" className="token-B-balance" onClick={() => setTokenBAmount(tokenBBalance)}>
-                                            Current Balance: {BigNumber.isBigNumber(tokenBBalance) ? tokenBBalance.toFixed(5) : '-'}
+                                        <div className="token-B-balance">
+                                            <Button
+                                                title="MAX"
+                                                onClick={() => {
+                                                    setTokenAEstimated(true)
+                                                    setTokenBAmount(tokenBBalance)
+                                                }}
+                                            />
+                                            <div
+                                                role="button"
+                                                className="balance"
+                                                onClick={() => {
+                                                    setTokenAEstimated(true)
+                                                    setTokenBAmount(tokenBBalance)
+                                                }}
+                                            >
+                                                Balance: {BigNumber.isBigNumber(tokenBBalance) ? tokenBBalance.toFixed(6) : '-'}
+                                            </div>
                                         </div>
                                         <div className="input-group-append">
                                             <Button
@@ -411,7 +443,7 @@ export default function MarketTrade() {
                                                             Approve
                                                         </button>
                                                     )}
-                                                    <button type="button" className="btn buy" onClick={onSwapClick} disabled={tokenAAmount > tokenABalance}>
+                                                    <button type="button" className="btn buy" onClick={onSwapClick} disabled={!tokenAAmount || tokenAAmount > tokenABalance}>
                                                         Swap
                                                     </button>
                                                 </>
