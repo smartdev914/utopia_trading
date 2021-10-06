@@ -132,6 +132,10 @@
     width: 30%;
     text-align: center;
     white-space: nowrap;
+
+    @media(min-width: 768px) and (max-width: 1028px) {
+      width: 100%
+    }
 }
 .market-trade .nav-tabs {
     border-bottom: 1px solid transparent;
@@ -275,6 +279,7 @@
 }
 
 .slippage-settings {
+  flex-wrap: wrap;
   > span {
     display: flex;
     align-items: center;
