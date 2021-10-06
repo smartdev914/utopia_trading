@@ -358,7 +358,7 @@ export default function MarketTrade() {
                                         </div>
                                     </div>
                                     <div role="button" className="swap-coin-icon" onClick={clickToggleFromBNB} tabIndex="0">
-                                        <Image src="/assets/image/icons/swapCoins.svg" width={45} height={45} />
+                                        <Image src="/assets/image/icons/swap-coin-image.png" width={45} height={45} quality={100} />
                                     </div>
                                     <div className="slippage-container">
                                         <div className="slippage-settings">
