@@ -278,6 +278,7 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  color: #A3FFFF;
 
   button {
     margin-right: 4px;
@@ -290,6 +291,7 @@
     min-height: unset;
     padding: 5px;
     min-width: unset;
+    color: #A3FFFF;
   }
 
   @media(min-width: 768px) and (max-width: 1068px) {
