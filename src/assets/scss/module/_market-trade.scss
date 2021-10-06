@@ -328,3 +328,21 @@
     font-size: 12px;
   }
 }
+
+.market-trade {
+  .rc-slider-track, .rc-slider-handle {
+    background-color: #F9DF00;
+  }
+  .rc-slider-handle:hover, .rc-slider-handle {
+    border-color: #F9DF00;
+  }
+
+  .rc-slider-rail {
+    background-color: #A3FFFF;
+  }
+
+  .rc-slider-dot {
+    background-color: #A3FFFF;
+    border-color: #A3FFFF
+  }
+}
