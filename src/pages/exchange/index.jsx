@@ -17,7 +17,7 @@ const Home = () => {
     useEffect(() => {
         document.querySelector('body').classList.add('dark')
         const shownModal = sessionStorage.getItem('shownWarningModal')
-        setShowModal(shownModal)
+        setShowModal(!shownModal)
         sessionStorage.setItem('shownWarningModal', true)
     }, [])
 

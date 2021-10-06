@@ -187,7 +187,11 @@ const Presale = () => {
                                         <Button
                                             title="Connect Wallet"
                                             onClick={async () => {
-                                                await bscContext.triggerDappModal()
+                                                if (window.ethereum) {
+                                                    await bscContext.triggerMetaMaskModal()
+                                                } else {
+                                                    await bscContext.triggerDappModal()
+                                                }
                                             }}
                                         />
                                     </div>

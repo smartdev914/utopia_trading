@@ -34,7 +34,7 @@ const Header = () => {
                             <Image src="/assets/image/utopia/utopiaLogo.svg" alt="logo" width={190} height={24} />
                         </a>
                     </Link>
-                    <Image src="/assets/image/icons/BetaV1.svg" height={24} width={64} />
+                    <Image src="/assets/image/icons/BetaV1.1.svg" height={24} width={64} />
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="navbar-nav ml-auto">
@@ -91,7 +91,11 @@ const Header = () => {
                                 <Button
                                     title="CONNECT WALLET"
                                     onClick={async () => {
-                                        await bscContext.triggerDappModal()
+                                        if (window.ethereum) {
+                                            await bscContext.triggerMetaMaskModal()
+                                        } else {
+                                            await bscContext.triggerDappModal()
+                                        }
                                     }}
                                 />
                             )}

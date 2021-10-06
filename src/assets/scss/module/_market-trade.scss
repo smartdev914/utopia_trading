@@ -239,7 +239,7 @@
 }
 
 .market-trade-buy .slippage-container {
-  padding-right: 1rem;
+  padding-right: 3px;
   margin: 2rem 0 1rem;
 }
 
@@ -272,4 +272,33 @@
   right: 20px;
   font-size: 16px;
   cursor: pointer;
+}
+
+.slippage-settings {
+  > span {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+}
+
+.recommended-slippage-toggle {
+  display: flex;
+  font-size: 10px;
+  align-items: center;
+  color: #00DEE6;
+
+  .react-toggle {
+    transform: scale(0.75)
+  }
+}
+
+.toast-approved-transaction {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  a {
+    font-size: 12px;
+  }
 }

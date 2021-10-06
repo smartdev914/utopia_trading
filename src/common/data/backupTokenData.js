@@ -16,6 +16,7 @@ export default {
         {
             name: 'WBNB Token',
             symbol: 'WBNB',
+            displaySymbol: 'BNB',
             address: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
             chainId: 56,
             decimals: 18,
