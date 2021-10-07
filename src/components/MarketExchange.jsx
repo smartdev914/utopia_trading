@@ -203,6 +203,7 @@ export default function MarketTrade() {
                             toastSettings
                         )
                         setSwapInProgress(false)
+                        bscContext.setRefreshTokens(true)
                     })
                     .catch((err) => {
                         if (err.code === 4001) {

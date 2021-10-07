@@ -69,6 +69,8 @@ const BSCContextProvider = ({ children }) => {
             Promise.all(newTokenBalances).then((values) => {
                 setTokenBalances(values)
             })
+            const bnbBalance = await window.web3.eth.getBalance(currentAccountAddress)
+            setBNBBalance(bnbBalance)
             setRefreshTokens(false)
         }
     }, [currentAccountAddress, refreshTokens])
@@ -240,7 +242,7 @@ const BSCContextProvider = ({ children }) => {
                 pancakeSwapV2ContractAddress,
                 pancakeSwapRouterV2Address,
                 tokenBalances,
-                refreshTokens,
+                setRefreshTokens,
             }}
         >
             {children}
