@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import TokenContext from 'context/TokenContext'
-import { round } from 'common/utils/numbers'
-import Web3 from 'web3'
+import { getBalanceAmount, round } from 'common/utils/numbers'
+import BigNumber from 'bignumber.js'
 
 const MarketNews = () => {
     const tokenContext = useContext(TokenContext)
@@ -17,7 +17,7 @@ const MarketNews = () => {
         if (number / 1000 > 1000) {
             return `${round(number / 1000000, 3)}M`
         }
-        return `${round(number, 0)}`
+        return `${round(number, 0).toLocaleString()}`
     }
     useEffect(async () => {
         const twentyFourHourInfo = await axios.post(
@@ -32,8 +32,8 @@ const MarketNews = () => {
                 },
             }
         )
-        const summedValue = twentyFourHourInfo?.data?.data?.ethereum?.dexTrades.reduce((currSum, currentValue) => currSum + currentValue.tradeAmount, 0)
-        const summedTransactions = twentyFourHourInfo?.data?.data?.ethereum?.dexTrades.reduce((currSum, currentValue) => currSum + currentValue.count, 0)
+        const summedValue = twentyFourHourInfo?.data?.data?.ethereum?.dexTrades?.reduce((currSum, currentValue) => currSum + currentValue.tradeAmount, 0)
+        const summedTransactions = twentyFourHourInfo?.data?.data?.ethereum?.dexTrades?.reduce((currSum, currentValue) => currSum + currentValue.count, 0)
         setTwentyFourHourVolume(`$${parseToMorB(summedValue)}`)
         setTwentyFourHourTransactions(summedTransactions.toLocaleString())
     }, [tokenContext.currentlySelectedToken])
@@ -56,18 +56,14 @@ const MarketNews = () => {
                 apiKey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
             },
         })
-        const tokenInfo = await axios.get('https://api.bscscan.com/api', {
-            params: {
-                module: 'token',
-                action: 'tokeninfo',
-                contractaddress: tokenContext.currentlySelectedToken.address,
-                apiKey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
-            },
-        })
-        const currentMarketCap = Web3.utils.fromWei(tokenCirculatingSupply?.data?.result) * tokenInfo.data.result[0].tokenPriceUSD
+        const circulatingSupply = tokenCirculatingSupply?.data?.result
 
-        setMarketCap(currentMarketCap ? `$${parseToMorB(currentMarketCap)}` : `$-`)
-    }, [tokenContext.currentlySelectedToken])
+        const currentMarketCap = getBalanceAmount(circulatingSupply, tokenContext.currentlySelectedToken.decimals).multipliedBy(
+            new BigNumber(parseFloat(tokenContext.currentTokenPriceInUSD?.replace(',', '')))
+        )
+
+        setMarketCap(currentMarketCap ? `$${parseToMorB(currentMarketCap.toFixed())}` : `$-`)
+    }, [tokenContext.currentlySelectedToken, tokenContext.currentlySelectedToken.address, tokenContext.currentTokenPriceInUSD])
 
     return (
         <div className="market-history token-info">

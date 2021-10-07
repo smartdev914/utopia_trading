@@ -34,7 +34,10 @@
 }
 
 .market-history th {
-  color: #A3FFFF !important
+    color: #A3FFFF !important;
+    position: sticky;
+    top: 0;
+    background-color: #1D0E6B !important;
 }
 
 .market-history a {
