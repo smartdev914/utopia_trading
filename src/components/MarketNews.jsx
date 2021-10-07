@@ -9,7 +9,7 @@ const MarketNews = () => {
     const [twentyFourHourVolume, setTwentyFourHourVolume] = useState('$-')
     const [twentyFourHourTransactions, setTwentyFourHourTransactions] = useState('-')
     const [liquidity, setLiquidity] = useState('$-')
-    const [marketCap, setMarketCap] = useState('-')
+    const [marketCap, setMarketCap] = useState('$-')
     const parseToMorB = (number) => {
         if (number / 1000000 > 1000) {
             return `${round(number / 1000000000, 3)}B`
@@ -57,12 +57,15 @@ const MarketNews = () => {
             },
         })
         const circulatingSupply = tokenCirculatingSupply?.data?.result
+        console.log(new BigNumber(parseFloat('0.0000007181')).toFixed())
 
-        const currentMarketCap = getBalanceAmount(circulatingSupply, tokenContext.currentlySelectedToken.decimals).multipliedBy(
-            new BigNumber(parseFloat(tokenContext.currentTokenPriceInUSD?.replace(',', '')))
-        )
+        if (circulatingSupply && tokenContext.currentTokenPriceInUSD) {
+            const currentMarketCap = getBalanceAmount(circulatingSupply, tokenContext.currentlySelectedToken.decimals).multipliedBy(
+                new BigNumber(parseFloat(tokenContext.currentTokenPriceInUSD?.replace(',', '')))
+            )
 
-        setMarketCap(currentMarketCap ? `$${parseToMorB(currentMarketCap.toFixed())}` : `$-`)
+            setMarketCap(currentMarketCap ? `$${parseToMorB(currentMarketCap.toFixed())}` : `$-`)
+        }
     }, [tokenContext.currentlySelectedToken, tokenContext.currentlySelectedToken.address, tokenContext.currentTokenPriceInUSD])
 
     return (
