@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { useDebouncedCallback } from 'common/hooks/useDebouncedCallback'
 import TokenContext from 'context/TokenContext'
 import { secondsToMinutes, millisecondsToSeconds, getUnixTime } from 'date-fns'
 import React, { useContext, useEffect, useState } from 'react'
@@ -9,29 +10,35 @@ export default function MarketHistory() {
     const [recentTransactions, setRecentTransactions] = useState([])
     const [currentInterval, setCurrentInterval] = useState(null)
 
-    const getRecentTrades = async (address) => {
-        const recentTransactionsResponse = await axios.post(
-            `https://graphql.bitquery.io`,
-            {
-                query: `{ ethereum(network: bsc) { dexTrades( options: {limit: 100, desc: ["block.timestamp.time"]} baseCurrency: {is: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"} quoteCurrency: {is: "${address}"} date: {since: "2021-09-28"} ) { block { height timestamp { time(format: "%Y-%m-%d %H:%M:%S") } } tradeIndex protocol buyAmount buyCurrency { address symbol } sellAmount sellCurrency { address symbol } transaction { hash } } } } `,
-            },
-            {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'X-API-KEY': 'BQYmsfh6zyChKKHtKogwvrjXLw8AJkdP',
+    const debouncedCallback = useDebouncedCallback(async (address, lastIntervalId) => {
+        clearInterval(lastIntervalId)
+
+        const getRecentTrades = async () => {
+            const recentTransactionsResponse = await axios.post(
+                `https://graphql.bitquery.io`,
+                {
+                    query: `{ ethereum(network: bsc) { dexTrades( options: {limit: 100, desc: ["block.timestamp.time"]} baseCurrency: {is: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"} quoteCurrency: {is: "${address}"} date: {since: "2021-09-28"} ) { block { height timestamp { time(format: "%Y-%m-%d %H:%M:%S") } } tradeIndex protocol buyAmount buyCurrency { address symbol } sellAmount sellCurrency { address symbol } transaction { hash } } } } `,
                 },
-            }
-        )
-        setRecentTransactions(recentTransactionsResponse.data.data.ethereum.dexTrades)
-    }
+                {
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'X-API-KEY': 'BQYmsfh6zyChKKHtKogwvrjXLw8AJkdP',
+                    },
+                }
+            )
+
+            const filteredTransactions = recentTransactionsResponse.data.data.ethereum.dexTrades.filter((v, i, a) => a.findIndex((t) => t.transaction.hash === v.transaction.hash) === i)
+            setRecentTransactions(filteredTransactions)
+        }
+        await getRecentTrades()
+        const intervalId = setInterval(async () => {
+            await getRecentTrades()
+        }, 300000)
+        setCurrentInterval(intervalId)
+    }, 1000)
 
     useEffect(async () => {
-        await getRecentTrades(tokenContext.currentlySelectedToken.address)
-        const currentIntervalId = setInterval(() => getRecentTrades(tokenContext.currentlySelectedToken.address), 300000)
-        setCurrentInterval(currentIntervalId)
-        return () => {
-            clearInterval(currentInterval)
-        }
+        debouncedCallback(tokenContext.currentlySelectedToken.address, currentInterval)
     }, [tokenContext.currentlySelectedToken.address])
 
     return (
@@ -69,7 +76,7 @@ export default function MarketHistory() {
                                                 <td className="green">{timeSince === 0 ? 'Just Now' : `${timeSince}m ago`}</td>
                                                 <td className="green">{transaction.buyAmount.toLocaleString(undefined, { minimumFractionDigits: 3 })}</td>
                                                 <td className="green">{transaction.sellAmount.toLocaleString(undefined, { minimumFractionDigits: 3 })}</td>
-                                                {tokenContext.currentTokenPriceInUSD && <td className="red">{(transaction.sellAmount * tokenContext.currentTokenPriceInUSD).toFixed(2)}</td>}
+                                                {tokenContext.currentTokenPriceInUSD && <td className="green">{(transaction.sellAmount * tokenContext.currentTokenPriceInUSD).toFixed(2)}</td>}
                                             </tr>
                                         )
                                     })}
