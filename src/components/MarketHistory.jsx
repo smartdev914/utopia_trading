@@ -26,7 +26,9 @@ export default function MarketHistory() {
                     },
                 }
             )
-            setRecentTransactions(recentTransactionsResponse.data.data.ethereum.dexTrades)
+
+            const filteredTransactions = recentTransactionsResponse.data.data.ethereum.dexTrades.filter((v, i, a) => a.findIndex((t) => t.transaction.hash === v.transaction.hash) === i)
+            setRecentTransactions(filteredTransactions)
         }
         await getRecentTrades()
         const intervalId = setInterval(async () => {
@@ -74,7 +76,7 @@ export default function MarketHistory() {
                                                 <td className="green">{timeSince === 0 ? 'Just Now' : `${timeSince}m ago`}</td>
                                                 <td className="green">{transaction.buyAmount.toLocaleString(undefined, { minimumFractionDigits: 3 })}</td>
                                                 <td className="green">{transaction.sellAmount.toLocaleString(undefined, { minimumFractionDigits: 3 })}</td>
-                                                {tokenContext.currentTokenPriceInUSD && <td className="red">{(transaction.sellAmount * tokenContext.currentTokenPriceInUSD).toFixed(2)}</td>}
+                                                {tokenContext.currentTokenPriceInUSD && <td className="green">{(transaction.sellAmount * tokenContext.currentTokenPriceInUSD).toFixed(2)}</td>}
                                             </tr>
                                         )
                                     })}
