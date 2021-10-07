@@ -40,26 +40,6 @@ export default function MarketHistory() {
             <Tabs defaultActiveKey="recent-trades">
                 <Tab eventKey="recent-trades">
                     <div className="table-wrapper">
-                        <table className="table-header table">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>Amount(BNB)</th>
-                                    <th>Amount({`${tokenContext.currentlySelectedToken.symbol}`})</th>
-                                    {tokenContext.currentTokenPriceInUSD && <th>Value (USD)</th>}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr key={recentTransactions?.[0]?.transaction?.hash}>
-                                    <td className="green">0m ago</td>
-                                    <td className="green">{recentTransactions?.[0]?.transaction?.sellAmount?.toFixed(3)}</td>
-                                    <td className="green">{recentTransactions?.[0]?.transaction?.buyAmount?.toFixed(3)}</td>
-                                    {tokenContext.currentTokenPriceInUSD && (
-                                        <td className="green">{(recentTransactions?.[0]?.transaction?.buyAmount * tokenContext.currentTokenPriceInUSD)?.toFixed(2)}</td>
-                                    )}
-                                </tr>
-                            </tbody>
-                        </table>
                         <div className="table-container">
                             <table className="table">
                                 <thead>
@@ -77,8 +57,8 @@ export default function MarketHistory() {
                                             return (
                                                 <tr onClick={() => window.open(`https://bscscan.com/tx/${transaction.transaction.hash}`, '_blank')} key={transaction.transaction.hash}>
                                                     <td className="green">{timeSince === 0 ? 'Just Now' : `${timeSince}m ago`}</td>
-                                                    <td className="green">{transaction.sellAmount.toFixed(3)}</td>
-                                                    <td className="green">{transaction.buyAmount.toFixed(3)}</td>
+                                                    <td className="green">{transaction.sellAmount.toLocaleString(undefined, { minimumFractionDigits: 3 })}</td>
+                                                    <td className="green">{transaction.buyAmount.toLocaleString(undefined, { minimumFractionDigits: 3 })}</td>
                                                     {tokenContext.currentTokenPriceInUSD && <td className="green">{(transaction.buyAmount * tokenContext.currentTokenPriceInUSD).toFixed(2)}</td>}
                                                 </tr>
                                             )
@@ -87,9 +67,9 @@ export default function MarketHistory() {
                                         return (
                                             <tr onClick={() => window.open(`https://bscscan.com/tx/${transaction.transaction.hash}`, '_blank')} key={transaction.transaction.hash}>
                                                 <td className="red">{timeSince === 0 ? 'Just Now' : `${timeSince}m ago`}</td>
-                                                <td className="red">{transaction.buyAmount.toFixed(3)}</td>
-                                                <td className="red">{transaction.sellAmount.toFixed(3)}</td>
-                                                {tokenContext.currentTokenPriceInUSD && <td className="red">{(transaction.buyAmount * tokenContext.currentTokenPriceInUSD).toFixed(2)}</td>}
+                                                <td className="red">{transaction.buyAmount.toLocaleString(undefined, { minimumFractionDigits: 3 })}</td>
+                                                <td className="red">{transaction.sellAmount.toLocaleString(undefined, { minimumFractionDigits: 3 })}</td>
+                                                {tokenContext.currentTokenPriceInUSD && <td className="red">{(transaction.sellAmount * tokenContext.currentTokenPriceInUSD).toFixed(2)}</td>}
                                             </tr>
                                         )
                                     })}
