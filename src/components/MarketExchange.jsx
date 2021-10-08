@@ -143,7 +143,7 @@ export default function MarketTrade() {
     }, [bnbToTokenRatio, tokenAAmount, tokenBAmount])
 
     useEffect(async () => {
-        if (window.web3.eth) {
+        if (window.web3?.eth) {
             const tokenAabi = await import(`../ABI/tokenABI/${tokenA.symbol.toUpperCase()}.js`)
             const tokenBabi = await import(`../ABI/tokenABI/${tokenB.symbol.toUpperCase()}.js`)
             const currentTokenAContract = await new window.web3.eth.Contract(tokenAabi.default, tokenA.address)
