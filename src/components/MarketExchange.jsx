@@ -16,6 +16,7 @@ import { BigNumber } from 'bignumber.js'
 import { useDebouncedCallback } from 'common/hooks/useDebouncedCallback'
 import { calculateSlippage } from 'common/utils/tokens'
 import Toggle from 'react-toggle'
+import { event } from 'common/utils/ga'
 import TokenModal from './TokenModal'
 
 import supportedPancakeTokens from '../common/constants/tokens/supportedPancakeTokens.json'
@@ -171,6 +172,13 @@ export default function MarketTrade() {
     }, [bscContext.currentAccountAddress, fromBNB, tokenA.address, tokenB.address, bscContext.tokenBalances])
 
     const onSwapClick = async () => {
+        event({
+            action: 'swap',
+            params: {
+                fromSymbol: tokenA.symbol,
+                toSymbol: tokenB.symbol,
+            },
+        })
         // Also verify pancakeSwapRouterV2Address
         if (bscContext.currentAccountAddress && bscContext.pancakeSwapRouterV2 && tokenAAmount) {
             // TODO: Check tokenA is approved for swap (Maybe put this logic in another function?)
