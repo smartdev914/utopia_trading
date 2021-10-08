@@ -57,7 +57,6 @@ const MarketNews = () => {
             },
         })
         const circulatingSupply = tokenCirculatingSupply?.data?.result
-        console.log(new BigNumber(parseFloat('0.0000007181')).toFixed())
 
         if (circulatingSupply && tokenContext.currentTokenPriceInUSD) {
             const currentMarketCap = getBalanceAmount(circulatingSupply, tokenContext.currentlySelectedToken.decimals).multipliedBy(
