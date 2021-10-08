@@ -41,7 +41,7 @@ const BSCContextProvider = ({ children }) => {
     const [refreshTokens, setRefreshTokens] = useState(false)
 
     useEffect(async () => {
-        if (currentAccountAddress) {
+        if (currentAccountAddress && window.web3) {
             const currentTokenBalancesResponse = await axios.get('https://api.bscscan.com/api', {
                 params: {
                     module: 'account',
@@ -54,13 +54,15 @@ const BSCContextProvider = ({ children }) => {
             const currentTokenBalances = currentTokenBalancesResponse.data.result
             const newTokenBalances = await currentTokenBalances.map(async (token) => {
                 try {
-                    const abi = await import(`../ABI/tokenABI/${token.TokenSymbol.toUpperCase()}.js`)
-                    const tokenContract = new window.web3.eth.Contract(abi.default, token.TokenAddress)
-                    if (tokenContract.methods.balanceOf) {
-                        const balance = await tokenContract.methods.balanceOf(currentAccountAddress).call()
-                        return {
-                            ...token,
-                            TokenQuantity: balance,
+                    if (window.web3) {
+                        const abi = await import(`../ABI/tokenABI/${token.TokenSymbol.toUpperCase()}.js`)
+                        const tokenContract = new window.web3.eth.Contract(abi.default, token.TokenAddress)
+                        if (tokenContract.methods.balanceOf) {
+                            const balance = await tokenContract.methods.balanceOf(currentAccountAddress).call()
+                            return {
+                                ...token,
+                                TokenQuantity: balance,
+                            }
                         }
                     }
                 } catch (e) {}
@@ -76,8 +78,10 @@ const BSCContextProvider = ({ children }) => {
     }, [currentAccountAddress, refreshTokens])
 
     const loadUTPPresaleContract = useCallback(() => {
-        const UtopiaContract = new window.web3.eth.Contract(bscPresaleABI, UtopiaPresaleBSCAddress)
-        setPresaleContract(UtopiaContract)
+        if (window.web3) {
+            const UtopiaContract = new window.web3.eth.Contract(bscPresaleABI, UtopiaPresaleBSCAddress)
+            setPresaleContract(UtopiaContract)
+        }
     }, [UtopiaPresaleBSCAddress])
 
     const setupNetwork = async () => {
@@ -113,39 +117,45 @@ const BSCContextProvider = ({ children }) => {
     }
 
     const loadBSCDexContract = async () => {
-        const currentDexContract = new window.web3.eth.Contract(utopiaDexABI, utopiaDexContractAddress)
-        if (!dexContract) {
-            setDexContract(currentDexContract)
+        if (window.web3) {
+            const currentDexContract = new window.web3.eth.Contract(utopiaDexABI, utopiaDexContractAddress)
+            if (!dexContract) {
+                setDexContract(currentDexContract)
+            }
         }
     }
 
     const loadPancakeSwapV2Contract = async () => {
-        const contractABI = await axios.get('https://api.bscscan.com/api', {
-            params: {
-                module: 'contract',
-                action: 'getabi',
-                address: pancakeSwapV2ContractAddress,
-                apiKey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
-            },
-        })
-        const currentContract = new window.web3.eth.Contract(JSON.parse(contractABI.data.result), pancakeSwapV2ContractAddress)
-        if (!pancakeSwapContract) {
-            setPancakeswapContract(currentContract)
+        if (window.web3) {
+            const contractABI = await axios.get('https://api.bscscan.com/api', {
+                params: {
+                    module: 'contract',
+                    action: 'getabi',
+                    address: pancakeSwapV2ContractAddress,
+                    apiKey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
+                },
+            })
+            const currentContract = new window.web3.eth.Contract(JSON.parse(contractABI.data.result), pancakeSwapV2ContractAddress)
+            if (!pancakeSwapContract) {
+                setPancakeswapContract(currentContract)
+            }
         }
     }
 
     const loadPancakeSwapRouterV2Contract = async () => {
-        const contractABI = await axios.get('https://api.bscscan.com/api', {
-            params: {
-                module: 'contract',
-                action: 'getabi',
-                address: pancakeSwapRouterV2Address,
-                apiKey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
-            },
-        })
-        const currentContract = new window.web3.eth.Contract(JSON.parse(contractABI.data.result), pancakeSwapRouterV2Address)
-        if (!pancakeSwapRouterV2) {
-            setPancakeSwapRouterV2(currentContract)
+        if (window.web3) {
+            const contractABI = await axios.get('https://api.bscscan.com/api', {
+                params: {
+                    module: 'contract',
+                    action: 'getabi',
+                    address: pancakeSwapRouterV2Address,
+                    apiKey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
+                },
+            })
+            const currentContract = new window.web3.eth.Contract(JSON.parse(contractABI.data.result), pancakeSwapRouterV2Address)
+            if (!pancakeSwapRouterV2) {
+                setPancakeSwapRouterV2(currentContract)
+            }
         }
     }
 

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useDebouncedCallback } from 'common/hooks/useDebouncedCallback'
 import TokenContext from 'context/TokenContext'
-import { formatDistanceToNowStrict } from 'date-fns'
+import { formatDistanceToNowStrict, parseISO, parseJSON, toDate } from 'date-fns'
 import React, { useContext, useEffect, useState } from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
 
@@ -60,7 +60,7 @@ export default function MarketHistory() {
                                 <tbody>
                                     {recentTransactions?.map((transaction) => {
                                         if (transaction.buyCurrency.symbol.toLowerCase() === tokenContext.currentlySelectedToken.symbol.toLowerCase()) {
-                                            const timeSince = formatDistanceToNowStrict(new Date(`${transaction.block.timestamp.time} GMT`)).replace('minutes', 'm')
+                                            const timeSince = formatDistanceToNowStrict(parseJSON(transaction.block.timestamp.time)).replace('minutes', 'm')
                                             return (
                                                 <tr onClick={() => window.open(`https://bscscan.com/tx/${transaction.transaction.hash}`, '_blank')} key={transaction.transaction.hash}>
                                                     <td className="red">{timeSince === 0 ? 'Just Now' : `${timeSince} ago`}</td>
@@ -77,7 +77,7 @@ export default function MarketHistory() {
                                                 </tr>
                                             )
                                         }
-                                        const timeSince = formatDistanceToNowStrict(new Date(`${transaction.block.timestamp.time} GMT`)).replace('minutes', 'm')
+                                        const timeSince = formatDistanceToNowStrict(parseJSON(transaction.block.timestamp.time)).replace('minutes', 'm')
                                         return (
                                             <tr onClick={() => window.open(`https://bscscan.com/tx/${transaction.transaction.hash}`, '_blank')} key={transaction.transaction.hash}>
                                                 <td className="green">{timeSince === 0 ? 'Just Now' : `${timeSince} ago`}</td>
