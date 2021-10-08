@@ -95,18 +95,19 @@ export default function MarketTrade() {
         }
     }, [tokenAContract, tokenBContract]) // set the recommended slippate value
 
-    const debouncedCallback = useDebouncedCallback(async (currTokenAAmount, currTokenBAmount, currTokenADecimals, currTokenBDecimals, lastIntervalId) => {
+    const debouncedCallback = useDebouncedCallback(async (currTokenAAmount, currTokenBAmount, currTokenA, currTokenB, lastIntervalId) => {
         clearInterval(lastIntervalId)
 
         const getAndSetQuote = async () => {
             let quote
             if (tokenAEstimated) {
-                quote = await getQuote(tokenB, tokenA, getDecimalAmount(currTokenBAmount, currTokenBDecimals))
+                quote = await getQuote(currTokenB, currTokenA, getDecimalAmount(currTokenBAmount, currTokenB.decimals))
                 setTokenAAmount(quote)
             } else {
-                quote = await getQuote(tokenA, tokenB, getDecimalAmount(currTokenAAmount, currTokenADecimals))
+                quote = await getQuote(currTokenA, currTokenB, getDecimalAmount(currTokenAAmount, currTokenA.decimals))
                 setTokenBAmount(quote)
             }
+            console.log(quote)
         }
         await getAndSetQuote()
         const intervalId = setInterval(async () => {
@@ -116,7 +117,7 @@ export default function MarketTrade() {
     }, 1000)
 
     useEffect(async () => {
-        debouncedCallback(tokenAAmount, tokenBAmount, tokenA.decimals, tokenB.decimals, currentPricingInterval)
+        debouncedCallback(tokenAAmount, tokenBAmount, tokenA, tokenB, currentPricingInterval)
     }, [fromBNB, tokenAAmount, tokenAEstimated, tokenA, tokenB])
 
     useEffect(async () => {
