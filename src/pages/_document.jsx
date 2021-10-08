@@ -1,3 +1,6 @@
+/* eslint-disable react/no-danger */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-multi-assign */
 import React from 'react'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
@@ -30,6 +33,18 @@ export default class CustomDocument extends Document {
         return (
             <Html lang="en">
                 <Head>
+                    <script async src="https://www.googletagmanager.com/gtag/js?id=GTM-WJ9MS9B" />
+                    <script
+                        dangerouslySetInnerHTML={{
+                            __html: `window.dataLayer = window.dataLayer || [];
+                            function gtag(){dataLayer.push(arguments);}
+                            gtag('js', new Date());
+                            gtag('config', 'GTM-WJ9MS9B', {
+                              page_path: window.location.pathname,
+                            });
+                          `,
+                        }}
+                    />
                     <link rel="shortcut icon" type="image/x-icon" href="/assets/image/favicon-32x32.png" />
                     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&display=swap" rel="stylesheet" />
                     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet" />
@@ -41,6 +56,9 @@ export default class CustomDocument extends Document {
                     <Main />
                     <NextScript />
                 </body>
+                <noscript>
+                    <iframe title="googletagmanager" src="https://www.googletagmanager.com/ns.html?id=GTM-WJ9MS9B" height="0" width="0" style={{ display: 'none', visibility: 'hidden' }} />
+                </noscript>
             </Html>
         )
     }
