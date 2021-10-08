@@ -35,7 +35,7 @@ const BSCContextProvider = ({ children }) => {
     const [pancakeSwapRouterV2, setPancakeSwapRouterV2] = useState(null)
     const UtopiaPresaleBSCAddress = '0x609692D1A4c45FB8f535269f4339b7880296baa0'
     const utopiaDexContractAddress = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
-    const pancakeSwapV2ContractAddress = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
+    const pancakeSwapFactoryAddress = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
     const pancakeSwapRouterV2Address = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
     const [tokenBalances, setTokenBalances] = useState([])
     const [refreshTokens, setRefreshTokens] = useState(false)
@@ -125,22 +125,7 @@ const BSCContextProvider = ({ children }) => {
         }
     }
 
-    const loadPancakeSwapV2Contract = async () => {
-        if (window.web3) {
-            const contractABI = await axios.get('https://api.bscscan.com/api', {
-                params: {
-                    module: 'contract',
-                    action: 'getabi',
-                    address: pancakeSwapV2ContractAddress,
-                    apiKey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
-                },
-            })
-            const currentContract = new window.web3.eth.Contract(JSON.parse(contractABI.data.result), pancakeSwapV2ContractAddress)
-            if (!pancakeSwapContract) {
-                setPancakeswapContract(currentContract)
-            }
-        }
-    }
+    const loadPancakeSwapFactoryContract = async () => {}
 
     const loadPancakeSwapRouterV2Contract = async () => {
         if (window.web3) {
@@ -208,7 +193,7 @@ const BSCContextProvider = ({ children }) => {
         }
         if (loadDexContract) {
             await loadBSCDexContract()
-            await loadPancakeSwapV2Contract()
+            await loadPancakeSwapFactoryContract()
             await loadPancakeSwapRouterV2Contract()
         }
     }
@@ -249,7 +234,7 @@ const BSCContextProvider = ({ children }) => {
                 currentBnbBalance,
                 pancakeSwapRouterV2,
                 registerUTPToken,
-                pancakeSwapV2ContractAddress,
+                pancakeSwapFactoryAddress,
                 pancakeSwapRouterV2Address,
                 tokenBalances,
                 setRefreshTokens,

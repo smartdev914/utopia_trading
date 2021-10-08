@@ -8,13 +8,12 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Tabs, Tab, Spinner } from 'react-bootstrap'
 import BSCContext from 'context/BSCContext'
 import TokenContext from 'context/TokenContext'
-import axios from 'axios'
-import { getBalanceAmount, getDecimalAmount, round } from 'common/utils/numbers'
+import { getBalanceAmount, getDecimalAmount } from 'common/utils/numbers'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import { BigNumber } from 'bignumber.js'
 import { useDebouncedCallback } from 'common/hooks/useDebouncedCallback'
-import { calculateSlippage } from 'common/utils/tokens'
+import { calculateSlippage, getQuote } from 'common/utils/tokens'
 import Toggle from 'react-toggle'
 import { event } from 'common/utils/ga'
 import TokenModal from './TokenModal'
@@ -54,7 +53,6 @@ export default function MarketTrade() {
     const [tokenBBalance, setTokenBBalance] = useState()
 
     const [currentPricingInterval, setCurrentPricingInterval] = useState()
-    const [bnbToTokenRatio, setBnbToTokenRatio] = useState(0)
     const [recommendedSlippage, setRecommendedSlippage] = useState(0)
     const [useRecommendedSlippage, setUseRecommendedSlippage] = useState(true)
 
@@ -97,57 +95,36 @@ export default function MarketTrade() {
         }
     }, [tokenAContract, tokenBContract]) // set the recommended slippate value
 
-    const debouncedCallback = useDebouncedCallback(async (address, lastIntervalId) => {
+    const debouncedCallback = useDebouncedCallback(async (currTokenAAmount, currTokenBAmount, currTokenADecimals, currTokenBDecimals, lastIntervalId) => {
         clearInterval(lastIntervalId)
 
-        const getAndSetRatio = async () => {
-            const pricingResponse = await axios.get(`https://price-retriever-dot-utopia-315014.uw.r.appspot.com/retrievePrice/${address}`)
-            const ratio = pricingResponse.data
-            setBnbToTokenRatio(ratio)
+        const getAndSetQuote = async () => {
+            let quote
+            if (tokenAEstimated) {
+                quote = await getQuote(tokenB, tokenA, getDecimalAmount(currTokenBAmount, currTokenBDecimals))
+                setTokenAAmount(quote)
+            } else {
+                quote = await getQuote(tokenA, tokenB, getDecimalAmount(currTokenAAmount, currTokenADecimals))
+                setTokenBAmount(quote)
+            }
         }
-        await getAndSetRatio()
+        await getAndSetQuote()
         const intervalId = setInterval(async () => {
-            await getAndSetRatio()
+            await getAndSetQuote()
         }, 7000)
         setCurrentPricingInterval(intervalId)
     }, 1000)
 
     useEffect(async () => {
-        debouncedCallback(fromBNB ? tokenB.address : tokenA.address, currentPricingInterval)
-    }, [fromBNB, tokenA.address, tokenB.address])
-
-    useEffect(() => {
-        if (bnbToTokenRatio) {
-            const tokenAAmountBN = new BigNumber(tokenAAmount)
-            const tokenBAmountBN = new BigNumber(tokenBAmount)
-            const bnbRatioBN = new BigNumber(bnbToTokenRatio)
-
-            if (tokenAEstimated) {
-                if (fromBNB) {
-                    const newTokenAAmount = tokenBAmountBN.multipliedBy(bnbRatioBN)
-                    setTokenAAmount(newTokenAAmount.toFixed(6))
-                } else {
-                    const ratio = new BigNumber(1).dividedBy(bnbRatioBN)
-                    const newTokenAAmount = tokenBAmountBN.multipliedBy(ratio)
-                    setTokenAAmount(newTokenAAmount.toFixed(6))
-                }
-            } else if (fromBNB) {
-                const ratio = new BigNumber(1).dividedBy(bnbRatioBN)
-                const newTokenBAmount = tokenAAmountBN.multipliedBy(ratio)
-                setTokenBAmount(newTokenBAmount.toFixed(6))
-            } else {
-                const newTokenBAmount = tokenAAmountBN.multipliedBy(bnbRatioBN)
-                setTokenBAmount(newTokenBAmount.toFixed(6))
-            }
-        }
-    }, [bnbToTokenRatio, tokenAAmount, tokenBAmount])
+        debouncedCallback(tokenAAmount, tokenBAmount, tokenA.decimals, tokenB.decimals, currentPricingInterval)
+    }, [fromBNB, tokenAAmount, tokenAEstimated, tokenA, tokenB])
 
     useEffect(async () => {
         if (window.web3?.eth) {
             const tokenAabi = await import(`../ABI/tokenABI/${tokenA.symbol.toUpperCase()}.js`)
             const tokenBabi = await import(`../ABI/tokenABI/${tokenB.symbol.toUpperCase()}.js`)
-            const currentTokenAContract = await new window.web3.eth.Contract(tokenAabi.default, tokenA.address)
-            const currentTokenBContract = await new window.web3.eth.Contract(tokenBabi.default, tokenB.address)
+            const currentTokenAContract = new window.web3.eth.Contract(tokenAabi.default, tokenA.address)
+            const currentTokenBContract = new window.web3.eth.Contract(tokenBabi.default, tokenB.address)
             setTokenAContract(currentTokenAContract)
             setTokenBContract(currentTokenBContract)
         }
@@ -191,7 +168,7 @@ export default function MarketTrade() {
                 const parsedSlippagePercentage = (100 - parseFloat(useRecommendedSlippage ? recommendedSlippage : slippagePercentage)) / 100
                 await bscContext.pancakeSwapRouterV2.methods
                     .swapExactETHForTokensSupportingFeeOnTransferTokens(
-                        getDecimalAmount(tokenBAmount * parsedSlippagePercentage, tokenB.decimals).toFixed(),
+                        getDecimalAmount(parseInt(tokenBAmount * parsedSlippagePercentage, 10), tokenB.decimals).toFixed(),
                         [tokenA.address, tokenB.address],
                         bscContext.currentAccountAddress,
                         Math.floor(Date.now() / 1000) + 30
@@ -244,7 +221,7 @@ export default function MarketTrade() {
                     await bscContext.pancakeSwapRouterV2.methods
                         .swapExactTokensForETHSupportingFeeOnTransferTokens(
                             getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
-                            getDecimalAmount(parseInt(tokenBAmount * parsedSlippagePercentage, tokenB.decimals)).toFixed(),
+                            getDecimalAmount(parseInt(tokenBAmount * parsedSlippagePercentage, 10), tokenB.decimals).toFixed(),
                             [tokenA.address, tokenB.address],
                             bscContext.currentAccountAddress,
                             Math.floor(Date.now() / 1000) + 30
@@ -301,10 +278,6 @@ export default function MarketTrade() {
                                             onFocus={() => {
                                                 setTokenAEstimated(false)
                                             }}
-                                            onBlur={(e) => {
-                                                setTokenAEstimated(false)
-                                                setTokenBAmount(round(fromBNB ? round(e.target.value, 6) * (1 / bnbToTokenRatio) : round(e.target.value, 6) * bnbToTokenRatio, 6))
-                                            }}
                                             onChange={(e) => {
                                                 setTokenAAmount(e.target.value)
                                             }}
@@ -349,9 +322,6 @@ export default function MarketTrade() {
                                             }}
                                             onChange={(e) => {
                                                 setTokenBAmount(e.target.value)
-                                            }}
-                                            onBlur={(e) => {
-                                                setTokenAAmount(round(fromBNB ? round(e.target.value, 6) * bnbToTokenRatio : round(e.target.value, 6) * (1 / bnbToTokenRatio), 6))
                                             }}
                                         />
                                         <div className="token-B-balance">
@@ -436,7 +406,12 @@ export default function MarketTrade() {
                                                             Approve
                                                         </button>
                                                     )}
-                                                    <button type="button" className="btn buy" onClick={onSwapClick} disabled={!tokenAAmount || tokenAAmount > tokenABalance}>
+                                                    <button
+                                                        type="button"
+                                                        className="btn buy"
+                                                        onClick={onSwapClick}
+                                                        disabled={!tokenAAmount || new BigNumber(tokenAAmount).isGreaterThan(new BigNumber(tokenABalance))}
+                                                    >
                                                         Swap
                                                     </button>
                                                 </>
