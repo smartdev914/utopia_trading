@@ -33,7 +33,7 @@ export const getTokenPriceInUSD = async (tokenAddress, decimals) => {
     const BNpriceInUSD = new BigNumber(pricingResponse.data)
     const BNUSDInBNB = new BigNumber(usdToBnb.data)
     if (decimals === 9) {
-        return BNpriceInUSD.dividedBy(BNUSDInBNB).toFormat(10)
+        return BNpriceInUSD.dividedBy(BNUSDInBNB).toFixed(10)
     }
-    return BNpriceInUSD.dividedBy(BNUSDInBNB).toFormat(2)
+    return BNpriceInUSD.dividedBy(BNUSDInBNB).toFixed(3)
 }

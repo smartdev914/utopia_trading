@@ -66,7 +66,9 @@ export default function MarketHistory() {
                                                     <td className="red">{timeSince === 0 ? 'Just Now' : `${timeSince}m ago`}</td>
                                                     <td className="red">{transaction.sellAmount.toLocaleString(undefined, { minimumFractionDigits: 3 })}</td>
                                                     <td className="red">{transaction.buyAmount.toLocaleString(undefined, { minimumFractionDigits: 3 })}</td>
-                                                    {tokenContext.currentTokenPriceInUSD && <td className="red">{(transaction.buyAmount * tokenContext.currentTokenPriceInUSD).toFixed(2)}</td>}
+                                                    {tokenContext.currentTokenPriceInUSD && (
+                                                        <td className="red">{(transaction.buyAmount * tokenContext.currentTokenPriceInUSD).toLocaleString(undefined, { minimumFractionDigits: 3 })}</td>
+                                                    )}
                                                 </tr>
                                             )
                                         }
@@ -76,7 +78,9 @@ export default function MarketHistory() {
                                                 <td className="green">{timeSince === 0 ? 'Just Now' : `${timeSince}m ago`}</td>
                                                 <td className="green">{transaction.buyAmount.toLocaleString(undefined, { minimumFractionDigits: 3 })}</td>
                                                 <td className="green">{transaction.sellAmount.toLocaleString(undefined, { minimumFractionDigits: 3 })}</td>
-                                                {tokenContext.currentTokenPriceInUSD && <td className="green">{(transaction.sellAmount * tokenContext.currentTokenPriceInUSD).toFixed(2)}</td>}
+                                                {tokenContext.currentTokenPriceInUSD && (
+                                                    <td className="green">{(transaction.sellAmount * tokenContext.currentTokenPriceInUSD).toLocaleString(undefined, { minimumFractionDigits: 3 })}</td>
+                                                )}
                                             </tr>
                                         )
                                     })}
