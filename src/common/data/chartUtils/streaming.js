@@ -1,8 +1,9 @@
 /* eslint-disable no-restricted-syntax */
+import BigNumber from 'bignumber.js'
 import { io } from 'socket.io-client'
 import { parseFullSymbol } from './helpers'
 
-const socket = io('https://price-retriever-dot-utopia-315014.uw.r.appspot.com', {origins:"*"});
+const socket = io('https://price-retriever-dot-utopia-315014.uw.r.appspot.com', { origins: '*', transports: ['websocket'] })
 // const socket = io('localhost:3001'); // For local testing
 
 const channelToSubscription = new Map()
@@ -57,7 +58,7 @@ socket.on('m', (data) => {
         // skip all non-TRADE events
         return
     }
-    const tradePrice = parseFloat(tradePriceStr)
+    const tradePrice = new BigNumber(tradePriceStr)
     const tradeTime = parseInt(tradeTimeStr, 10)
     const channelString = `0~${exchange}~${fromSymbol}~${toSymbol}`
     const subscriptionItem = channelToSubscription.get(channelString)
@@ -70,10 +71,10 @@ socket.on('m', (data) => {
     if (tradeTime >= nextDailyBarTime) {
         bar = {
             time: nextDailyBarTime,
-            open: tradePrice,
-            high: tradePrice,
-            low: tradePrice,
-            close: tradePrice,
+            open: tradePrice.toFixed(),
+            high: tradePrice.toFixed(),
+            low: tradePrice.toFixed(),
+            close: tradePrice.toFixed(),
         }
         console.log('[socket] Generate new bar', bar)
     } else {
