@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-restricted-syntax */
 import { makeUtopiaApiRequest } from './helpers'
 import { subscribeOnStream, unsubscribeFromStream } from './streaming'
@@ -243,12 +244,14 @@ export default {
         }
     },
     subscribeBars: (symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback) => {
-        const resolutionMap = new Map([["5", 300],
-            ["15", 15*60],
-            ["240", 4*60*60],
-            ["1D", 60*60*24]]);
-        resolution = resolutionMap.get(resolution);
-        subscribeOnStream(symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback, lastBarsCache.get(symbolInfo.full_name))
+        const resolutionMap = new Map([
+            ['5', 300],
+            ['15', 15 * 60],
+            ['240', 4 * 60 * 60],
+            ['1D', 60 * 60 * 24],
+        ])
+        const newResolution = resolutionMap.get(resolution)
+        subscribeOnStream(symbolInfo, newResolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback, lastBarsCache.get(symbolInfo.full_name))
     },
     unsubscribeBars: (subscriberUID) => {
         unsubscribeFromStream(subscriberUID)

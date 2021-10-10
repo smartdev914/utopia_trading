@@ -107,7 +107,6 @@ export default function MarketTrade() {
                 quote = await getQuote(currTokenA, currTokenB, getDecimalAmount(currTokenAAmount, currTokenA.decimals))
                 setTokenBAmount(quote)
             }
-            console.log(quote)
         }
         await getAndSetQuote()
         const intervalId = setInterval(async () => {

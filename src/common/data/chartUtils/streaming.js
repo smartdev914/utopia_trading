@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 import BigNumber from 'bignumber.js'
+import { millisecondsToSeconds } from 'date-fns'
 import { io } from 'socket.io-client'
 import { parseFullSymbol } from './helpers'
 
@@ -7,12 +8,6 @@ const socket = io('https://price-retriever-dot-utopia-315014.uw.r.appspot.com', 
 // const socket = io('localhost:3001'); // For local testing
 
 const channelToSubscription = new Map()
-
-function getNextDailyBarTime(barTime) {
-    const date = new Date(barTime * 1000)
-    date.setDate(date.getDate() + 1)
-    return date.getTime() / 1000
-}
 
 socket.on('connect', () => {
     console.log('[socket] Connected')
@@ -33,7 +28,8 @@ export function subscribeOnStream(symbolInfo, resolution, onRealtimeCallback, su
         id: subscribeUID,
         callback: onRealtimeCallback,
     }
-    let subscriptionItem = channelToSubscription.get(channelString)
+
+    let subscriptionItem = channelToSubscription.get(channelString.toLowerCase())
     if (subscriptionItem) {
         // already subscribed to the channel, use the existing subscription
         subscriptionItem.handlers.push(handler)
@@ -45,46 +41,48 @@ export function subscribeOnStream(symbolInfo, resolution, onRealtimeCallback, su
         lastDailyBar,
         handlers: [handler],
     }
-    channelToSubscription.set(channelString, subscriptionItem)
+    channelToSubscription.set(channelString.toLowerCase(), subscriptionItem)
     console.log('[subscribeBars]: Subscribe to streaming. Channel:', channelString)
     socket.emit('SubAdd', { subs: [channelString] })
 }
 
 socket.on('m', (data) => {
     console.log('[socket] Message:', data)
-    const [eventTypeStr, exchange, fromSymbol, toSymbol, , , tradeTimeStr, , tradePriceStr] = data.split('~')
+    const [eventTypeStr, exchange, fromSymbol, toSymbol, , , tradeTimeStr, , tradePriceClose, tradePriceOpen, tradePriceLow, tradePriceHigh] = data.split('~')
 
     if (parseInt(eventTypeStr, 10) !== 0) {
         // skip all non-TRADE events
         return
     }
-    const tradePrice = new BigNumber(tradePriceStr)
+    const tradePriceC = new BigNumber(tradePriceClose)
+    const tradePriceO = new BigNumber(tradePriceOpen)
+    const tradePriceL = new BigNumber(tradePriceLow)
+    const tradePriceH = new BigNumber(tradePriceHigh)
     const tradeTime = parseInt(tradeTimeStr, 10)
     const channelString = `0~${exchange}~${fromSymbol}~${toSymbol}`
-    const subscriptionItem = channelToSubscription.get(channelString)
+    const subscriptionItem = channelToSubscription.get(channelString.toLowerCase())
     if (subscriptionItem === undefined) {
         return
     }
     const { lastDailyBar } = subscriptionItem
-    const nextDailyBarTime = subscriptionItem.lastDailyBar.startTime + subscriptionItem.resolution
     let bar
-    if (tradeTime >= nextDailyBarTime) {
+    if (tradeTime >= millisecondsToSeconds(lastDailyBar.time)) {
         bar = {
-            time: nextDailyBarTime,
-            open: tradePrice.toFixed(),
-            high: tradePrice.toFixed(),
-            low: tradePrice.toFixed(),
-            close: tradePrice.toFixed(),
+            time: tradeTime * 1000,
+            open: tradePriceO.toFixed(),
+            high: tradePriceH.toFixed(),
+            low: tradePriceL.toFixed(),
+            close: tradePriceC.toFixed(),
         }
         console.log('[socket] Generate new bar', bar)
     } else {
         bar = {
             ...lastDailyBar,
-            high: Math.max(lastDailyBar.high, tradePrice),
-            low: Math.min(lastDailyBar.low, tradePrice),
-            close: tradePrice,
+            high: Math.max(lastDailyBar.high, tradePriceH.toFixed()),
+            low: Math.min(lastDailyBar.low, tradePriceL.toFixed()),
+            close: tradePriceC.toFixed(),
         }
-        console.log('[socket] Update the latest bar by price', tradePrice)
+        console.log('[socket] Update the latest bar by price', tradePriceC.toFixed())
     }
 
     subscriptionItem.lastDailyBar = bar
@@ -95,7 +93,7 @@ socket.on('m', (data) => {
 export function unsubscribeFromStream(subscriberUID) {
     // find a subscription with id === subscriberUID
     for (const channelString of channelToSubscription.keys()) {
-        const subscriptionItem = channelToSubscription.get(channelString)
+        const subscriptionItem = channelToSubscription.get(channelString.toLowerCase())
         const handlerIndex = subscriptionItem.handlers.findIndex((handler) => handler.id === subscriberUID)
 
         if (handlerIndex !== -1) {
@@ -104,9 +102,9 @@ export function unsubscribeFromStream(subscriberUID) {
 
             if (subscriptionItem.handlers.length === 0) {
                 // unsubscribe from the channel, if it was the last handler
-                console.log('[unsubscribeBars]: Unsubscribe from streaming. Channel:', channelString)
+                console.log('[unsubscribeBars]: Unsubscribe from streaming. Channel:', channelString.toLowerCase())
                 socket.emit('SubRemove', { subs: [channelString] })
-                channelToSubscription.delete(channelString)
+                channelToSubscription.delete(channelString.toLowerCase())
                 break
             }
         }
