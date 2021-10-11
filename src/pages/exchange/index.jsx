@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
 import MarketNews from 'components/MarketNews'
 import { ToastContainer } from 'react-toastify'
-import { Modal } from 'react-bootstrap'
+// import { Modal } from 'react-bootstrap'
 import ErrorBoundary from 'components/ErrorBoundry'
 import Layout from '../../components/Layout'
 import MarketHistory from '../../components/MarketHistory'
@@ -13,12 +13,12 @@ import DynamicTVS from '../../components/DynamicTVS'
 import DynamicTVSDark from '../../components/DynamicTVSDark'
 
 const Home = () => {
-    const [showModal, setShowModal] = useState(false)
+    // const [showModal, setShowModal] = useState(false)
 
     useEffect(() => {
         document.querySelector('body').classList.add('dark')
-        const shownModal = sessionStorage.getItem('shownWarningModal')
-        setShowModal(!shownModal)
+        // const shownModal = sessionStorage.getItem('shownWarningModal')
+        // setShowModal(!shownModal)
         sessionStorage.setItem('shownWarningModal', true)
     }, [])
 
@@ -44,7 +44,7 @@ const Home = () => {
                     </div>
                 </div>
                 <ToastContainer />
-                <Modal show={showModal} onHide={() => setShowModal(false)}>
+                {/* <Modal show={showModal} onHide={() => setShowModal(false)}>
                     <Modal.Header closeButton>
                         <Modal.Title>Exchange Still In Beta</Modal.Title>
                     </Modal.Header>
@@ -59,7 +59,7 @@ const Home = () => {
                             Telegram Support Group
                         </a>
                     </Modal.Body>
-                </Modal>
+                </Modal> */}
             </ErrorBoundary>
         </Layout>
     )
