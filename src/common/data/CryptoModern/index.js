@@ -139,12 +139,12 @@ export const Q2RoadMap = [
     },
     {
         id: 'Q2-4',
-        checked: false,
+        checked: true,
         label: 'Launch with Utopia Exchange',
     },
     {
         id: 'Q2-5',
-        checked: false,
+        checked: true,
         label: 'Tech-rate and Certik audit before launch',
     },
     {
@@ -159,12 +159,12 @@ export const Q2RoadMap = [
     },
     {
         id: 'Q2-8',
-        checked: false,
+        checked: true,
         label: 'CMC and Coingecko Submissions',
     },
     {
         id: 'Q2-9',
-        checked: false,
+        checked: true,
         label: 'Launch merchandise',
     },
     {
@@ -174,8 +174,13 @@ export const Q2RoadMap = [
     },
     {
         id: 'Q2-11',
+        checked: true,
+        label: 'CMC / Coingecko',
+    },
+    {
+        id: 'Q2-12',
         checked: false,
-        label: 'CMC / Coingecko / Blockfolio Listings',
+        label: 'Blockfolio',
     },
 ]
 
