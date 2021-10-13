@@ -14,6 +14,7 @@ import Team from 'containers/CryptoModern/Team'
 import GlobalStyle, { CryptoWrapper, ContentWrapper } from 'containers/CryptoModern/cryptoModern.style'
 import dynamic from 'next/dynamic'
 import { ToastContainer } from 'react-toastify'
+import Button from 'common/components/Button'
 import { ResetCSS } from '../../public/assets/css/style'
 import UtopiaWhitePaper from '../../public/assets/docs/Utopia_Whitepaper.pdf'
 
@@ -54,6 +55,9 @@ const CryptoModern = () => {
                         <HowToBuy />
                         <RoadMap />
                         <Team />
+                        <div className="temp-footer">
+                            <Button onClick={() => toggleShowWhitePaper(!showWhitePaper)} className="whitepaper" title="WHITE PAPER" />
+                        </div>
                         {showWhitePaper && <PDFViewer url={UtopiaWhitePaper} toggleShowWhitePaper={toggleShowWhitePaper} />}
                     </ContentWrapper>
                 </CryptoWrapper>

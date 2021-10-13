@@ -106,7 +106,7 @@ export const MenuArea = styled.div`
                 margin-right: 0;
             }
         }
-        &.whitepaper {
+        &.merch {
             background-color: transparent;
             letter-spacing: 0.1rem;
         }

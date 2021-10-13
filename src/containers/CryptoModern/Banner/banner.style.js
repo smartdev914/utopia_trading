@@ -27,6 +27,7 @@ const BannerWrapper = styled.div`
     .tooltip {
         position: relative;
         display: inline-block;
+        z-index: 50;
     }
 
     .tooltip .tooltiptext {
