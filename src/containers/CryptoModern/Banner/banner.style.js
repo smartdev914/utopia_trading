@@ -7,6 +7,62 @@ const BannerWrapper = styled.div`
     overflow: hidden;
     text-align: center;
 
+    .contract-header,
+    .contract-address {
+        font-family: var(--fontDosis);
+        font-size: 20px;
+    }
+    .contract-address {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+
+        span {
+            margin-bottom: 0;
+            margin-right: 5px;
+        }
+    }
+
+    .tooltip {
+        position: relative;
+        display: inline-block;
+    }
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 100px;
+        font-size: 12px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 150%;
+        right: -46px;
+        opacity: 0;
+        -webkit-transition: opacity 0.3s;
+        transition: opacity 0.3s;
+    }
+
+    .tooltip .tooltiptext::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+
     @media only screen and (min-width: 1201px) and (max-width: 1440px) {
         min-height: 90vh;
     }
@@ -19,6 +75,11 @@ const BannerWrapper = styled.div`
         padding-top: 120px;
         padding-bottom: 180px;
         min-height: 100%;
+
+        .contract-header,
+        .contract-address {
+            font-size: 16px;
+        }
     }
     > div.container {
         display: flex;

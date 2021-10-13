@@ -54,7 +54,6 @@ const CryptoModern = () => {
                         <HowToBuy />
                         <RoadMap />
                         <Team />
-                        {/* {showWhitePaper && <iframe title="Utopia White Paper" className="WhitePaper" src="https://drive.google.com/file/d/1lwGavoH53yk6PezOEUXbwshSj230SIW5/view?usp=sharing" />} */}
                         {showWhitePaper && <PDFViewer url={UtopiaWhitePaper} toggleShowWhitePaper={toggleShowWhitePaper} />}
                     </ContentWrapper>
                 </CryptoWrapper>

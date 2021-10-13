@@ -172,6 +172,10 @@ const GlobalStyle = createGlobalStyle`
     left: 50%;
     transform: translateX(-50%);
   }
+  
+  .highlight {
+    color: #f9df00;
+  }
 
   @media only screen and (max-width: 667px) {
     .container {
