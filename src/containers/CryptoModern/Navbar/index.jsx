@@ -36,9 +36,9 @@ const Navbar = () => {
                     <SocialIcon url="https://www.reddit.com/user/Utopia_BSC/" bgColor="#2D75DC" network="reddit" style={{ width: iconSize, height: iconSize }} />
                 </SocialMediaButtonGroup>
                 <MenuArea>
-                    <Link href="https://society6.com/utopia_bsc">
+                    <a href="https://society6.com/utopia_bsc" target="_blank" rel="noreferrer">
                         <Button className="merch" title="MERCH" />
-                    </Link>
+                    </a>
                     <Button className="trail" title="HOW TO BUY" onClick={scrollTo} />
                 </MenuArea>
             </Container>
