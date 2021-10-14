@@ -10234,10 +10234,10 @@ react-spring@^8.0.18:
     "@babel/runtime" "^7.3.1"
     prop-types "^15.5.8"
 
-react-stickynode@3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/react-stickynode/-/react-stickynode-3.0.4.tgz#1e9c096cec3613cc8294807eba319ced074c8b21"
-  integrity sha512-0ve+RW8YG41lleor/EiBobz2w8/0KHKxmBdouYFi563hJu94C1n66FgxqRj+zS0vj8zCetvtWvO9kSU8J9RXCA==
+react-stickynode@3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/react-stickynode/-/react-stickynode-3.1.1.tgz#b9eaa3c4c11a1c4734b52ae1f3c82ab5bec675db"
+  integrity sha512-JzciWr01e2Ob9MU/brOZaLJTE/o02Ee67p6AWjvyC5BLHVPkeNRZqk0a46vWvNbqxFkXTYszStpiTWyarJIjjg==
   dependencies:
     classnames "^2.0.0"
     core-js "^3.6.5"
