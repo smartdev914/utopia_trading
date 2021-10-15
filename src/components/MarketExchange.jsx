@@ -52,10 +52,8 @@ export default function MarketTrade() {
     const [tokenABalance, setTokenABalance] = useState()
     const [tokenBBalance, setTokenBBalance] = useState()
 
-    const [currentPricingInterval, setCurrentPricingInterval] = useState()
     const [recommendedSlippage, setRecommendedSlippage] = useState(0)
     const [useRecommendedSlippage, setUseRecommendedSlippage] = useState(true)
-
     const bscContext = useContext(BSCContext)
     const tokenContext = useContext(TokenContext)
 
@@ -95,29 +93,23 @@ export default function MarketTrade() {
         }
     }, [tokenAContract, tokenBContract]) // set the recommended slippate value
 
-    const debouncedCallback = useDebouncedCallback(async (currTokenAAmount, currTokenBAmount, currTokenA, currTokenB, lastIntervalId) => {
-        clearInterval(lastIntervalId)
-
-        const getAndSetQuote = async () => {
-            let quote
-            if (tokenAEstimated) {
-                quote = await getQuote(currTokenB, currTokenA, getDecimalAmount(currTokenBAmount, currTokenB.decimals))
-                setTokenAAmount(quote)
-            } else {
-                quote = await getQuote(currTokenA, currTokenB, getDecimalAmount(currTokenAAmount, currTokenA.decimals))
-                setTokenBAmount(quote)
-            }
+    const debouncedOnChangeA = useDebouncedCallback(async (currTokenAAmount, currTokenA, currTokenB) => {
+        if (currTokenAAmount) {
+            const quote = await getQuote(currTokenA, currTokenB, getDecimalAmount(currTokenAAmount, currTokenA.decimals))
+            setTokenBAmount(quote)
+        } else {
+            setTokenBAmount('')
         }
-        await getAndSetQuote()
-        const intervalId = setInterval(async () => {
-            await getAndSetQuote()
-        }, 7000)
-        setCurrentPricingInterval(intervalId)
-    }, 1000)
+    }, 250)
 
-    useEffect(async () => {
-        debouncedCallback(tokenAAmount, tokenBAmount, tokenA, tokenB, currentPricingInterval)
-    }, [fromBNB, tokenAAmount, tokenAEstimated, tokenA, tokenB])
+    const debouncedOnChangeB = useDebouncedCallback(async (currTokenBAmount, currTokenB, currTokenA) => {
+        if (currTokenBAmount) {
+            const quote = await getQuote(currTokenB, currTokenA, getDecimalAmount(currTokenBAmount, currTokenB.decimals))
+            setTokenAAmount(quote)
+        } else {
+            setTokenAAmount('')
+        }
+    }, 250)
 
     useEffect(async () => {
         if (window.web3?.eth) {
@@ -173,30 +165,53 @@ export default function MarketTrade() {
                         bscContext.currentAccountAddress,
                         Math.floor(Date.now() / 1000) + 30
                     )
-                    .send({
+                    .estimateGas({
                         from: bscContext.currentAccountAddress,
                         value: getDecimalAmount(tokenAAmount, tokenA.decimals),
                     })
-                    .then((result) => {
-                        toast.success(
-                            <div className="toast-approved-transaction">
-                                <span>Transaction Approved!</span>{' '}
-                                <a href={`https://bscscan.com/tx/${result.transactionHash}`} target="_blank" rel="noreferrer">
-                                    View
-                                </a>
-                            </div>,
-                            toastSettings
-                        )
-                        setSwapInProgress(false)
-                        bscContext.setRefreshTokens(true)
+                    .then(async () => {
+                        await bscContext.pancakeSwapRouterV2.methods
+                            .swapExactETHForTokensSupportingFeeOnTransferTokens(
+                                getDecimalAmount(parseInt(tokenBAmount * parsedSlippagePercentage, 10), tokenB.decimals).toFixed(),
+                                [tokenA.address, tokenB.address],
+                                bscContext.currentAccountAddress,
+                                Math.floor(Date.now() / 1000) + 30
+                            )
+                            .send({
+                                from: bscContext.currentAccountAddress,
+                                value: getDecimalAmount(tokenAAmount, tokenA.decimals),
+                            })
+                            .then((result) => {
+                                toast.success(
+                                    <div className="toast-approved-transaction">
+                                        <span>Transaction Approved!</span>{' '}
+                                        <a href={`https://bscscan.com/tx/${result.transactionHash}`} target="_blank" rel="noreferrer">
+                                            View
+                                        </a>
+                                    </div>,
+                                    toastSettings
+                                )
+                                setSwapInProgress(false)
+                                bscContext.setRefreshTokens(true)
+                            })
+                            .catch((err) => {
+                                if (err.code === 4001) {
+                                    toast.error('Transaction Rejected!', toastSettings)
+                                } else {
+                                    toast.error('Transaction Failed!', toastSettings)
+                                }
+                                setSwapInProgress(false)
+                            })
                     })
-                    .catch((err) => {
-                        if (err.code === 4001) {
-                            toast.error('Transaction Rejected!', toastSettings)
-                        } else {
-                            toast.error('Transaction Failed!', toastSettings)
+                    .catch((error) => {
+                        try {
+                            const parsedError = JSON.parse(error.message.substring(error.message.indexOf('\n') + 1))
+                            toast.error(parsedError.message, toastSettings)
+                            setSwapInProgress(false)
+                        } catch (e) {
+                            toast.error(error.message, toastSettings)
+                            setSwapInProgress(false)
                         }
-                        setSwapInProgress(false)
                     })
             } else {
                 // if swapping to BNB
@@ -226,30 +241,53 @@ export default function MarketTrade() {
                             bscContext.currentAccountAddress,
                             Math.floor(Date.now() / 1000) + 30
                         )
-                        .send({
+                        .estimateGas({
                             from: bscContext.currentAccountAddress,
                         })
-                        .then((result) => {
-                            toast.success(
-                                <div className="toast-approved-transaction">
-                                    <span>Transaction Approved!</span>{' '}
-                                    <a href={`https://bscscan.com/tx/${result.transactionHash}`} target="_blank" rel="noreferrer">
-                                        View
-                                    </a>
-                                </div>,
-                                toastSettings
-                            )
-                            setSwapInProgress(false)
-                            bscContext.refreshTokens(true)
-                        })
-                        .catch((err) => {
-                            if (err.code === 4001) {
-                                toast.error('Transaction Rejected!', toastSettings)
-                            } else {
-                                toast.error('Transaction Failed!', toastSettings)
-                            }
+                        .then(async () => {
+                            await bscContext.pancakeSwapRouterV2.methods
+                                .swapExactTokensForETHSupportingFeeOnTransferTokens(
+                                    getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
+                                    getDecimalAmount(parseInt(tokenBAmount * parsedSlippagePercentage, 10), tokenB.decimals).toFixed(),
+                                    [tokenA.address, tokenB.address],
+                                    bscContext.currentAccountAddress,
+                                    Math.floor(Date.now() / 1000) + 30
+                                )
+                                .send({
+                                    from: bscContext.currentAccountAddress,
+                                })
+                                .then((result) => {
+                                    toast.success(
+                                        <div className="toast-approved-transaction">
+                                            <span>Transaction Approved!</span>{' '}
+                                            <a href={`https://bscscan.com/tx/${result.transactionHash}`} target="_blank" rel="noreferrer">
+                                                View
+                                            </a>
+                                        </div>,
+                                        toastSettings
+                                    )
+                                    setSwapInProgress(false)
+                                    bscContext.refreshTokens(true)
+                                })
+                                .catch((err) => {
+                                    if (err.code === 4001) {
+                                        toast.error('Transaction Rejected!', toastSettings)
+                                    } else {
+                                        toast.error('Transaction Failed!', toastSettings)
+                                    }
 
-                            setSwapInProgress(false)
+                                    setSwapInProgress(false)
+                                })
+                        })
+                        .catch((error) => {
+                            try {
+                                const parsedError = JSON.parse(error.message.substring(error.message.indexOf('\n') + 1))
+                                toast.error(parsedError.message, toastSettings)
+                                setSwapInProgress(false)
+                            } catch (e) {
+                                toast.error(error.message, toastSettings)
+                                setSwapInProgress(false)
+                            }
                         })
                 }
             }
@@ -275,11 +313,10 @@ export default function MarketTrade() {
                                                 document.activeElement.blur()
                                             }}
                                             value={tokenAAmount}
-                                            onFocus={() => {
-                                                setTokenAEstimated(false)
-                                            }}
                                             onChange={(e) => {
                                                 setTokenAAmount(e.target.value)
+                                                setTokenAEstimated(false)
+                                                debouncedOnChangeA(e.target.value, tokenA, tokenB)
                                             }}
                                         />
                                         <div className="token-A-balance">
@@ -316,12 +353,13 @@ export default function MarketTrade() {
                                             className="form-control"
                                             required
                                             value={tokenBAmount}
-                                            onFocus={() => setTokenAEstimated(true)}
                                             onWheel={() => {
                                                 document.activeElement.blur()
                                             }}
                                             onChange={(e) => {
                                                 setTokenBAmount(e.target.value)
+                                                setTokenAEstimated(true)
+                                                debouncedOnChangeB(e.target.value, tokenB, tokenA)
                                             }}
                                         />
                                         <div className="token-B-balance">

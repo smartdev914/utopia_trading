@@ -67,13 +67,15 @@ const getPancakeFactoryPair = async (tokenA, tokenB) => {
 
 export const getQuote = async (tokenA, tokenB, amountIn) => {
     const tokenPair = await getPancakeFactoryPair(tokenA, tokenB)
-    if (tokenPair) {
+    if (tokenPair && amountIn) {
         const token0 = await tokenPair.methods.token0().call()
         const reserves = await tokenPair.methods.getReserves().call()
         if (token0.toLowerCase() === tokenA.address.toLowerCase()) {
-            return getBalanceAmount(getAmountOut(amountIn, reserves[0], reserves[1])).toFixed()
+            const quote = getBalanceAmount(getAmountOut(amountIn, reserves[0], reserves[1]), tokenB.decimals)
+            return tokenB.decimals === 9 ? quote.toFixed(0) : quote.toFixed(8)
         }
-        return getBalanceAmount(getAmountOut(amountIn, reserves[1], reserves[0]), tokenB.decimals).toFixed()
+        const quote = getBalanceAmount(getAmountOut(amountIn, reserves[1], reserves[0]), tokenB.decimals)
+        return tokenB.decimals === 9 ? quote.toFixed(0) : quote.toFixed(8)
     }
     return 0
 }

@@ -39,6 +39,7 @@ const BSCContextProvider = ({ children }) => {
     const pancakeSwapRouterV2Address = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
     const [tokenBalances, setTokenBalances] = useState([])
     const [refreshTokens, setRefreshTokens] = useState(false)
+    const [currentProvider, setProvider] = useState()
 
     useEffect(async () => {
         if (currentAccountAddress && window.web3) {
@@ -144,6 +145,14 @@ const BSCContextProvider = ({ children }) => {
         }
     }
 
+    const disconnect = useCallback(async () => {
+        await window.web3Modal.clearCachedProvider()
+        if (currentProvider?.disconnect && typeof currentProvider.disconnect === 'function') {
+            await currentProvider.disconnect()
+        }
+        setCurrentAccountAddress('')
+    }, [currentProvider])
+
     const triggerDappModal = async () => {
         const providerOptions = {
             walletconnect: {
@@ -165,14 +174,15 @@ const BSCContextProvider = ({ children }) => {
             },
         }
 
-        const web3Modal = new Web3Modal({
+        window.web3Modal = new Web3Modal({
             network: 'binance', // optional
             cacheProvider: false, // optional
             providerOptions, // required
             theme: 'dark',
         })
 
-        const provider = await web3Modal.connect()
+        const provider = await window.web3Modal.connect()
+        setProvider(provider)
 
         window.web3 = new Web3(provider)
         const accounts = await window.web3.eth.getAccounts()
@@ -180,14 +190,12 @@ const BSCContextProvider = ({ children }) => {
         setCurrentAccountAddress(accounts[0])
         setBNBBalance(bnbBalance)
         setHasDappBrowser(true)
-        if (window.ethereum) {
-            window.ethereum.on('accountsChanged', async (newAccounts) => {
-                const newBnbBalance = await window.web3.eth.getBalance(newAccounts[0])
-                setCurrentAccountAddress(newAccounts[0])
-                setBNBBalance(newBnbBalance)
-            })
-            setupNetwork()
-        }
+        provider.on('accountsChanged', async (newAccounts) => {
+            const newBnbBalance = await window.web3.eth.getBalance(newAccounts[0])
+            setCurrentAccountAddress(newAccounts[0])
+            setBNBBalance(newBnbBalance)
+        })
+        setupNetwork()
         if (loadPresaleContract) {
             loadUTPPresaleContract()
         }
@@ -216,7 +224,7 @@ const BSCContextProvider = ({ children }) => {
     }
 
     const logout = () => {
-        setCurrentAccountAddress(null)
+        disconnect()
     }
 
     return (
