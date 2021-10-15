@@ -54,6 +54,7 @@ export default function MarketTrade() {
 
     const [recommendedSlippage, setRecommendedSlippage] = useState(0)
     const [useRecommendedSlippage, setUseRecommendedSlippage] = useState(true)
+    const [quoteIntervalId, setQuoteIntervalId] = useState()
     const bscContext = useContext(BSCContext)
     const tokenContext = useContext(TokenContext)
 
@@ -93,23 +94,52 @@ export default function MarketTrade() {
         }
     }, [tokenAContract, tokenBContract]) // set the recommended slippate value
 
-    const debouncedOnChangeA = useDebouncedCallback(async (currTokenAAmount, currTokenA, currTokenB) => {
+    const debouncedOnChangeA = useDebouncedCallback(async (currTokenAAmount, currTokenA, currTokenB, intervalId) => {
+        clearInterval(intervalId)
         if (currTokenAAmount) {
             const quote = await getQuote(currTokenA, currTokenB, getDecimalAmount(currTokenAAmount, currTokenA.decimals))
             setTokenBAmount(quote)
+            const currIntervalId = setInterval(async () => {}, 7000)
+            setQuoteIntervalId(currIntervalId)
         } else {
             setTokenBAmount('')
         }
-    }, 250)
+    }, 750)
 
-    const debouncedOnChangeB = useDebouncedCallback(async (currTokenBAmount, currTokenB, currTokenA) => {
+    const debouncedOnChangeB = useDebouncedCallback(async (currTokenBAmount, currTokenB, currTokenA, intervalId) => {
+        clearInterval(intervalId)
         if (currTokenBAmount) {
             const quote = await getQuote(currTokenB, currTokenA, getDecimalAmount(currTokenBAmount, currTokenB.decimals))
             setTokenAAmount(quote)
+            const currIntervalId = setInterval(async () => {
+                const newQuote = await getQuote(currTokenB, currTokenA, getDecimalAmount(currTokenBAmount, currTokenB.decimals))
+                setTokenAAmount(newQuote)
+            }, 7000)
+            setQuoteIntervalId(currIntervalId)
         } else {
             setTokenAAmount('')
         }
-    }, 250)
+    }, 750)
+
+    useEffect(async () => {
+        clearInterval(quoteIntervalId)
+        if (tokenAAmount || tokenBAmount) {
+            const getAndSetQuoted = async () => {
+                if (tokenAEstimated) {
+                    const newQuote = await getQuote(tokenB, tokenA, getDecimalAmount(tokenBAmount, tokenB.decimals))
+                    setTokenAAmount(newQuote)
+                } else {
+                    const newQuote = await getQuote(tokenA, tokenB, getDecimalAmount(tokenAAmount, tokenA.decimals))
+                    setTokenBAmount(newQuote)
+                }
+            }
+            await getAndSetQuoted()
+            const currIntervalId = setInterval(async () => {
+                await getAndSetQuoted()
+            }, 7000)
+            setQuoteIntervalId(currIntervalId)
+        }
+    }, [fromBNB, tokenA, tokenB])
 
     useEffect(async () => {
         if (window.web3?.eth) {
@@ -298,7 +328,6 @@ export default function MarketTrade() {
         <>
             <div className="market-trade mb15">
                 <h3>SWAP</h3>
-                {/* <div>Get the best price for your trade from multiple DEX&apos;s with no additional fees.</div> */}
                 <Tabs defaultActiveKey="market">
                     <Tab eventKey="market" title="MARKET">
                         <div className="d-flex justify-content-between">
@@ -313,10 +342,11 @@ export default function MarketTrade() {
                                                 document.activeElement.blur()
                                             }}
                                             value={tokenAAmount}
-                                            onChange={(e) => {
+                                            onInput={(e) => {
+                                                console.log('input A')
                                                 setTokenAAmount(e.target.value)
                                                 setTokenAEstimated(false)
-                                                debouncedOnChangeA(e.target.value, tokenA, tokenB)
+                                                debouncedOnChangeA(e.target.value, tokenA, tokenB, quoteIntervalId)
                                             }}
                                         />
                                         <div className="token-A-balance">
@@ -356,10 +386,11 @@ export default function MarketTrade() {
                                             onWheel={() => {
                                                 document.activeElement.blur()
                                             }}
-                                            onChange={(e) => {
+                                            onInput={(e) => {
+                                                console.log('input B')
                                                 setTokenBAmount(e.target.value)
                                                 setTokenAEstimated(true)
-                                                debouncedOnChangeB(e.target.value, tokenB, tokenA)
+                                                debouncedOnChangeB(e.target.value, tokenB, tokenA, quoteIntervalId)
                                             }}
                                         />
                                         <div className="token-B-balance">
