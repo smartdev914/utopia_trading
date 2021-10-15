@@ -414,7 +414,9 @@ export default function MarketTrade() {
                                         <div className="token-B-balance">
                                             <div className="balance">Balance: {BigNumber.isBigNumber(tokenBBalance) ? tokenBBalance.toFixed(6) : '-'}</div>
                                         </div>
-                                        <div className="sub-price">Min Receieved: {parseInt(tokenBAmount * parsedSlippagePercentage, 10)}</div>
+                                        <div className="sub-price">
+                                            Min Receieved: {(tokenBAmount * parsedSlippagePercentage).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 3 })}
+                                        </div>
                                         <div className="input-group-append">
                                             <Button
                                                 className={fromBNB ? 'token-swap-to' : ''}
