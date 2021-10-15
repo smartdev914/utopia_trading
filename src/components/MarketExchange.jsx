@@ -183,9 +183,10 @@ export default function MarketTrade() {
     useEffect(async () => {
         const currentTokenInUSD = await getTokenPriceInUSD(tokenA.address, tokenA.decimals)
         setCurrentSwapInUSD(currentTokenInUSD)
-    }, [tokenA])
+    }, [tokenA, fromBNB])
 
     const parsedSlippagePercentage = (100 - parseFloat(useRecommendedSlippage ? recommendedSlippage : slippagePercentage)) / 100
+    const amountInUSD = new BigNumber(currentSwapInUSD).multipliedBy(new BigNumber(tokenAAmount)).toFormat(3)
 
     const onSwapClick = async () => {
         event({
@@ -385,9 +386,7 @@ export default function MarketTrade() {
                                                 Balance: {BigNumber.isBigNumber(tokenABalance) ? tokenABalance.toFixed(6) : '-'}
                                             </div>
                                         </div>
-                                        <div className="sub-price">
-                                            In USD: {tokenAAmount ? `$${new BigNumber(1).dividedBy(new BigNumber(currentSwapInUSD)).multipliedBy(new BigNumber(tokenAAmount)).toFormat(3)}` : '-'}
-                                        </div>
+                                        <div className="sub-price">In USD: {tokenAAmount ? `$${amountInUSD}` : '-'}</div>
                                         <div className="input-group-append">
                                             <Button
                                                 className={!fromBNB ? 'token-swap-to' : ''}
