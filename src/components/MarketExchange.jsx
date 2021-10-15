@@ -16,7 +16,6 @@ import { useDebouncedCallback } from 'common/hooks/useDebouncedCallback'
 import { calculateSlippage, getQuote, getTokenPriceInUSD } from 'common/utils/tokens'
 import Toggle from 'react-toggle'
 import { event } from 'common/utils/ga'
-import axios from 'axios'
 import getContract from 'common/utils/getContract'
 import TokenModal from './TokenModal'
 
@@ -340,7 +339,6 @@ export default function MarketTrade() {
         }
     }
 
-    console.log(recommendedSlippage)
     return (
         <>
             <div className="market-trade mb15">
