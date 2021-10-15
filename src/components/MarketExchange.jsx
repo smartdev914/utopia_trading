@@ -13,9 +13,11 @@ import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import { BigNumber } from 'bignumber.js'
 import { useDebouncedCallback } from 'common/hooks/useDebouncedCallback'
-import { calculateSlippage, getQuote } from 'common/utils/tokens'
+import { calculateSlippage, getQuote, getTokenPriceInUSD } from 'common/utils/tokens'
 import Toggle from 'react-toggle'
 import { event } from 'common/utils/ga'
+import axios from 'axios'
+import getContract from 'common/utils/getContract'
 import TokenModal from './TokenModal'
 
 import supportedPancakeTokens from '../common/constants/tokens/supportedPancakeTokens.json'
@@ -55,6 +57,7 @@ export default function MarketTrade() {
     const [recommendedSlippage, setRecommendedSlippage] = useState(0)
     const [useRecommendedSlippage, setUseRecommendedSlippage] = useState(true)
     const [quoteIntervalId, setQuoteIntervalId] = useState()
+    const [currentSwapInUSD, setCurrentSwapInUSD] = useState(0)
     const bscContext = useContext(BSCContext)
     const tokenContext = useContext(TokenContext)
 
@@ -88,7 +91,7 @@ export default function MarketTrade() {
         const tokenASlippage = await calculateSlippage(tokenAContract)
         const tokenBSlippage = await calculateSlippage(tokenBContract)
         if (tokenASlippage || tokenBSlippage) {
-            setRecommendedSlippage(tokenASlippage + tokenBSlippage + 1)
+            setRecommendedSlippage(tokenASlippage + tokenBSlippage + 2)
         } else {
             setRecommendedSlippage(0.5)
         }
@@ -142,15 +145,23 @@ export default function MarketTrade() {
     }, [fromBNB, tokenA, tokenB])
 
     useEffect(async () => {
-        if (window.web3?.eth) {
+        try {
             const tokenAabi = await import(`../ABI/tokenABI/${tokenA.symbol.toUpperCase()}.js`)
-            const tokenBabi = await import(`../ABI/tokenABI/${tokenB.symbol.toUpperCase()}.js`)
-            const currentTokenAContract = new window.web3.eth.Contract(tokenAabi.default, tokenA.address)
-            const currentTokenBContract = new window.web3.eth.Contract(tokenBabi.default, tokenB.address)
+            const currentTokenAContract = await Contract(tokenAabi.default, tokenA.address)
             setTokenAContract(currentTokenAContract)
+        } catch (e) {
+            const currentTokenAContract = await getContract(tokenA.address)
+            setTokenAContract(currentTokenAContract)
+        }
+        try {
+            const tokenBabi = await import(`../ABI/tokenABI/${tokenB.symbol.toUpperCase()}.js`)
+            const currentTokenBContract = await Contract(tokenBabi.default, tokenB.address)
+            setTokenBContract(currentTokenBContract)
+        } catch (e) {
+            const currentTokenBContract = await getContract(tokenB.address)
             setTokenBContract(currentTokenBContract)
         }
-    }, [tokenA, tokenB, bscContext.currentAccountAddress])
+    }, [tokenA, tokenB])
 
     useEffect(async () => {
         if (bscContext.currentAccountAddress) {
@@ -170,6 +181,13 @@ export default function MarketTrade() {
         }
     }, [bscContext.currentAccountAddress, fromBNB, tokenA.address, tokenB.address, bscContext.tokenBalances])
 
+    useEffect(async () => {
+        const currentTokenInUSD = await getTokenPriceInUSD(tokenA.address, tokenA.decimals)
+        setCurrentSwapInUSD(currentTokenInUSD)
+    }, [tokenA])
+
+    const parsedSlippagePercentage = (100 - parseFloat(useRecommendedSlippage ? recommendedSlippage : slippagePercentage)) / 100
+
     const onSwapClick = async () => {
         event({
             action: 'swap',
@@ -187,7 +205,6 @@ export default function MarketTrade() {
             if (fromBNB) {
                 // if swapping from BNB to token
                 setSwapInProgress(true)
-                const parsedSlippagePercentage = (100 - parseFloat(useRecommendedSlippage ? recommendedSlippage : slippagePercentage)) / 100
                 await bscContext.pancakeSwapRouterV2.methods
                     .swapExactETHForTokensSupportingFeeOnTransferTokens(
                         getDecimalAmount(parseInt(tokenBAmount * parsedSlippagePercentage, 10), tokenB.decimals).toFixed(),
@@ -260,7 +277,6 @@ export default function MarketTrade() {
                     }
                 }
 
-                const parsedSlippagePercentage = (100 - parseFloat(useRecommendedSlippage ? recommendedSlippage : slippagePercentage)) / 100
                 if (transactionApproved) {
                     setSwapInProgress(true)
                     await bscContext.pancakeSwapRouterV2.methods
@@ -324,6 +340,7 @@ export default function MarketTrade() {
         }
     }
 
+    console.log(recommendedSlippage)
     return (
         <>
             <div className="market-trade mb15">
@@ -343,7 +360,6 @@ export default function MarketTrade() {
                                             }}
                                             value={tokenAAmount}
                                             onInput={(e) => {
-                                                console.log('input A')
                                                 setTokenAAmount(e.target.value)
                                                 setTokenAEstimated(false)
                                                 debouncedOnChangeA(e.target.value, tokenA, tokenB, quoteIntervalId)
@@ -368,6 +384,9 @@ export default function MarketTrade() {
                                                 Balance: {BigNumber.isBigNumber(tokenABalance) ? tokenABalance.toFixed(6) : '-'}
                                             </div>
                                         </div>
+                                        <div className="sub-price">
+                                            In USD: {tokenAAmount ? `$${new BigNumber(1).dividedBy(new BigNumber(currentSwapInUSD)).multipliedBy(new BigNumber(tokenAAmount)).toFormat(3)}` : '-'}
+                                        </div>
                                         <div className="input-group-append">
                                             <Button
                                                 className={!fromBNB ? 'token-swap-to' : ''}
@@ -387,7 +406,6 @@ export default function MarketTrade() {
                                                 document.activeElement.blur()
                                             }}
                                             onInput={(e) => {
-                                                console.log('input B')
                                                 setTokenBAmount(e.target.value)
                                                 setTokenAEstimated(true)
                                                 debouncedOnChangeB(e.target.value, tokenB, tokenA, quoteIntervalId)
@@ -396,6 +414,7 @@ export default function MarketTrade() {
                                         <div className="token-B-balance">
                                             <div className="balance">Balance: {BigNumber.isBigNumber(tokenBBalance) ? tokenBBalance.toFixed(6) : '-'}</div>
                                         </div>
+                                        <div className="sub-price">Min Receieved: {parseInt(tokenBAmount * parsedSlippagePercentage, 10)}</div>
                                         <div className="input-group-append">
                                             <Button
                                                 className={fromBNB ? 'token-swap-to' : ''}
