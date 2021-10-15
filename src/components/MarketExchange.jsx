@@ -228,6 +228,8 @@ export default function MarketTrade() {
                                 value: getDecimalAmount(tokenAAmount, tokenA.decimals),
                             })
                             .then((result) => {
+                                setSwapInProgress(false)
+
                                 toast.success(
                                     <div className="toast-approved-transaction">
                                         <span>Transaction Approved!</span>{' '}
@@ -237,16 +239,16 @@ export default function MarketTrade() {
                                     </div>,
                                     toastSettings
                                 )
-                                setSwapInProgress(false)
                                 bscContext.setRefreshTokens(true)
                             })
                             .catch((err) => {
+                                setSwapInProgress(false)
+
                                 if (err.code === 4001) {
                                     toast.error('Transaction Rejected!', toastSettings)
                                 } else {
                                     toast.error('Transaction Failed!', toastSettings)
                                 }
-                                setSwapInProgress(false)
                             })
                     })
                     .catch((error) => {
@@ -302,6 +304,8 @@ export default function MarketTrade() {
                                     from: bscContext.currentAccountAddress,
                                 })
                                 .then((result) => {
+                                    setSwapInProgress(false)
+
                                     toast.success(
                                         <div className="toast-approved-transaction">
                                             <span>Transaction Approved!</span>{' '}
@@ -311,17 +315,16 @@ export default function MarketTrade() {
                                         </div>,
                                         toastSettings
                                     )
-                                    setSwapInProgress(false)
                                     bscContext.refreshTokens(true)
                                 })
                                 .catch((err) => {
+                                    setSwapInProgress(false)
+
                                     if (err.code === 4001) {
                                         toast.error('Transaction Rejected!', toastSettings)
                                     } else {
                                         toast.error('Transaction Failed!', toastSettings)
                                     }
-
-                                    setSwapInProgress(false)
                                 })
                         })
                         .catch((error) => {
