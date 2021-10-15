@@ -13,8 +13,12 @@ const getContract = async (address) => {
             apiKey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
         },
     })
-    const currentContract = new Contract(JSON.parse(contractABI.data.result), address)
-    return currentContract
+    console.log(contractABI)
+    if (contractABI.data.status === '1') {
+        const currentContract = new Contract(JSON.parse(contractABI.data.result), address)
+        return currentContract
+    }
+    return undefined
 }
 
 export default getContract

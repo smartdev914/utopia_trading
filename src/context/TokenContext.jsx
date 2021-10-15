@@ -25,7 +25,6 @@ const TokenContextProvider = ({ children }) => {
         } else {
             setCurrentTokenPriceInUSD(`-`)
         }
-        console.log('Changing Price: ', currentPriceOfToken)
     }, [currentlySelectedToken.address, currentlySelectedToken.decimals])
 
     return (
