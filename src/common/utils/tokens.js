@@ -44,7 +44,7 @@ export const getTokenPriceInUSD = async (tokenAddress, decimals) => {
     const usdToBnb = await axios.get(`https://price-retriever-dot-utopia-315014.uw.r.appspot.com/retrievePrice/0x55d398326f99059fF775485246999027B3197955`)
 
     if (tokenAddress.toLowerCase() === '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'.toLowerCase()) {
-        return usdToBnb.data
+        return new BigNumber(1).dividedBy(new BigNumber(usdToBnb.data)).toFixed(10)
     }
 
     const pricingResponse = await axios.get(`https://price-retriever-dot-utopia-315014.uw.r.appspot.com/retrievePrice/${tokenAddress}`)
