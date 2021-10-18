@@ -76,6 +76,7 @@ export default function MarketTrade() {
 
     useEffect(() => {
         bscContext.setLoadDexContract(true)
+        bscContext.setupNetwork()
     }, [])
 
     useEffect(() => {
@@ -123,15 +124,15 @@ export default function MarketTrade() {
         }
     }, 750)
 
-    useEffect(async () => {
+    const debouncedOnSwap = useDebouncedCallback(async (currTokenA, currTokenB, currTokenAAmount, currTokenBAmount, tokenAEst) => {
         clearInterval(quoteIntervalId)
-        if (tokenAAmount || tokenBAmount) {
+        if (currTokenAAmount || currTokenBAmount) {
             const getAndSetQuoted = async () => {
-                if (tokenAEstimated) {
-                    const newQuote = await getQuote(tokenB, tokenA, getDecimalAmount(tokenBAmount, tokenB.decimals))
+                if (tokenAEst) {
+                    const newQuote = await getQuote(currTokenB, currTokenA, getDecimalAmount(currTokenBAmount, currTokenB.decimals))
                     setTokenAAmount(newQuote)
                 } else {
-                    const newQuote = await getQuote(tokenA, tokenB, getDecimalAmount(tokenAAmount, tokenA.decimals))
+                    const newQuote = await getQuote(currTokenA, currTokenB, getDecimalAmount(currTokenAAmount, currTokenA.decimals))
                     setTokenBAmount(newQuote)
                 }
             }
@@ -141,7 +142,12 @@ export default function MarketTrade() {
             }, 7000)
             setQuoteIntervalId(currIntervalId)
         }
-    }, [fromBNB, tokenA, tokenB])
+    }, 750)
+
+    useEffect(async () => {
+        clearInterval(quoteIntervalId)
+        debouncedOnSwap(tokenA, tokenB, tokenAAmount, tokenBAmount, tokenAEstimated)
+    }, [fromBNB, tokenA, tokenB, tokenAEstimated])
 
     useEffect(async () => {
         try {

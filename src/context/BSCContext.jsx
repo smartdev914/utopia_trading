@@ -25,7 +25,6 @@ const nodes = [
 
 const BSCContextProvider = ({ children }) => {
     const [dexContract, setDexContract] = useState(null)
-    const [pancakeSwapContract, setPancakeswapContract] = useState(null)
     const [presaleContract, setPresaleContract] = useState(null)
     const [currentAccountAddress, setCurrentAccountAddress] = useState('')
     const [loadDexContract, setLoadDexContract] = useState(false)
@@ -195,7 +194,6 @@ const BSCContextProvider = ({ children }) => {
             setCurrentAccountAddress(newAccounts[0])
             setBNBBalance(newBnbBalance)
         })
-        setupNetwork()
         if (loadPresaleContract) {
             loadUTPPresaleContract()
         }
@@ -236,7 +234,6 @@ const BSCContextProvider = ({ children }) => {
                 logout,
                 setLoadDexContract,
                 setLoadPresaleContract,
-                pancakeSwapContract,
                 hasDappBrowser,
                 triggerDappModal,
                 currentBnbBalance,
@@ -246,6 +243,7 @@ const BSCContextProvider = ({ children }) => {
                 pancakeSwapRouterV2Address,
                 tokenBalances,
                 setRefreshTokens,
+                setupNetwork,
             }}
         >
             {children}
