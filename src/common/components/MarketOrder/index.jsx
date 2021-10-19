@@ -432,17 +432,19 @@ const MarketOrder = () => {
                                                 className="btn buy"
                                                 onClick={async () => {
                                                     setApproveInProgress(true)
-                                                    await tokenAContract
-                                                        .approve(bscContext.pancakeSwapRouterV2Address, '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
-                                                        .then(() => {
-                                                            setNeedsApproval(false)
-                                                            setApproveInProgress(false)
-                                                            toast.success('Swap Approved', toastSettings)
-                                                        })
-                                                        .catch(() => {
-                                                            toast.error('Error Approving', toastSettings)
-                                                            setApproveInProgress(false)
-                                                        })
+                                                    try {
+                                                        const tx = await tokenAContract.approve(
+                                                            bscContext.pancakeSwapRouterV2Address,
+                                                            '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+                                                        )
+                                                        await tx.wait()
+                                                        setNeedsApproval(false)
+                                                        setApproveInProgress(false)
+                                                        toast.success('Swap Approved', toastSettings)
+                                                    } catch (e) {
+                                                        toast.error('Error Approving', toastSettings)
+                                                        setApproveInProgress(false)
+                                                    }
                                                 }}
                                             >
                                                 Approve
