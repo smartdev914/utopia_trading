@@ -37,24 +37,24 @@ const Presale = () => {
 
     useEffect(async () => {
         if (bscContext.presaleContract) {
-            const tokensPurchasedInWei = await bscContext.presaleContract.methods.weiRaised().call()
+            const tokensPurchasedInWei = await bscContext.presaleContract.weiRaised()
             const totalPurchasedTokens = web3.utils.fromWei(tokensPurchasedInWei)
             setTotalPurchasedBnb(round(totalPurchasedTokens, 0))
-            const finalized = await bscContext.presaleContract.methods.finalized().call()
+            const finalized = await bscContext.presaleContract.finalized()
             setPresaleFinalized(finalized)
         }
     }, [bscContext.presaleContract])
 
     useEffect(async () => {
         if (bscContext.currentAccountAddress && bscContext.presaleContract) {
-            const presalePurchasedValue = await bscContext.presaleContract.methods.purchasedBnb(bscContext.currentAccountAddress).call()
+            const presalePurchasedValue = await bscContext.presaleContract.purchasedBnb(bscContext.currentAccountAddress)
             setPresalePurchased(parseFloat(presalePurchasedValue) > 0)
         }
     }, [bscContext.currentAccountAddress, bscContext.presaleContract])
 
     useEffect(async () => {
         if (bscContext.currentAccountAddress && bscContext.presaleContract) {
-            const bnbAllowance = await bscContext.presaleContract.methods.viewBnbAllowanceForUser(bscContext.currentAccountAddress).call()
+            const bnbAllowance = await bscContext.presaleContract.viewBnbAllowanceForUser(bscContext.currentAccountAddress)
             const allowedBnb = web3.utils.fromWei(bnbAllowance)
             setMaxPurchaseableTokens(allowedBnb)
         }
@@ -64,7 +64,7 @@ const Presale = () => {
         const bnbAmount = web3.utils.toWei(`${maxPurchaseableTokens}`)
         if (bscContext.presaleContract) {
             setLoadingPurchase(true)
-            bscContext.presaleContract.methods
+            bscContext.presaleContract
                 .buyTokens(bscContext.currentAccountAddress)
                 .send({ from: bscContext.currentAccountAddress, value: bnbAmount })
                 .then((result) => {
@@ -107,7 +107,7 @@ const Presale = () => {
     const handleWithdraw = () => {
         if (bscContext.presaleContract && bscContext.currentAccountAddress) {
             setLoadingWithdraw(true)
-            bscContext.presaleContract.methods
+            bscContext.presaleContract
                 .withdrawTokens()
                 .send({ from: bscContext.currentAccountAddress })
                 .then((result) => {

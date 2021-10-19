@@ -96,6 +96,8 @@
       content: 'FROM (estimated)'
     }
   }
+
+
   .input-group.to::after {
     content: "TO";
     position: absolute;
@@ -109,6 +111,20 @@
   }
   .input-group.from.estimated::after {
     content: 'FROM  ( Estimated )'
+  }
+
+  .limit-order {
+    .input-group.from::after {
+      content: 'AMOUNT'
+    }
+
+    .input-group.to::after {
+      content: "LIMIT PRICE";
+    }
+
+    .input-group.top {
+      margin-bottom: 30px
+    }
   }
 }
 
@@ -299,7 +315,7 @@
   }
 
   @media(min-width: 768px) and (max-width: 1068px) {
-    top: 100px;
+    top: 105px;
   }
 }
 
