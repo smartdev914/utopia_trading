@@ -1,9 +1,10 @@
-import utopiaDexABI from 'ABI/utopiaDexABI'
 import axios from 'axios'
 import React, { useCallback, useEffect, useState } from 'react'
 import Web3 from 'web3'
 import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
+import { getContract, getContractNoABI } from 'common/utils/getContract'
+import { ethers } from 'ethers'
 import bscPresaleABI from '../ABI/bscPresaleABI'
 
 const Contract = require('web3-eth-contract')
@@ -24,7 +25,6 @@ const nodes = [
 ]
 
 const BSCContextProvider = ({ children }) => {
-    const [dexContract, setDexContract] = useState(null)
     const [presaleContract, setPresaleContract] = useState(null)
     const [currentAccountAddress, setCurrentAccountAddress] = useState('')
     const [loadDexContract, setLoadDexContract] = useState(false)
@@ -33,12 +33,13 @@ const BSCContextProvider = ({ children }) => {
     const [currentBnbBalance, setBNBBalance] = useState('')
     const [pancakeSwapRouterV2, setPancakeSwapRouterV2] = useState(null)
     const UtopiaPresaleBSCAddress = '0x609692D1A4c45FB8f535269f4339b7880296baa0'
-    const utopiaDexContractAddress = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
+    const utopiaLimitOrderAddress = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
     const pancakeSwapFactoryAddress = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
     const pancakeSwapRouterV2Address = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
     const [tokenBalances, setTokenBalances] = useState([])
     const [refreshTokens, setRefreshTokens] = useState(false)
     const [currentProvider, setProvider] = useState()
+    const [signer, setSigner] = useState()
 
     useEffect(async () => {
         if (currentAccountAddress && window.web3) {
@@ -56,12 +57,12 @@ const BSCContextProvider = ({ children }) => {
                 try {
                     if (window.web3) {
                         const abi = await import(`../ABI/tokenABI/${token.TokenSymbol.toUpperCase()}.js`)
-                        const tokenContract = new window.web3.eth.Contract(abi.default, token.TokenAddress)
-                        if (tokenContract.methods.balanceOf) {
-                            const balance = await tokenContract.methods.balanceOf(currentAccountAddress).call()
+                        const tokenContract = getContract(abi.default, token.TokenAddress, signer)
+                        if (tokenContract.balanceOf) {
+                            const balance = await tokenContract.balanceOf(currentAccountAddress)
                             return {
                                 ...token,
-                                TokenQuantity: balance,
+                                TokenQuantity: balance.toString(),
                             }
                         }
                     }
@@ -75,14 +76,14 @@ const BSCContextProvider = ({ children }) => {
             setBNBBalance(bnbBalance)
             setRefreshTokens(false)
         }
-    }, [currentAccountAddress, refreshTokens])
+    }, [currentAccountAddress, refreshTokens, signer])
 
     const loadUTPPresaleContract = useCallback(() => {
         if (window.web3) {
-            const UtopiaContract = new window.web3.eth.Contract(bscPresaleABI, UtopiaPresaleBSCAddress)
+            const UtopiaContract = getContract(bscPresaleABI, UtopiaPresaleBSCAddress, signer)
             setPresaleContract(UtopiaContract)
         }
-    }, [UtopiaPresaleBSCAddress])
+    }, [UtopiaPresaleBSCAddress, signer])
 
     const setupNetwork = async () => {
         const provider = window.ethereum
@@ -116,28 +117,11 @@ const BSCContextProvider = ({ children }) => {
         }
     }
 
-    const loadBSCDexContract = async () => {
-        if (window.web3) {
-            const currentDexContract = new window.web3.eth.Contract(utopiaDexABI, utopiaDexContractAddress)
-            if (!dexContract) {
-                setDexContract(currentDexContract)
-            }
-        }
-    }
-
     const loadPancakeSwapFactoryContract = async () => {}
 
-    const loadPancakeSwapRouterV2Contract = async () => {
+    const loadPancakeSwapRouterV2Contract = async (currSigner) => {
         if (window.web3) {
-            const contractABI = await axios.get('https://api.bscscan.com/api', {
-                params: {
-                    module: 'contract',
-                    action: 'getabi',
-                    address: pancakeSwapRouterV2Address,
-                    apiKey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
-                },
-            })
-            const currentContract = new window.web3.eth.Contract(JSON.parse(contractABI.data.result), pancakeSwapRouterV2Address)
+            const currentContract = await getContractNoABI(pancakeSwapRouterV2Address, currSigner)
             if (!pancakeSwapRouterV2) {
                 setPancakeSwapRouterV2(currentContract)
             }
@@ -194,13 +178,14 @@ const BSCContextProvider = ({ children }) => {
             setCurrentAccountAddress(newAccounts[0])
             setBNBBalance(newBnbBalance)
         })
+        const ethersProvider = new ethers.providers.Web3Provider(provider)
+        setSigner(ethersProvider.getSigner())
         if (loadPresaleContract) {
             loadUTPPresaleContract()
         }
         if (loadDexContract) {
-            await loadBSCDexContract()
             await loadPancakeSwapFactoryContract()
-            await loadPancakeSwapRouterV2Contract()
+            await loadPancakeSwapRouterV2Contract(ethersProvider.getSigner())
         }
     }
 
@@ -228,7 +213,6 @@ const BSCContextProvider = ({ children }) => {
     return (
         <BSCContext.Provider
             value={{
-                dexContract,
                 currentAccountAddress,
                 presaleContract,
                 logout,
@@ -244,6 +228,8 @@ const BSCContextProvider = ({ children }) => {
                 tokenBalances,
                 setRefreshTokens,
                 setupNetwork,
+                utopiaLimitOrderAddress,
+                signer,
             }}
         >
             {children}
