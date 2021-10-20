@@ -314,6 +314,20 @@ const MarketOrder = () => {
         }
     }, 6000)
 
+    useEffect(async () => {
+        setLoadingQuote(true)
+        if (tokenAEstimated) {
+            if (tokenBAmount) {
+                const newQuote = await getQuote(pancakePair, tokenB, tokenA, getDecimalAmount(tokenBAmount, tokenB.decimals))
+                setTokenAAmount(newQuote)
+            }
+        } else if (tokenAAmount) {
+            const newQuote = await getQuote(pancakePair, tokenA, tokenB, getDecimalAmount(tokenAAmount, tokenA.decimals))
+            setTokenBAmount(newQuote)
+        }
+        setLoadingQuote(false)
+    }, [pancakePair])
+
     const amountInUSD = new BigNumber(currentSwapInUSD).multipliedBy(new BigNumber(tokenAAmount)).toFormat(3)
 
     return (
@@ -336,7 +350,7 @@ const MarketOrder = () => {
                                             document.activeElement.blur()
                                         }}
                                         value={tokenAAmount}
-                                        onChange={(e) => {
+                                        onInput={(e) => {
                                             setTokenAAmount(e.target.value)
                                             setTokenAEstimated(false)
                                             debouncedOnChangeA(pancakePair, e.target.value, tokenA, tokenB)
@@ -380,7 +394,7 @@ const MarketOrder = () => {
                                         onWheel={() => {
                                             document.activeElement.blur()
                                         }}
-                                        onChange={(e) => {
+                                        onInput={(e) => {
                                             setTokenBAmount(e.target.value)
                                             setTokenAEstimated(true)
                                             debouncedOnChangeB(pancakePair, e.target.value, tokenB, tokenA)
@@ -509,16 +523,8 @@ const MarketOrder = () => {
                     toggleShowTokenModal(false)
                     setLoading(true)
                     if (fromBNB) {
-                        if (tokenAAmount) {
-                            const quote = await getQuote(pancakePair, tokenA, token, getDecimalAmount(tokenAAmount, tokenA.decimals))
-                            setTokenBAmount(quote)
-                        }
                         setTokenB(token)
                     } else {
-                        if (tokenBAmount) {
-                            const quote = await getQuote(pancakePair, tokenB, token, getDecimalAmount(tokenBAmount, tokenB.decimals))
-                            setTokenAAmount(quote)
-                        }
                         setTokenA(token)
                     }
                     setLoading(false)
