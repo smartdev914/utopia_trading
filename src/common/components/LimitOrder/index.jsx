@@ -5,7 +5,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import Button from 'common/components/Button'
 import { useDebouncedCallback } from 'common/hooks/useDebouncedCallback'
 import { getBalanceAmount, getDecimalAmount } from 'common/utils/numbers'
-import { calculateSlippage, getQuote, getTokenPriceInUSD } from 'common/utils/tokens'
+import { calculateSlippage, getPancakeFactoryPair, getQuote, getTokenPriceInUSD } from 'common/utils/tokens'
 import Slider from 'rc-slider'
 import BigNumber from 'bignumber.js'
 import Toggle from 'react-toggle'
@@ -26,6 +26,7 @@ const MarketOrder = () => {
     const [tokenB, setTokenB] = useState(supportedPancakeTokens.tokens[0])
     const [tokenAContract, setTokenAContract] = useState()
     const [tokenBContract, setTokenBContract] = useState()
+    const [pancakePair, setPancakePair] = useState()
 
     const [tokenAAmount, setTokenAAmount] = useState('')
     const [tokenBAmount, setTokenBAmount] = useState('')
@@ -39,15 +40,24 @@ const MarketOrder = () => {
     const [swapInProgress, setSwapInProgress] = useState(false)
     const [needsApproval, setNeedsApproval] = useState(false)
     const [approveInProgress, setApproveInProgress] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const [currentSwapInUSD, setCurrentSwapInUSD] = useState(0)
 
     const bscContext = useContext(BSCContext)
 
-    const debouncedOnChangeA = useDebouncedCallback(async (currTokenAAmount, currTokenA, currTokenB, intervalId) => {
+    useEffect(async () => {
+        // listens for change in tokens to get new pancake pair contract
+        setLoading(true)
+        const tokenPair = await getPancakeFactoryPair(tokenA.address, tokenB.address)
+        setPancakePair(tokenPair)
+        setLoading(false)
+    }, [tokenA, tokenB])
+
+    const debouncedOnChangeA = useDebouncedCallback(async (currPancakePair, currTokenAAmount, currTokenA, currTokenB, intervalId) => {
         clearInterval(intervalId)
         if (currTokenAAmount) {
-            const quote = await getQuote(currTokenA, currTokenB, getDecimalAmount(currTokenAAmount, currTokenA.decimals))
+            const quote = await getQuote(currPancakePair, currTokenA, currTokenB, getDecimalAmount(currTokenAAmount, currTokenA.decimals))
             setTokenBAmount(quote)
         } else {
             setTokenBAmount('')
@@ -67,10 +77,8 @@ const MarketOrder = () => {
         if (bscContext.currentAccountAddress && bscContext.pancakeSwapRouterV2 && tokenAAmount) {
             let transactionApproved = false
             if (tokenAContract.approve) {
-                // Maybe render approval button?
-                // Check if approval is ready
                 const approved = await tokenAContract.allowance(bscContext.currentAccountAddress, bscContext.utopiaLimitOrderAddress)
-                if (approved < Number.MAX_SAFE_INTEGER) {
+                if (approved.toString() === '0') {
                     setNeedsApproval(true)
                     toast.info('Please Approve this transaction', toastSettings)
                 } else {
@@ -81,7 +89,7 @@ const MarketOrder = () => {
             if (transactionApproved) {
                 setSwapInProgress(true)
                 axios
-                    .post('/createLimitOrder', {
+                    .post('https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/createLimitOrder', {
                         ordererAddress: bscContext.currentAccountAddress,
                         tokenInAddress: tokenA.address,
                         tokenOutAddress: tokenB.address,
@@ -205,11 +213,17 @@ const MarketOrder = () => {
     }, [tokenAContract, tokenBContract]) // set the recommended slippate value
 
     useEffect(async () => {
-        const currentTokenInUSD = await getTokenPriceInUSD(tokenA.address, tokenA.decimals)
-        setCurrentSwapInUSD(currentTokenInUSD)
+        try {
+            const currentTokenInUSD = await getTokenPriceInUSD(tokenA.address, tokenA.decimals)
+            console.log({ currentTokenInUSD })
+            setCurrentSwapInUSD(currentTokenInUSD)
+        } catch (e) {
+            console.log(e)
+            setCurrentSwapInUSD(0)
+        }
     }, [tokenA])
-
-    const amountInUSD = new BigNumber(currentSwapInUSD).multipliedBy(new BigNumber(tokenAAmount)).toFormat(3)
+    console.log({ currentSwapInUSD })
+    const amountInUSD = currentSwapInUSD > 0 ? new BigNumber(currentSwapInUSD).multipliedBy(new BigNumber(tokenAAmount)).toFormat(3) : '?'
 
     return (
         <>
@@ -227,7 +241,7 @@ const MarketOrder = () => {
                                 value={tokenAAmount}
                                 onInput={(e) => {
                                     setTokenAAmount(e.target.value)
-                                    debouncedOnChangeA(e.target.value, tokenA, tokenB)
+                                    debouncedOnChangeA(pancakePair, e.target.value, tokenA, tokenB)
                                 }}
                             />
                             <div className="token-A-balance">
@@ -323,18 +337,19 @@ const MarketOrder = () => {
                                                 className="btn buy"
                                                 onClick={async () => {
                                                     setApproveInProgress(true)
-                                                    await tokenAContract
-                                                        .approve(bscContext.utopiaLimitOrderAddress, '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
-                                                        .then(() => {
-                                                            setNeedsApproval(false)
-                                                            setApproveInProgress(false)
-                                                            toast.success('Swap Approved', toastSettings)
-                                                        })
-                                                        .catch((err) => {
-                                                            console.log(err)
-                                                            toast.error('Error Approving', toastSettings)
-                                                            setApproveInProgress(false)
-                                                        })
+                                                    try {
+                                                        const tx = await tokenAContract.approve(
+                                                            bscContext.utopiaLimitOrderAddress,
+                                                            '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+                                                        )
+                                                        await tx.wait()
+                                                        setNeedsApproval(false)
+                                                        setApproveInProgress(false)
+                                                        toast.success('Swap Approved', toastSettings)
+                                                    } catch (e) {
+                                                        toast.error('Error Approving', toastSettings)
+                                                        setApproveInProgress(false)
+                                                    }
                                                 }}
                                             >
                                                 Approve
@@ -344,7 +359,7 @@ const MarketOrder = () => {
                                             type="button"
                                             className="btn buy"
                                             onClick={onSwapClick}
-                                            disabled={!tokenAAmount || new BigNumber(tokenAAmount).isGreaterThan(new BigNumber(tokenABalance))}
+                                            disabled={loading || !tokenAAmount || new BigNumber(tokenAAmount).isGreaterThan(new BigNumber(tokenABalance))}
                                         >
                                             Swap
                                         </button>
