@@ -15,14 +15,14 @@ jobs:
         name: Setup, Build, and Deploy
         runs-on: ubuntu-latest
         steps:
-          - name: Set env to staging
-            if: endsWith(github.ref, '/develop')
-            run: |
-              echo "REPO_NAME=utopia-web-staging" >> $GITHUB_ENV
-          - name: Set env to production
-            if: endsWith(github.ref, '/master')
-            run: |
-              echo "REPO_NAME=utopia-web" >> $GITHUB_ENV
+            - name: Set env to staging
+              if: endsWith(github.ref, '/develop')
+              run: |
+                echo "REPO_NAME=utopia-web-staging" >> $GITHUB_ENV
+            - name: Set env to production
+              if: endsWith(github.ref, '/master')
+              run: |
+                echo "REPO_NAME=utopia-web" >> $GITHUB_ENV
             - name: Checkout
               uses: actions/checkout@v2
 
