@@ -70,8 +70,7 @@ export const getPancakeFactoryPair = async (tokenA, tokenB) => {
     return null
 }
 
-export const getQuote = async (tokenA, tokenB, amountIn) => {
-    const tokenPair = await getPancakeFactoryPair(tokenA, tokenB)
+export const getQuote = async (tokenPair, tokenA, tokenB, amountIn) => {
     if (tokenPair && amountIn) {
         const token0 = await tokenPair.token0()
         const reserves = await tokenPair.getReserves()
