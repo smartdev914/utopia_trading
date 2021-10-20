@@ -4,9 +4,8 @@ import BSCContext from 'context/BSCContext'
 import React, { useContext, useEffect, useState } from 'react'
 import Button from 'common/components/Button'
 import Image from 'next/image'
-import { useDebouncedCallback } from 'common/hooks/useDebouncedCallback'
 import { getBalanceAmount, getDecimalAmount } from 'common/utils/numbers'
-import { calculateSlippage, getQuote, getTokenPriceInUSD } from 'common/utils/tokens'
+import { calculateSlippage, getPancakeFactoryPair, getQuote, getTokenPriceInUSD } from 'common/utils/tokens'
 import Slider from 'rc-slider'
 import BigNumber from 'bignumber.js'
 import Toggle from 'react-toggle'
@@ -20,6 +19,7 @@ import TokenContext from 'context/TokenContext'
 import TokenModal from 'components/TokenModal'
 import { getContract, getContractNoABI } from 'common/utils/getContract'
 import useInterval from 'common/hooks/useInterval'
+import { useDebouncedCallback } from 'common/hooks/useDebouncedCallback'
 
 const MarketOrder = () => {
     const [fromBNB, toggleFromBnb] = useState(true)
@@ -37,11 +37,13 @@ const MarketOrder = () => {
     const [slippagePercentage, setSlippagePercentage] = useState('0.5%')
     const [tokenABalance, setTokenABalance] = useState()
     const [tokenBBalance, setTokenBBalance] = useState()
+    const [pancakePair, setPancakePair] = useState()
 
     const [recommendedSlippage, setRecommendedSlippage] = useState(0)
     const [useRecommendedSlippage, setUseRecommendedSlippage] = useState(true)
     const [currentSwapInUSD, setCurrentSwapInUSD] = useState(0)
     const [loading, setLoading] = useState(false)
+    const [loadingQuote, setLoadingQuote] = useState(false)
     const bscContext = useContext(BSCContext)
     const tokenContext = useContext(TokenContext)
 
@@ -59,15 +61,34 @@ const MarketOrder = () => {
         setTokenAEstimated(!tokenAEstimated)
     }
 
-    const debouncedOnChangeA = useDebouncedCallback(async (currTokenAAmount, currTokenA, currTokenB) => {
-        const quote = await getQuote(currTokenA, currTokenB, getDecimalAmount(currTokenAAmount, currTokenA.decimals))
-        setTokenBAmount(quote)
-    }, 100)
+    useEffect(async () => {
+        setLoading(true)
+        const tokenPair = await getPancakeFactoryPair(tokenA, tokenB)
+        setPancakePair(tokenPair)
+        setLoading(false)
+    }, [tokenA, tokenB])
 
-    const debouncedOnChangeB = useDebouncedCallback(async (currTokenBAmount, currTokenB, currTokenA) => {
-        const quote = await getQuote(currTokenB, currTokenA, getDecimalAmount(currTokenBAmount, currTokenB.decimals))
-        setTokenAAmount(quote)
-    }, 100)
+    const debouncedOnChangeA = useDebouncedCallback(async (currPancakePair, currTokenAAmount, currTokenA, currTokenB) => {
+        if (currTokenAAmount) {
+            setLoadingQuote(true)
+            const quote = await getQuote(currPancakePair, currTokenA, currTokenB, getDecimalAmount(currTokenAAmount, currTokenA.decimals))
+            setTokenBAmount(quote)
+            setLoadingQuote(false)
+        } else {
+            setTokenBAmount('')
+        }
+    }, 500)
+
+    const debouncedOnChangeB = useDebouncedCallback(async (currPancakePair, currTokenBAmount, currTokenB, currTokenA) => {
+        if (currTokenBAmount) {
+            setLoadingQuote(true)
+            const quote = await getQuote(currPancakePair, currTokenB, currTokenA, getDecimalAmount(currTokenBAmount, currTokenB.decimals))
+            setTokenAAmount(quote)
+            setLoadingQuote(false)
+        } else {
+            setTokenAAmount('')
+        }
+    }, 500)
 
     const parsedSlippagePercentage = (100 - parseFloat(useRecommendedSlippage ? recommendedSlippage : slippagePercentage)) / 100
 
@@ -284,11 +305,11 @@ const MarketOrder = () => {
     useInterval(async () => {
         if (tokenAEstimated) {
             if (tokenBAmount) {
-                const newQuote = await getQuote(tokenB, tokenA, getDecimalAmount(tokenBAmount, tokenB.decimals))
+                const newQuote = await getQuote(pancakePair, tokenB, tokenA, getDecimalAmount(tokenBAmount, tokenB.decimals))
                 setTokenAAmount(newQuote)
             }
         } else if (tokenAAmount) {
-            const newQuote = await getQuote(tokenA, tokenB, getDecimalAmount(tokenAAmount, tokenA.decimals))
+            const newQuote = await getQuote(pancakePair, tokenA, tokenB, getDecimalAmount(tokenAAmount, tokenA.decimals))
             setTokenBAmount(newQuote)
         }
     }, 6000)
@@ -315,10 +336,10 @@ const MarketOrder = () => {
                                             document.activeElement.blur()
                                         }}
                                         value={tokenAAmount}
-                                        onInput={(e) => {
+                                        onChange={(e) => {
                                             setTokenAAmount(e.target.value)
                                             setTokenAEstimated(false)
-                                            debouncedOnChangeA(e.target.value, tokenA, tokenB)
+                                            debouncedOnChangeA(pancakePair, e.target.value, tokenA, tokenB)
                                         }}
                                     />
                                     <div className="token-A-balance">
@@ -359,10 +380,10 @@ const MarketOrder = () => {
                                         onWheel={() => {
                                             document.activeElement.blur()
                                         }}
-                                        onInput={(e) => {
+                                        onChange={(e) => {
                                             setTokenBAmount(e.target.value)
                                             setTokenAEstimated(true)
-                                            debouncedOnChangeB(e.target.value, tokenB, tokenA)
+                                            debouncedOnChangeB(pancakePair, e.target.value, tokenB, tokenA)
                                         }}
                                     />
                                     <div className="token-B-balance">
@@ -456,6 +477,7 @@ const MarketOrder = () => {
                                             onClick={onSwapClick}
                                             disabled={
                                                 loading ||
+                                                loadingQuote ||
                                                 !tokenABalance ||
                                                 (BigNumber.isBigNumber(tokenABalance) && tokenABalance.isNaN()) ||
                                                 !tokenAAmount ||
@@ -488,13 +510,13 @@ const MarketOrder = () => {
                     setLoading(true)
                     if (fromBNB) {
                         if (tokenAAmount) {
-                            const quote = await getQuote(tokenA, token, getDecimalAmount(tokenAAmount, tokenA.decimals))
+                            const quote = await getQuote(pancakePair, tokenA, token, getDecimalAmount(tokenAAmount, tokenA.decimals))
                             setTokenBAmount(quote)
                         }
                         setTokenB(token)
                     } else {
                         if (tokenBAmount) {
-                            const quote = await getQuote(tokenB, token, getDecimalAmount(tokenBAmount, tokenB.decimals))
+                            const quote = await getQuote(pancakePair, tokenB, token, getDecimalAmount(tokenBAmount, tokenB.decimals))
                             setTokenAAmount(quote)
                         }
                         setTokenA(token)
