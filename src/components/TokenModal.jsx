@@ -4,11 +4,13 @@ import supportedPancakeTokens from 'common/constants/tokens/supportedPancakeToke
 import axios from 'axios'
 import { Spinner } from 'react-bootstrap'
 import { getPancakeFactoryPair } from 'common/utils/tokens'
+import { Img } from 'react-image'
 
 const TokenModal = ({ show, onTokenSelect }) => {
     const [searchInput, setSearchInput] = useState('')
     const [unlistedToken, setUnlistedToken] = useState()
     const [loadingTokenInfo, setLoadinTokenInfo] = useState(false)
+    const fallback = 'https://utopia.cc/assets/image/utopia/utopiaUDarkbg.svg'
 
     const options = supportedPancakeTokens.tokens.map((token) => ({
         text: token.name,
@@ -52,7 +54,7 @@ const TokenModal = ({ show, onTokenSelect }) => {
                                 address: contractAddress,
                                 chainId: 56,
                                 decimals: divisor,
-                                logoURI: 'https://utopia.cc/assets/image/utopia/utopiaUDarkbg.svg',
+                                logoURI: `https://assets.trustwalletapp.com/blockchains/smartchain/assets/${searchInput}/logo.png`,
                                 name: tokenName,
                                 symbol,
                             })
@@ -101,7 +103,7 @@ const TokenModal = ({ show, onTokenSelect }) => {
                         <>
                             {unlistedToken ? (
                                 <div role="button" className="token-option" onClick={() => onTokenSelect(unlistedToken)} tabIndex={0}>
-                                    <img className="icon" src={unlistedToken.logoURI} width={40} height={40} alt={`${unlistedToken.symbol} logo`} />
+                                    <Img className="icon" src={[unlistedToken.logoURI, fallback]} alt={`${unlistedToken.symbol} logo`} width={40} height={40} />
                                     <div>
                                         <div className="token-symbol">{unlistedToken.symbol}</div>
                                         <div className="token-address">{`${unlistedToken.address.substr(0, 30)}...`}</div>

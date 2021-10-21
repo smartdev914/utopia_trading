@@ -41,10 +41,22 @@ const MarketOrder = () => {
     const [needsApproval, setNeedsApproval] = useState(false)
     const [approveInProgress, setApproveInProgress] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [loadingQuote, setLoadingQuote] = useState(false)
+    const [openLimitOrders, setOpenLimitOrders] = useState([])
 
     const [currentSwapInUSD, setCurrentSwapInUSD] = useState(0)
 
     const bscContext = useContext(BSCContext)
+
+    useEffect(() => {
+        if (bscContext.currentAccountAddress && tokenB.address) {
+            axios
+                .get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrieveLimitOrders/${bscContext.currentAccountAddress.toLowerCase()}/${tokenB.address.toLowerCase()}`)
+                .then((res) => {
+                    console.log(res.data)
+                })
+        }
+    }, [bscContext.currentAccountAddress, tokenB.address])
 
     useEffect(async () => {
         // listens for change in tokens to get new pancake pair contract
@@ -90,78 +102,21 @@ const MarketOrder = () => {
                 setSwapInProgress(true)
                 axios
                     .post('https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/createLimitOrder', {
-                        ordererAddress: bscContext.currentAccountAddress,
-                        tokenInAddress: tokenA.address,
-                        tokenOutAddress: tokenB.address,
-                        tokenInValue: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
-                        tokenOutValue: getDecimalAmount(parseInt(tokenBAmount * parsedSlippagePercentage, 10), tokenB.decimals).toFixed(),
-                        slippage: parsedSlippagePercentage,
+                        ordererAddress: bscContext.currentAccountAddress.toLowerCase(),
+                        tokenInAddress: tokenA.address.toLowerCase(),
+                        tokenOutAddress: tokenB.address.toLowerCase(),
+                        tokenInAmount: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
+                        tokenOutAmount: getDecimalAmount(tokenBAmount, tokenB.decimals).toFixed(),
+                        slippage: parseFloat(useRecommendedSlippage ? recommendedSlippage : slippagePercentage),
                     })
                     .then((res) => {
+                        setSwapInProgress(false)
                         console.log(res)
                     })
                     .catch((error) => {
                         toast.error(error.message, toastSettings)
                         setSwapInProgress(false)
                     })
-
-                // await bscContext.pancakeSwapRouterV2.methods
-                //     .swapExactTokensForETHSupportingFeeOnTransferTokens(
-                //         getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
-                //         getDecimalAmount(parseInt(tokenBAmount * parsedSlippagePercentage, 10), tokenB.decimals).toFixed(),
-                //         [tokenA.address, tokenB.address],
-                //         bscContext.currentAccountAddress,
-                //         Math.floor(Date.now() / 1000) + 30
-                //     )
-                //     .estimateGas({
-                //         from: bscContext.currentAccountAddress,
-                //     })
-                //     .then(async () => {
-                //         await bscContext.pancakeSwapRouterV2.methods
-                //             .swapExactTokensForETHSupportingFeeOnTransferTokens(
-                //                 getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
-                //                 getDecimalAmount(parseInt(tokenBAmount * parsedSlippagePercentage, 10), tokenB.decimals).toFixed(),
-                //                 [tokenA.address, tokenB.address],
-                //                 bscContext.currentAccountAddress,
-                //                 Math.floor(Date.now() / 1000) + 30
-                //             )
-                //             .send({
-                //                 from: bscContext.currentAccountAddress,
-                //             })
-                //             .then((result) => {
-                //                 setSwapInProgress(false)
-
-                //                 toast.success(
-                //                     <div className="toast-approved-transaction">
-                //                         <span>Transaction Approved!</span>{' '}
-                //                         <a href={`https://bscscan.com/tx/${result.transactionHash}`} target="_blank" rel="noreferrer">
-                //                             View
-                //                         </a>
-                //                     </div>,
-                //                     toastSettings
-                //                 )
-                //                 bscContext.refreshTokens(true)
-                //             })
-                //             .catch((err) => {
-                //                 setSwapInProgress(false)
-
-                //                 if (err.code === 4001) {
-                //                     toast.error('Transaction Rejected!', toastSettings)
-                //                 } else {
-                //                     toast.error('Transaction Failed!', toastSettings)
-                //                 }
-                //             })
-                //     })
-                //     .catch((error) => {
-                //         try {
-                //             const parsedError = JSON.parse(error.message.substring(error.message.indexOf('\n') + 1))
-                //             toast.error(parsedError.message, toastSettings)
-                //             setSwapInProgress(false)
-                //         } catch (e) {
-                //             toast.error(error.message, toastSettings)
-                //             setSwapInProgress(false)
-                //         }
-                //     })
             }
         }
     }
@@ -215,14 +170,21 @@ const MarketOrder = () => {
     useEffect(async () => {
         try {
             const currentTokenInUSD = await getTokenPriceInUSD(tokenA.address, tokenA.decimals)
-            console.log({ currentTokenInUSD })
             setCurrentSwapInUSD(currentTokenInUSD)
         } catch (e) {
-            console.log(e)
             setCurrentSwapInUSD(0)
         }
     }, [tokenA])
-    console.log({ currentSwapInUSD })
+
+    useEffect(async () => {
+        setLoadingQuote(true)
+        if (tokenAAmount) {
+            const newQuote = await getQuote(pancakePair, tokenA, tokenB, getDecimalAmount(tokenAAmount, tokenA.decimals))
+            setTokenBAmount(newQuote)
+        }
+        setLoadingQuote(false)
+    }, [pancakePair])
+
     const amountInUSD = currentSwapInUSD > 0 ? new BigNumber(currentSwapInUSD).multipliedBy(new BigNumber(tokenAAmount)).toFormat(3) : '?'
 
     return (
@@ -359,7 +321,7 @@ const MarketOrder = () => {
                                             type="button"
                                             className="btn buy"
                                             onClick={onSwapClick}
-                                            disabled={loading || !tokenAAmount || new BigNumber(tokenAAmount).isGreaterThan(new BigNumber(tokenABalance))}
+                                            disabled={loading || loadingQuote || !tokenAAmount || new BigNumber(tokenAAmount).isGreaterThan(new BigNumber(tokenABalance))}
                                         >
                                             Swap
                                         </button>
@@ -382,7 +344,7 @@ const MarketOrder = () => {
             </div>
             <TokenModal
                 show={showTokenModal}
-                onTokenSelect={(token) => {
+                onTokenSelect={async (token) => {
                     setTokenB(token)
                     toggleShowTokenModal(false)
                 }}
