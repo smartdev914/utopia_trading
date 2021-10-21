@@ -62,8 +62,9 @@ const MarketOrder = () => {
     }
 
     useEffect(async () => {
+        // listens for change in tokens to get new pancake pair contract
         setLoading(true)
-        const tokenPair = await getPancakeFactoryPair(tokenA, tokenB)
+        const tokenPair = await getPancakeFactoryPair(tokenA.address, tokenB.address)
         setPancakePair(tokenPair)
         setLoading(false)
     }, [tokenA, tokenB])
@@ -138,7 +139,9 @@ const MarketOrder = () => {
                                 </div>,
                                 toastSettings
                             )
-                            bscContext.setRefreshTokens(true)
+                            setTimeout(() => {
+                                bscContext.setRefreshTokens(true)
+                            }, 3000)
                         } catch (err) {
                             setSwapInProgress(false)
 
@@ -206,7 +209,9 @@ const MarketOrder = () => {
                                     </div>,
                                     toastSettings
                                 )
-                                bscContext.setRefreshTokens(true)
+                                setTimeout(() => {
+                                    bscContext.setRefreshTokens(true)
+                                }, 3000)
                             } catch (err) {
                                 setSwapInProgress(false)
 
@@ -328,7 +333,7 @@ const MarketOrder = () => {
         setLoadingQuote(false)
     }, [pancakePair])
 
-    const amountInUSD = new BigNumber(currentSwapInUSD).multipliedBy(new BigNumber(tokenAAmount)).toFormat(3)
+    const amountInUSD = currentSwapInUSD ? new BigNumber(currentSwapInUSD).multipliedBy(new BigNumber(tokenAAmount)).toFormat(3) : '?'
 
     return (
         <>

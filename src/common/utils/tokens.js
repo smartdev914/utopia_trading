@@ -35,19 +35,25 @@ export const calculateSlippage = async (tokenContract) => {
 }
 
 export const getTokenPriceInUSD = async (tokenAddress, decimals) => {
-    const usdToBnb = await axios.get(`https://price-retriever-dot-utopia-315014.uw.r.appspot.com/retrievePrice/0x55d398326f99059fF775485246999027B3197955`)
+    try {
+        const usdToBnb = await axios.get(`https://price-retriever-dot-utopia-315014.uw.r.appspot.com/retrievePrice/0x55d398326f99059fF775485246999027B3197955`, {
+            timeout: 4000,
+        })
 
-    if (tokenAddress.toLowerCase() === '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'.toLowerCase()) {
-        return new BigNumber(1).dividedBy(new BigNumber(usdToBnb.data)).toFixed(10)
-    }
+        if (tokenAddress.toLowerCase() === '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'.toLowerCase()) {
+            return new BigNumber(1).dividedBy(new BigNumber(usdToBnb.data)).toFixed(10)
+        }
 
-    const pricingResponse = await axios.get(`https://price-retriever-dot-utopia-315014.uw.r.appspot.com/retrievePrice/${tokenAddress}`)
-    const BNpriceInUSD = new BigNumber(pricingResponse.data)
-    const BNUSDInBNB = new BigNumber(usdToBnb.data)
-    if (decimals === 9) {
+        const pricingResponse = await axios.get(`https://price-retriever-dot-utopia-315014.uw.r.appspot.com/retrievePrice/${tokenAddress}`, { timeout: 4000 })
+        const BNpriceInUSD = new BigNumber(pricingResponse.data)
+        const BNUSDInBNB = new BigNumber(usdToBnb.data)
+        if (decimals === 9) {
+            return BNpriceInUSD.dividedBy(BNUSDInBNB).toFixed(10)
+        }
         return BNpriceInUSD.dividedBy(BNUSDInBNB).toFixed(10)
+    } catch (err) {
+        return 0
     }
-    return BNpriceInUSD.dividedBy(BNUSDInBNB).toFixed(10)
 }
 
 const getAmountOut = (amountIn, reserveIn, reserveOut) => {
@@ -60,9 +66,9 @@ const getAmountOut = (amountIn, reserveIn, reserveOut) => {
     return numerator.dividedBy(denominator)
 }
 
-export const getPancakeFactoryPair = async (tokenA, tokenB) => {
+export const getPancakeFactoryPair = async (tokenAAddress, tokenBAddress) => {
     const currentContract = getContract(pancakeFactoryABI, pancakeSwapFactoryAddress)
-    const tokenPair = await currentContract.getPair(tokenA.address, tokenB.address)
+    const tokenPair = await currentContract.getPair(tokenAAddress, tokenBAddress)
     if (tokenPair && tokenPair !== '0x0000000000000000000000000000000000000000') {
         const pairContract = await getContractNoABI(tokenPair)
         return pairContract
