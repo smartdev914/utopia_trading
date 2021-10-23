@@ -43,19 +43,37 @@ const MarketOrder = () => {
     const [loading, setLoading] = useState(false)
     const [loadingQuote, setLoadingQuote] = useState(false)
     const [openLimitOrders, setOpenLimitOrders] = useState([])
+    const [allOpenLimitOrders, setAllOpenLimitOrders] = useState([])
 
     const [currentSwapInUSD, setCurrentSwapInUSD] = useState(0)
+    const [currentBNBToTokenPrice, setCurrentBNBToTokenPrice] = useState(0)
 
     const bscContext = useContext(BSCContext)
 
-    useEffect(() => {
-        if (bscContext.currentAccountAddress && tokenB.address) {
-            axios
-                .get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrieveLimitOrders/${bscContext.currentAccountAddress.toLowerCase()}/${tokenB.address.toLowerCase()}`)
-                .then((res) => {
-                    console.log(res.data)
-                })
+    const loadOpenOrders = async (currentAccountAddress, tokenAddress) => {
+        if (currentAccountAddress && tokenAddress) {
+            await axios.get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrieveLimitOrders/${currentAccountAddress.toLowerCase()}/${tokenAddress.toLowerCase()}`).then((res) => {
+                if (Array.isArray(res.data)) {
+                    setOpenLimitOrders(res.data)
+                }
+            })
         }
+    }
+
+    const loadAllOpenOrders = async (tokenAddress) => {
+        if (tokenAddress) {
+            await axios.get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrievePendingLimitOrders/${tokenAddress.toLowerCase()}`).then((res) => {
+                if (Array.isArray(res.data)) {
+                    setAllOpenLimitOrders(res.data)
+                }
+            })
+        }
+    }
+
+    useEffect(async () => {
+        // load open orders on token change
+        loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
+        loadAllOpenOrders(tokenB.address)
     }, [bscContext.currentAccountAddress, tokenB.address])
 
     useEffect(async () => {
@@ -109,9 +127,10 @@ const MarketOrder = () => {
                         tokenOutAmount: getDecimalAmount(tokenBAmount, tokenB.decimals).toFixed(),
                         slippage: parseFloat(useRecommendedSlippage ? recommendedSlippage : slippagePercentage),
                     })
-                    .then((res) => {
+                    .then(() => {
                         setSwapInProgress(false)
-                        console.log(res)
+                        toast.success('Limit Order Placed!', toastSettings)
+                        loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
                     })
                     .catch((error) => {
                         toast.error(error.message, toastSettings)
@@ -119,6 +138,23 @@ const MarketOrder = () => {
                     })
             }
         }
+    }
+
+    const onCancelOrderClick = async (orderCode) => {
+        await axios.delete(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/deleteLimitOrder/${tokenB.address.toLowerCase()}/${orderCode}`).then(() => {
+            loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
+        })
+    }
+
+    const confirmCancelation = async (orderCode) => {
+        toast.warn(
+            <div>
+                Confirm Cancelation?{' '}
+                <div role="button" onClick={() => onCancelOrderClick(orderCode)}>
+                    Yes
+                </div>
+            </div>
+        )
     }
 
     useEffect(async () => {
@@ -183,6 +219,12 @@ const MarketOrder = () => {
             setTokenBAmount(newQuote)
         }
         setLoadingQuote(false)
+    }, [pancakePair])
+
+    useEffect(async () => {
+        const currentBNBToTokenQuote = await getQuote(pancakePair, tokenA, tokenB, getDecimalAmount(1, tokenA.decimals))
+        console.log(currentBNBToTokenQuote)
+        setCurrentBNBToTokenPrice(currentBNBToTokenQuote)
     }, [pancakePair])
 
     const amountInUSD = currentSwapInUSD > 0 ? new BigNumber(currentSwapInUSD).multipliedBy(new BigNumber(tokenAAmount)).toFormat(3) : '?'
@@ -251,6 +293,8 @@ const MarketOrder = () => {
                                 <Button className="token-swap-to" title={tokenB.displaySymbol || tokenB.symbol} onClick={() => toggleShowTokenModal(!showTokenModal)} />
                             </div>
                         </div>
+                        <p>Limit orders cost $0.50 worth of BNB per order. Please make sure you have sufficient BNB.</p>
+
                         <div className="slippage-container">
                             <div className="slippage-settings">
                                 <span>
@@ -340,6 +384,78 @@ const MarketOrder = () => {
                             </button>
                         )}
                     </form>
+                    <div className="order-book-container">
+                        <h4>Your Orders</h4>
+                        <div className="order-book-list">
+                            {openLimitOrders.length ? (
+                                openLimitOrders.map((openOrder, index) => {
+                                    const percentChange = new BigNumber(openOrder.tokenPrice)
+                                        .minus(new BigNumber(currentBNBToTokenPrice))
+                                        .dividedBy(new BigNumber(openOrder.tokenPrice))
+                                        .multipliedBy(new BigNumber(100))
+                                        .toFixed(3)
+
+                                    return (
+                                        <div className="open-limit-order">
+                                            <p>{`Order Code: ${openOrder.orderCode.substr(0, 4)}...${openOrder.orderCode.substr(49, 5)}`}</p>
+                                            <div className="open-limit-order-row">
+                                                <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol}`}</span>
+                                                <span>{`Order Status: ${openOrder.orderStatus}`}</span>
+                                            </div>
+                                            <div className="open-limit-order-row">
+                                                <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.symbol}`}</span>
+                                                <span>{`Percent Change: ${percentChange}%`}</span>
+                                            </div>
+                                            {openOrder.orderStatus === 'PENDING' && (
+                                                <div className="open-limit-order-row">
+                                                    <span>{`Tries: ${openOrder.attempts}`}</span>
+                                                    <div className="cancel-order" role="button" onClick={() => confirmCancelation(openOrder.orderCode)}>
+                                                        Cancel Order
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {index !== openLimitOrders.length - 1 && <hr />}
+                                        </div>
+                                    )
+                                })
+                            ) : (
+                                <div>{`No open orders found for ${tokenB.symbol}`}</div>
+                            )}
+                        </div>
+                        <p>If your limit order fails (due to insufficient funds or otherwise) it will be retried 5 times before it is cancelled.</p>
+                    </div>
+                    <div className="order-book-container">
+                        <h4>Open Orders</h4>
+                        <div className="order-book-list">
+                            {allOpenLimitOrders.length ? (
+                                allOpenLimitOrders.map((openOrder, index) => {
+                                    const percentChange = new BigNumber(openOrder.tokenPrice)
+                                        .minus(new BigNumber(currentBNBToTokenPrice))
+                                        .dividedBy(new BigNumber(openOrder.tokenPrice))
+                                        .multipliedBy(new BigNumber(100))
+                                        .toFixed(3)
+
+                                    return (
+                                        <div className="open-limit-order">
+                                            <p>{`Order Code: ${openOrder.orderCode.substr(0, 4)}...${openOrder.orderCode.substr(49, 5)}`}</p>
+                                            <div className="open-limit-order-row">
+                                                <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol}`}</span>
+                                                <span>{`Order Status: ${openOrder.orderStatus}`}</span>
+                                            </div>
+                                            <div className="open-limit-order-row">
+                                                <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.symbol}`}</span>
+                                                <span>{`Percent Change: ${percentChange}%`}</span>
+                                            </div>
+                                            {index !== openLimitOrders.length - 1 && <hr />}
+                                        </div>
+                                    )
+                                })
+                            ) : (
+                                <div>{`No open orders found for ${tokenB.symbol}`}</div>
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
             <TokenModal
