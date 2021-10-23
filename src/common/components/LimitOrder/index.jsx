@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import BSCContext from 'context/BSCContext'
@@ -46,7 +47,7 @@ const MarketOrder = () => {
     const [allOpenLimitOrders, setAllOpenLimitOrders] = useState([])
 
     const [currentSwapInUSD, setCurrentSwapInUSD] = useState(0)
-    const [currentBNBToTokenPrice, setCurrentBNBToTokenPrice] = useState(0)
+    const [currentBNBToTokenPrice, setCurrentBNBToTokenPrice] = useState(null)
 
     const bscContext = useContext(BSCContext)
 
@@ -157,6 +158,10 @@ const MarketOrder = () => {
         )
     }
 
+    const copyToClipboard = (address) => {
+        navigator.clipboard.writeText(address)
+    }
+
     useEffect(async () => {
         if (bscContext.currentAccountAddress) {
             const currentlySelectedTokenBalance = bscContext.tokenBalances.find((token) => token.TokenAddress.toLowerCase() === tokenB.address.toLowerCase())
@@ -223,7 +228,6 @@ const MarketOrder = () => {
 
     useEffect(async () => {
         const currentBNBToTokenQuote = await getQuote(pancakePair, tokenA, tokenB, getDecimalAmount(1, tokenA.decimals))
-        console.log(currentBNBToTokenQuote)
         setCurrentBNBToTokenPrice(currentBNBToTokenQuote)
     }, [pancakePair])
 
@@ -389,11 +393,13 @@ const MarketOrder = () => {
                         <div className="order-book-list">
                             {openLimitOrders.length ? (
                                 openLimitOrders.map((openOrder, index) => {
-                                    const percentChange = new BigNumber(openOrder.tokenPrice)
-                                        .minus(new BigNumber(currentBNBToTokenPrice))
-                                        .dividedBy(new BigNumber(openOrder.tokenPrice))
-                                        .multipliedBy(new BigNumber(100))
-                                        .toFixed(3)
+                                    const percentChange = currentBNBToTokenPrice
+                                        ? new BigNumber(openOrder.tokenPrice)
+                                              .minus(new BigNumber(currentBNBToTokenPrice))
+                                              .dividedBy(new BigNumber(openOrder.tokenPrice))
+                                              .multipliedBy(new BigNumber(100))
+                                              .toFixed(3)
+                                        : '-'
 
                                     return (
                                         <div className="open-limit-order">
@@ -414,7 +420,6 @@ const MarketOrder = () => {
                                                     </div>
                                                 </div>
                                             )}
-
                                             {index !== openLimitOrders.length - 1 && <hr />}
                                         </div>
                                     )
@@ -430,15 +435,18 @@ const MarketOrder = () => {
                         <div className="order-book-list">
                             {allOpenLimitOrders.length ? (
                                 allOpenLimitOrders.map((openOrder, index) => {
-                                    const percentChange = new BigNumber(openOrder.tokenPrice)
-                                        .minus(new BigNumber(currentBNBToTokenPrice))
-                                        .dividedBy(new BigNumber(openOrder.tokenPrice))
-                                        .multipliedBy(new BigNumber(100))
-                                        .toFixed(3)
+                                    const percentChange = currentBNBToTokenPrice
+                                        ? new BigNumber(openOrder.tokenPrice)
+                                              .minus(new BigNumber(currentBNBToTokenPrice))
+                                              .dividedBy(new BigNumber(openOrder.tokenPrice))
+                                              .multipliedBy(new BigNumber(100))
+                                              .toFixed(3)
+                                        : '-'
 
                                     return (
                                         <div className="open-limit-order">
                                             <p>{`Order Code: ${openOrder.orderCode.substr(0, 4)}...${openOrder.orderCode.substr(49, 5)}`}</p>
+                                            <p role="button" onClick={copyToClipboard(openOrder.ordererAddress)}>{`Owner: ${openOrder.ordererAddress}`}</p>
                                             <div className="open-limit-order-row">
                                                 <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol}`}</span>
                                                 <span>{`Order Status: ${openOrder.orderStatus}`}</span>
