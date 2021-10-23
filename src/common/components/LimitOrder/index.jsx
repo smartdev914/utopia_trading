@@ -487,6 +487,7 @@ const MarketOrder = () => {
                 </div>
             </div>
             <TokenModal
+                toggleShowTokenModal={toggleShowTokenModal}
                 show={showTokenModal}
                 onTokenSelect={async (token) => {
                     setTokenB(token)

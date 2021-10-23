@@ -6,7 +6,7 @@ import { Spinner } from 'react-bootstrap'
 import { getPancakeFactoryPair } from 'common/utils/tokens'
 import { Img } from 'react-image'
 
-const TokenModal = ({ show, onTokenSelect }) => {
+const TokenModal = ({ show, onTokenSelect, toggleShowTokenModal }) => {
     const [searchInput, setSearchInput] = useState('')
     const [unlistedToken, setUnlistedToken] = useState()
     const [loadingTokenInfo, setLoadinTokenInfo] = useState(false)
@@ -77,6 +77,7 @@ const TokenModal = ({ show, onTokenSelect }) => {
                 <div className="modal-backdrop" />
 
                 <div className="token-modal">
+                    <button type="button" className="btn-close" aria-label="Close" onClick={() => toggleShowTokenModal(false)} />
                     <h2>Select Token to Swap</h2>
                     <hr />
                     <input
@@ -84,7 +85,7 @@ const TokenModal = ({ show, onTokenSelect }) => {
                         onChange={(e) => setSearchInput(e.target.value)}
                         type="text"
                         className="form-control"
-                        placeholder="Search token name / address..."
+                        placeholder="&#x1F50D;  Search token name / address..."
                         aria-describedby="inputGroup-sizing-sm"
                     />
                     {filteredOptions.map((token) => (

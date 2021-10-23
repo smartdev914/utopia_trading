@@ -8,6 +8,12 @@
   height: 100%;
   left: 0;
   top: 0;
+
+  input.form-control {
+    background: #fff !important;
+    height: 36px;
+    border-radius: 18px;
+  }
 }
 
 .modal-backdrop {
@@ -29,7 +35,7 @@
   top: 50%;
   transform: translate(-50%, -50%);
   border: 1px solid #2a2e39;
-  background: #131722;
+  background: #1D0E6B;
   max-width: 420px;
   width: 100%;
   z-index: 15;
@@ -39,6 +45,13 @@
   cursor: pointer;
   max-height: 80%;
   overflow: scroll;
+
+  .btn-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    transform: scale(1.25);
+  }
 
   .form-control {
     margin-bottom: 10px;
