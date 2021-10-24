@@ -26,6 +26,7 @@ const nodes = [
 
 const BSCContextProvider = ({ children }) => {
     const [presaleContract, setPresaleContract] = useState(null)
+    const [WBNBContract, setWBNBContract] = useState(null)
     const [currentAccountAddress, setCurrentAccountAddress] = useState('')
     const [loadDexContract, setLoadDexContract] = useState(false)
     const [loadPresaleContract, setLoadPresaleContract] = useState(false)
@@ -36,6 +37,7 @@ const BSCContextProvider = ({ children }) => {
     const utopiaLimitOrderAddress = '0xb31a8231cadaa83328b3aabed606e5157cec3548'
     const pancakeSwapFactoryAddress = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
     const pancakeSwapRouterV2Address = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
+    const WBNBAddress = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
     const [tokenBalances, setTokenBalances] = useState([])
     const [refreshTokens, setRefreshTokens] = useState(false)
     const [currentProvider, setProvider] = useState()
@@ -128,6 +130,15 @@ const BSCContextProvider = ({ children }) => {
         }
     }
 
+    const loadWBNBContract = async (currSigner) => {
+        if (window.web3) {
+            const currentContract = await getContractNoABI(WBNBAddress, currSigner)
+            if (!WBNBContract) {
+                setWBNBContract(currentContract)
+            }
+        }
+    }
+
     const disconnect = useCallback(async () => {
         await window.web3Modal.clearCachedProvider()
         if (currentProvider?.disconnect && typeof currentProvider.disconnect === 'function') {
@@ -187,6 +198,7 @@ const BSCContextProvider = ({ children }) => {
             await loadPancakeSwapFactoryContract()
             await loadPancakeSwapRouterV2Contract(ethersProvider.getSigner())
         }
+        await loadWBNBContract(ethersProvider.getSigner());
     }
 
     const registerUTPToken = async () => {
@@ -230,6 +242,7 @@ const BSCContextProvider = ({ children }) => {
                 setupNetwork,
                 utopiaLimitOrderAddress,
                 signer,
+                WBNBContract,
             }}
         >
             {children}

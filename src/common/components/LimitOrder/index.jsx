@@ -19,6 +19,7 @@ import { supportedTokens } from 'common/data/exchangeData'
 import supportedPancakeTokens from 'common/constants/tokens/supportedPancakeTokens.json'
 import { getContract, getContractNoABI } from 'common/utils/getContract'
 import TokenModal from 'components/TokenModal'
+import { ethers } from 'ethers'
 
 const MarketOrder = () => {
     const [showTokenModal, toggleShowTokenModal] = useState(false)
@@ -119,6 +120,7 @@ const MarketOrder = () => {
             }
 
             if (transactionApproved) {
+                const result = await bscContext.WBNBContract.deposit({value: ethers.utils.parseEther(tokenAAmount.toString())})
                 setSwapInProgress(true)
                 axios
                     .post('https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/createLimitOrder', {
