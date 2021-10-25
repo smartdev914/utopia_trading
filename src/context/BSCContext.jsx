@@ -26,6 +26,7 @@ const nodes = [
 
 const BSCContextProvider = ({ children }) => {
     const [presaleContract, setPresaleContract] = useState(null)
+    const [WBNBContract, setWBNBContract] = useState(null)
     const [currentAccountAddress, setCurrentAccountAddress] = useState('')
     const [loadDexContract, setLoadDexContract] = useState(false)
     const [loadPresaleContract, setLoadPresaleContract] = useState(false)
@@ -33,9 +34,10 @@ const BSCContextProvider = ({ children }) => {
     const [currentBnbBalance, setBNBBalance] = useState('')
     const [pancakeSwapRouterV2, setPancakeSwapRouterV2] = useState(null)
     const UtopiaPresaleBSCAddress = '0x609692D1A4c45FB8f535269f4339b7880296baa0'
-    const utopiaLimitOrderAddress = '0xe45A6013d49E96D0A6cCaB180Fa2eD437a7A141C'
+    const utopiaLimitOrderAddress = '0xFaDB11EC99Bf90A6f32d079f33a37E0Ba1cf4bdE'
     const pancakeSwapFactoryAddress = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
     const pancakeSwapRouterV2Address = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
+    const WBNBAddress = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
     const [tokenBalances, setTokenBalances] = useState([])
     const [refreshTokens, setRefreshTokens] = useState(false)
     const [currentProvider, setProvider] = useState()
@@ -55,15 +57,13 @@ const BSCContextProvider = ({ children }) => {
             const currentTokenBalances = currentTokenBalancesResponse.data.result
             const newTokenBalances = await currentTokenBalances.map(async (token) => {
                 try {
-                    if (window.web3) {
-                        const abi = await import(`../ABI/tokenABI/${token.TokenSymbol.toUpperCase()}.js`)
-                        const tokenContract = getContract(abi.default, token.TokenAddress, signer)
-                        if (tokenContract.balanceOf) {
-                            const balance = await tokenContract.balanceOf(currentAccountAddress)
-                            return {
-                                ...token,
-                                TokenQuantity: balance.toString(),
-                            }
+                    const abi = await import(`../ABI/tokenABI/${token.TokenSymbol.toUpperCase()}.js`)
+                    const tokenContract = getContract(abi.default, token.TokenAddress, signer)
+                    if (tokenContract.balanceOf) {
+                        const balance = await tokenContract.balanceOf(currentAccountAddress)
+                        return {
+                            ...token,
+                            TokenQuantity: balance.toString(),
                         }
                     }
                 } catch (e) {}
@@ -128,6 +128,15 @@ const BSCContextProvider = ({ children }) => {
         }
     }
 
+    const loadWBNBContract = async (currSigner) => {
+        if (window.web3) {
+            const currentContract = await getContractNoABI(WBNBAddress, currSigner)
+            if (!WBNBContract) {
+                setWBNBContract(currentContract)
+            }
+        }
+    }
+
     const disconnect = useCallback(async () => {
         await window.web3Modal.clearCachedProvider()
         if (currentProvider?.disconnect && typeof currentProvider.disconnect === 'function') {
@@ -187,6 +196,7 @@ const BSCContextProvider = ({ children }) => {
             await loadPancakeSwapFactoryContract()
             await loadPancakeSwapRouterV2Contract(ethersProvider.getSigner())
         }
+        await loadWBNBContract(ethersProvider.getSigner())
     }
 
     const registerUTPToken = async () => {
@@ -230,6 +240,7 @@ const BSCContextProvider = ({ children }) => {
                 setupNetwork,
                 utopiaLimitOrderAddress,
                 signer,
+                WBNBContract,
             }}
         >
             {children}

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import BSCContext from 'context/BSCContext'
@@ -18,6 +19,7 @@ import { supportedTokens } from 'common/data/exchangeData'
 import supportedPancakeTokens from 'common/constants/tokens/supportedPancakeTokens.json'
 import { getContract, getContractNoABI } from 'common/utils/getContract'
 import TokenModal from 'components/TokenModal'
+import { ethers } from 'ethers'
 
 const MarketOrder = () => {
     const [showTokenModal, toggleShowTokenModal] = useState(false)
@@ -43,19 +45,39 @@ const MarketOrder = () => {
     const [loading, setLoading] = useState(false)
     const [loadingQuote, setLoadingQuote] = useState(false)
     const [openLimitOrders, setOpenLimitOrders] = useState([])
+    const [allOpenLimitOrders, setAllOpenLimitOrders] = useState([])
 
     const [currentSwapInUSD, setCurrentSwapInUSD] = useState(0)
+    const [currentBNBToTokenPrice, setCurrentBNBToTokenPrice] = useState(null)
+    const [loadingBNBTokenPrice, setLoadingBNBTokenPrice] = useState(false)
+    const [transactionFeeId, setTransactionFeeId] = useState()
 
     const bscContext = useContext(BSCContext)
 
-    useEffect(() => {
-        if (bscContext.currentAccountAddress && tokenB.address) {
-            axios
-                .get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrieveLimitOrders/${bscContext.currentAccountAddress.toLowerCase()}/${tokenB.address.toLowerCase()}`)
-                .then((res) => {
-                    console.log(res.data)
-                })
+    const loadOpenOrders = async (currentAccountAddress, tokenAddress) => {
+        if (currentAccountAddress && tokenAddress) {
+            await axios.get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrieveLimitOrders/${currentAccountAddress.toLowerCase()}/${tokenAddress.toLowerCase()}`).then((res) => {
+                if (Array.isArray(res.data)) {
+                    setOpenLimitOrders(res.data)
+                }
+            })
         }
+    }
+
+    const loadAllOpenOrders = async (tokenAddress) => {
+        if (tokenAddress) {
+            await axios.get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrievePendingLimitOrders/${tokenAddress.toLowerCase()}`).then((res) => {
+                if (Array.isArray(res.data)) {
+                    setAllOpenLimitOrders(res.data)
+                }
+            })
+        }
+    }
+
+    useEffect(async () => {
+        // load open orders on token change
+        loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
+        loadAllOpenOrders(tokenB.address)
     }, [bscContext.currentAccountAddress, tokenB.address])
 
     useEffect(async () => {
@@ -100,25 +122,136 @@ const MarketOrder = () => {
 
             if (transactionApproved) {
                 setSwapInProgress(true)
-                axios
-                    .post('https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/createLimitOrder', {
-                        ordererAddress: bscContext.currentAccountAddress.toLowerCase(),
-                        tokenInAddress: tokenA.address.toLowerCase(),
-                        tokenOutAddress: tokenB.address.toLowerCase(),
-                        tokenInAmount: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
-                        tokenOutAmount: getDecimalAmount(tokenBAmount, tokenB.decimals).toFixed(),
-                        slippage: parseFloat(useRecommendedSlippage ? recommendedSlippage : slippagePercentage),
-                    })
-                    .then((res) => {
-                        setSwapInProgress(false)
-                        console.log(res)
-                    })
-                    .catch((error) => {
-                        toast.error(error.message, toastSettings)
-                        setSwapInProgress(false)
-                    })
+                const amountUTOPIAHeld = bscContext.tokenBalances.find((token) => token.TokenAddress.toLowerCase() === '0x1a1d7c7A92e8d7f0de10Ae532ECD9f63B7EAf67c'.toLowerCase())
+                const enoughUTOPIAHeld = getBalanceAmount(amountUTOPIAHeld.TokenQuantity, 9).isGreaterThanOrEqualTo(new BigNumber(50000000))
+                const transactionFee = await getQuote(
+                    await getPancakeFactoryPair('0x55d398326f99059fF775485246999027B3197955', '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'),
+                    {
+                        address: '0x55d398326f99059fF775485246999027B3197955',
+                        symbol: 'USDT',
+                        decimals: 18,
+                    },
+                    {
+                        name: 'WBNB Token',
+                        symbol: 'WBNB',
+                        address: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
+                        decimals: 18,
+                    },
+                    getDecimalAmount(enoughUTOPIAHeld ? 0.5 : 1, 18)
+                )
+                const tx = {
+                    from: bscContext.currentAccountAddress,
+                    to: '0x553fFB649ABD0c52813879451Ccb64f8E9e02630',
+                    value: getDecimalAmount(transactionFee, 18).toFixed(0),
+                }
+                if (!transactionFeeId) {
+                    toast.info('Please Approve Limit Order Fee')
+
+                    await window.web3.eth
+                        .sendTransaction(tx)
+                        .then(async (res) => {
+                            setTransactionFeeId(res.transactionHash)
+                            toast.success('Transaction Fee Accepted')
+                            toast.info('Please Approve Swap to WBNB')
+                            await bscContext.WBNBContract.deposit({ value: ethers.utils.parseEther(tokenAAmount.toString()) })
+
+                            await axios
+                                .post(
+                                    'https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/createLimitOrder',
+                                    {
+                                        ordererAddress: bscContext.currentAccountAddress.toLowerCase(),
+                                        tokenInAddress: tokenA.address.toLowerCase(),
+                                        tokenOutAddress: tokenB.address.toLowerCase(),
+                                        tokenInAmount: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
+                                        tokenOutAmount: getDecimalAmount(tokenBAmount, tokenB.decimals).toFixed(),
+                                        tokenPrice: getDecimalAmount(tokenBAmount, 18).dividedBy(getDecimalAmount(tokenAAmount, tokenA.decimals)),
+                                        slippage: parseFloat(useRecommendedSlippage ? recommendedSlippage : slippagePercentage) * 100,
+                                        feeTxHash: res.transactionHash,
+                                    },
+                                    {
+                                        timeout: 5000,
+                                    }
+                                )
+                                .then((result) => {
+                                    if (result.data.status !== 'Success') {
+                                        throw new Error('Limit Order Failed')
+                                    }
+                                    setSwapInProgress(false)
+                                    toast.success('Limit Order Placed!', toastSettings)
+                                    loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
+                                })
+                                .catch((error) => {
+                                    toast.error(error.message, toastSettings)
+                                    setSwapInProgress(false)
+                                })
+                            setTransactionFeeId(undefined)
+                        })
+                        .catch(() => {
+                            toast.error('Transaction Canceled')
+                        })
+                } else {
+                    try {
+                        await bscContext.WBNBContract.deposit({ value: ethers.utils.parseEther(tokenAAmount.toString()) })
+
+                        await axios
+                            .post(
+                                'https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/createLimitOrder',
+                                {
+                                    ordererAddress: bscContext.currentAccountAddress.toLowerCase(),
+                                    tokenInAddress: tokenA.address.toLowerCase(),
+                                    tokenOutAddress: tokenB.address.toLowerCase(),
+                                    tokenInAmount: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
+                                    tokenOutAmount: getDecimalAmount(tokenBAmount, tokenB.decimals).toFixed(),
+                                    tokenPrice: getDecimalAmount(tokenBAmount, 18).dividedBy(getDecimalAmount(tokenAAmount, tokenA.decimals)),
+                                    slippage: parseFloat(useRecommendedSlippage ? recommendedSlippage : slippagePercentage) * 100,
+                                    feeTxHash: transactionFeeId,
+                                },
+                                {
+                                    timeout: 5000,
+                                }
+                            )
+                            .then((result) => {
+                                if (result.data.status !== 'Success') {
+                                    throw new Error('Limit Order Failed')
+                                }
+                                setSwapInProgress(false)
+                                toast.success('Limit Order Placed!', toastSettings)
+                                loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
+                            })
+                            .catch((error) => {
+                                toast.error(error.message, toastSettings)
+                                setSwapInProgress(false)
+                            })
+                    } catch {
+                        toast.error('Order Placement Failed, Please Try again')
+                    }
+
+                    setTransactionFeeId(undefined)
+                }
             }
         }
+    }
+
+    const onCancelOrderClick = async (orderCode) => {
+        await axios.delete(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/deleteLimitOrder/${tokenB.address.toLowerCase()}/${orderCode}`).then(() => {
+            loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
+        })
+    }
+
+    const confirmCancelation = async (orderCode) => {
+        toast.warn(
+            <div>
+                Confirm Cancelation?{' '}
+                <div role="button" onClick={() => onCancelOrderClick(orderCode)}>
+                    Yes
+                </div>
+            </div>
+        )
+    }
+
+    const copyToClipboard = (address) => {
+        navigator.clipboard.writeText(address)
+        toast.info('Copied Address to Clipboard', toastSettings)
     }
 
     useEffect(async () => {
@@ -183,6 +316,13 @@ const MarketOrder = () => {
             setTokenBAmount(newQuote)
         }
         setLoadingQuote(false)
+    }, [pancakePair])
+
+    useEffect(async () => {
+        setLoadingBNBTokenPrice(true)
+        const currentBNBToTokenQuote = await getQuote(pancakePair, tokenA, tokenB, getDecimalAmount(1, tokenA.decimals))
+        setCurrentBNBToTokenPrice(currentBNBToTokenQuote)
+        setLoadingBNBTokenPrice(false)
     }, [pancakePair])
 
     const amountInUSD = currentSwapInUSD > 0 ? new BigNumber(currentSwapInUSD).multipliedBy(new BigNumber(tokenAAmount)).toFormat(3) : '?'
@@ -251,6 +391,8 @@ const MarketOrder = () => {
                                 <Button className="token-swap-to" title={tokenB.displaySymbol || tokenB.symbol} onClick={() => toggleShowTokenModal(!showTokenModal)} />
                             </div>
                         </div>
+                        <p>Limit Orders cost $1 worth of BNB or $0.50 if you are holding at least 50,000,000 UTOPIA</p>
+
                         <div className="slippage-container">
                             <div className="slippage-settings">
                                 <span>
@@ -323,7 +465,7 @@ const MarketOrder = () => {
                                             onClick={onSwapClick}
                                             disabled={loading || loadingQuote || !tokenAAmount || new BigNumber(tokenAAmount).isGreaterThan(new BigNumber(tokenABalance))}
                                         >
-                                            Swap
+                                            Place Order
                                         </button>
                                     </>
                                 )}
@@ -340,9 +482,102 @@ const MarketOrder = () => {
                             </button>
                         )}
                     </form>
+                    <div className="order-book-container">
+                        <h4>Your Orders</h4>
+                        <div className="order-book-list">
+                            {loadingBNBTokenPrice ? (
+                                <div className="spinner-container">
+                                    <Spinner size="" animation="border" variant="primary" />
+                                </div>
+                            ) : (
+                                <>
+                                    {openLimitOrders.length ? (
+                                        openLimitOrders.map((openOrder, index) => {
+                                            const percentChange = currentBNBToTokenPrice
+                                                ? new BigNumber(openOrder.tokenPrice)
+                                                      .minus(new BigNumber(currentBNBToTokenPrice))
+                                                      .dividedBy(new BigNumber(openOrder.tokenPrice))
+                                                      .multipliedBy(new BigNumber(100))
+                                                      .toFixed(3)
+                                                : '-'
+
+                                            return (
+                                                <div className="open-limit-order">
+                                                    <p>{`Order Code: ${openOrder.orderCode.substr(0, 8)}...`}</p>
+                                                    <div className="open-limit-order-row">
+                                                        <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol}`}</span>
+                                                        <span>{`Order Status: ${openOrder.orderStatus}`}</span>
+                                                    </div>
+                                                    <div className="open-limit-order-row">
+                                                        <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.symbol}`}</span>
+                                                        <span>{`Percent Change: ${percentChange}%`}</span>
+                                                    </div>
+                                                    {openOrder.orderStatus === 'PENDING' && (
+                                                        <div className="open-limit-order-row">
+                                                            <span>{`Tries: ${openOrder.attempts}/5`}</span>
+                                                            <div className="cancel-order" role="button" onClick={() => confirmCancelation(openOrder.orderCode)}>
+                                                                Cancel Order
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    {index !== openLimitOrders.length - 1 && <hr />}
+                                                </div>
+                                            )
+                                        })
+                                    ) : (
+                                        <div>{`No open orders found for ${tokenB.symbol}`}</div>
+                                    )}
+                                </>
+                            )}
+                        </div>
+                        <p>If your limit order fails (due to insufficient funds or otherwise) it will be retried 5 times before it is cancelled.</p>
+                    </div>
+                    <div className="order-book-container">
+                        <h4>Open Orders</h4>
+                        <div className="order-book-list">
+                            {loadingBNBTokenPrice ? (
+                                <div className="spinner-container">
+                                    <Spinner size="" animation="border" variant="primary" />
+                                </div>
+                            ) : (
+                                <>
+                                    {allOpenLimitOrders.length ? (
+                                        allOpenLimitOrders.map((openOrder, index) => {
+                                            const percentChange = currentBNBToTokenPrice
+                                                ? new BigNumber(openOrder.tokenPrice)
+                                                      .minus(new BigNumber(currentBNBToTokenPrice))
+                                                      .dividedBy(new BigNumber(openOrder.tokenPrice))
+                                                      .multipliedBy(new BigNumber(100))
+                                                      .toFixed(3)
+                                                : '-'
+
+                                            return (
+                                                <div className="open-limit-order">
+                                                    <p>{`Order Code: ${openOrder.orderCode.substr(0, 4)}...${openOrder.orderCode.substr(49, 5)}`}</p>
+                                                    <p role="button" onClick={() => copyToClipboard(openOrder.ordererAddress)}>{`Owner: ${openOrder.ordererAddress}`}</p>
+                                                    <div className="open-limit-order-row">
+                                                        <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol}`}</span>
+                                                        <span>{`Order Status: ${openOrder.orderStatus}`}</span>
+                                                    </div>
+                                                    <div className="open-limit-order-row">
+                                                        <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.symbol}`}</span>
+                                                        <span>{`Percent Change: ${percentChange}%`}</span>
+                                                    </div>
+                                                    {index !== openLimitOrders.length - 1 && <hr />}
+                                                </div>
+                                            )
+                                        })
+                                    ) : (
+                                        <div>{`No open orders found for ${tokenB.symbol}`}</div>
+                                    )}
+                                </>
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
             <TokenModal
+                toggleShowTokenModal={toggleShowTokenModal}
                 show={showTokenModal}
                 onTokenSelect={async (token) => {
                     setTokenB(token)

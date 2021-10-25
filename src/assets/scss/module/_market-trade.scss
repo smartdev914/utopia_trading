@@ -125,6 +125,58 @@
     .input-group.top {
       margin-bottom: 30px
     }
+
+    .order-book-container {
+      margin-top: 10px;
+      padding: 1rem 0 0;
+
+      h4 {
+        font-family: var(--fontSyncopate);
+        color: #F9DF00;
+        font-size: 18px;
+        font-weight: 550;
+        letter-spacing: 3px;
+      }
+
+      hr {
+        margin: 0
+      }
+
+      p {
+        margin: 0
+      }
+
+      .order-book-list {
+        border: 1px solid #A3FFFF;
+        border-radius: 8px; 
+        padding: 5px;
+        max-height: 300px;
+        overflow: scroll;
+      }
+    }
+
+    .open-limit-order {
+      padding-top: 3px;
+      
+      .open-limit-order-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .cancel-order {
+        font-size: 16px;
+        font-weight: 600;
+
+        &:hover {
+          color: #F9DF00;
+        }
+      }
+
+      &:nth-child(2n) {
+        background: #1B003B
+      }
+    }
   }
 }
 
@@ -286,7 +338,6 @@
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  height: 65px;
 }
 
 .market-trade .token-A-balance,

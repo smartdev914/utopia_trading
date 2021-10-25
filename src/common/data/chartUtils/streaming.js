@@ -74,7 +74,7 @@ socket.on('m', (data) => {
             low: tradePriceL.toFixed(),
             close: tradePriceC.toFixed(),
         }
-        console.log('[socket] Generate new bar', bar)
+        // console.log('[socket] Generate new bar', bar)
     } else {
         bar = {
             ...lastDailyBar,
