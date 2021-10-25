@@ -41,6 +41,14 @@
       "symbol": "VETTER"
     },
     {
+      "address": "0xda6802bbec06ab447a68294a63de47ed4506acaa",
+      "chainId": 56,
+      "decimals": 9,
+      "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/12875.png",
+      "name": "CRYPT Token",
+      "symbol": "CRYPT"
+    },
+    {
       "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
       "chainId": 56,
       "decimals": 18,

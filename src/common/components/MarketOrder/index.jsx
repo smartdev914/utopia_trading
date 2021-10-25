@@ -40,7 +40,7 @@ const MarketOrder = () => {
     const [pancakePair, setPancakePair] = useState()
 
     const [recommendedSlippage, setRecommendedSlippage] = useState(0)
-    const [useRecommendedSlippage, setUseRecommendedSlippage] = useState(true)
+    const [useRecommendedSlippage, setUseRecommendedSlippage] = useState(false)
     const [currentSwapInUSD, setCurrentSwapInUSD] = useState(0)
     const [loading, setLoading] = useState(false)
     const [loadingQuote, setLoadingQuote] = useState(false)
@@ -260,7 +260,7 @@ const MarketOrder = () => {
         const tokenASlippage = await calculateSlippage(tokenAContract)
         const tokenBSlippage = await calculateSlippage(tokenBContract)
         if (tokenASlippage || tokenBSlippage) {
-            setRecommendedSlippage(tokenASlippage + tokenBSlippage + 2)
+            setRecommendedSlippage(12)
         } else {
             setRecommendedSlippage(0.5)
         }
@@ -408,9 +408,7 @@ const MarketOrder = () => {
                                     <div className="token-B-balance">
                                         <div className="balance">Balance: {BigNumber.isBigNumber(tokenBBalance) ? tokenBBalance.toFixed(6) : '-'}</div>
                                     </div>
-                                    <div className="sub-price">
-                                        Min Receieved: {(tokenBAmount * parsedSlippagePercentage).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 8 })}
-                                    </div>
+                                    <div className="sub-price">Min Receieved: {new BigNumber(tokenBAmount).multipliedBy(new BigNumber(parsedSlippagePercentage)).toFixed(3)}</div>
                                     <div className="input-group-append">
                                         <Button
                                             className={fromBNB ? 'token-swap-to' : ''}

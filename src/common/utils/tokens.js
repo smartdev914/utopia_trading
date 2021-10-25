@@ -31,7 +31,7 @@ export const calculateSlippage = async (tokenContract) => {
         }
     }
 
-    return totalSlippage
+    return totalSlippage < 100 ? totalSlippage : null
 }
 
 export const getTokenPriceInUSD = async (tokenAddress, decimals) => {

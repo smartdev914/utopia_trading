@@ -35,7 +35,7 @@ const MarketOrder = () => {
     const [tokenABalance, setTokenABalance] = useState()
     const [tokenBBalance, setTokenBBalance] = useState()
 
-    const [useRecommendedSlippage, setUseRecommendedSlippage] = useState(true)
+    const [useRecommendedSlippage, setUseRecommendedSlippage] = useState(false)
     const [slippagePercentage, setSlippagePercentage] = useState('0.5%')
     const [recommendedSlippage, setRecommendedSlippage] = useState(0)
 
@@ -294,7 +294,7 @@ const MarketOrder = () => {
         const tokenASlippage = await calculateSlippage(tokenAContract)
         const tokenBSlippage = await calculateSlippage(tokenBContract)
         if (tokenASlippage || tokenBSlippage) {
-            setRecommendedSlippage(tokenASlippage + tokenBSlippage + 2)
+            setRecommendedSlippage(12)
         } else {
             setRecommendedSlippage(0.5)
         }
@@ -391,7 +391,7 @@ const MarketOrder = () => {
                                 <Button className="token-swap-to" title={tokenB.displaySymbol || tokenB.symbol} onClick={() => toggleShowTokenModal(!showTokenModal)} />
                             </div>
                         </div>
-                        <p>Limit Orders cost $1 worth of BNB or $0.50 if you are holding at least 50,000,000 UTOPIA</p>
+                        <p>Limit Orders cost $0.50 worth of BNB to place (+$0.50 gas fee) or FREE if you are holding at least 50,000,000 UTOPIA (just pay $0.50 to cover gas)</p>
 
                         <div className="slippage-container">
                             <div className="slippage-settings">
