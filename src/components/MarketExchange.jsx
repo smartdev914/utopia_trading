@@ -6,13 +6,8 @@ import BSCContext from 'context/BSCContext'
 import 'rc-slider/assets/index.css'
 import MarketOrder from 'common/components/MarketOrder'
 import LimitOrder from 'common/components/LimitOrder'
-import { useRouter } from 'next/dist/client/router'
 
 export default function MarketTrade() {
-    const router = useRouter()
-    const { query } = router
-    const limitOrderGUID = Object.keys(query)?.includes('9d5855f4-5a07-4728-885d-afeabffa5f44')
-
     const bscContext = useContext(BSCContext)
 
     useEffect(() => {
@@ -30,13 +25,7 @@ export default function MarketTrade() {
                         <MarketOrder />
                     </Tab>
                     <Tab eventKey="limit" title="LIMIT">
-                        {limitOrderGUID ? (
-                            <LimitOrder />
-                        ) : (
-                            <div className="d-flex justify-content-between">
-                                <div className="coming-soon">Coming Soon...</div>
-                            </div>
-                        )}
+                        <LimitOrder />
                     </Tab>
 
                     <Tab eventKey="stop-limit" title="STOP LOSS">
