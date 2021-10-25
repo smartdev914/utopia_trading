@@ -50,6 +50,7 @@ const MarketOrder = () => {
     const [currentSwapInUSD, setCurrentSwapInUSD] = useState(0)
     const [currentBNBToTokenPrice, setCurrentBNBToTokenPrice] = useState(null)
     const [loadingBNBTokenPrice, setLoadingBNBTokenPrice] = useState(false)
+    const [transactionFeeId, setTransactionFeeId] = useState()
 
     const bscContext = useContext(BSCContext)
 
@@ -120,26 +121,111 @@ const MarketOrder = () => {
             }
 
             if (transactionApproved) {
-                const result = await bscContext.WBNBContract.deposit({value: ethers.utils.parseEther(tokenAAmount.toString())})
                 setSwapInProgress(true)
-                axios
-                    .post('https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/createLimitOrder', {
-                        ordererAddress: bscContext.currentAccountAddress.toLowerCase(),
-                        tokenInAddress: tokenA.address.toLowerCase(),
-                        tokenOutAddress: tokenB.address.toLowerCase(),
-                        tokenInAmount: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
-                        tokenOutAmount: getDecimalAmount(tokenBAmount, tokenB.decimals).toFixed(),
-                        slippage: parseFloat(useRecommendedSlippage ? recommendedSlippage : slippagePercentage),
-                    })
-                    .then(() => {
-                        setSwapInProgress(false)
-                        toast.success('Limit Order Placed!', toastSettings)
-                        loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
-                    })
-                    .catch((error) => {
-                        toast.error(error.message, toastSettings)
-                        setSwapInProgress(false)
-                    })
+                const amountUTOPIAHeld = bscContext.tokenBalances.find((token) => token.TokenAddress.toLowerCase() === '0x1a1d7c7A92e8d7f0de10Ae532ECD9f63B7EAf67c'.toLowerCase())
+                const enoughUTOPIAHeld = getBalanceAmount(amountUTOPIAHeld.TokenQuantity, 9).isGreaterThanOrEqualTo(new BigNumber(50000000))
+                const transactionFee = await getQuote(
+                    await getPancakeFactoryPair('0x55d398326f99059fF775485246999027B3197955', '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'),
+                    {
+                        address: '0x55d398326f99059fF775485246999027B3197955',
+                        symbol: 'USDT',
+                        decimals: 18,
+                    },
+                    {
+                        name: 'WBNB Token',
+                        symbol: 'WBNB',
+                        address: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
+                        decimals: 18,
+                    },
+                    getDecimalAmount(enoughUTOPIAHeld ? 0.5 : 1, 18)
+                )
+                const tx = {
+                    from: bscContext.currentAccountAddress,
+                    to: '0x553fFB649ABD0c52813879451Ccb64f8E9e02630',
+                    value: getDecimalAmount(transactionFee, 18).toFixed(0),
+                }
+                if (!transactionFeeId) {
+                    toast.info('Please Approve Limit Order Fee')
+
+                    await window.web3.eth
+                        .sendTransaction(tx)
+                        .then(async (res) => {
+                            setTransactionFeeId(res.transactionHash)
+                            toast.success('Transaction Fee Accepted')
+                            toast.info('Please Approve Swap to WBNB')
+                            await bscContext.WBNBContract.deposit({ value: ethers.utils.parseEther(tokenAAmount.toString()) })
+
+                            await axios
+                                .post(
+                                    'https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/createLimitOrder',
+                                    {
+                                        ordererAddress: bscContext.currentAccountAddress.toLowerCase(),
+                                        tokenInAddress: tokenA.address.toLowerCase(),
+                                        tokenOutAddress: tokenB.address.toLowerCase(),
+                                        tokenInAmount: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
+                                        tokenOutAmount: getDecimalAmount(tokenBAmount, tokenB.decimals).toFixed(),
+                                        slippage: parseFloat(useRecommendedSlippage ? recommendedSlippage : slippagePercentage) * 100,
+                                        feeTxHash: res.transactionHash,
+                                    },
+                                    {
+                                        timeout: 5000,
+                                    }
+                                )
+                                .then((result) => {
+                                    if (result.status !== 'Success') {
+                                        throw new Error('Limit Order Failed')
+                                    }
+                                    setSwapInProgress(false)
+                                    toast.success('Limit Order Placed!', toastSettings)
+                                    loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
+                                })
+                                .catch((error) => {
+                                    toast.error(error.message, toastSettings)
+                                    setSwapInProgress(false)
+                                })
+                            setTransactionFeeId(undefined)
+                        })
+                        .catch(() => {
+                            toast.error('Transaction Canceled')
+                        })
+                } else {
+                    try {
+                        await bscContext.WBNBContract.deposit({ value: ethers.utils.parseEther(tokenAAmount.toString()) })
+
+                        await axios
+                            .post(
+                                'https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/createLimitOrder',
+                                {
+                                    ordererAddress: bscContext.currentAccountAddress.toLowerCase(),
+                                    tokenInAddress: tokenA.address.toLowerCase(),
+                                    tokenOutAddress: tokenB.address.toLowerCase(),
+                                    tokenInAmount: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
+                                    tokenOutAmount: getDecimalAmount(tokenBAmount, tokenB.decimals).toFixed(),
+                                    slippage: parseFloat(useRecommendedSlippage ? recommendedSlippage : slippagePercentage) * 100,
+                                    feeTxHash: transactionFeeId,
+                                },
+                                {
+                                    timeout: 5000,
+                                }
+                            )
+                            .then((result) => {
+                                if (result.status !== 'Success') {
+                                    throw new Error('Limit Order Failed')
+                                }
+                                setSwapInProgress(false)
+                                toast.success('Limit Order Placed!', toastSettings)
+                                loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
+                            })
+                            .catch((error) => {
+                                toast.error(error.message, toastSettings)
+                                setSwapInProgress(false)
+                            })
+                    } catch {
+                        toast.error('Order Placement Failed, Please Try again')
+                    }
+
+                    setTransactionFeeId(undefined)
+                }
             }
         }
     }
@@ -377,7 +463,7 @@ const MarketOrder = () => {
                                             onClick={onSwapClick}
                                             disabled={loading || loadingQuote || !tokenAAmount || new BigNumber(tokenAAmount).isGreaterThan(new BigNumber(tokenABalance))}
                                         >
-                                            Swap
+                                            Place Order
                                         </button>
                                     </>
                                 )}
