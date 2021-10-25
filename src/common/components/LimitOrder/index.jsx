@@ -172,7 +172,7 @@ const MarketOrder = () => {
                                     }
                                 )
                                 .then((result) => {
-                                    if (result.status !== 'Success') {
+                                    if (result.data.status !== 'Success') {
                                         throw new Error('Limit Order Failed')
                                     }
                                     setSwapInProgress(false)
@@ -209,7 +209,7 @@ const MarketOrder = () => {
                                 }
                             )
                             .then((result) => {
-                                if (result.status !== 'Success') {
+                                if (result.data.status !== 'Success') {
                                     throw new Error('Limit Order Failed')
                                 }
                                 setSwapInProgress(false)
@@ -389,7 +389,7 @@ const MarketOrder = () => {
                                 <Button className="token-swap-to" title={tokenB.displaySymbol || tokenB.symbol} onClick={() => toggleShowTokenModal(!showTokenModal)} />
                             </div>
                         </div>
-                        <p>Limit orders cost $0.50 worth of BNB per order. Please make sure you have sufficient BNB.</p>
+                        <p>Limit Orders cost $1 worth of BNB or $0.50 if you are holding at least 50,000,000 UTOPIA</p>
 
                         <div className="slippage-container">
                             <div className="slippage-settings">
@@ -501,7 +501,7 @@ const MarketOrder = () => {
 
                                             return (
                                                 <div className="open-limit-order">
-                                                    <p>{`Order Code: ${openOrder.orderCode.substr(0, 4)}...${openOrder.orderCode.substr(49, 5)}`}</p>
+                                                    <p>{`Order Code: ${openOrder.orderCode.substr(0, 8)}...`}</p>
                                                     <div className="open-limit-order-row">
                                                         <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol}`}</span>
                                                         <span>{`Order Status: ${openOrder.orderStatus}`}</span>
