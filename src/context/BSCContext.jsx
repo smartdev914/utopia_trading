@@ -57,15 +57,13 @@ const BSCContextProvider = ({ children }) => {
             const currentTokenBalances = currentTokenBalancesResponse.data.result
             const newTokenBalances = await currentTokenBalances.map(async (token) => {
                 try {
-                    if (window.web3) {
-                        const abi = await import(`../ABI/tokenABI/${token.TokenSymbol.toUpperCase()}.js`)
-                        const tokenContract = getContract(abi.default, token.TokenAddress, signer)
-                        if (tokenContract.balanceOf) {
-                            const balance = await tokenContract.balanceOf(currentAccountAddress)
-                            return {
-                                ...token,
-                                TokenQuantity: balance.toString(),
-                            }
+                    const abi = await import(`../ABI/tokenABI/${token.TokenSymbol.toUpperCase()}.js`)
+                    const tokenContract = getContract(abi.default, token.TokenAddress, signer)
+                    if (tokenContract.balanceOf) {
+                        const balance = await tokenContract.balanceOf(currentAccountAddress)
+                        return {
+                            ...token,
+                            TokenQuantity: balance.toString(),
                         }
                     }
                 } catch (e) {}
@@ -198,7 +196,7 @@ const BSCContextProvider = ({ children }) => {
             await loadPancakeSwapFactoryContract()
             await loadPancakeSwapRouterV2Contract(ethersProvider.getSigner())
         }
-        await loadWBNBContract(ethersProvider.getSigner());
+        await loadWBNBContract(ethersProvider.getSigner())
     }
 
     const registerUTPToken = async () => {
