@@ -29,6 +29,16 @@
     padding: 25px 14px 14px 14px;
 }
 
+.market-trade .limit-order .tab-content {
+  padding: 15px 0
+}
+
+.market-trade .limit-order .nav-tabs {
+  justify-content: space-between;
+  padding-left: 0;
+}
+
+
 .market-trade .nav .nav-item .nav-link.active {
     background: #fff;
     color: #007bff;
@@ -157,6 +167,11 @@
 
     .open-limit-order {
       padding-top: 3px;
+
+      &.completed:hover {
+        cursor: pointer;
+        background-color: #4a4a4a;
+      }
       
       .open-limit-order-row {
         display: flex;
