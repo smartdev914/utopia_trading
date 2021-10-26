@@ -199,16 +199,16 @@ const BSCContextProvider = ({ children }) => {
         await loadWBNBContract(ethersProvider.getSigner())
     }
 
-    const registerUTPToken = async () => {
+    const registerToken = async (token) => {
         const tokenAdded = await window.ethereum.request({
             method: 'wallet_watchAsset',
             params: {
                 type: 'ERC20',
                 options: {
-                    address: '0x1a1d7c7A92e8d7f0de10Ae532ECD9f63B7EAf67c',
-                    symbol: 'UTOPIA',
-                    decimals: 9,
-                    image: `https://utopia.cc/assets/image/utopia/utopiaUDarkbg.svg`,
+                    address: token.address,
+                    symbol: token.symbol,
+                    decimals: token.decimals,
+                    image: token.logoURI,
                 },
             },
         })
@@ -232,7 +232,7 @@ const BSCContextProvider = ({ children }) => {
                 triggerDappModal,
                 currentBnbBalance,
                 pancakeSwapRouterV2,
-                registerUTPToken,
+                registerToken,
                 pancakeSwapFactoryAddress,
                 pancakeSwapRouterV2Address,
                 tokenBalances,
