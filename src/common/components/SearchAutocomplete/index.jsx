@@ -32,7 +32,7 @@ const SearchAutocomplete = ({ className, onSelect, searchOptions }) => {
                 type="text"
                 value={searchInput}
                 className="form-control"
-                placeholder="&#x1F50D; Search token name / address..."
+                placeholder="&#x1F50D; Search token name"
                 aria-describedby="inputGroup-sizing-sm"
                 onChange={(e) => setSearchInput(e.target.value)}
             />
