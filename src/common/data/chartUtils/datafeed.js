@@ -167,6 +167,15 @@ const supportedChartTokens = [
         address: '0x55b53855eae06c4744841dbfa06fce335db4355b',
         pricescale: 10 ** 12,
     },
+    {
+        description: 'CRYPT/BNB',
+        exchange: 'Utopia',
+        full_name: 'Utopia:CRYPT/BNB',
+        symbol: 'CRYPT/BNB',
+        type: 'crypto',
+        address: '0xda6802bbec06ab447a68294a63de47ed4506acaa',
+        pricescale: 10 ** 12,
+    },
 ]
 
 export default {
