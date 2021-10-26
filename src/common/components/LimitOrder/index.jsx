@@ -512,14 +512,15 @@ const MarketOrder = () => {
                                                         <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.symbol}`}</span>
                                                         <span>{`Percent Change: ${percentChange}%`}</span>
                                                     </div>
-                                                    {(openOrder.orderStatus === 'PENDING' || openOrder.orderStatus === 'ATTEMPTED') && (
-                                                        <div className="open-limit-order-row">
-                                                            <span>{`Tries: ${openOrder.attempts}/5`}</span>
+                                                    <div className="open-limit-order-row">
+                                                        <span>{`Tries: ${openOrder.attempts}/5`}</span>
+                                                        {openOrder.orderStatus === 'PENDING' && (
                                                             <div className="cancel-order" role="button" onClick={() => confirmCancelation(openOrder.orderCode)}>
                                                                 Cancel Order
                                                             </div>
-                                                        </div>
-                                                    )}
+                                                        )}
+                                                    </div>
+
                                                     {index !== openLimitOrders.length - 1 && <hr />}
                                                 </div>
                                             )
