@@ -167,7 +167,7 @@ const StopLoss = () => {
                                         tokenOutAmount: getDecimalAmount(tokenBAmount, tokenB.decimals).toFixed(),
                                         tokenPrice: tokenBRate,
                                         slippage: parseFloat(slippagePercentage) * 100,
-                                        customTaxForToken: Boolean(tokenA.tax),
+                                        customTaxForToken: Boolean(tokenA.tax && tokenA.symbol !== 'UTOPIA'),
                                         feeTxHash: res.transactionHash,
                                     },
                                     {
@@ -206,7 +206,7 @@ const StopLoss = () => {
                                     tokenOutAmount: getDecimalAmount(tokenBAmount, tokenB.decimals).toFixed(),
                                     tokenPrice: tokenBRate,
                                     slippage: parseFloat(slippagePercentage) * 100,
-                                    customTaxForToken: Boolean(tokenA.tax),
+                                    customTaxForToken: Boolean(tokenA.tax && tokenA.symbol !== 'UTOPIA'),
                                     feeTxHash: transactionFeeId,
                                 },
                                 {
