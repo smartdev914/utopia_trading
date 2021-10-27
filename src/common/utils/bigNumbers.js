@@ -8,3 +8,5 @@ export const BIG_TEN = new BigNumber(10)
 export const ethersToBigNumber = (ethersBn) => new BigNumber(ethersBn.toString())
 
 export const ethersToSerializedBigNumber = (ethersBn) => ethersToBigNumber(ethersBn).toJSON()
+
+export const formatMinMaxDecimalsBN = (n, dp) => (n.dp() < dp ? n.toFixed() : n.toFixed(dp))

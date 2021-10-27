@@ -7,6 +7,10 @@
     margin-bottom: 0
   }
 
+  p {
+    padding: 5px 5px;
+  }
+
   .input-group>.form-control:focus, .input-group>.form-select:focus {
     z-index: unset;
   }
@@ -29,11 +33,13 @@
     padding: 25px 14px 14px 14px;
 }
 
-.market-trade .limit-order .tab-content {
+.market-trade .limit-order .tab-content, 
+.market-trade .stop-loss .tab-content{
   padding: 15px 0
 }
 
-.market-trade .limit-order .nav-tabs {
+.market-trade .limit-order .nav-tabs,
+.market-trade .stop-loss .nav-tabs {
   justify-content: space-between;
   padding-left: 0;
 }
@@ -87,6 +93,14 @@
       color: #F9DF00;
       border-radius: 12px !important;
     }
+
+    &.rate {
+      .form-control {
+        padding-top: 25px;
+        height: 75px;
+      }
+    }
+
     .sub-price {
       position: absolute;
       bottom: 8px;
@@ -116,6 +130,14 @@
     color: #A3FFFF;
   }
 
+  .input-group.rate::after {
+    content: "RATE";
+    position: absolute;
+    top: 10px;
+    left: 18px;
+    color: #A3FFFF;
+  }
+
   .input-group.to.estimated::after {
     content: 'TO ( Estimated )'
   }
@@ -123,9 +145,9 @@
     content: 'FROM  ( Estimated )'
   }
 
-  .limit-order {
+  .limit-order, .stop-loss {
     .input-group.from::after {
-      content: 'AMOUNT'
+      content: 'AMOUNT IN'
     }
 
     .input-group.to::after {
@@ -133,7 +155,7 @@
     }
 
     .input-group.top {
-      margin-bottom: 30px
+      margin-bottom: 10px
     }
 
     .order-book-container {
@@ -153,7 +175,7 @@
       }
 
       p {
-        margin: 0
+        margin: 0;
       }
 
       .order-book-list {
@@ -275,7 +297,7 @@
     box-shadow: 0px 0px 15px 0px #ff231fad;
 }
 .market-trade p {
-    margin: 5px 0;
+    margin: 10px 0;
     font-size: 13px;
     color: #4a4a4a;
 }
@@ -321,6 +343,13 @@
   content: "\25BC"
 }
 
+.market-trade .stop-loss .token-swap-from::after {
+  content: "\25BC"
+}
+.market-trade .stop-loss .token-swap-to:after {
+  content: ""
+}
+
 .market-trade .input-group-append button{
   cursor: auto;
 }
@@ -331,13 +360,17 @@
 
 .market-trade-buy .slippage-container {
   padding-right: 3px;
-  margin: 2rem 0 1rem;
+  margin: 1rem 0 1rem;
+  
+  p {
+    margin-bottom: 0;
+  }
 }
 
 .market-trade-buy .slippage-settings {
   display: flex;
   justify-content: space-between;
-  margin: 0.5rem 0;
+  margin: 0 0 0.5rem;
   align-items: center;
 }
 
@@ -383,6 +416,16 @@
   @media(min-width: 768px) and (max-width: 1068px) {
     top: 105px;
   }
+}
+
+.market-trade .token-conversion {
+  position: absolute;
+  top: 105px;
+  left: 1rem;
+}
+
+.market-trade .token-B-balance button {
+  width: 60px;
 }
 
 .slippage-settings {

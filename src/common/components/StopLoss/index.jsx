@@ -19,16 +19,15 @@ import { getContract, getContractNoABI } from 'common/utils/getContract'
 import TokenModal from 'components/TokenModal'
 import { ethers } from 'ethers'
 import useInterval from 'common/hooks/useInterval'
-import { formatMinMaxDecimalsBN } from 'common/utils/bigNumbers'
 
-const MarketOrder = () => {
+const StopLoss = () => {
     const [showTokenModal, toggleShowTokenModal] = useState(false)
 
-    const tokenA = supportedTokens[0]
-    const [tokenB, setTokenB] = useState(supportedPancakeTokens.tokens[0])
+    const [tokenA, setTokenA] = useState(supportedPancakeTokens.tokens[0])
+    const tokenB = supportedTokens[0]
+
     const [tokenAContract, setTokenAContract] = useState()
     const [tokenBContract, setTokenBContract] = useState()
-    const [tokenBRate, setTokenBRate] = useState()
     const [pancakePair, setPancakePair] = useState()
 
     const [tokenAAmount, setTokenAAmount] = useState('')
@@ -47,15 +46,15 @@ const MarketOrder = () => {
     const [allOpenLimitOrders, setAllOpenLimitOrders] = useState([])
 
     const [currentSwapInUSD, setCurrentSwapInUSD] = useState(0)
-    const [currentBNBToTokenPrice, setCurrentBNBToTokenPrice] = useState(null)
-    const [loadingBNBTokenPrice, setLoadingBNBTokenPrice] = useState(false)
+    const [currentTokenToBNBPrice, setCurrentTokenToBNBPrice] = useState(null)
+    const [loadingBNBTokenPrice, setLoadingTokenToBNBPrice] = useState(false)
     const [transactionFeeId, setTransactionFeeId] = useState()
 
     const bscContext = useContext(BSCContext)
 
     const loadOpenOrders = async (currentAccountAddress, tokenAddress) => {
         if (currentAccountAddress && tokenAddress) {
-            await axios.get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrieveLimitOrders/${currentAccountAddress.toLowerCase()}/${tokenAddress.toLowerCase()}`).then((res) => {
+            await axios.get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrieveStopLosses/${currentAccountAddress.toLowerCase()}/${tokenAddress.toLowerCase()}`).then((res) => {
                 if (Array.isArray(res.data)) {
                     setOpenLimitOrders(res.data)
                 }
@@ -65,7 +64,7 @@ const MarketOrder = () => {
 
     const loadAllOpenOrders = async (tokenAddress) => {
         if (tokenAddress) {
-            await axios.get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrievePendingLimitOrders/${tokenAddress.toLowerCase()}`).then((res) => {
+            await axios.get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrievePendingStopLosses/${tokenAddress.toLowerCase()}`).then((res) => {
                 if (Array.isArray(res.data)) {
                     setAllOpenLimitOrders(res.data)
                 } else {
@@ -77,18 +76,18 @@ const MarketOrder = () => {
 
     useInterval(async () => {
         if (bscContext.currentAccountAddress) {
-            loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
+            loadOpenOrders(bscContext.currentAccountAddress, tokenA.address)
         }
-        loadAllOpenOrders(tokenB.address)
+        loadAllOpenOrders(tokenA.address)
         const currentBNBToTokenQuote = await getQuote(pancakePair, tokenA, tokenB, getDecimalAmount(1, tokenA.decimals))
-        setCurrentBNBToTokenPrice(currentBNBToTokenQuote)
+        setCurrentTokenToBNBPrice(currentBNBToTokenQuote)
     }, 10000)
 
     useEffect(async () => {
         // load open orders on token change
-        loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
-        loadAllOpenOrders(tokenB.address)
-    }, [bscContext.currentAccountAddress, tokenB.address])
+        loadOpenOrders(bscContext.currentAccountAddress, tokenA.address)
+        loadAllOpenOrders(tokenA.address)
+    }, [bscContext.currentAccountAddress, tokenA.address])
 
     useEffect(async () => {
         // listens for change in tokens to get new pancake pair contract
@@ -111,7 +110,7 @@ const MarketOrder = () => {
         if (bscContext.currentAccountAddress && bscContext.pancakeSwapRouterV2 && tokenAAmount) {
             let transactionApproved = false
             if (tokenAContract.approve) {
-                const approved = await tokenAContract.allowance(bscContext.currentAccountAddress, bscContext.utopiaLimitOrderAddress)
+                const approved = await tokenAContract.allowance(bscContext.currentAccountAddress, bscContext.utopiaStopLossAddress)
                 if (approved.toString() === '0') {
                     setNeedsApproval(true)
                     toast.info('Please Approve this transaction', toastSettings)
@@ -152,19 +151,17 @@ const MarketOrder = () => {
                         .then(async (res) => {
                             setTransactionFeeId(res.transactionHash)
                             toast.success('Transaction Fee Accepted')
-                            toast.info('Please Approve Swap to WBNB')
-                            await bscContext.WBNBContract.deposit({ value: ethers.utils.parseEther(tokenAAmount.toString()) })
 
                             await axios
                                 .post(
-                                    'https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/createLimitOrder',
+                                    'https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/createStopLoss',
                                     {
                                         ordererAddress: bscContext.currentAccountAddress.toLowerCase(),
                                         tokenInAddress: tokenA.address.toLowerCase(),
                                         tokenOutAddress: tokenB.address.toLowerCase(),
                                         tokenInAmount: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
-                                        tokenOutAmount: getDecimalAmount(tokenBAmount, tokenB.decimals).toFixed(),
-                                        tokenPrice: tokenBRate,
+                                        tokenOutAmount: getDecimalAmount(tokenAAmount * tokenBAmount, tokenB.decimals).toFixed(),
+                                        tokenPrice: tokenBAmount,
                                         slippage: parseFloat(slippagePercentage) * 100,
                                         feeTxHash: res.transactionHash,
                                     },
@@ -174,13 +171,13 @@ const MarketOrder = () => {
                                 )
                                 .then((result) => {
                                     if (result.data.status !== 'Success') {
-                                        throw new Error('Limit Order Failed')
+                                        throw new Error('Stop Loss Order Failed')
                                     }
                                     setSwapInProgress(false)
-                                    toast.success('Limit Order Placed!', toastSettings)
+                                    toast.success('Stop Loss Order Placed!', toastSettings)
                                     setTokenAAmount('')
                                     setTransactionFeeId(undefined)
-                                    loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
+                                    loadOpenOrders(bscContext.currentAccountAddress, tokenA.address)
                                 })
                                 .catch((error) => {
                                     toast.error(error.message, toastSettings)
@@ -193,8 +190,6 @@ const MarketOrder = () => {
                         })
                 } else {
                     try {
-                        await bscContext.WBNBContract.deposit({ value: ethers.utils.parseEther(tokenAAmount.toString()) })
-
                         await axios
                             .post(
                                 'https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/createLimitOrder',
@@ -203,8 +198,8 @@ const MarketOrder = () => {
                                     tokenInAddress: tokenA.address.toLowerCase(),
                                     tokenOutAddress: tokenB.address.toLowerCase(),
                                     tokenInAmount: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
-                                    tokenOutAmount: getDecimalAmount(tokenBAmount, tokenB.decimals).toFixed(),
-                                    tokenPrice: tokenBRate,
+                                    tokenOutAmount: getDecimalAmount(tokenAAmount * tokenBAmount, tokenB.decimals).toFixed(),
+                                    tokenPrice: tokenBAmount,
                                     slippage: parseFloat(slippagePercentage) * 100,
                                     feeTxHash: transactionFeeId,
                                 },
@@ -214,13 +209,13 @@ const MarketOrder = () => {
                             )
                             .then((result) => {
                                 if (result.data.status !== 'Success') {
-                                    throw new Error('Limit Order Failed')
+                                    throw new Error('Stop Loss Order Failed')
                                 }
                                 setSwapInProgress(false)
-                                toast.success('Limit Order Placed!', toastSettings)
-                                setTransactionFeeId(undefined)
+                                toast.success('Stop Loss Order Placed!', toastSettings)
                                 setTokenAAmount('')
-                                loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
+                                setTransactionFeeId('')
+                                loadOpenOrders(bscContext.currentAccountAddress, tokenA.address)
                             })
                             .catch((error) => {
                                 toast.error(error.message, toastSettings)
@@ -230,14 +225,15 @@ const MarketOrder = () => {
                         toast.error('Order Placement Failed, Please Try again')
                     }
                     setSwapInProgress(false)
+                    setTransactionFeeId(undefined)
                 }
             }
         }
     }
 
     const onCancelOrderClick = async (orderCode) => {
-        await axios.delete(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/deleteLimitOrder/${tokenB.address.toLowerCase()}/${orderCode}`).then(() => {
-            loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
+        await axios.delete(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/deleteStopLoss/${tokenA.address.toLowerCase()}/${orderCode}`).then(() => {
+            loadOpenOrders(bscContext.currentAccountAddress, tokenA.address)
         })
     }
 
@@ -259,11 +255,11 @@ const MarketOrder = () => {
 
     useEffect(async () => {
         if (bscContext.currentAccountAddress) {
-            const currentlySelectedTokenBalance = bscContext.tokenBalances.find((token) => token.TokenAddress.toLowerCase() === tokenB.address.toLowerCase())
+            const currentlySelectedTokenBalance = bscContext.tokenBalances.find((token) => token.TokenAddress.toLowerCase() === tokenA.address.toLowerCase())
             const tokenQuantity =
                 currentlySelectedTokenBalance?.TokenDivisor === '9' ? getBalanceAmount(currentlySelectedTokenBalance?.TokenQuantity, 9) : getBalanceAmount(currentlySelectedTokenBalance?.TokenQuantity)
-            setTokenABalance(getBalanceAmount(bscContext.currentBnbBalance))
-            setTokenBBalance(tokenQuantity)
+            setTokenABalance(tokenQuantity)
+            setTokenBBalance(getBalanceAmount(bscContext.currentBnbBalance))
         } else {
             setTokenABalance('-')
             setTokenBBalance('-')
@@ -303,19 +299,28 @@ const MarketOrder = () => {
     }, [tokenA])
 
     useEffect(async () => {
-        setLoadingBNBTokenPrice(true)
-        const currentBNBToTokenQuote = await getQuote(pancakePair, tokenA, tokenB, getDecimalAmount(1, tokenA.decimals))
-        setCurrentBNBToTokenPrice(currentBNBToTokenQuote)
-        setLoadingBNBTokenPrice(false)
+        setLoadingQuote(true)
+        if (tokenAAmount) {
+            const newQuote = await getQuote(pancakePair, tokenA, tokenB, getDecimalAmount(tokenAAmount, tokenA.decimals))
+            setTokenBAmount(newQuote)
+        }
+        setLoadingQuote(false)
+    }, [pancakePair])
+
+    useEffect(async () => {
+        setLoadingTokenToBNBPrice(true)
+        const currentTokenToBNB = await getQuote(pancakePair, tokenA, tokenB, getDecimalAmount(1, tokenA.decimals))
+        setCurrentTokenToBNBPrice(currentTokenToBNB)
+        setLoadingTokenToBNBPrice(false)
     }, [pancakePair])
 
     const amountInUSD = currentSwapInUSD > 0 ? new BigNumber(currentSwapInUSD).multipliedBy(new BigNumber(tokenAAmount)).toFormat(3) : '?'
-    const minReceived = new BigNumber(tokenAAmount).multipliedBy(new BigNumber(tokenBRate)).multipliedBy(new BigNumber(parsedSlippagePercentage))
+    const minReceived = tokenAAmount * tokenBAmount * parsedSlippagePercentage
 
     return (
         <>
             <div className="d-flex justify-content-between">
-                <div className="market-trade-buy limit-order">
+                <div className="market-trade-buy stop-loss">
                     <form action="#">
                         <div className="input-group top from">
                             <input
@@ -328,7 +333,6 @@ const MarketOrder = () => {
                                 value={tokenAAmount}
                                 onInput={(e) => {
                                     setTokenAAmount(e.target.value)
-                                    setTokenBAmount(tokenBRate ? formatMinMaxDecimalsBN(new BigNumber(e.target.value).multipliedBy(new BigNumber(tokenBRate)), 3) : '')
                                 }}
                             />
                             <div className="token-A-balance">
@@ -350,34 +354,13 @@ const MarketOrder = () => {
                             </div>
                             <div className="sub-price">In USD: {tokenAAmount ? `$${amountInUSD}` : '-'}</div>
                             <div className="input-group-append">
-                                <Button title={tokenA.displaySymbol || tokenA.symbol} disabled />
+                                <Button className="token-swap-from" title={tokenA.displaySymbol || tokenA.symbol} onClick={() => toggleShowTokenModal(!showTokenModal)} />
                             </div>
                         </div>
-
-                        <div className="input-group rate">
-                            <input
-                                type="number"
-                                className="form-control"
-                                required
-                                value={tokenBRate}
-                                onWheel={() => {
-                                    document.activeElement.blur()
-                                }}
-                                onInput={(e) => {
-                                    setTokenBRate(e.target.value)
-                                    setTokenBAmount(tokenAAmount ? formatMinMaxDecimalsBN(new BigNumber(tokenAAmount).multipliedBy(new BigNumber(e.target.value)), 3) : '')
-                                }}
-                            />
-                            <div className="token-B-balance">
-                                <Button
-                                    title="CURRENT"
-                                    onClick={() => {
-                                        setTokenBRate(currentBNBToTokenPrice)
-                                        setTokenBAmount(tokenAAmount ? formatMinMaxDecimalsBN(new BigNumber(tokenAAmount).multipliedBy(new BigNumber(currentBNBToTokenPrice)), 3) : '')
-                                    }}
-                                />
-                                {`${tokenA.displaySymbol} per ${tokenB.symbol}`}
-                            </div>
+                        <div className="token-conversion">
+                            <span>
+                                {`1 ${tokenA.displaySymbol || tokenA.symbol}`} &#8776; {`${currentTokenToBNBPrice} ${tokenB.symbol}`}
+                            </span>
                         </div>
                         <div className="input-group to">
                             <input
@@ -390,28 +373,33 @@ const MarketOrder = () => {
                                 }}
                                 onInput={(e) => {
                                     setTokenBAmount(e.target.value)
-                                    setTokenBRate(tokenAAmount ? formatMinMaxDecimalsBN(new BigNumber(e.target.value).dividedBy(new BigNumber(tokenAAmount)), 3) : '-')
                                 }}
                             />
                             <div className="token-B-balance">
+                                <Button
+                                    title="CURRENT"
+                                    onClick={() => {
+                                        setTokenBAmount(currentTokenToBNBPrice)
+                                    }}
+                                />
                                 <div className="balance">
                                     Change:{' '}
                                     {tokenBAmount
-                                        ? new BigNumber(tokenBRate)
-                                              .minus(new BigNumber(currentBNBToTokenPrice))
-                                              .dividedBy(new BigNumber(currentBNBToTokenPrice))
+                                        ? new BigNumber(tokenBAmount)
+                                              .minus(new BigNumber(currentTokenToBNBPrice))
+                                              .dividedBy(new BigNumber(currentTokenToBNBPrice))
                                               .multipliedBy(new BigNumber(100))
                                               .toFixed(2)
                                         : '-'}
                                     %
                                 </div>
                             </div>
-                            <div className="sub-price">Min Receieved: {!minReceived.isNaN() ? formatMinMaxDecimalsBN(minReceived, 3) : '-'}</div>
+                            <div className="sub-price">Min Receieved: {minReceived.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 8 })}</div>
                             <div className="input-group-append">
-                                <Button className="token-swap-to" title={tokenB.displaySymbol || tokenB.symbol} onClick={() => toggleShowTokenModal(!showTokenModal)} />
+                                <Button className="token-swap-to" title={tokenB.displaySymbol || tokenB.symbol} disabled />
                             </div>
                         </div>
-                        <p>Limit Order will trigger if {tokenB.symbol} falls below this price.</p>
+                        <p>Stop Loss will trigger if {tokenA.symbol} falls below this price.</p>
 
                         <div className="slippage-container">
                             <p>Remember to adjust the correct slippage for your token.</p>
@@ -452,10 +440,7 @@ const MarketOrder = () => {
                                                 onClick={async () => {
                                                     setApproveInProgress(true)
                                                     try {
-                                                        const tx = await tokenAContract.approve(
-                                                            bscContext.utopiaLimitOrderAddress,
-                                                            '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
-                                                        )
+                                                        const tx = await tokenAContract.approve(bscContext.utopiaStopLossAddress, '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
                                                         await tx.wait()
                                                         setNeedsApproval(false)
                                                         setApproveInProgress(false)
@@ -512,10 +497,10 @@ const MarketOrder = () => {
                                                 openLimitOrders
                                                     .filter((order) => order.orderStatus === 'PENDING' || (order.orderStatus === 'ATTEMPTED' && order.attempts < 5))
                                                     .map((openOrder, index) => {
-                                                        const percentChange = currentBNBToTokenPrice
+                                                        const percentChange = currentTokenToBNBPrice
                                                             ? new BigNumber(openOrder.tokenPrice)
-                                                                  .minus(new BigNumber(currentBNBToTokenPrice))
-                                                                  .dividedBy(new BigNumber(currentBNBToTokenPrice))
+                                                                  .minus(new BigNumber(currentTokenToBNBPrice))
+                                                                  .dividedBy(new BigNumber(currentTokenToBNBPrice))
                                                                   .multipliedBy(new BigNumber(100))
                                                                   .toFixed(3)
                                                             : '-'
@@ -561,10 +546,10 @@ const MarketOrder = () => {
                                                 openLimitOrders
                                                     .filter((order) => order.orderStatus === 'COMPLETED')
                                                     .map((openOrder, index) => {
-                                                        const percentChange = currentBNBToTokenPrice
+                                                        const percentChange = currentTokenToBNBPrice
                                                             ? new BigNumber(openOrder.tokenPrice)
-                                                                  .minus(new BigNumber(currentBNBToTokenPrice))
-                                                                  .dividedBy(new BigNumber(currentBNBToTokenPrice))
+                                                                  .minus(new BigNumber(currentTokenToBNBPrice))
+                                                                  .dividedBy(new BigNumber(currentTokenToBNBPrice))
                                                                   .multipliedBy(new BigNumber(100))
                                                                   .toFixed(3)
                                                             : '-'
@@ -607,9 +592,9 @@ const MarketOrder = () => {
                                                 openLimitOrders
                                                     .filter((order) => order.orderStatus === 'ATTEMPTED' && order.attempts === 5)
                                                     .map((openOrder, index) => {
-                                                        const percentChange = currentBNBToTokenPrice
+                                                        const percentChange = currentTokenToBNBPrice
                                                             ? new BigNumber(openOrder.tokenPrice)
-                                                                  .minus(new BigNumber(currentBNBToTokenPrice))
+                                                                  .minus(new BigNumber(currentTokenToBNBPrice))
                                                                   .dividedBy(new BigNumber(openOrder.tokenPrice))
                                                                   .multipliedBy(new BigNumber(100))
                                                                   .toFixed(3)
@@ -619,11 +604,11 @@ const MarketOrder = () => {
                                                             <div className="open-limit-order">
                                                                 <p>{`Order Code: ${openOrder.orderCode.substr(0, 8)}...`}</p>
                                                                 <div className="open-limit-order-row">
-                                                                    <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol}`}</span>
+                                                                    <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.symbol}`}</span>
                                                                     <span>{`Order Status: ${openOrder.orderStatus}`}</span>
                                                                 </div>
                                                                 <div className="open-limit-order-row">
-                                                                    <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.symbol}`}</span>
+                                                                    <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.displaySymbol}`}</span>
                                                                     <span>{`Percent Change: ${percentChange}%`}</span>
                                                                 </div>
                                                                 <div className="open-limit-order-row">
@@ -656,9 +641,9 @@ const MarketOrder = () => {
                                 <>
                                     {allOpenLimitOrders.length ? (
                                         allOpenLimitOrders.map((openOrder, index) => {
-                                            const percentChange = currentBNBToTokenPrice
+                                            const percentChange = currentTokenToBNBPrice
                                                 ? new BigNumber(openOrder.tokenPrice)
-                                                      .minus(new BigNumber(currentBNBToTokenPrice))
+                                                      .minus(new BigNumber(currentTokenToBNBPrice))
                                                       .dividedBy(new BigNumber(openOrder.tokenPrice))
                                                       .multipliedBy(new BigNumber(100))
                                                       .toFixed(3)
@@ -669,11 +654,11 @@ const MarketOrder = () => {
                                                     <p>{`Order Code: ${openOrder.orderCode.substr(0, 4)}...${openOrder.orderCode.substr(49, 5)}`}</p>
                                                     <p role="button" onClick={() => copyToClipboard(openOrder.ordererAddress)}>{`Owner: ${openOrder.ordererAddress}`}</p>
                                                     <div className="open-limit-order-row">
-                                                        <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol}`}</span>
+                                                        <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.symbol}`}</span>
                                                         <span>{`Order Status: ${openOrder.orderStatus}`}</span>
                                                     </div>
                                                     <div className="open-limit-order-row">
-                                                        <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.symbol}`}</span>
+                                                        <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.displaySymbol}`}</span>
                                                         <span>{`Percent Change: ${percentChange}%`}</span>
                                                     </div>
                                                     {index !== openLimitOrders.length - 1 && <hr />}
@@ -694,7 +679,7 @@ const MarketOrder = () => {
                 toggleShowTokenModal={toggleShowTokenModal}
                 show={showTokenModal}
                 onTokenSelect={async (token) => {
-                    setTokenB(token)
+                    setTokenA(token)
                     toggleShowTokenModal(false)
                 }}
             />
@@ -702,4 +687,4 @@ const MarketOrder = () => {
     )
 }
 
-export default MarketOrder
+export default StopLoss
