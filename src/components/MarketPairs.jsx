@@ -1,10 +1,13 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-irregular-whitespace */
 import SearchAutocomplete from 'common/components/SearchAutocomplete'
+// import BSCContext from 'context/BSCContext'
 import TokenContext from 'context/TokenContext'
 import React, { useContext } from 'react'
 import supportedPancakeTokens from '../common/constants/tokens/supportedPancakeTokens.json'
 
 export default function MarketPairs() {
+    // const bscContext = useContext(BSCContext)
     const tokenContext = useContext(TokenContext)
 
     const options = supportedPancakeTokens.tokens.map((token) => ({
@@ -27,6 +30,12 @@ export default function MarketPairs() {
                     <span className="price">{`$${!Number.isNaN(tokenContext.currentTokenPriceInUSD) ? tokenContext.currentTokenPriceInUSD : '-'}`}</span>
                 </div>
             </div>
+            {/* {w?.ethereum && (
+                // eslint-disable-next-line jsx-a11y/interactive-supports-focus
+                <div className="underlined-button" role="button" onClick={() => bscContext.registerToken(tokenContext.currentlySelectedToken)}>
+                    Add to Wallet{' '}
+                </div>
+            )} */}
         </div>
     )
 }

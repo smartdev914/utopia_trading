@@ -15,7 +15,7 @@ const SectionWrapper = styled.div`
         padding: 0px 40px 0px 125px;
 
         @media only screen and (max-width: 768px) {
-            padding: 0px 40px 0px 125px;
+            padding: 0px;
         }
     }
 

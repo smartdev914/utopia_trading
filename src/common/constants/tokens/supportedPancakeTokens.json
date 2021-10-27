@@ -14,7 +14,8 @@
       "decimals": 9,
       "logoURI": "https://utopia.cc/assets/image/utopia/utopiaUDarkbg.svg",
       "name": "Utopia Token",
-      "symbol": "UTOPIA"
+      "symbol": "UTOPIA",
+      "tax": 10
     },
     {
       "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
@@ -23,6 +24,33 @@
       "logoURI": "https://pancakeswap.finance/images/tokens/0xe9e7cea3dedca5984780bafc599bd69add087d56.png",
       "name": "BUSD Token",
       "symbol": "BUSD"
+    },
+    {
+      "address": "0x55b53855eae06c4744841dbfa06fce335db4355b",
+      "chainId": 56,
+      "decimals": 9,
+      "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/12987.png",
+      "name": "SSB Token",
+      "symbol": "SSB",
+      "tax": 10
+    },
+    {
+      "address": "0x6169b3b23e57de79a6146a2170980ceb1f83b9e0",
+      "chainId": 56,
+      "decimals": 9,
+      "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/12954.png",
+      "name": "VETTER Token",
+      "symbol": "VETTER",
+      "tax": 10
+    },
+    {
+      "address": "0xda6802bbec06ab447a68294a63de47ed4506acaa",
+      "chainId": 56,
+      "decimals": 9,
+      "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/12875.png",
+      "name": "CRYPT Token",
+      "symbol": "CRYPT",
+      "tax": 15
     },
     {
       "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
@@ -86,7 +114,8 @@
       "decimals": 9,
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x8076C74C5e3F5852037F31Ff0093Eeb8c8ADd8D3/logo.png",
       "name": "SafeMoon",
-      "symbol": "SAFEMOON"
+      "symbol": "SAFEMOON",
+      "tax": 10
     },
     {
       "address": "0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F",

@@ -46,6 +46,7 @@ const NavbarWrapper = styled.nav`
 export const MenuArea = styled.div`
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     .menu {
         display: flex;
         align-items: center;

@@ -31,7 +31,7 @@ export const calculateSlippage = async (tokenContract) => {
         }
     }
 
-    return totalSlippage
+    return totalSlippage < 100 ? totalSlippage : null
 }
 
 export const getTokenPriceInUSD = async (tokenAddress, decimals) => {
@@ -83,10 +83,10 @@ export const getQuote = async (tokenPair, tokenA, tokenB, amountIn) => {
         if (token0.toLowerCase() === tokenA.address.toLowerCase()) {
             const quote = getBalanceAmount(getAmountOut(amountIn, reserves[0], reserves[1]), tokenB.decimals)
 
-            return tokenB.decimals === 9 ? quote.toFixed(0) : quote.toFixed(8)
+            return tokenB.decimals === 9 ? quote.toFixed(0) : quote.toFixed(12)
         }
         const quote = getBalanceAmount(getAmountOut(amountIn, reserves[1], reserves[0]), tokenB.decimals)
-        return tokenB.decimals === 9 ? quote.toFixed(0) : quote.toFixed(8)
+        return tokenB.decimals === 9 ? quote.toFixed(0) : quote.toFixed(12)
     }
     return 0
 }

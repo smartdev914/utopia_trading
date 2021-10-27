@@ -6,7 +6,7 @@ import { Spinner } from 'react-bootstrap'
 import { getPancakeFactoryPair } from 'common/utils/tokens'
 import { Img } from 'react-image'
 
-const TokenModal = ({ show, onTokenSelect, toggleShowTokenModal }) => {
+const TokenModal = ({ hideBar, show, onTokenSelect, toggleShowTokenModal }) => {
     const [searchInput, setSearchInput] = useState('')
     const [unlistedToken, setUnlistedToken] = useState()
     const [loadingTokenInfo, setLoadinTokenInfo] = useState(false)
@@ -80,14 +80,17 @@ const TokenModal = ({ show, onTokenSelect, toggleShowTokenModal }) => {
                     <button type="button" className="btn-close" aria-label="Close" onClick={() => toggleShowTokenModal(false)} />
                     <h2>Select Token to Swap</h2>
                     <hr />
-                    <input
-                        value={searchInput}
-                        onChange={(e) => setSearchInput(e.target.value)}
-                        type="text"
-                        className="form-control"
-                        placeholder="&#x1F50D;  Search token name / address..."
-                        aria-describedby="inputGroup-sizing-sm"
-                    />
+                    {!hideBar && (
+                        <input
+                            value={searchInput}
+                            onChange={(e) => setSearchInput(e.target.value)}
+                            type="text"
+                            className="form-control"
+                            placeholder="&#x1F50D;  Search token name / address..."
+                            aria-describedby="inputGroup-sizing-sm"
+                        />
+                    )}
+
                     {filteredOptions.map((token) => (
                         <>
                             <div role="button" className="token-option" onClick={() => onTokenSelect(token.value)} tabIndex={0}>

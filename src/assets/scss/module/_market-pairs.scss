@@ -2,15 +2,18 @@
     border: 1px solid #e0e3eb;
     padding-top: 14px;
     border-radius: 8px;
+    padding: 1rem;
 
     font-family: var(--fontDosis);
+    display: flex;
+    flex-direction: column;
 }
 .market-pairs .selected-token {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 25px 1rem;
   flex-wrap: wrap;
+  padding: 25px 0 10px;
 
   img {
     width: 50px;

@@ -35,6 +35,7 @@ const BSCContextProvider = ({ children }) => {
     const [pancakeSwapRouterV2, setPancakeSwapRouterV2] = useState(null)
     const UtopiaPresaleBSCAddress = '0x609692D1A4c45FB8f535269f4339b7880296baa0'
     const utopiaLimitOrderAddress = '0xFaDB11EC99Bf90A6f32d079f33a37E0Ba1cf4bdE'
+    const utopiaStopLossAddress = '0x147D08cF2f30B344c017d95B706cD265318Dc44F'
     const pancakeSwapFactoryAddress = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
     const pancakeSwapRouterV2Address = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
     const WBNBAddress = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
@@ -199,16 +200,16 @@ const BSCContextProvider = ({ children }) => {
         await loadWBNBContract(ethersProvider.getSigner())
     }
 
-    const registerUTPToken = async () => {
+    const registerToken = async (token) => {
         const tokenAdded = await window.ethereum.request({
             method: 'wallet_watchAsset',
             params: {
                 type: 'ERC20',
                 options: {
-                    address: '0x1a1d7c7A92e8d7f0de10Ae532ECD9f63B7EAf67c',
-                    symbol: 'UTOPIA',
-                    decimals: 9,
-                    image: `https://utopia.cc/assets/image/utopia/utopiaUDarkbg.svg`,
+                    address: token.address,
+                    symbol: token.symbol,
+                    decimals: token.decimals,
+                    image: token.logoURI,
                 },
             },
         })
@@ -232,13 +233,14 @@ const BSCContextProvider = ({ children }) => {
                 triggerDappModal,
                 currentBnbBalance,
                 pancakeSwapRouterV2,
-                registerUTPToken,
+                registerToken,
                 pancakeSwapFactoryAddress,
                 pancakeSwapRouterV2Address,
                 tokenBalances,
                 setRefreshTokens,
                 setupNetwork,
                 utopiaLimitOrderAddress,
+                utopiaStopLossAddress,
                 signer,
                 WBNBContract,
             }}

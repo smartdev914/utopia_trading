@@ -149,6 +149,33 @@ const supportedChartTokens = [
         address: '0x4bd17003473389a42daf6a0a729f6fdb328bbbd7',
         pricescale: 10 ** 9,
     },
+    {
+        description: 'VETTER/BNB',
+        exchange: 'Utopia',
+        full_name: 'Utopia:VETTER/BNB',
+        symbol: 'VETTER/BNB',
+        type: 'crypto',
+        address: '0x6169b3b23e57de79a6146a2170980ceb1f83b9e0',
+        pricescale: 10 ** 12,
+    },
+    {
+        description: 'SSB/BNB',
+        exchange: 'Utopia',
+        full_name: 'Utopia:SSB/BNB',
+        symbol: 'SSB/BNB',
+        type: 'crypto',
+        address: '0x55b53855eae06c4744841dbfa06fce335db4355b',
+        pricescale: 10 ** 12,
+    },
+    {
+        description: 'CRYPT/BNB',
+        exchange: 'Utopia',
+        full_name: 'Utopia:CRYPT/BNB',
+        symbol: 'CRYPT/BNB',
+        type: 'crypto',
+        address: '0xda6802bbec06ab447a68294a63de47ed4506acaa',
+        pricescale: 10 ** 12,
+    },
 ]
 
 export default {
