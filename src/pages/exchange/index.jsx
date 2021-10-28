@@ -27,16 +27,16 @@ const Home = () => {
             <ErrorBoundary>
                 <div className="container-fluid mtb15 no-fluid">
                     <div className="row sm-gutters">
-                        <div className="col-sm-12 col-md-3">
-                            <MarketPairs />
-                            <MarketNews />
+                        <div className="col-md-3">
+                            <MarketExchange />
                         </div>
                         <div className="col-sm-12 col-md-6">
                             <ThemeConsumer>{({ data }) => (data.theme === 'light' ? <DynamicTVS /> : <DynamicTVSDark />)}</ThemeConsumer>
                             <MarketHistory />
                         </div>
-                        <div className="col-md-3">
-                            <MarketExchange />
+                        <div className="col-sm-12 col-md-3">
+                            <MarketPairs />
+                            <MarketNews />
                             <div className="utopia-logo-u-main">
                                 <Image src="/assets/gifs/utopiaLogoGif1.gif" width={600} height={600} alt="utopia Logo" priority />
                             </div>
