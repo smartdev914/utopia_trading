@@ -55,7 +55,7 @@ const MarketOrder = () => {
 
     const loadOpenOrders = async (currentAccountAddress, tokenAddress) => {
         if (currentAccountAddress && tokenAddress) {
-            await axios.get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrieveLimitOrders/${currentAccountAddress.toLowerCase()}/${tokenAddress.toLowerCase()}`).then((res) => {
+            await axios.get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrieveLimitBuys/${currentAccountAddress.toLowerCase()}/${tokenAddress.toLowerCase()}`).then((res) => {
                 if (Array.isArray(res.data)) {
                     setOpenLimitOrders(res.data)
                 }
@@ -65,7 +65,7 @@ const MarketOrder = () => {
 
     const loadAllOpenOrders = async (tokenAddress) => {
         if (tokenAddress) {
-            await axios.get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrievePendingLimitOrders/${tokenAddress.toLowerCase()}`).then((res) => {
+            await axios.get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrievePendingLimitBuys/${tokenAddress.toLowerCase()}`).then((res) => {
                 if (Array.isArray(res.data)) {
                     setAllOpenLimitOrders(res.data)
                 } else {
@@ -157,7 +157,7 @@ const MarketOrder = () => {
 
                             await axios
                                 .post(
-                                    'https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/createLimitOrder',
+                                    'https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/createLimitBuy',
                                     {
                                         ordererAddress: bscContext.currentAccountAddress.toLowerCase(),
                                         tokenInAddress: tokenA.address.toLowerCase(),
