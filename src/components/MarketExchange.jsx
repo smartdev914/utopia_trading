@@ -31,6 +31,9 @@ export default function MarketTrade() {
 
                     <Tab eventKey="stop-limit" title="STOP LOSS">
                         <StopLoss />
+                        {/* <div className="d-flex justify-content-between">
+                            <div className="coming-soon">Coming Soon...</div>
+                        </div> */}
                     </Tab>
                 </Tabs>
             </div>
