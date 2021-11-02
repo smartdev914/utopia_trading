@@ -128,6 +128,9 @@ const MarketOrder = () => {
         // listens for change in tokens to get new pancake pair contract
         setLoading(true)
         const tokenPair = await getPancakeFactoryPair(tokenA.address, tokenB.address)
+        setTokenAAmount('')
+        setTokenBRate('')
+        setTokenBAmount('')
         setPancakePair(tokenPair)
         setLoading(false)
     }, [tokenA, tokenB])
@@ -221,12 +224,13 @@ const MarketOrder = () => {
                                 })
                                 .catch((error) => {
                                     toast.error(error.message, toastSettings)
+                                    toast.info('Please try again in 5 mins', toastSettings)
                                     setSwapInProgress(false)
                                 })
                         })
                         .catch(() => {
                             setSwapInProgress(false)
-                            toast.error('Transaction Canceled')
+                            toast.error('Transaction Canceled', toastSettings)
                         })
                 } else {
                     try {
@@ -264,7 +268,7 @@ const MarketOrder = () => {
                                 setSwapInProgress(false)
                             })
                     } catch {
-                        toast.error('Order Placement Failed, Please Try again')
+                        toast.error('Order Placement Failed, Please Try again', toastSettings)
                     }
                     setSwapInProgress(false)
                 }
@@ -285,7 +289,8 @@ const MarketOrder = () => {
                 <div role="button" onClick={() => onCancelOrderClick(orderCode)}>
                     Yes
                 </div>
-            </div>
+            </div>,
+            toastSettings
         )
     }
 

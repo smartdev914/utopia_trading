@@ -6,7 +6,7 @@ import BSCContext from 'context/BSCContext'
 import 'rc-slider/assets/index.css'
 import MarketOrder from 'common/components/MarketOrder'
 import LimitOrder from 'common/components/LimitOrder'
-// import StopLoss from 'common/components/StopLoss'
+import StopLoss from 'common/components/StopLoss'
 
 export default function MarketTrade() {
     const bscContext = useContext(BSCContext)
@@ -30,10 +30,7 @@ export default function MarketTrade() {
                     </Tab>
 
                     <Tab eventKey="stop-limit" title="STOP LOSS">
-                        {/* <StopLoss /> */}
-                        <div className="d-flex justify-content-between">
-                            <div className="coming-soon">Coming Soon...</div>
-                        </div>
+                        <StopLoss />
                     </Tab>
                 </Tabs>
             </div>
