@@ -345,7 +345,7 @@ const MarketOrder = () => {
             setCurrentTokenAInUSD(0)
             setCurrentTokenBInUSD(0)
         }
-    }, [tokenA])
+    }, [tokenA, tokenB])
 
     useEffect(async () => {
         setLoadingBNBTokenPrice(true)
@@ -354,8 +354,8 @@ const MarketOrder = () => {
         setLoadingBNBTokenPrice(false)
     }, [pancakePair, tokenA, tokenB])
 
-    const amountInUSD = currentTokenAInUSD > 0 ? new BigNumber(currentTokenAInUSD).multipliedBy(new BigNumber(tokenAAmount)).toFormat(3) : '~ $-'
-    const rateInUSD = tokenBRate > 0 ? `~ $${new BigNumber(currentTokenBInUSD).multipliedBy(new BigNumber(tokenBRate)).toFormat(3)}` : '-'
+    const amountInUSD = currentTokenAInUSD > 0 ? new BigNumber(currentTokenAInUSD).multipliedBy(new BigNumber(tokenAAmount)).toFormat(tokenA.decimals === 9 ? 10 : 3) : '~ $-'
+    const rateInUSD = tokenBRate > 0 ? `~ $${new BigNumber(currentTokenBInUSD).multipliedBy(new BigNumber(tokenBRate)).toFormat(tokenA.decimals === 9 ? 10 : 3)}` : '-'
     const minReceived = new BigNumber(tokenAAmount).multipliedBy(new BigNumber(tokenBRate)).multipliedBy(new BigNumber(parsedSlippagePercentage))
 
     return (

@@ -61,54 +61,68 @@
     font-weight: 300;
 }
 
-.market-trade .input-group {
+.market-trade {
     margin-bottom: 10px;
     position: relative;
 
-    &.top {
-      margin-bottom: 80px;
-    }
+    .input-group {
+      &.top {
+        margin-bottom: 80px;
+      }
 
-    .input-group-append button{
-      font-size: 14px;
-      background: #F9DF00;
-      color: #1733AA;
-      position: absolute;
-      right: 8px;
-      bottom: 8px;
-      height: 24px;
-      min-height: unset;
-      min-width: unset;
-      border-radius: 15px;
-      padding: 4px;
-    }
+      &.rate {
+        margin-bottom: 10px
+      }
 
-    .form-control {
-      height: 100px;
-      position: relative;
-      padding-top: 0px;
-      padding-left: 17px;
-      font-weight: 500;
-      font-size: 24px;
-      color: #F9DF00;
-      border-radius: 12px !important;
-    }
+      .input-group-append button{
+        font-size: 14px;
+        background: #F9DF00;
+        color: #1733AA;
+        position: absolute;
+        right: 8px;
+        bottom: 8px;
+        height: 24px;
+        min-height: unset;
+        min-width: unset;
+        border-radius: 15px;
+        padding: 4px;
+      }
 
-    &.rate {
-      width: calc(100% - 75px);
+      .form-control {
+        height: 100px;
+        position: relative;
+        padding-top: 0px;
+        padding-left: 17px;
+        font-weight: 500;
+        font-size: 24px;
+        color: #F9DF00;
+        border-radius: 12px !important;
+      }
 
-      .swap-coin-icon {
-        top: 50%;
-        left: unset;
-        right: calc(-32.5px - 27.5px);
-        transform: translate(0, -50%);
+
+
+      .sub-price {
+        position: absolute;
+        bottom: 8px;
+        left: 18px;
       }
     }
 
-    .sub-price {
-      position: absolute;
-      bottom: 8px;
-      left: 18px;
+
+
+    .limit-order {
+      .input-group {
+        &.rate {
+          width: calc(100% - 75px);
+
+          .swap-coin-icon {
+            top: 50%;
+            left: unset;
+            right: calc(-32.5px - 27.5px);
+            transform: translate(0, -50%);
+          }
+        }
+      }
     }
 }
 
@@ -347,15 +361,28 @@
   content: "\25BC"
 }
 
-.market-trade .stop-loss .token-swap-from::after {
-  content: "\25BC"
-}
+
 .market-trade .stop-loss .token-swap-to:after {
   content: ""
 }
 
 .market-trade .input-group-append button{
   cursor: auto;
+}
+
+.market-trade .stop-loss .input-group-append button {
+  &.token-swap-from {
+    cursor: pointer;
+
+    &::after {
+      content: "\25BC"
+
+    }
+  }
+
+  &.token-swap-to {
+    cursor: auto;
+  }
 }
 
 .market-trade .input-group-append button.token-swap-to {

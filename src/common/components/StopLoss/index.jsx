@@ -46,7 +46,8 @@ const StopLoss = () => {
     const [openLimitOrders, setOpenLimitOrders] = useState([])
     const [allOpenLimitOrders, setAllOpenLimitOrders] = useState([])
 
-    const [currentSwapInUSD, setCurrentSwapInUSD] = useState(0)
+    const [currentTokenAInUSD, setCurrentTokenAInUSD] = useState(0)
+    const [currentTokenBInUSD, setCurrentTokenBInUSD] = useState(0)
     const [currentTokenToBNBPrice, setCurrentTokenToBNBPrice] = useState(null)
     const [loadingBNBTokenPrice, setLoadingTokenToBNBPrice] = useState(false)
     const [transactionFeeId, setTransactionFeeId] = useState()
@@ -297,12 +298,15 @@ const StopLoss = () => {
 
     useEffect(async () => {
         try {
-            const currentTokenInUSD = await getTokenPriceInUSD(tokenA.address, tokenA.decimals)
-            setCurrentSwapInUSD(currentTokenInUSD)
+            const tokenAInUSD = await getTokenPriceInUSD(tokenA.address, tokenA.decimals)
+            const tokenBInUSD = await getTokenPriceInUSD(tokenB.address, tokenB.decimals)
+            setCurrentTokenAInUSD(tokenAInUSD)
+            setCurrentTokenBInUSD(tokenBInUSD)
         } catch (e) {
-            setCurrentSwapInUSD(0)
+            setCurrentTokenAInUSD(0)
+            setCurrentTokenBInUSD(0)
         }
-    }, [tokenA])
+    }, [tokenA, tokenB])
 
     useEffect(async () => {
         setLoadingQuote(true)
@@ -320,7 +324,8 @@ const StopLoss = () => {
         setLoadingTokenToBNBPrice(false)
     }, [pancakePair])
 
-    const amountInUSD = currentSwapInUSD > 0 ? new BigNumber(currentSwapInUSD).multipliedBy(new BigNumber(tokenAAmount)).toFormat(3) : '?'
+    const amountInUSD = currentTokenAInUSD > 0 ? new BigNumber(currentTokenAInUSD).multipliedBy(new BigNumber(tokenAAmount)).toFormat(3) : '?'
+    const rateInUSD = tokenBRate > 0 ? `~ $${new BigNumber(currentTokenBInUSD).multipliedBy(new BigNumber(tokenBRate)).toFormat(tokenA.decimals === 9 ? 10 : 3)}` : '-'
     const minReceived = new BigNumber(tokenAAmount).multipliedBy(new BigNumber(tokenBRate)).multipliedBy(new BigNumber(parsedSlippagePercentage))
     return (
         <>
@@ -387,6 +392,7 @@ const StopLoss = () => {
                                 />
                                 {`${tokenA.symbol} per ${tokenB.displaySymbol}`}
                             </div>
+                            <div className="sub-price">Rate In USD: {rateInUSD}</div>
                         </div>
                         <div className="input-group to">
                             <input
