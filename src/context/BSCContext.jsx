@@ -35,7 +35,7 @@ const BSCContextProvider = ({ children }) => {
     const [pancakeSwapRouterV2, setPancakeSwapRouterV2] = useState(null)
     const UtopiaPresaleBSCAddress = '0x609692D1A4c45FB8f535269f4339b7880296baa0'
     const utopiaLimitOrderAddress = '0xFaDB11EC99Bf90A6f32d079f33a37E0Ba1cf4bdE'
-    const utopiaStopLossAddress = '0x147D08cF2f30B344c017d95B706cD265318Dc44F'
+    const utopiaStopLossAddress = '0x8f4E2B6CFbC53A68A0DEB6eD1ea8dae678eABAf8'
     const pancakeSwapFactoryAddress = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
     const pancakeSwapRouterV2Address = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
     const WBNBAddress = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'

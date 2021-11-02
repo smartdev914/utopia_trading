@@ -615,9 +615,9 @@ const StopLoss = () => {
                                         </div>
                                     ) : (
                                         <>
-                                            {openLimitOrders.filter((order) => order.orderStatus === 'ATTEMPTED' && order.attempts === 5).length ? (
+                                            {openLimitOrders.filter((order) => (order.orderStatus === 'ATTEMPTED' && order.attempts === 5) || order.orderStatus === 'FAILED').length ? (
                                                 openLimitOrders
-                                                    .filter((order) => order.orderStatus === 'ATTEMPTED' && order.attempts === 5)
+                                                    .filter((order) => (order.orderStatus === 'ATTEMPTED' && order.attempts === 5) || order.orderStatus === 'FAILED')
                                                     .map((openOrder, index) => {
                                                         const percentChange = currentTokenToBNBPrice
                                                             ? new BigNumber(openOrder.tokenPrice)

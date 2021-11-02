@@ -95,9 +95,13 @@
     }
 
     &.rate {
-      .form-control {
-        padding-top: 25px;
-        height: 75px;
+      width: calc(100% - 75px);
+
+      .swap-coin-icon {
+        top: 50%;
+        left: unset;
+        right: calc(-32.5px - 27.5px);
+        transform: translate(0, -50%);
       }
     }
 
@@ -356,6 +360,18 @@
 
 .market-trade .input-group-append button.token-swap-to {
   cursor: pointer;
+}
+
+.market-trade .limit-order .input-group:not(.isBnb) .input-group-append button {
+  cursor: pointer;
+
+  &::after {
+    content: "\25BC"
+  }
+}
+
+.market-trade .limit-order .input-group.isBnb .input-group-append button {
+  cursor: none;
 }
 
 .market-trade-buy .slippage-container {
