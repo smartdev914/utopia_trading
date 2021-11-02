@@ -20,6 +20,12 @@ const ComponentWrapper = styled.div`
         border-bottomr-right-radius: 20px;
     }
 
+    .unlisted-token {
+        .token-address {
+            font-size: 14px;
+        }
+    }
+
     .autocomplete-option {
         color: #fff;
         font-size: 20px;
