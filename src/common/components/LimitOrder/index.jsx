@@ -182,7 +182,7 @@ const MarketOrder = () => {
                     value: getDecimalAmount(transactionFee, 18).toFixed(0),
                 }
                 if (!transactionFeeId) {
-                    toast.info('Please Approve Limit Order Fee')
+                    toast.info(`Please Approve Transaction Fee ${enoughUTOPIAHeld ? '($0.50)' : '($1.00)'} BNB`, toastSettings)
 
                     await window.web3.eth
                         .sendTransaction(tx)
@@ -230,7 +230,7 @@ const MarketOrder = () => {
                         })
                         .catch(() => {
                             setSwapInProgress(false)
-                            toast.error('Transaction Canceled', toastSettings)
+                            toast.error('Transaction Failed (or timed out) Please try again.', toastSettings)
                         })
                 } else {
                     try {
@@ -358,10 +358,6 @@ const MarketOrder = () => {
     const rateInUSD = tokenBRate > 0 ? `~ $${new BigNumber(currentTokenBInUSD).multipliedBy(new BigNumber(tokenBRate)).toFormat(3)}` : '-'
     const minReceived = new BigNumber(tokenAAmount).multipliedBy(new BigNumber(tokenBRate)).multipliedBy(new BigNumber(parsedSlippagePercentage))
 
-    // calculate percent change
-    const originalAmount = new BigNumber(tokenAAmount).multipliedBy(new BigNumber(currentTokenAToTokenBPrice))
-    const currentPercentChange = new BigNumber(tokenBAmount).minus(originalAmount).dividedBy(originalAmount).multipliedBy(new BigNumber(100)).toFixed(2)
-
     return (
         <>
             <div className="d-flex justify-content-between">
@@ -435,7 +431,8 @@ const MarketOrder = () => {
                             </div>
                         </div>
                         <p>
-                            Limit {`${fromBNB ? 'Buy' : 'Sell'}`} will trigger if {tokenB.displaySymbol || tokenB.symbol} {`${fromBNB ? 'falls below' : 'reaches above'}`} this Rate.
+                            Limit {`${fromBNB ? 'Buy' : 'Sell'}`} will trigger if {fromBNB ? tokenB.displaySymbol || tokenB.symbol : tokenA.displaySymbol || tokenA.symbol}{' '}
+                            {`${fromBNB ? 'falls below' : 'rises above'}`} this rate.
                         </p>
                         <div className={`input-group to ${!fromBNB ? 'isBnb' : ''}`}>
                             <input
