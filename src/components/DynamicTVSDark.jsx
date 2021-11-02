@@ -15,10 +15,19 @@ export default function DynamicTVS() {
                 interval: '15', // default interval
                 container: 'tv_chart_container',
                 datafeed: Datafeed,
+                disabled_features: ['use_localstorage_for_settings'],
                 library_path: '/libs/charting_library_cloned_data/charting_library/',
                 height: '100%',
                 width: '100%',
                 theme: 'Dark',
+                custom_css_url: '/assets/css/tradingView.css',
+                applyOverrides: true,
+                overrides: {
+                    'paneProperties.background': '#150035',
+                    'paneProperties.backgroundType': 'solid',
+                    'paneProperties.backgroundGradientStartColor': '#150035',
+                    'paneProperties.backgroundGradientEndColor': '#150035',
+                },
             })
         }
         initTVwidget()
