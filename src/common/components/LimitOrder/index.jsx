@@ -454,7 +454,7 @@ const MarketOrder = () => {
                                                     try {
                                                         const tx = await tokenAContract.approve(
                                                             bscContext.utopiaLimitOrderAddress,
-                                                            '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+                                                            getDecimalAmount(tokenAAmount, tokenA.decimals).multipliedBy(new BigNumber(1.15)).toFixed(0)
                                                         )
                                                         await tx.wait()
                                                         setNeedsApproval(false)
