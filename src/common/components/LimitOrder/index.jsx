@@ -631,11 +631,11 @@ const MarketOrder = () => {
                                                             >
                                                                 <p>{`Order Code: ${openOrder.orderCode.substr(0, 8)}...`}</p>
                                                                 <div className="open-limit-order-row">
-                                                                    <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol}`}</span>
+                                                                    <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol || tokenA.symbol}`}</span>
                                                                     <span>{`Order Status: ${openOrder.orderStatus}`}</span>
                                                                 </div>
                                                                 <div className="open-limit-order-row">
-                                                                    <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.symbol}`}</span>
+                                                                    <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.displaySymbol || tokenA.symbol}`}</span>
                                                                     <span>{`Percent Change: ${percentChange}%`}</span>
                                                                 </div>
                                                                 {index !== openLimitOrders.length - 1 && <hr />}
@@ -673,11 +673,11 @@ const MarketOrder = () => {
                                                             <div className="open-limit-order">
                                                                 <p>{`Order Code: ${openOrder.orderCode.substr(0, 8)}...`}</p>
                                                                 <div className="open-limit-order-row">
-                                                                    <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol}`}</span>
+                                                                    <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol || tokenA.symbol}`}</span>
                                                                     <span>{`Order Status: ${openOrder.orderStatus}`}</span>
                                                                 </div>
                                                                 <div className="open-limit-order-row">
-                                                                    <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.symbol}`}</span>
+                                                                    <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.displaySymbol || tokenB.symbol}`}</span>
                                                                     <span>{`Percent Change: ${percentChange}%`}</span>
                                                                 </div>
                                                                 <div className="open-limit-order-row">
@@ -723,11 +723,11 @@ const MarketOrder = () => {
                                                     <p>{`Order Code: ${openOrder.orderCode.substr(0, 4)}...${openOrder.orderCode.substr(49, 5)}`}</p>
                                                     <p role="button" onClick={() => copyToClipboard(openOrder.ordererAddress)}>{`Owner: ${openOrder.ordererAddress}`}</p>
                                                     <div className="open-limit-order-row">
-                                                        <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol}`}</span>
+                                                        <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol || tokenA.symbol}`}</span>
                                                         <span>{`Order Status: ${openOrder.orderStatus}`}</span>
                                                     </div>
                                                     <div className="open-limit-order-row">
-                                                        <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.symbol}`}</span>
+                                                        <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.displaySymbol || tokenB.symbol}`}</span>
                                                         <span>{`Percent Change: ${percentChange}%`}</span>
                                                     </div>
                                                     {index !== openLimitOrders.length - 1 && <hr />}
