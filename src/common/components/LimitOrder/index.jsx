@@ -284,11 +284,8 @@ const MarketOrder = () => {
 
     const confirmCancelation = async (orderCode) => {
         toast.warn(
-            <div>
-                Confirm Cancelation?{' '}
-                <div role="button" onClick={() => onCancelOrderClick(orderCode)}>
-                    Yes
-                </div>
+            <div role="button" onClick={() => onCancelOrderClick(orderCode)}>
+                Confirm Cancelation? <div>Yes</div>
             </div>,
             toastSettings
         )
