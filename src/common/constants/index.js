@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 export const toastSettings = {
     position: 'top-right',
     autoClose: 5000,

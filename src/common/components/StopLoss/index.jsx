@@ -17,8 +17,9 @@ import { supportedTokens } from 'common/data/exchangeData'
 import supportedPancakeTokens from 'common/constants/tokens/supportedPancakeTokens.json'
 import { getContract, getContractNoABI } from 'common/utils/getContract'
 import TokenModal from 'components/TokenModal'
-import { ethers } from 'ethers'
 import useInterval from 'common/hooks/useInterval'
+import { formatMinMaxDecimalsBN } from 'common/utils/bigNumbers'
+import TokenContext from 'context/TokenContext'
 
 const StopLoss = () => {
     const [showTokenModal, toggleShowTokenModal] = useState(false)
@@ -28,6 +29,7 @@ const StopLoss = () => {
 
     const [tokenAContract, setTokenAContract] = useState()
     const [tokenBContract, setTokenBContract] = useState()
+    const [tokenBRate, setTokenBRate] = useState()
     const [pancakePair, setPancakePair] = useState()
 
     const [tokenAAmount, setTokenAAmount] = useState('')
@@ -45,12 +47,14 @@ const StopLoss = () => {
     const [openLimitOrders, setOpenLimitOrders] = useState([])
     const [allOpenLimitOrders, setAllOpenLimitOrders] = useState([])
 
-    const [currentSwapInUSD, setCurrentSwapInUSD] = useState(0)
+    const [currentTokenAInUSD, setCurrentTokenAInUSD] = useState(0)
+    const [currentTokenBInUSD, setCurrentTokenBInUSD] = useState(0)
     const [currentTokenToBNBPrice, setCurrentTokenToBNBPrice] = useState(null)
     const [loadingBNBTokenPrice, setLoadingTokenToBNBPrice] = useState(false)
     const [transactionFeeId, setTransactionFeeId] = useState()
 
     const bscContext = useContext(BSCContext)
+    const tokenContext = useContext(TokenContext)
 
     const loadOpenOrders = async (currentAccountAddress, tokenAddress) => {
         if (currentAccountAddress && tokenAddress) {
@@ -83,6 +87,10 @@ const StopLoss = () => {
         setCurrentTokenToBNBPrice(currentBNBToTokenQuote)
     }, 10000)
 
+    useEffect(() => {
+        setTokenA(tokenContext.currentlySelectedToken)
+    }, [tokenContext.currentlySelectedToken])
+
     useEffect(async () => {
         // load open orders on token change
         loadOpenOrders(bscContext.currentAccountAddress, tokenA.address)
@@ -93,6 +101,9 @@ const StopLoss = () => {
         // listens for change in tokens to get new pancake pair contract
         setLoading(true)
         const tokenPair = await getPancakeFactoryPair(tokenA.address, tokenB.address)
+        setTokenAAmount('')
+        setTokenBRate('')
+        setTokenBAmount('')
         setPancakePair(tokenPair)
         setLoading(false)
     }, [tokenA, tokenB])
@@ -144,13 +155,13 @@ const StopLoss = () => {
                     value: getDecimalAmount(transactionFee, 18).toFixed(0),
                 }
                 if (!transactionFeeId) {
-                    toast.info('Please Approve Limit Order Fee')
+                    toast.info('Please Approve Limit Order Fee', toastSettings)
 
                     await window.web3.eth
                         .sendTransaction(tx)
                         .then(async (res) => {
                             setTransactionFeeId(res.transactionHash)
-                            toast.success('Transaction Fee Accepted')
+                            toast.success('Transaction Fee Accepted', toastSettings)
 
                             await axios
                                 .post(
@@ -160,9 +171,10 @@ const StopLoss = () => {
                                         tokenInAddress: tokenA.address.toLowerCase(),
                                         tokenOutAddress: tokenB.address.toLowerCase(),
                                         tokenInAmount: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
-                                        tokenOutAmount: getDecimalAmount(tokenAAmount * tokenBAmount, tokenB.decimals).toFixed(),
-                                        tokenPrice: tokenBAmount,
+                                        tokenOutAmount: getDecimalAmount(tokenBAmount, tokenB.decimals).toFixed(),
+                                        tokenPrice: new BigNumber(tokenBRate).toFixed(),
                                         slippage: parseFloat(slippagePercentage) * 100,
+                                        customTaxForToken: Boolean(tokenA.tax && tokenA.symbol !== 'UTOPIA'),
                                         feeTxHash: res.transactionHash,
                                     },
                                     {
@@ -176,7 +188,7 @@ const StopLoss = () => {
                                     setSwapInProgress(false)
                                     toast.success('Stop Loss Order Placed!', toastSettings)
                                     setTokenAAmount('')
-                                    setTransactionFeeId(undefined)
+                                    setTransactionFeeId('')
                                     loadOpenOrders(bscContext.currentAccountAddress, tokenA.address)
                                 })
                                 .catch((error) => {
@@ -186,7 +198,7 @@ const StopLoss = () => {
                         })
                         .catch(() => {
                             setSwapInProgress(false)
-                            toast.error('Transaction Canceled')
+                            toast.error('Transaction Canceled', toastSettings)
                         })
                 } else {
                     try {
@@ -198,9 +210,10 @@ const StopLoss = () => {
                                     tokenInAddress: tokenA.address.toLowerCase(),
                                     tokenOutAddress: tokenB.address.toLowerCase(),
                                     tokenInAmount: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
-                                    tokenOutAmount: getDecimalAmount(tokenAAmount * tokenBAmount, tokenB.decimals).toFixed(),
-                                    tokenPrice: tokenBAmount,
+                                    tokenOutAmount: getDecimalAmount(tokenBAmount, tokenB.decimals).toFixed(),
+                                    tokenPrice: new BigNumber(tokenBRate).toFixed(),
                                     slippage: parseFloat(slippagePercentage) * 100,
+                                    customTaxForToken: Boolean(tokenA.tax && tokenA.symbol !== 'UTOPIA'),
                                     feeTxHash: transactionFeeId,
                                 },
                                 {
@@ -222,10 +235,9 @@ const StopLoss = () => {
                                 setSwapInProgress(false)
                             })
                     } catch {
-                        toast.error('Order Placement Failed, Please Try again')
+                        toast.error('Order Placement Failed, Please Try again', toastSettings)
                     }
                     setSwapInProgress(false)
-                    setTransactionFeeId(undefined)
                 }
             }
         }
@@ -244,7 +256,8 @@ const StopLoss = () => {
                 <div role="button" onClick={() => onCancelOrderClick(orderCode)}>
                     Yes
                 </div>
-            </div>
+            </div>,
+            toastSettings
         )
     }
 
@@ -291,12 +304,15 @@ const StopLoss = () => {
 
     useEffect(async () => {
         try {
-            const currentTokenInUSD = await getTokenPriceInUSD(tokenA.address, tokenA.decimals)
-            setCurrentSwapInUSD(currentTokenInUSD)
+            const tokenAInUSD = await getTokenPriceInUSD(tokenA.address, tokenA.decimals)
+            const tokenBInUSD = await getTokenPriceInUSD(tokenB.address, tokenB.decimals)
+            setCurrentTokenAInUSD(tokenAInUSD)
+            setCurrentTokenBInUSD(tokenBInUSD)
         } catch (e) {
-            setCurrentSwapInUSD(0)
+            setCurrentTokenAInUSD(0)
+            setCurrentTokenBInUSD(0)
         }
-    }, [tokenA])
+    }, [tokenA, tokenB])
 
     useEffect(async () => {
         setLoadingQuote(true)
@@ -314,9 +330,9 @@ const StopLoss = () => {
         setLoadingTokenToBNBPrice(false)
     }, [pancakePair])
 
-    const amountInUSD = currentSwapInUSD > 0 ? new BigNumber(currentSwapInUSD).multipliedBy(new BigNumber(tokenAAmount)).toFormat(3) : '?'
-    const minReceived = tokenAAmount * tokenBAmount * parsedSlippagePercentage
-
+    const amountInUSD = currentTokenAInUSD > 0 ? new BigNumber(currentTokenAInUSD).multipliedBy(new BigNumber(tokenAAmount)).toFormat(3) : '?'
+    const rateInUSD = tokenBRate > 0 ? `~ $${new BigNumber(currentTokenBInUSD).multipliedBy(new BigNumber(tokenBRate)).toFormat(tokenA.decimals === 9 ? 10 : 3)}` : '-'
+    const minReceived = new BigNumber(tokenAAmount).multipliedBy(new BigNumber(tokenBRate)).multipliedBy(new BigNumber(parsedSlippagePercentage))
     return (
         <>
             <div className="d-flex justify-content-between">
@@ -333,6 +349,7 @@ const StopLoss = () => {
                                 value={tokenAAmount}
                                 onInput={(e) => {
                                     setTokenAAmount(e.target.value)
+                                    setTokenBAmount(tokenBRate ? formatMinMaxDecimalsBN(new BigNumber(tokenBRate).multipliedBy(new BigNumber(e.target.value)), 12) : '')
                                 }}
                             />
                             <div className="token-A-balance">
@@ -349,7 +366,7 @@ const StopLoss = () => {
                                         setTokenAAmount(tokenABalance)
                                     }}
                                 >
-                                    Balance: {BigNumber.isBigNumber(tokenABalance) ? tokenABalance.toFixed(6) : '-'}
+                                    Balance: {BigNumber.isBigNumber(tokenABalance) ? tokenABalance.toFixed(3) : '-'}
                                 </div>
                             </div>
                             <div className="sub-price">In USD: {tokenAAmount ? `$${amountInUSD}` : '-'}</div>
@@ -357,10 +374,31 @@ const StopLoss = () => {
                                 <Button className="token-swap-from" title={tokenA.displaySymbol || tokenA.symbol} onClick={() => toggleShowTokenModal(!showTokenModal)} />
                             </div>
                         </div>
-                        <div className="token-conversion">
-                            <span>
-                                {`1 ${tokenA.displaySymbol || tokenA.symbol}`} &#8776; {`${currentTokenToBNBPrice} ${tokenB.symbol}`}
-                            </span>
+                        <div className="input-group rate">
+                            <input
+                                type="number"
+                                className="form-control"
+                                required
+                                value={tokenBRate}
+                                onWheel={() => {
+                                    document.activeElement.blur()
+                                }}
+                                onInput={(e) => {
+                                    setTokenBRate(e.target.value)
+                                    setTokenBAmount(tokenAAmount ? formatMinMaxDecimalsBN(new BigNumber(tokenAAmount).multipliedBy(new BigNumber(e.target.value)), 12) : '')
+                                }}
+                            />
+                            <div className="token-B-balance">
+                                <Button
+                                    title="CURRENT"
+                                    onClick={() => {
+                                        setTokenBRate(currentTokenToBNBPrice)
+                                        setTokenBAmount(tokenAAmount ? formatMinMaxDecimalsBN(new BigNumber(tokenAAmount).multipliedBy(new BigNumber(currentTokenToBNBPrice)), 12) : '')
+                                    }}
+                                />
+                                {`${tokenA.symbol} per ${tokenB.displaySymbol}`}
+                            </div>
+                            <div className="sub-price">Rate In USD: {rateInUSD}</div>
                         </div>
                         <div className="input-group to">
                             <input
@@ -373,19 +411,14 @@ const StopLoss = () => {
                                 }}
                                 onInput={(e) => {
                                     setTokenBAmount(e.target.value)
+                                    setTokenBRate(tokenAAmount ? formatMinMaxDecimalsBN(new BigNumber(e.target.value).dividedBy(new BigNumber(tokenAAmount)), 12) : '-')
                                 }}
                             />
                             <div className="token-B-balance">
-                                <Button
-                                    title="CURRENT"
-                                    onClick={() => {
-                                        setTokenBAmount(currentTokenToBNBPrice)
-                                    }}
-                                />
                                 <div className="balance">
                                     Change:{' '}
                                     {tokenBAmount
-                                        ? new BigNumber(tokenBAmount)
+                                        ? new BigNumber(tokenBRate)
                                               .minus(new BigNumber(currentTokenToBNBPrice))
                                               .dividedBy(new BigNumber(currentTokenToBNBPrice))
                                               .multipliedBy(new BigNumber(100))
@@ -394,7 +427,7 @@ const StopLoss = () => {
                                     %
                                 </div>
                             </div>
-                            <div className="sub-price">Min Receieved: {minReceived.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 8 })}</div>
+                            <div className="sub-price">Min Receieved: {!minReceived.isNaN() ? formatMinMaxDecimalsBN(minReceived, 12) : '-'}</div>
                             <div className="input-group-append">
                                 <Button className="token-swap-to" title={tokenB.displaySymbol || tokenB.symbol} disabled />
                             </div>
@@ -402,8 +435,14 @@ const StopLoss = () => {
                         <p>Stop Loss will trigger if {tokenA.symbol} falls below this price.</p>
 
                         <div className="slippage-container">
-                            <p>Remember to adjust the correct slippage for your token.</p>
-
+                            {tokenA.tax && tokenA.symbol !== 'UTOPIA' ? (
+                                <p>
+                                    Warning: This token has fees. Fees will be charged twice during this transaction due to how the Stop Loss Contract works. If you'd like to proceed, please double
+                                    the normal slippage required for this token
+                                </p>
+                            ) : (
+                                <p>Remember to adjust the correct slippage for your token.</p>
+                            )}
                             <div className="slippage-settings">
                                 <span>SLIPPAGE</span>
                                 <input
@@ -509,11 +548,11 @@ const StopLoss = () => {
                                                             <div className="open-limit-order">
                                                                 <p>{`Order Code: ${openOrder.orderCode.substr(0, 8)}...`}</p>
                                                                 <div className="open-limit-order-row">
-                                                                    <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol}`}</span>
+                                                                    <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.symbol}`}</span>
                                                                     <span>{`Order Status: ${openOrder.orderStatus}`}</span>
                                                                 </div>
                                                                 <div className="open-limit-order-row">
-                                                                    <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.symbol}`}</span>
+                                                                    <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.displaySymbol}`}</span>
                                                                     <span>{`Percent Change: ${percentChange}%`}</span>
                                                                 </div>
                                                                 <div className="open-limit-order-row">
@@ -562,11 +601,11 @@ const StopLoss = () => {
                                                             >
                                                                 <p>{`Order Code: ${openOrder.orderCode.substr(0, 8)}...`}</p>
                                                                 <div className="open-limit-order-row">
-                                                                    <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol}`}</span>
+                                                                    <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.symbol}`}</span>
                                                                     <span>{`Order Status: ${openOrder.orderStatus}`}</span>
                                                                 </div>
                                                                 <div className="open-limit-order-row">
-                                                                    <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.symbol}`}</span>
+                                                                    <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.displaySymbol}`}</span>
                                                                     <span>{`Percent Change: ${percentChange}%`}</span>
                                                                 </div>
                                                                 {index !== openLimitOrders.length - 1 && <hr />}
@@ -574,7 +613,7 @@ const StopLoss = () => {
                                                         )
                                                     })
                                             ) : (
-                                                <div>{`No open orders found for ${tokenB.symbol}`}</div>
+                                                <div>{`No open Stop Loss orders found for ${tokenA.symbol} to ${tokenB.displaySymbol}`}</div>
                                             )}
                                         </>
                                     )}
@@ -588,9 +627,9 @@ const StopLoss = () => {
                                         </div>
                                     ) : (
                                         <>
-                                            {openLimitOrders.filter((order) => order.orderStatus === 'ATTEMPTED' && order.attempts === 5).length ? (
+                                            {openLimitOrders.filter((order) => (order.orderStatus === 'ATTEMPTED' && order.attempts === 5) || order.orderStatus === 'FAILED').length ? (
                                                 openLimitOrders
-                                                    .filter((order) => order.orderStatus === 'ATTEMPTED' && order.attempts === 5)
+                                                    .filter((order) => (order.orderStatus === 'ATTEMPTED' && order.attempts === 5) || order.orderStatus === 'FAILED')
                                                     .map((openOrder, index) => {
                                                         const percentChange = currentTokenToBNBPrice
                                                             ? new BigNumber(openOrder.tokenPrice)
@@ -620,7 +659,7 @@ const StopLoss = () => {
                                                         )
                                                     })
                                             ) : (
-                                                <div>{`No failed orders found for ${tokenB.symbol}`}</div>
+                                                <div>{`No failed Stop Loss orders found for ${tokenA.symbol} to ${tokenB.displaySymbol}`}</div>
                                             )}
                                         </>
                                     )}
@@ -666,12 +705,18 @@ const StopLoss = () => {
                                             )
                                         })
                                     ) : (
-                                        <div>{`No open orders found for ${tokenB.symbol}`}</div>
+                                        <div>{`No open Stop Loss orders found for ${tokenA.symbol} to ${tokenB.displaySymbol}`}</div>
                                     )}
                                 </>
                             )}
                         </div>
                     </div>
+                    {!supportedPancakeTokens.tokens.find((token) => token.symbol === tokenA.symbol) && (
+                        <div className="token-not-supported">
+                            <div>{tokenA.symbol} Stop Loss Not Currently Supported!</div>
+                            <span>Tokens added by popular demand</span>
+                        </div>
+                    )}
                 </div>
             </div>
             <TokenModal

@@ -14,7 +14,8 @@
       "decimals": 9,
       "logoURI": "https://utopia.cc/assets/image/utopia/utopiaUDarkbg.svg",
       "name": "Utopia Token",
-      "symbol": "UTOPIA"
+      "symbol": "UTOPIA",
+      "tax": 10
     },
     {
       "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
@@ -30,7 +31,40 @@
       "decimals": 9,
       "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/12987.png",
       "name": "SSB Token",
-      "symbol": "SSB"
+      "symbol": "SSB",
+      "tax": 10
+    },
+    {
+      "address": "0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://pancakeswap.finance/images/tokens/0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5.png",
+      "name": "BAKE Token",
+      "symbol": "BAKE"
+    },
+    {
+      "address": "0xaec945e04baf28b135fa7c640f624f8d90f1c3a6",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://pancakeswap.finance/images/tokens/0xaec945e04baf28b135fa7c640f624f8d90f1c3a6.png",
+      "name": "COIN98 Token",
+      "symbol": "COIN98"
+    },
+    {
+      "address": "0x111111111117dc0aa78b770fa6a738034120c302",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x111111111117dC0aa78b770fA6A738034120C302/logo.png",
+      "name": "1INCH Token",
+      "symbol": "1INCH"
+    },
+    {
+      "address": "0xfd7b3a77848f1c2d67e05e54d78d174a0c850335",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://pancakeswap.finance/images/tokens/0xfd7b3a77848f1c2d67e05e54d78d174a0c850335.png",
+      "name": "ONT Token",
+      "symbol": "ONT"
     },
     {
       "address": "0x6169b3b23e57de79a6146a2170980ceb1f83b9e0",
@@ -38,7 +72,8 @@
       "decimals": 9,
       "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/12954.png",
       "name": "VETTER Token",
-      "symbol": "VETTER"
+      "symbol": "VETTER",
+      "tax": 10
     },
     {
       "address": "0xda6802bbec06ab447a68294a63de47ed4506acaa",
@@ -46,7 +81,8 @@
       "decimals": 9,
       "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/12875.png",
       "name": "CRYPT Token",
-      "symbol": "CRYPT"
+      "symbol": "CRYPT",
+      "tax": 15
     },
     {
       "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
@@ -110,7 +146,8 @@
       "decimals": 9,
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x8076C74C5e3F5852037F31Ff0093Eeb8c8ADd8D3/logo.png",
       "name": "SafeMoon",
-      "symbol": "SAFEMOON"
+      "symbol": "SAFEMOON",
+      "tax": 10
     },
     {
       "address": "0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F",

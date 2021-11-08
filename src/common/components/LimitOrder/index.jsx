@@ -8,6 +8,7 @@ import { getBalanceAmount, getDecimalAmount } from 'common/utils/numbers'
 import { getPancakeFactoryPair, getQuote, getTokenPriceInUSD } from 'common/utils/tokens'
 import Slider from 'rc-slider'
 import BigNumber from 'bignumber.js'
+import Image from 'next/image'
 import { Spinner, Tab, Tabs } from 'react-bootstrap'
 import { event } from 'common/utils/ga'
 import { toast } from 'react-toastify'
@@ -20,11 +21,13 @@ import TokenModal from 'components/TokenModal'
 import { ethers } from 'ethers'
 import useInterval from 'common/hooks/useInterval'
 import { formatMinMaxDecimalsBN } from 'common/utils/bigNumbers'
+import TokenContext from 'context/TokenContext'
 
 const MarketOrder = () => {
+    const [fromBNB, toggleFromBnb] = useState(true)
     const [showTokenModal, toggleShowTokenModal] = useState(false)
 
-    const tokenA = supportedTokens[0]
+    const [tokenA, setTokenA] = useState(supportedTokens[0])
     const [tokenB, setTokenB] = useState(supportedPancakeTokens.tokens[0])
     const [tokenAContract, setTokenAContract] = useState()
     const [tokenBContract, setTokenBContract] = useState()
@@ -46,54 +49,98 @@ const MarketOrder = () => {
     const [openLimitOrders, setOpenLimitOrders] = useState([])
     const [allOpenLimitOrders, setAllOpenLimitOrders] = useState([])
 
-    const [currentSwapInUSD, setCurrentSwapInUSD] = useState(0)
-    const [currentBNBToTokenPrice, setCurrentBNBToTokenPrice] = useState(null)
+    const [currentTokenAInUSD, setCurrentTokenAInUSD] = useState(0)
+    const [currentTokenBInUSD, setCurrentTokenBInUSD] = useState(0)
+    const [currentTokenAToTokenBPrice, setCurrentTokenAToTokenBPrice] = useState(null)
     const [loadingBNBTokenPrice, setLoadingBNBTokenPrice] = useState(false)
     const [transactionFeeId, setTransactionFeeId] = useState()
 
     const bscContext = useContext(BSCContext)
+    const tokenContext = useContext(TokenContext)
 
-    const loadOpenOrders = async (currentAccountAddress, tokenAddress) => {
+    const loadOpenOrders = async (currentAccountAddress, tokenAddress, currentFromBNB) => {
         if (currentAccountAddress && tokenAddress) {
-            await axios.get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrieveLimitBuys/${currentAccountAddress.toLowerCase()}/${tokenAddress.toLowerCase()}`).then((res) => {
-                if (Array.isArray(res.data)) {
-                    setOpenLimitOrders(res.data)
-                }
-            })
+            if (currentFromBNB) {
+                await axios.get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrieveLimitBuys/${currentAccountAddress.toLowerCase()}/${tokenAddress.toLowerCase()}`).then((res) => {
+                    if (Array.isArray(res.data)) {
+                        setOpenLimitOrders(res.data)
+                    }
+                })
+            } else {
+                await axios
+                    .get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrieveLimitSells/${currentAccountAddress.toLowerCase()}/${tokenAddress.toLowerCase()}`)
+                    .then((res) => {
+                        if (Array.isArray(res.data)) {
+                            setOpenLimitOrders(res.data)
+                        }
+                    })
+            }
         }
     }
 
-    const loadAllOpenOrders = async (tokenAddress) => {
+    const loadAllOpenOrders = async (tokenAddress, currentFromBNB) => {
         if (tokenAddress) {
-            await axios.get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrievePendingLimitBuys/${tokenAddress.toLowerCase()}`).then((res) => {
-                if (Array.isArray(res.data)) {
-                    setAllOpenLimitOrders(res.data)
-                } else {
-                    setAllOpenLimitOrders([])
-                }
-            })
+            if (currentFromBNB) {
+                await axios.get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrievePendingLimitBuys/${tokenAddress.toLowerCase()}`).then((res) => {
+                    if (Array.isArray(res.data)) {
+                        setAllOpenLimitOrders(res.data)
+                    } else {
+                        setAllOpenLimitOrders([])
+                    }
+                })
+            } else {
+                await axios.get(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/retrievePendingLimitSells/${tokenAddress.toLowerCase()}`).then((res) => {
+                    if (Array.isArray(res.data)) {
+                        setAllOpenLimitOrders(res.data)
+                    } else {
+                        setAllOpenLimitOrders([])
+                    }
+                })
+            }
         }
     }
+
+    const toggleLimitOrderSell = () => {
+        toggleFromBnb(tokenA.symbol !== 'WBNB')
+
+        const tempTokenA = tokenA
+        setTokenA(tokenB)
+        setTokenB(tempTokenA)
+        setTokenAAmount('')
+        setTokenBRate('')
+        setTokenBAmount('')
+    }
+
+    useEffect(() => {
+        if (fromBNB) {
+            setTokenB(tokenContext.currentlySelectedToken)
+        } else {
+            setTokenA(tokenContext.currentlySelectedToken)
+        }
+    }, [tokenContext.currentlySelectedToken])
 
     useInterval(async () => {
         if (bscContext.currentAccountAddress) {
-            loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
+            loadOpenOrders(bscContext.currentAccountAddress, fromBNB ? tokenB.address : tokenA.address, fromBNB)
         }
-        loadAllOpenOrders(tokenB.address)
+        loadAllOpenOrders(fromBNB ? tokenB.address : tokenA.address, fromBNB)
         const currentBNBToTokenQuote = await getQuote(pancakePair, tokenA, tokenB, getDecimalAmount(1, tokenA.decimals))
-        setCurrentBNBToTokenPrice(currentBNBToTokenQuote)
+        setCurrentTokenAToTokenBPrice(currentBNBToTokenQuote)
     }, 10000)
 
     useEffect(async () => {
         // load open orders on token change
-        loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
-        loadAllOpenOrders(tokenB.address)
-    }, [bscContext.currentAccountAddress, tokenB.address])
+        loadOpenOrders(bscContext.currentAccountAddress, fromBNB ? tokenB.address : tokenA.address, fromBNB)
+        loadAllOpenOrders(fromBNB ? tokenB.address : tokenA.address, fromBNB)
+    }, [bscContext.currentAccountAddress, tokenB.address, fromBNB])
 
     useEffect(async () => {
         // listens for change in tokens to get new pancake pair contract
         setLoading(true)
         const tokenPair = await getPancakeFactoryPair(tokenA.address, tokenB.address)
+        setTokenAAmount('')
+        setTokenBRate('')
+        setTokenBAmount('')
         setPancakePair(tokenPair)
         setLoading(false)
     }, [tokenA, tokenB])
@@ -145,26 +192,29 @@ const MarketOrder = () => {
                     value: getDecimalAmount(transactionFee, 18).toFixed(0),
                 }
                 if (!transactionFeeId) {
-                    toast.info('Please Approve Limit Order Fee')
+                    toast.info(`Please Approve Transaction Fee ${enoughUTOPIAHeld ? '($0.50)' : '($1.00)'} BNB`, toastSettings)
 
                     await window.web3.eth
                         .sendTransaction(tx)
                         .then(async (res) => {
                             setTransactionFeeId(res.transactionHash)
                             toast.success('Transaction Fee Accepted')
-                            toast.info('Please Approve Swap to WBNB')
-                            await bscContext.WBNBContract.deposit({ value: ethers.utils.parseEther(tokenAAmount.toString()) })
+
+                            if (fromBNB) {
+                                toast.info('Please Approve Swap from BNB to WBNB')
+                                await bscContext.WBNBContract.deposit({ value: ethers.utils.parseEther(tokenAAmount.toString()) })
+                            }
 
                             await axios
                                 .post(
-                                    'https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/createLimitBuy',
+                                    `https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com${fromBNB ? '/createLimitBuy' : '/createLimitSell'}`,
                                     {
                                         ordererAddress: bscContext.currentAccountAddress.toLowerCase(),
                                         tokenInAddress: tokenA.address.toLowerCase(),
                                         tokenOutAddress: tokenB.address.toLowerCase(),
                                         tokenInAmount: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
                                         tokenOutAmount: getDecimalAmount(tokenBAmount, tokenB.decimals).toFixed(),
-                                        tokenPrice: tokenBRate,
+                                        tokenPrice: new BigNumber(tokenBRate).toFixed(),
                                         slippage: parseFloat(slippagePercentage) * 100,
                                         feeTxHash: res.transactionHash,
                                     },
@@ -180,16 +230,17 @@ const MarketOrder = () => {
                                     toast.success('Limit Order Placed!', toastSettings)
                                     setTokenAAmount('')
                                     setTransactionFeeId(undefined)
-                                    loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
+                                    loadOpenOrders(bscContext.currentAccountAddress, fromBNB ? tokenB.address : tokenA.address, fromBNB)
                                 })
                                 .catch((error) => {
                                     toast.error(error.message, toastSettings)
+                                    toast.info('Please try again in 5 mins', toastSettings)
                                     setSwapInProgress(false)
                                 })
                         })
                         .catch(() => {
                             setSwapInProgress(false)
-                            toast.error('Transaction Canceled')
+                            toast.error('Transaction Failed (or timed out) Please try again.', toastSettings)
                         })
                 } else {
                     try {
@@ -197,14 +248,14 @@ const MarketOrder = () => {
 
                         await axios
                             .post(
-                                'https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/createLimitOrder',
+                                `https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com${fromBNB ? '/createLimitBuy' : '/createLimitSell'}`,
                                 {
                                     ordererAddress: bscContext.currentAccountAddress.toLowerCase(),
                                     tokenInAddress: tokenA.address.toLowerCase(),
                                     tokenOutAddress: tokenB.address.toLowerCase(),
                                     tokenInAmount: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
                                     tokenOutAmount: getDecimalAmount(tokenBAmount, tokenB.decimals).toFixed(),
-                                    tokenPrice: tokenBRate,
+                                    tokenPrice: new BigNumber(tokenBRate).toFixed(),
                                     slippage: parseFloat(slippagePercentage) * 100,
                                     feeTxHash: transactionFeeId,
                                 },
@@ -220,14 +271,14 @@ const MarketOrder = () => {
                                 toast.success('Limit Order Placed!', toastSettings)
                                 setTransactionFeeId(undefined)
                                 setTokenAAmount('')
-                                loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
+                                loadOpenOrders(bscContext.currentAccountAddress, fromBNB ? tokenB.address : tokenA.address, fromBNB)
                             })
                             .catch((error) => {
                                 toast.error(error.message, toastSettings)
                                 setSwapInProgress(false)
                             })
                     } catch {
-                        toast.error('Order Placement Failed, Please Try again')
+                        toast.error('Order Placement Failed, Please Try again', toastSettings)
                     }
                     setSwapInProgress(false)
                 }
@@ -236,19 +287,33 @@ const MarketOrder = () => {
     }
 
     const onCancelOrderClick = async (orderCode) => {
-        await axios.delete(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/deleteLimitOrder/${tokenB.address.toLowerCase()}/${orderCode}`).then(() => {
-            loadOpenOrders(bscContext.currentAccountAddress, tokenB.address)
-        })
+        await axios
+            .delete(
+                `https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com${fromBNB ? '/deleteLimitBuy' : '/deleteLimitSell'}/${
+                    fromBNB ? tokenB.address.toLowerCase() : tokenA.address.toLowerCase()
+                }/${orderCode}`,
+                {
+                    timeout: 5000,
+                }
+            )
+            .then(() => {
+                loadOpenOrders(bscContext.currentAccountAddress, fromBNB ? tokenB.address : tokenA.address, fromBNB)
+                toast.info('Order Deleted', toastSettings)
+            })
+            .catch(() => {
+                toast.error('Error Deleting Order', toastSettings)
+            })
     }
 
     const confirmCancelation = async (orderCode) => {
         toast.warn(
-            <div>
+            <div className="confirm-cancellation">
                 Confirm Cancelation?{' '}
                 <div role="button" onClick={() => onCancelOrderClick(orderCode)}>
                     Yes
                 </div>
-            </div>
+            </div>,
+            toastSettings
         )
     }
 
@@ -259,11 +324,11 @@ const MarketOrder = () => {
 
     useEffect(async () => {
         if (bscContext.currentAccountAddress) {
-            const currentlySelectedTokenBalance = bscContext.tokenBalances.find((token) => token.TokenAddress.toLowerCase() === tokenB.address.toLowerCase())
+            const currentlySelectedTokenBalance = bscContext.tokenBalances.find((token) => token.TokenAddress.toLowerCase() === (fromBNB ? tokenB.address.toLowerCase() : tokenA.address.toLowerCase()))
             const tokenQuantity =
                 currentlySelectedTokenBalance?.TokenDivisor === '9' ? getBalanceAmount(currentlySelectedTokenBalance?.TokenQuantity, 9) : getBalanceAmount(currentlySelectedTokenBalance?.TokenQuantity)
-            setTokenABalance(getBalanceAmount(bscContext.currentBnbBalance))
-            setTokenBBalance(tokenQuantity)
+            setTokenABalance(fromBNB ? getBalanceAmount(bscContext.currentBnbBalance) : tokenQuantity)
+            setTokenBBalance(!fromBNB ? getBalanceAmount(bscContext.currentBnbBalance) : tokenQuantity)
         } else {
             setTokenABalance('-')
             setTokenBBalance('-')
@@ -295,21 +360,25 @@ const MarketOrder = () => {
 
     useEffect(async () => {
         try {
-            const currentTokenInUSD = await getTokenPriceInUSD(tokenA.address, tokenA.decimals)
-            setCurrentSwapInUSD(currentTokenInUSD)
+            const tokenAInUSD = await getTokenPriceInUSD(tokenA.address, tokenA.decimals)
+            const tokenBInUSD = await getTokenPriceInUSD(tokenB.address, tokenB.decimals)
+            setCurrentTokenAInUSD(tokenAInUSD)
+            setCurrentTokenBInUSD(tokenBInUSD)
         } catch (e) {
-            setCurrentSwapInUSD(0)
+            setCurrentTokenAInUSD(0)
+            setCurrentTokenBInUSD(0)
         }
-    }, [tokenA])
+    }, [tokenA, tokenB])
 
     useEffect(async () => {
         setLoadingBNBTokenPrice(true)
         const currentBNBToTokenQuote = await getQuote(pancakePair, tokenA, tokenB, getDecimalAmount(1, tokenA.decimals))
-        setCurrentBNBToTokenPrice(currentBNBToTokenQuote)
+        setCurrentTokenAToTokenBPrice(currentBNBToTokenQuote)
         setLoadingBNBTokenPrice(false)
-    }, [pancakePair])
+    }, [pancakePair, tokenA, tokenB])
 
-    const amountInUSD = currentSwapInUSD > 0 ? new BigNumber(currentSwapInUSD).multipliedBy(new BigNumber(tokenAAmount)).toFormat(3) : '?'
+    const amountInUSD = currentTokenAInUSD > 0 ? new BigNumber(currentTokenAInUSD).multipliedBy(new BigNumber(tokenAAmount)).toFormat(tokenA.decimals === 9 ? 10 : 3) : '~ $-'
+    const rateInUSD = tokenBRate > 0 ? `~ $${new BigNumber(currentTokenBInUSD).multipliedBy(new BigNumber(tokenBRate)).toFormat(tokenA.decimals === 9 ? 10 : 3)}` : '-'
     const minReceived = new BigNumber(tokenAAmount).multipliedBy(new BigNumber(tokenBRate)).multipliedBy(new BigNumber(parsedSlippagePercentage))
 
     return (
@@ -317,7 +386,7 @@ const MarketOrder = () => {
             <div className="d-flex justify-content-between">
                 <div className="market-trade-buy limit-order">
                     <form action="#">
-                        <div className="input-group top from">
+                        <div className={`input-group top from ${fromBNB ? 'isBnb' : ''}`}>
                             <input
                                 type="number"
                                 className="form-control"
@@ -348,9 +417,9 @@ const MarketOrder = () => {
                                     Balance: {BigNumber.isBigNumber(tokenABalance) ? tokenABalance.toFixed(6) : '-'}
                                 </div>
                             </div>
-                            <div className="sub-price">In USD: {tokenAAmount ? `$${amountInUSD}` : '-'}</div>
+                            <div className="sub-price">In USD: {tokenAAmount ? `~ $${amountInUSD}` : '-'}</div>
                             <div className="input-group-append">
-                                <Button title={tokenA.displaySymbol || tokenA.symbol} disabled />
+                                <Button title={tokenA.displaySymbol || tokenA.symbol} disabled={fromBNB} onClick={() => toggleShowTokenModal(!showTokenModal)} />
                             </div>
                         </div>
 
@@ -368,18 +437,27 @@ const MarketOrder = () => {
                                     setTokenBAmount(tokenAAmount ? formatMinMaxDecimalsBN(new BigNumber(tokenAAmount).multipliedBy(new BigNumber(e.target.value)), 3) : '')
                                 }}
                             />
+
                             <div className="token-B-balance">
                                 <Button
                                     title="CURRENT"
                                     onClick={() => {
-                                        setTokenBRate(currentBNBToTokenPrice)
-                                        setTokenBAmount(tokenAAmount ? formatMinMaxDecimalsBN(new BigNumber(tokenAAmount).multipliedBy(new BigNumber(currentBNBToTokenPrice)), 3) : '')
+                                        setTokenBRate(currentTokenAToTokenBPrice)
+                                        setTokenBAmount(tokenAAmount ? formatMinMaxDecimalsBN(new BigNumber(tokenAAmount).multipliedBy(new BigNumber(currentTokenAToTokenBPrice)), 3) : '')
                                     }}
                                 />
-                                {`${tokenA.displaySymbol} per ${tokenB.symbol}`}
+                                {`${tokenB.displaySymbol || tokenB.symbol} per ${tokenA.displaySymbol || tokenA.symbol}`}
+                            </div>
+                            <div className="sub-price">Rate In USD: {rateInUSD}</div>
+                            <div role="button" className="swap-coin-icon" onClick={toggleLimitOrderSell} tabIndex="0">
+                                <Image src="/assets/image/icons/swap-coin-image.png" width={45} height={45} quality={100} />
                             </div>
                         </div>
-                        <div className="input-group to">
+                        <p>
+                            Limit {`${fromBNB ? 'Buy' : 'Sell'}`} will trigger if {fromBNB ? tokenB.displaySymbol || tokenB.symbol : tokenA.displaySymbol || tokenA.symbol}{' '}
+                            {`${fromBNB ? 'falls below' : 'rises above'}`} this rate.
+                        </p>
+                        <div className={`input-group to ${!fromBNB ? 'isBnb' : ''}`}>
                             <input
                                 type="number"
                                 className="form-control"
@@ -394,24 +472,23 @@ const MarketOrder = () => {
                                 }}
                             />
                             <div className="token-B-balance">
-                                <div className="balance">
-                                    Change:{' '}
-                                    {tokenBAmount
-                                        ? new BigNumber(tokenBRate)
-                                              .minus(new BigNumber(currentBNBToTokenPrice))
-                                              .dividedBy(new BigNumber(currentBNBToTokenPrice))
-                                              .multipliedBy(new BigNumber(100))
-                                              .toFixed(2)
-                                        : '-'}
-                                    %
-                                </div>
+                                Change:{' '}
+                                {tokenBAmount
+                                    ? new BigNumber(tokenBRate)
+                                          .minus(new BigNumber(currentTokenAToTokenBPrice))
+                                          .dividedBy(new BigNumber(currentTokenAToTokenBPrice))
+                                          .multipliedBy(new BigNumber(100))
+                                          .toFixed(2)
+                                    : '-'}
+                                %
                             </div>
-                            <div className="sub-price">Min Receieved: {!minReceived.isNaN() ? formatMinMaxDecimalsBN(minReceived, 3) : '-'}</div>
+                            <div className="sub-price">
+                                Min Receieved: {!minReceived.isNaN() ? formatMinMaxDecimalsBN(minReceived, 3) : '-'} {tokenB.displaySymbol || tokenB.symbol}
+                            </div>
                             <div className="input-group-append">
-                                <Button className="token-swap-to" title={tokenB.displaySymbol || tokenB.symbol} onClick={() => toggleShowTokenModal(!showTokenModal)} />
+                                <Button title={tokenB.displaySymbol || tokenB.symbol} onClick={() => toggleShowTokenModal(!showTokenModal)} disabled={!fromBNB} />
                             </div>
                         </div>
-                        <p>Limit Order will trigger if {tokenB.symbol} falls below this price.</p>
 
                         <div className="slippage-container">
                             <p>Remember to adjust the correct slippage for your token.</p>
@@ -512,10 +589,10 @@ const MarketOrder = () => {
                                                 openLimitOrders
                                                     .filter((order) => order.orderStatus === 'PENDING' || (order.orderStatus === 'ATTEMPTED' && order.attempts < 5))
                                                     .map((openOrder, index) => {
-                                                        const percentChange = currentBNBToTokenPrice
+                                                        const percentChange = currentTokenAToTokenBPrice
                                                             ? new BigNumber(openOrder.tokenPrice)
-                                                                  .minus(new BigNumber(currentBNBToTokenPrice))
-                                                                  .dividedBy(new BigNumber(currentBNBToTokenPrice))
+                                                                  .minus(new BigNumber(currentTokenAToTokenBPrice))
+                                                                  .dividedBy(new BigNumber(currentTokenAToTokenBPrice))
                                                                   .multipliedBy(new BigNumber(100))
                                                                   .toFixed(3)
                                                             : '-'
@@ -524,11 +601,11 @@ const MarketOrder = () => {
                                                             <div className="open-limit-order">
                                                                 <p>{`Order Code: ${openOrder.orderCode.substr(0, 8)}...`}</p>
                                                                 <div className="open-limit-order-row">
-                                                                    <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol}`}</span>
+                                                                    <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol || tokenA.symbol}`}</span>
                                                                     <span>{`Order Status: ${openOrder.orderStatus}`}</span>
                                                                 </div>
                                                                 <div className="open-limit-order-row">
-                                                                    <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.symbol}`}</span>
+                                                                    <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.displaySymbol || tokenB.symbol}`}</span>
                                                                     <span>{`Percent Change: ${percentChange}%`}</span>
                                                                 </div>
                                                                 <div className="open-limit-order-row">
@@ -543,7 +620,7 @@ const MarketOrder = () => {
                                                         )
                                                     })
                                             ) : (
-                                                <div>{`No open orders found for ${tokenB.symbol}`}</div>
+                                                <div>{`No open orders found for ${tokenA.displaySymbol || tokenA.symbol} to ${tokenB.displaySymbol || tokenB.symbol}`}</div>
                                             )}
                                         </>
                                     )}
@@ -561,10 +638,10 @@ const MarketOrder = () => {
                                                 openLimitOrders
                                                     .filter((order) => order.orderStatus === 'COMPLETED')
                                                     .map((openOrder, index) => {
-                                                        const percentChange = currentBNBToTokenPrice
+                                                        const percentChange = currentTokenAToTokenBPrice
                                                             ? new BigNumber(openOrder.tokenPrice)
-                                                                  .minus(new BigNumber(currentBNBToTokenPrice))
-                                                                  .dividedBy(new BigNumber(currentBNBToTokenPrice))
+                                                                  .minus(new BigNumber(currentTokenAToTokenBPrice))
+                                                                  .dividedBy(new BigNumber(currentTokenAToTokenBPrice))
                                                                   .multipliedBy(new BigNumber(100))
                                                                   .toFixed(3)
                                                             : '-'
@@ -577,11 +654,11 @@ const MarketOrder = () => {
                                                             >
                                                                 <p>{`Order Code: ${openOrder.orderCode.substr(0, 8)}...`}</p>
                                                                 <div className="open-limit-order-row">
-                                                                    <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol}`}</span>
+                                                                    <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol || tokenA.symbol}`}</span>
                                                                     <span>{`Order Status: ${openOrder.orderStatus}`}</span>
                                                                 </div>
                                                                 <div className="open-limit-order-row">
-                                                                    <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.symbol}`}</span>
+                                                                    <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.displaySymbol || tokenA.symbol}`}</span>
                                                                     <span>{`Percent Change: ${percentChange}%`}</span>
                                                                 </div>
                                                                 {index !== openLimitOrders.length - 1 && <hr />}
@@ -589,7 +666,7 @@ const MarketOrder = () => {
                                                         )
                                                     })
                                             ) : (
-                                                <div>{`No open orders found for ${tokenB.symbol}`}</div>
+                                                <div>{`No open orders found for ${tokenA.displaySymbol || tokenA.symbol} to ${tokenB.displaySymbol || tokenB.symbol}`}</div>
                                             )}
                                         </>
                                     )}
@@ -603,13 +680,13 @@ const MarketOrder = () => {
                                         </div>
                                     ) : (
                                         <>
-                                            {openLimitOrders.filter((order) => order.orderStatus === 'ATTEMPTED' && order.attempts === 5).length ? (
+                                            {openLimitOrders.filter((order) => (order.orderStatus === 'ATTEMPTED' && order.attempts === 5) || order.orderStatus === 'FAILED').length ? (
                                                 openLimitOrders
-                                                    .filter((order) => order.orderStatus === 'ATTEMPTED' && order.attempts === 5)
+                                                    .filter((order) => (order.orderStatus === 'ATTEMPTED' && order.attempts === 5) || order.orderStatus === 'FAILED')
                                                     .map((openOrder, index) => {
-                                                        const percentChange = currentBNBToTokenPrice
+                                                        const percentChange = currentTokenAToTokenBPrice
                                                             ? new BigNumber(openOrder.tokenPrice)
-                                                                  .minus(new BigNumber(currentBNBToTokenPrice))
+                                                                  .minus(new BigNumber(currentTokenAToTokenBPrice))
                                                                   .dividedBy(new BigNumber(openOrder.tokenPrice))
                                                                   .multipliedBy(new BigNumber(100))
                                                                   .toFixed(3)
@@ -619,11 +696,11 @@ const MarketOrder = () => {
                                                             <div className="open-limit-order">
                                                                 <p>{`Order Code: ${openOrder.orderCode.substr(0, 8)}...`}</p>
                                                                 <div className="open-limit-order-row">
-                                                                    <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol}`}</span>
+                                                                    <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol || tokenA.symbol}`}</span>
                                                                     <span>{`Order Status: ${openOrder.orderStatus}`}</span>
                                                                 </div>
                                                                 <div className="open-limit-order-row">
-                                                                    <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.symbol}`}</span>
+                                                                    <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.displaySymbol || tokenB.symbol}`}</span>
                                                                     <span>{`Percent Change: ${percentChange}%`}</span>
                                                                 </div>
                                                                 <div className="open-limit-order-row">
@@ -635,7 +712,7 @@ const MarketOrder = () => {
                                                         )
                                                     })
                                             ) : (
-                                                <div>{`No failed orders found for ${tokenB.symbol}`}</div>
+                                                <div>{`No failed orders found for ${tokenA.displaySymbol || tokenA.symbol} to ${tokenB.displaySymbol || tokenB.symbol}`}</div>
                                             )}
                                         </>
                                     )}
@@ -656,9 +733,9 @@ const MarketOrder = () => {
                                 <>
                                     {allOpenLimitOrders.length ? (
                                         allOpenLimitOrders.map((openOrder, index) => {
-                                            const percentChange = currentBNBToTokenPrice
+                                            const percentChange = currentTokenAToTokenBPrice
                                                 ? new BigNumber(openOrder.tokenPrice)
-                                                      .minus(new BigNumber(currentBNBToTokenPrice))
+                                                      .minus(new BigNumber(currentTokenAToTokenBPrice))
                                                       .dividedBy(new BigNumber(openOrder.tokenPrice))
                                                       .multipliedBy(new BigNumber(100))
                                                       .toFixed(3)
@@ -669,11 +746,11 @@ const MarketOrder = () => {
                                                     <p>{`Order Code: ${openOrder.orderCode.substr(0, 4)}...${openOrder.orderCode.substr(49, 5)}`}</p>
                                                     <p role="button" onClick={() => copyToClipboard(openOrder.ordererAddress)}>{`Owner: ${openOrder.ordererAddress}`}</p>
                                                     <div className="open-limit-order-row">
-                                                        <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol}`}</span>
+                                                        <span>{`Amount In: ${getBalanceAmount(openOrder.tokenInAmount, tokenA.decimals)} ${tokenA.displaySymbol || tokenA.symbol}`}</span>
                                                         <span>{`Order Status: ${openOrder.orderStatus}`}</span>
                                                     </div>
                                                     <div className="open-limit-order-row">
-                                                        <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.symbol}`}</span>
+                                                        <span>{`Target Out: ${getBalanceAmount(openOrder.tokenOutAmount, tokenB.decimals)} ${tokenB.displaySymbol || tokenB.symbol}`}</span>
                                                         <span>{`Percent Change: ${percentChange}%`}</span>
                                                     </div>
                                                     {index !== openLimitOrders.length - 1 && <hr />}
@@ -681,12 +758,18 @@ const MarketOrder = () => {
                                             )
                                         })
                                     ) : (
-                                        <div>{`No open orders found for ${tokenB.symbol}`}</div>
+                                        <div>{`No open orders found for ${tokenA.displaySymbol || tokenA.symbol} to ${tokenB.displaySymbol || tokenB.symbol}`}</div>
                                     )}
                                 </>
                             )}
                         </div>
                     </div>
+                    {!supportedPancakeTokens.tokens.find((token) => token.symbol === (fromBNB ? tokenB.symbol : tokenA.symbol)) && (
+                        <div className="token-not-supported">
+                            <div>{fromBNB ? tokenB.symbol : tokenA.symbol} Limit Orders Not Currently Supported!</div>
+                            <span>Tokens added by popular demand</span>
+                        </div>
+                    )}
                 </div>
             </div>
             <TokenModal

@@ -34,7 +34,7 @@ const Header = () => {
                             <Image src="/assets/image/utopia/utopiaLogo.svg" alt="logo" width={190} height={24} />
                         </a>
                     </Link>
-                    <Image src="/assets/image/icons/BetaV2.svg" height={24} width={64} />
+                    <Image src="/assets/image/icons/BetaV3.svg" height={24} width={64} />
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="navbar-nav ml-auto">
