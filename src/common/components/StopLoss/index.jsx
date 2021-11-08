@@ -607,7 +607,7 @@ const StopLoss = () => {
                                                         )
                                                     })
                                             ) : (
-                                                <div>{`No open orders found for ${tokenB.symbol}`}</div>
+                                                <div>{`No open Stop Loss orders found for ${tokenA.symbol} to ${tokenB.displaySymbol}`}</div>
                                             )}
                                         </>
                                     )}
@@ -653,7 +653,7 @@ const StopLoss = () => {
                                                         )
                                                     })
                                             ) : (
-                                                <div>{`No failed orders found for ${tokenB.displaySymbol}`}</div>
+                                                <div>{`No failed Stop Loss orders found for ${tokenA.symbol} to ${tokenB.displaySymbol}`}</div>
                                             )}
                                         </>
                                     )}
@@ -699,7 +699,7 @@ const StopLoss = () => {
                                             )
                                         })
                                     ) : (
-                                        <div>{`No open orders found for ${tokenB.displaySymbol}`}</div>
+                                        <div>{`No open Stop Loss orders found for ${tokenA.symbol} to ${tokenB.displaySymbol}`}</div>
                                     )}
                                 </>
                             )}

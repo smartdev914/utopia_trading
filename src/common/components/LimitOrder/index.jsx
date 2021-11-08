@@ -204,7 +204,7 @@ const MarketOrder = () => {
                                         tokenOutAddress: tokenB.address.toLowerCase(),
                                         tokenInAmount: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
                                         tokenOutAmount: getDecimalAmount(tokenBAmount, tokenB.decimals).toFixed(),
-                                        tokenPrice: tokenBRate,
+                                        tokenPrice: new BigNumber(tokenBRate).toFixed(),
                                         slippage: parseFloat(slippagePercentage) * 100,
                                         feeTxHash: res.transactionHash,
                                     },
@@ -245,7 +245,7 @@ const MarketOrder = () => {
                                     tokenOutAddress: tokenB.address.toLowerCase(),
                                     tokenInAmount: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
                                     tokenOutAmount: getDecimalAmount(tokenBAmount, tokenB.decimals).toFixed(),
-                                    tokenPrice: tokenBRate,
+                                    tokenPrice: new BigNumber(tokenBRate).toFixed(),
                                     slippage: parseFloat(slippagePercentage) * 100,
                                     feeTxHash: transactionFeeId,
                                 },
@@ -277,15 +277,31 @@ const MarketOrder = () => {
     }
 
     const onCancelOrderClick = async (orderCode) => {
-        await axios.delete(`https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com/deleteLimitOrder/${tokenB.address.toLowerCase()}/${orderCode}`).then(() => {
-            loadOpenOrders(bscContext.currentAccountAddress, fromBNB ? tokenB.address : tokenA.address, fromBNB)
-        })
+        await axios
+            .delete(
+                `https://limit-order-manager-dot-utopia-315014.uw.r.appspot.com${fromBNB ? '/deleteLimitBuy' : '/deleteLimitSell'}/${
+                    fromBNB ? tokenB.address.toLowerCase() : tokenA.address.toLowerCase()
+                }/${orderCode}`,
+                {
+                    timeout: 5000,
+                }
+            )
+            .then(() => {
+                loadOpenOrders(bscContext.currentAccountAddress, fromBNB ? tokenB.address : tokenA.address, fromBNB)
+                toast.info('Order Deleted', toastSettings)
+            })
+            .catch(() => {
+                toast.error('Error Deleting Order', toastSettings)
+            })
     }
 
     const confirmCancelation = async (orderCode) => {
         toast.warn(
-            <div role="button" onClick={() => onCancelOrderClick(orderCode)}>
-                Confirm Cancelation? <div>Yes</div>
+            <div className="confirm-cancellation">
+                Confirm Cancelation?{' '}
+                <div role="button" onClick={() => onCancelOrderClick(orderCode)}>
+                    Yes
+                </div>
             </div>,
             toastSettings
         )
@@ -594,7 +610,7 @@ const MarketOrder = () => {
                                                         )
                                                     })
                                             ) : (
-                                                <div>{`No open orders found for ${tokenB.symbol}`}</div>
+                                                <div>{`No open orders found for ${tokenA.displaySymbol || tokenA.symbol} to ${tokenB.displaySymbol || tokenB.symbol}`}</div>
                                             )}
                                         </>
                                     )}
@@ -640,7 +656,7 @@ const MarketOrder = () => {
                                                         )
                                                     })
                                             ) : (
-                                                <div>{`No open orders found for ${tokenB.displaySynbol || tokenB.symbol}`}</div>
+                                                <div>{`No open orders found for ${tokenA.displaySymbol || tokenA.symbol} to ${tokenB.displaySynbol || tokenB.symbol}`}</div>
                                             )}
                                         </>
                                     )}
@@ -686,7 +702,7 @@ const MarketOrder = () => {
                                                         )
                                                     })
                                             ) : (
-                                                <div>{`No failed orders found for ${tokenB.displaySynbol || tokenB.symbol}`}</div>
+                                                <div>{`No failed orders found for ${tokenA.displaySymbol || tokenA.symbol} to ${tokenB.displaySynbol || tokenB.symbol}`}</div>
                                             )}
                                         </>
                                     )}
@@ -732,7 +748,7 @@ const MarketOrder = () => {
                                             )
                                         })
                                     ) : (
-                                        <div>{`No open orders found for ${tokenB.displaySynbol || tokenB.symbol}`}</div>
+                                        <div>{`No open orders found for ${tokenA.displaySymbol || tokenA.symbol} to ${tokenB.displaySynbol || tokenB.symbol}`}</div>
                                     )}
                                 </>
                             )}
