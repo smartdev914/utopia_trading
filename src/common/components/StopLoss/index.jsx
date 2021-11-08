@@ -19,6 +19,7 @@ import { getContract, getContractNoABI } from 'common/utils/getContract'
 import TokenModal from 'components/TokenModal'
 import useInterval from 'common/hooks/useInterval'
 import { formatMinMaxDecimalsBN } from 'common/utils/bigNumbers'
+import TokenContext from 'context/TokenContext'
 
 const StopLoss = () => {
     const [showTokenModal, toggleShowTokenModal] = useState(false)
@@ -53,6 +54,7 @@ const StopLoss = () => {
     const [transactionFeeId, setTransactionFeeId] = useState()
 
     const bscContext = useContext(BSCContext)
+    const tokenContext = useContext(TokenContext)
 
     const loadOpenOrders = async (currentAccountAddress, tokenAddress) => {
         if (currentAccountAddress && tokenAddress) {
@@ -84,6 +86,10 @@ const StopLoss = () => {
         const currentBNBToTokenQuote = await getQuote(pancakePair, tokenA, tokenB, getDecimalAmount(1, tokenA.decimals))
         setCurrentTokenToBNBPrice(currentBNBToTokenQuote)
     }, 10000)
+
+    useEffect(() => {
+        setTokenA(tokenContext.currentlySelectedToken)
+    }, [tokenContext.currentlySelectedToken])
 
     useEffect(async () => {
         // load open orders on token change
@@ -705,6 +711,12 @@ const StopLoss = () => {
                             )}
                         </div>
                     </div>
+                    {!supportedPancakeTokens.tokens.find((token) => token.symbol === tokenA.symbol) && (
+                        <div className="token-not-supported">
+                            <div>{tokenA.symbol} Stop Loss Not Currently Supported!</div>
+                            <span>Tokens added by popular demand</span>
+                        </div>
+                    )}
                 </div>
             </div>
             <TokenModal

@@ -21,6 +21,7 @@ import TokenModal from 'components/TokenModal'
 import { ethers } from 'ethers'
 import useInterval from 'common/hooks/useInterval'
 import { formatMinMaxDecimalsBN } from 'common/utils/bigNumbers'
+import TokenContext from 'context/TokenContext'
 
 const MarketOrder = () => {
     const [fromBNB, toggleFromBnb] = useState(true)
@@ -55,6 +56,7 @@ const MarketOrder = () => {
     const [transactionFeeId, setTransactionFeeId] = useState()
 
     const bscContext = useContext(BSCContext)
+    const tokenContext = useContext(TokenContext)
 
     const loadOpenOrders = async (currentAccountAddress, tokenAddress, currentFromBNB) => {
         if (currentAccountAddress && tokenAddress) {
@@ -108,6 +110,14 @@ const MarketOrder = () => {
         setTokenBRate('')
         setTokenBAmount('')
     }
+
+    useEffect(() => {
+        if (fromBNB) {
+            setTokenB(tokenContext.currentlySelectedToken)
+        } else {
+            setTokenA(tokenContext.currentlySelectedToken)
+        }
+    }, [tokenContext.currentlySelectedToken])
 
     useInterval(async () => {
         if (bscContext.currentAccountAddress) {
@@ -754,6 +764,12 @@ const MarketOrder = () => {
                             )}
                         </div>
                     </div>
+                    {!supportedPancakeTokens.tokens.find((token) => token.symbol === (fromBNB ? tokenB.symbol : tokenA.symbol)) && (
+                        <div className="token-not-supported">
+                            <div>{fromBNB ? tokenB.symbol : tokenA.symbol} Limit Orders Not Currently Supported!</div>
+                            <span>Tokens added by popular demand</span>
+                        </div>
+                    )}
                 </div>
             </div>
             <TokenModal
