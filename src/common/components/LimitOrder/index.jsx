@@ -656,7 +656,7 @@ const MarketOrder = () => {
                                                         )
                                                     })
                                             ) : (
-                                                <div>{`No open orders found for ${tokenA.displaySymbol || tokenA.symbol} to ${tokenB.displaySynbol || tokenB.symbol}`}</div>
+                                                <div>{`No open orders found for ${tokenA.displaySymbol || tokenA.symbol} to ${tokenB.displaySymbol || tokenB.symbol}`}</div>
                                             )}
                                         </>
                                     )}
@@ -702,7 +702,7 @@ const MarketOrder = () => {
                                                         )
                                                     })
                                             ) : (
-                                                <div>{`No failed orders found for ${tokenA.displaySymbol || tokenA.symbol} to ${tokenB.displaySynbol || tokenB.symbol}`}</div>
+                                                <div>{`No failed orders found for ${tokenA.displaySymbol || tokenA.symbol} to ${tokenB.displaySymbol || tokenB.symbol}`}</div>
                                             )}
                                         </>
                                     )}
@@ -748,7 +748,7 @@ const MarketOrder = () => {
                                             )
                                         })
                                     ) : (
-                                        <div>{`No open orders found for ${tokenA.displaySymbol || tokenA.symbol} to ${tokenB.displaySynbol || tokenB.symbol}`}</div>
+                                        <div>{`No open orders found for ${tokenA.displaySymbol || tokenA.symbol} to ${tokenB.displaySymbol || tokenB.symbol}`}</div>
                                     )}
                                 </>
                             )}
