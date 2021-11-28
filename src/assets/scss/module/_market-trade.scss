@@ -67,7 +67,7 @@
 
     .input-group {
       &.top {
-        margin-bottom: 80px;
+        margin-bottom: 25px;
       }
 
       &.rate {
@@ -338,7 +338,7 @@
 
 .market-trade-buy .swap-coin-icon {
   position: absolute;
-  top: 115px;
+  top: 90px;
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;

@@ -18,6 +18,7 @@ const ComponentWrapper = styled.div`
         transform: translateX(-50%);
         border-bottom-left-radius: 20px;
         border-bottomr-right-radius: 20px;
+        z-index: 1;
     }
 
     .unlisted-token {

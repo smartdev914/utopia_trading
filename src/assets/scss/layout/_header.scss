@@ -37,7 +37,7 @@
     }
 }
 
-.navbar .navbar-nav .reusecore__button {
+.connect-wallet.reusecore__button {
   background-color: #1FC08E;
   box-shadow: 0px 0px 15px 0px #26de81ad;
   font-family: var(--fontDosis);
@@ -62,6 +62,9 @@ header .navbar-brand img {
     height: 24px;
     padding-left: 1rem;
 }
+header .navbar-expand-lg {
+  justify-content: space-between;
+}
 .navbar-expand-lg .navbar-nav .nav-link {
     padding-right: 1rem;
     padding-left: 1rem;
@@ -83,6 +86,13 @@ header .nav-link.btn {
     position: absolute;
     right: 12px;
     top: 8px;
+}
+
+.nav-item.input-group {
+  max-width: 50%;
+  .form-control {
+    background-color: #150035;
+  }
 }
 
 .circle-pulse:after {

@@ -4,4 +4,16 @@
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+  
+  &.mobile {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+
+    &.mobile {
+      display: block;
+    }
+  }
 }

@@ -1,29 +1,59 @@
 .token-info {
   padding: 20px;
-  margin-top: 1rem;
 
   &.market-history h3 {
     padding: 0
   }
 
+  .selected-token {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+
+    .token-icon {
+      width: 50px;
+      height: 50px;
+      border: 3px solid #F9DF00;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .price {
+      color: #00DEE6
+    }
+  }
+
   .info-row {
-    margin: 20px 0;
+    margin: 0;
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    align-items: center;
+    justify-content: space-between;
+
+    @media screen and (max-width: 768px) {
+      .selected-token {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .info-stat {
+        margin: 5px 0;
+        width: 50%;
+      }
+    }
   }
 
   .info-stat {
     display: flex;
     flex-direction: column;
-    width: 30%;
     flex-shrink: 0;
-    margin-right: 20%;
-    min-width: 70px;
+    min-width: 100px;
+    text-align: center;
   }
 
   .info-header {
-    font-size: 18px;
+    font-size: 16px;
     color: #00DEE6
   }
 

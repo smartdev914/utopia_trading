@@ -52,9 +52,8 @@ export default function MarketHistory() {
                                 <thead>
                                     <tr>
                                         <th>Time</th>
-                                        <th>Amount(BNB)</th>
                                         <th>Amount({`${tokenContext.currentlySelectedToken.symbol}`})</th>
-                                        {tokenContext.currentTokenPriceInUSD && <th>Value (USD)</th>}
+                                        {tokenContext.currentTokenPriceInUSD && <th>Price</th>}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -64,14 +63,19 @@ export default function MarketHistory() {
                                             return (
                                                 <tr onClick={() => window.open(`https://bscscan.com/tx/${transaction.transaction.hash}`, '_blank')} key={transaction.transaction.hash}>
                                                     <td className="red">{timeSince === 0 ? 'Just Now' : `${timeSince} ago`}</td>
-                                                    <td className="red">{transaction.sellAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 3 })}</td>
                                                     <td className="red">{transaction.buyAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 3 })}</td>
                                                     {tokenContext.currentTokenPriceInUSD && (
                                                         <td className="red">
-                                                            {(transaction.buyAmount * tokenContext.currentTokenPriceInUSD).toLocaleString(undefined, {
-                                                                minimumFractionDigits: 2,
-                                                                maximumFractionDigits: 2,
-                                                            })}
+                                                            <div>
+                                                                $
+                                                                {(transaction.buyAmount * tokenContext.currentTokenPriceInUSD).toLocaleString(undefined, {
+                                                                    minimumFractionDigits: 2,
+                                                                    maximumFractionDigits: 2,
+                                                                })}
+                                                            </div>
+                                                            <div className="bnb-price">
+                                                                {transaction.sellAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 3 })} BNB
+                                                            </div>
                                                         </td>
                                                     )}
                                                 </tr>
@@ -81,14 +85,17 @@ export default function MarketHistory() {
                                         return (
                                             <tr onClick={() => window.open(`https://bscscan.com/tx/${transaction.transaction.hash}`, '_blank')} key={transaction.transaction.hash}>
                                                 <td className="green">{timeSince === 0 ? 'Just Now' : `${timeSince} ago`}</td>
-                                                <td className="green">{transaction.buyAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 3 })}</td>
                                                 <td className="green">{transaction.sellAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 3 })}</td>
                                                 {tokenContext.currentTokenPriceInUSD && (
                                                     <td className="green">
-                                                        {(transaction.sellAmount * tokenContext.currentTokenPriceInUSD).toLocaleString(undefined, {
-                                                            minimumFractionDigits: 2,
-                                                            maximumFractionDigits: 2,
-                                                        })}
+                                                        <div>
+                                                            $
+                                                            {(transaction.sellAmount * tokenContext.currentTokenPriceInUSD).toLocaleString(undefined, {
+                                                                minimumFractionDigits: 2,
+                                                                maximumFractionDigits: 2,
+                                                            })}
+                                                        </div>
+                                                        <div className="bnb-price">{transaction.buyAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 3 })} BNB</div>
                                                     </td>
                                                 )}
                                             </tr>

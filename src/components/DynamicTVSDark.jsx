@@ -12,7 +12,7 @@ export default function DynamicTVS() {
         const initTVwidget = () => {
             window.tvWidget = new window.TradingView.widget({
                 symbol: `Utopia:${currentTokenSymbol}/BNB`, // default symbol
-                interval: '15', // default interval
+                interval: '240', // default interval
                 container: 'tv_chart_container',
                 datafeed: Datafeed,
                 disabled_features: ['use_localstorage_for_settings'],
