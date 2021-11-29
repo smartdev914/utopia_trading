@@ -80,10 +80,8 @@ const BSCContextProvider = ({ children }) => {
     }, [currentAccountAddress, refreshTokens, signer])
 
     const loadUTPPresaleContract = useCallback(() => {
-        if (window.web3) {
-            const UtopiaContract = getContract(bscPresaleABI, UtopiaPresaleBSCAddress, signer)
-            setPresaleContract(UtopiaContract)
-        }
+        const UtopiaContract = getContract(bscPresaleABI, UtopiaPresaleBSCAddress, signer)
+        setPresaleContract(UtopiaContract)
     }, [UtopiaPresaleBSCAddress, signer])
 
     const setupNetwork = async () => {

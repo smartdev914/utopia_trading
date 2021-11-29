@@ -7,9 +7,10 @@ import Container from 'common/components/UI/Container'
 
 import { Spinner } from 'react-bootstrap'
 import BSCContext from 'context/BSCContext'
-import web3 from 'web3'
-import { round } from 'common/utils/numbers'
+import { getBalanceAmount, getDecimalAmount, round } from 'common/utils/numbers'
+import { getContract } from 'common/utils/getContract'
 import { useRouter } from 'next/dist/client/router'
+import bscPresaleABI from '../../../ABI/bscPresaleABI'
 import BannerWrapper, { BannerContent } from './presale.style'
 
 const Presale = () => {
@@ -18,8 +19,11 @@ const Presale = () => {
     const presaleGUID = Object.keys(query)?.includes('fb3ca69d-0bab-4110-8b2b-4fcf11a60298')
     const withdrawGUID = Object.keys(query)?.includes('8405945e-c2e4-4777-81be-e31a11106754')
 
+    const UtopiaPresaleBSCAddress = '0x609692D1A4c45FB8f535269f4339b7880296baa0'
+
     const presaleTokens = 300000000000
     const presaleBNB = presaleGUID ? 425 : 400
+    const [presaleContract, setPresaleContract] = useState()
     const [loadingPurchase, setLoadingPurchase] = useState(false)
     const [errorMessage, setErrorMessage] = useState(false)
     const [totalPurchasedBnb, setTotalPurchasedBnb] = useState(0)
@@ -35,36 +39,41 @@ const Presale = () => {
         localStorage.removeItem('walletconnect')
     }, [])
 
+    useEffect(() => {
+        const UtopiaContract = getContract(bscPresaleABI, UtopiaPresaleBSCAddress, bscContext.signer)
+        setPresaleContract(UtopiaContract)
+    }, [bscContext.signer])
+
     useEffect(async () => {
-        if (bscContext.presaleContract) {
-            const tokensPurchasedInWei = await bscContext.presaleContract.weiRaised()
-            const totalPurchasedTokens = web3.utils.fromWei(tokensPurchasedInWei)
+        if (presaleContract) {
+            const tokensPurchasedInWei = await presaleContract.weiRaised()
+            const totalPurchasedTokens = getBalanceAmount(tokensPurchasedInWei, 18)
             setTotalPurchasedBnb(round(totalPurchasedTokens, 0))
-            const finalized = await bscContext.presaleContract.finalized()
+            const finalized = await presaleContract.finalized()
             setPresaleFinalized(finalized)
         }
-    }, [bscContext.presaleContract])
+    }, [presaleContract])
 
     useEffect(async () => {
-        if (bscContext.currentAccountAddress && bscContext.presaleContract) {
-            const presalePurchasedValue = await bscContext.presaleContract.purchasedBnb(bscContext.currentAccountAddress)
+        if (bscContext.currentAccountAddress && presaleContract) {
+            const presalePurchasedValue = await presaleContract.purchasedBnb(bscContext.currentAccountAddress)
             setPresalePurchased(parseFloat(presalePurchasedValue) > 0)
         }
-    }, [bscContext.currentAccountAddress, bscContext.presaleContract])
+    }, [bscContext.currentAccountAddress, presaleContract])
 
     useEffect(async () => {
-        if (bscContext.currentAccountAddress && bscContext.presaleContract) {
-            const bnbAllowance = await bscContext.presaleContract.viewBnbAllowanceForUser(bscContext.currentAccountAddress)
-            const allowedBnb = web3.utils.fromWei(bnbAllowance)
+        if (bscContext.currentAccountAddress && presaleContract) {
+            const bnbAllowance = await presaleContract.viewBnbAllowanceForUser(bscContext.currentAccountAddress)
+            const allowedBnb = getBalanceAmount(bnbAllowance, 18)
             setMaxPurchaseableTokens(allowedBnb)
         }
-    }, [bscContext.currentAccountAddress, bscContext.presaleContract])
+    }, [bscContext.currentAccountAddress, presaleContract])
 
     const handleBuyPresale = () => {
-        const bnbAmount = web3.utils.toWei(`${maxPurchaseableTokens}`)
-        if (bscContext.presaleContract) {
+        const bnbAmount = getDecimalAmount(`${maxPurchaseableTokens}`, 18)
+        if (presaleContract) {
             setLoadingPurchase(true)
-            bscContext.presaleContract
+            presaleContract
                 .buyTokens(bscContext.currentAccountAddress)
                 .send({ from: bscContext.currentAccountAddress, value: bnbAmount })
                 .then((result) => {
@@ -93,7 +102,7 @@ const Presale = () => {
                     <Text className="max-contribution" as="div" content="Max Contribution:" />
                     <Text className="highlight" as="p" content={`${maxPurchaseableTokens} BNB = ${(maxPurchaseableTokens * (presaleTokens / 500)).toLocaleString()} UTOPIA`} />
                     <Text className="wallet-address" content={`Wallet Address: ${bscContext.currentAccountAddress}`} />
-                    <Text className="current-balance" as="div" content={`Current Balance: ${round(web3.utils.fromWei(bscContext.currentBnbBalance), 4)} BNB`} />
+                    <Text className="current-balance" as="div" content={`Current Balance: ${round(getBalanceAmount(bscContext.currentBnbBalance, 18), 4)} BNB`} />
                     {parseFloat(bscContext.currentBnbBalance) > parseInt(maxPurchaseableTokens, 10) ? (
                         <Button title="Contribute to the Presale!" onClick={handleBuyPresale} />
                     ) : (
@@ -104,17 +113,18 @@ const Presale = () => {
         </>
     )
 
-    const handleWithdraw = () => {
-        if (bscContext.presaleContract && bscContext.currentAccountAddress) {
+    const handleWithdraw = async () => {
+        if (presaleContract && bscContext.currentAccountAddress) {
             setLoadingWithdraw(true)
-            bscContext.presaleContract
+            await presaleContract
                 .withdrawTokens()
-                .send({ from: bscContext.currentAccountAddress })
                 .then((result) => {
+                    console.log(result)
                     setLoadingWithdraw(false)
                     setErrorMessage('Tokens Successfully Withdrawn!')
                 })
                 .catch((err) => {
+                    console.log(err)
                     setLoadingWithdraw(false)
                     setErrorMessage('Error withdrawing tokens. (No Tokens left to withdraw)')
                 })
