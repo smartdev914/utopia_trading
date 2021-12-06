@@ -426,8 +426,8 @@ const MarketOrder = () => {
                                 <div className="slippage-container">
                                     <div className="slippage-settings">
                                         <span>
-                                            SLIPPAGE&nbsp;
-                                            <span className="recommended-slippage-toggle">
+                                            SLIPPAGE
+                                            {/* <span className="recommended-slippage-toggle">
                                                 <Toggle
                                                     defaultChecked={useRecommendedSlippage}
                                                     icons={false}
@@ -436,7 +436,7 @@ const MarketOrder = () => {
                                                     }}
                                                 />{' '}
                                                 AUTO-SLIPPAGE
-                                            </span>
+                                            </span> */}
                                         </span>
                                         <input
                                             className="slippage-percentage-input"
