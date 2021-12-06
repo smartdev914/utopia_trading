@@ -20,6 +20,7 @@ import TokenModal from 'components/TokenModal'
 import { getContract, getContractNoABI } from 'common/utils/getContract'
 import useInterval from 'common/hooks/useInterval'
 import { useDebouncedCallback } from 'common/hooks/useDebouncedCallback'
+import ThemeContext from 'context/ThemeContext'
 
 const MarketOrder = () => {
     const [fromBNB, toggleFromBnb] = useState(true)
@@ -46,6 +47,7 @@ const MarketOrder = () => {
     const [loadingQuote, setLoadingQuote] = useState(false)
     const bscContext = useContext(BSCContext)
     const tokenContext = useContext(TokenContext)
+    const themeContext = useContext(ThemeContext)
 
     const clickToggleFromBNB = () => {
         toggleFromBnb(!fromBNB)
@@ -419,7 +421,7 @@ const MarketOrder = () => {
                                     </div>
                                 </div>
                                 <div role="button" className="swap-coin-icon" onClick={clickToggleFromBNB} tabIndex="0">
-                                    <Image src="/assets/image/icons/swap-coin-image.png" width={45} height={45} quality={100} />
+                                    <Image src={`/assets/image/icons/swap-coin-image-${themeContext.currentTheme}.svg`} width={45} height={45} quality={100} />
                                 </div>
                                 <div className="slippage-container">
                                     <div className="slippage-settings">

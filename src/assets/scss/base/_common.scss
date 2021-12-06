@@ -82,7 +82,7 @@ td {
     color: #4a4a4a;
 }
 .green {
-    color: #26de81;
+    color: #219653;
 }
 .red {
     color: #ff231f;
@@ -255,4 +255,51 @@ input[type="number"] {
 .underlined-button {
     color: white;
     text-decoration: underline;
+}
+
+// slider overrides
+div.rc-slider-rail {
+    height: 2px;
+}
+span.rc-slider-dot {
+    bottom: -1;
+}
+div.rc-slider-track {
+    height: 2px;
+}
+div.rc-slider-handle {
+    width: 12px;
+    height: 12px;
+    margin-top: -5px;
+}
+
+.toggle-wrapper {
+    margin: 0;
+    width: 171px;
+    font-size: 12px;
+    font-family: var(--fontDosis);
+    height: 23px;
+
+    .toggleContainer {
+        border: none;
+        border-radius: 12px;
+        
+        .toggle {
+            border-radius: 12px;
+        }
+    }
+
+    .toggleContainer .toggleOption.selected {
+        border-radius: 12px;
+    }
+
+    .toggleContainer .toggleOption {
+        height: 23px;
+        line-height: 23px;
+    }
+}
+
+header.light-bb nav a {
+    padding-top: 0.5rem;
+    padding-left: 1rem;
 }

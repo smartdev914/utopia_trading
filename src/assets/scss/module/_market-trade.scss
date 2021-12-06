@@ -67,7 +67,7 @@
 
     .input-group {
       &.top {
-        margin-bottom: 25px;
+        margin-bottom: 10px;
       }
 
       &.rate {
@@ -95,7 +95,6 @@
         padding-left: 17px;
         font-weight: 500;
         font-size: 24px;
-        color: #F9DF00;
         border-radius: 12px !important;
       }
 
@@ -240,8 +239,6 @@
 .market-trade .nav-tabs .nav-link:hover:after {
   content: "";
   position: absolute;
-  border: 2px solid #00DEE6;
-  color: #007bff;
   bottom: -5px;
   width: 90%;
   left: 5%;
@@ -338,7 +335,7 @@
 
 .market-trade-buy .swap-coin-icon {
   position: absolute;
-  top: 90px;
+  top: 81px;
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;
@@ -501,20 +498,4 @@
   }
 }
 
-.market-trade {
-  .rc-slider-track, .rc-slider-handle {
-    background-color: #F9DF00;
-  }
-  .rc-slider-handle:hover, .rc-slider-handle {
-    border-color: #F9DF00;
-  }
 
-  .rc-slider-rail {
-    background-color: #A3FFFF;
-  }
-
-  .rc-slider-dot {
-    background-color: #A3FFFF;
-    border-color: #A3FFFF
-  }
-}

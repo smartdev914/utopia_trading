@@ -2,14 +2,16 @@
 import TokenContext from 'context/TokenContext'
 import React, { useContext, useEffect } from 'react'
 import supportedPancakeTokens from 'common/constants/tokens/supportedPancakeTokens.json'
+import ThemeContext from 'context/ThemeContext'
 import Datafeed from '../common/data/chartUtils/datafeed'
 
 export default function DynamicTVS() {
     const tokenContext = useContext(TokenContext)
+    const themeContext = useContext(ThemeContext)
     const currentTokenSymbol = tokenContext.currentlySelectedToken.symbol
 
     useEffect(() => {
-        const initTVwidget = () => {
+        const initTVwidgetDark = () => {
             window.tvWidget = new window.TradingView.widget({
                 symbol: `Utopia:${currentTokenSymbol}/BNB`, // default symbol
                 interval: '240', // default interval
@@ -20,7 +22,49 @@ export default function DynamicTVS() {
                 height: '100%',
                 width: '100%',
                 theme: 'Dark',
-                custom_css_url: '/assets/css/tradingView.css',
+                custom_css_url: '/assets/css/tradingViewDark.css',
+                applyOverrides: true,
+                overrides: {
+                    'paneProperties.background': '#111721',
+                    'paneProperties.backgroundType': 'solid',
+                    'paneProperties.backgroundGradientStartColor': '#111721',
+                    'paneProperties.backgroundGradientEndColor': '#111721',
+                },
+            })
+        }
+        const initTVwidgetLight = () => {
+            window.tvWidget = new window.TradingView.widget({
+                symbol: `Utopia:${currentTokenSymbol}/BNB`, // default symbol
+                interval: '240', // default interval
+                container: 'tv_chart_container',
+                datafeed: Datafeed,
+                disabled_features: ['use_localstorage_for_settings'],
+                library_path: '/libs/charting_library_cloned_data/charting_library/',
+                height: '100%',
+                width: '100%',
+                theme: 'Dark',
+                custom_css_url: '/assets/css/tradingViewLight.css',
+                applyOverrides: true,
+                overrides: {
+                    'paneProperties.background': '#FFF',
+                    'paneProperties.backgroundType': 'solid',
+                    'paneProperties.backgroundGradientStartColor': '#FFF',
+                    'paneProperties.backgroundGradientEndColor': '#FFF',
+                },
+            })
+        }
+        const initTVwidgetUTOPIA = () => {
+            window.tvWidget = new window.TradingView.widget({
+                symbol: `Utopia:${currentTokenSymbol}/BNB`, // default symbol
+                interval: '240', // default interval
+                container: 'tv_chart_container',
+                datafeed: Datafeed,
+                disabled_features: ['use_localstorage_for_settings'],
+                library_path: '/libs/charting_library_cloned_data/charting_library/',
+                height: '100%',
+                width: '100%',
+                theme: 'Dark',
+                custom_css_url: '/assets/css/tradingViewUtopia.css',
                 applyOverrides: true,
                 overrides: {
                     'paneProperties.background': '#150035',
@@ -30,8 +74,20 @@ export default function DynamicTVS() {
                 },
             })
         }
-        initTVwidget()
-    }, [currentTokenSymbol])
+        switch (themeContext.currentTheme) {
+            case 'darkMode':
+                initTVwidgetDark()
+                break
+            case 'lightMode':
+                initTVwidgetLight()
+                break
+            case 'utopiaMode':
+                initTVwidgetUTOPIA()
+                break
+            default:
+                break
+        }
+    }, [currentTokenSymbol, themeContext.currentTheme])
 
     return (
         <div className="main-chart mb15">

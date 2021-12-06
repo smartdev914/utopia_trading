@@ -9,6 +9,8 @@ import BSCContext from 'context/BSCContext'
 import Button from 'common/components/Button'
 import SearchAutocomplete from 'common/components/SearchAutocomplete'
 import TokenContext from 'context/TokenContext'
+import ThemeToggle from 'common/components/ThemeToggle'
+import ThemeContext from 'context/ThemeContext'
 import supportedPancakeTokens from '../common/constants/tokens/supportedPancakeTokens.json'
 
 const Header = () => {
@@ -23,6 +25,7 @@ const Header = () => {
 
     const bscContext = useContext(BSCContext)
     const tokenContext = useContext(TokenContext)
+    const themeContext = useContext(ThemeContext)
 
     const options = supportedPancakeTokens.tokens.map((token) => ({
         text: token.name,
@@ -43,11 +46,14 @@ const Header = () => {
                 <Navbar expand="lg">
                     <Link href="/">
                         <a href="/" className="navbar-brand">
-                            <Image src="/assets/image/utopia/utopiaLogo.svg" alt="logo" width={190} height={24} />
+                            <Image src={`/assets/image/utopia/utopiaHeaderLogo-${themeContext.currentTheme}.svg`} alt="logo" width={190} height={24} />
                         </a>
                     </Link>
                     <div className="input-group nav-item">
                         <SearchAutocomplete searchOptions={options} onSelect={(e) => tokenContext.setCurrentlySelectedToken(e)} />
+                    </div>
+                    <div className="theme-toggle-container">
+                        <ThemeToggle />
                     </div>
                     {bscContext.currentAccountAddress ? (
                         <Dropdown className="header-img-icon">

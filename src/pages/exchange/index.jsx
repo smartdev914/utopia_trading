@@ -1,44 +1,46 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Image from 'next/image'
 import { ToastContainer } from 'react-toastify'
 // import { Modal } from 'react-bootstrap'
 import ErrorBoundary from 'components/ErrorBoundry'
-import MarketNews from '../../components/MarketNews'
+import ThemeContext from 'context/ThemeContext'
+import MarketInfo from '../../components/MarketInfo'
 import Layout from '../../components/Layout'
 import MarketHistory from '../../components/MarketHistory'
 import MarketExchange from '../../components/MarketExchange'
-import { ThemeConsumer } from '../../context/ThemeContext'
-import DynamicTVS from '../../components/DynamicTVS'
 import DynamicTVSDark from '../../components/DynamicTVSDark'
 
 const Home = () => {
     // const [showModal, setShowModal] = useState(false)
+    const themeContext = useContext(ThemeContext)
 
     useEffect(() => {
-        document.querySelector('body').classList.add('dark')
+        document.querySelector('body').classList.remove('darkMode')
+        document.querySelector('body').classList.remove('lightMode')
+        document.querySelector('body').classList.remove('utopiaMode')
+        document.querySelector('body').classList.add(themeContext.currentTheme)
         // const shownModal = sessionStorage.getItem('shownWarningModal')
         // setShowModal(!shownModal)
-        sessionStorage.setItem('shownWarningModal', true)
-    }, [])
+        // sessionStorage.setItem('shownWarningModal', true)
+    }, [themeContext.currentTheme])
 
     return (
         <Layout>
             <ErrorBoundary>
                 <div className="container-fluid mtb15 no-fluid">
+                    <MarketInfo />
                     <div className="row sm-gutters">
                         <div className="col-md-3">
                             <MarketExchange />
                             <div className="utopia-logo-u-main">
-                                <Image src="/assets/gifs/utopiaLogoGif1.gif" width={600} height={600} alt="utopia Logo" priority />
+                                <Image src={`/assets/image/utopia/utopiaU-${themeContext.currentTheme}.svg`} width={400} height={400} alt="utopia Logo" priority />
                             </div>
                         </div>
                         <div className="col-sm-12 col-md-9">
-                            <MarketNews />
-
-                            <ThemeConsumer>{({ data }) => (data.theme === 'light' ? <DynamicTVS /> : <DynamicTVSDark />)}</ThemeConsumer>
+                            <DynamicTVSDark />
                             <MarketHistory />
                             <div className="utopia-logo-u-main mobile">
-                                <Image src="/assets/gifs/utopiaLogoGif1.gif" width={600} height={600} alt="utopia Logo" priority />
+                                <Image src={`/assets/image/utopia/utopiaU-${themeContext.currentTheme}.svg`} width={400} height={400} alt="utopia Logo" priority />
                             </div>
                         </div>
                     </div>

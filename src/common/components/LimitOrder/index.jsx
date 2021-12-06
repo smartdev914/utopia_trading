@@ -22,6 +22,7 @@ import { ethers } from 'ethers'
 import useInterval from 'common/hooks/useInterval'
 import { formatMinMaxDecimalsBN } from 'common/utils/bigNumbers'
 import TokenContext from 'context/TokenContext'
+import ThemeContext from 'context/ThemeContext'
 
 const MarketOrder = () => {
     const [fromBNB, toggleFromBnb] = useState(true)
@@ -55,6 +56,7 @@ const MarketOrder = () => {
     const [loadingBNBTokenPrice, setLoadingBNBTokenPrice] = useState(false)
     const [transactionFeeId, setTransactionFeeId] = useState()
 
+    const themeContext = useContext(ThemeContext)
     const bscContext = useContext(BSCContext)
     const tokenContext = useContext(TokenContext)
 
@@ -450,7 +452,7 @@ const MarketOrder = () => {
                             </div>
                             <div className="sub-price">Rate In USD: {rateInUSD}</div>
                             <div role="button" className="swap-coin-icon" onClick={toggleLimitOrderSell} tabIndex="0">
-                                <Image src="/assets/image/icons/swap-coin-image.png" width={45} height={45} quality={100} />
+                                <Image src={`/assets/image/icons/swap-coin-image-${themeContext.currentTheme}.svg`} width={45} height={45} quality={100} />
                             </div>
                         </div>
                         <p>
