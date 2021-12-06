@@ -42,7 +42,7 @@ const Banner = () => {
                             <span className="tooltiptext" id="myTooltip">
                                 Copy to clipboard
                             </span>
-                            <Text as="span" className="highlight" content="0x1a1d7c7A92e8d7f0de10Ae532ECD9f63B7EAf67c" /> <Image src="/assets/image/icons/copyIcon2.png" width={20} height={20} />
+                            <Text as="span" className="highlight" content="(COMING SOON)" /> <Image src="/assets/image/icons/copyIcon2.png" width={20} height={20} />
                         </div>
                     </div> */}
                     </Fade>
