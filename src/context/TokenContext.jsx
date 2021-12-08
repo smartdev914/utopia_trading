@@ -9,12 +9,12 @@ const TokenContext = React.createContext()
 const TokenContextProvider = ({ children }) => {
     const supportedTokenList = supportedPancakeTokens.tokens
     const [currentlySelectedToken, setCurrentlySelectedToken] = useState({
-        address: '0x1a1d7c7A92e8d7f0de10Ae532ECD9f63B7EAf67c',
+        address: '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c',
         chainId: 56,
-        decimals: 9,
-        logoURI: 'https://utopia.cc/assets/image/utopia/utopiaUDarkbg.svg',
-        name: 'Utopia Token',
-        symbol: 'UTOPIA',
+        decimals: 18,
+        logoURI: 'https://pancakeswap.finance/images/tokens/0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c.png',
+        name: 'BTCB Token',
+        symbol: 'BTCB',
     })
     const [currentTokenPriceInUSD, setCurrentTokenPriceInUSD] = useState()
 

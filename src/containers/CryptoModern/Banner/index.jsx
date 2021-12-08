@@ -32,7 +32,7 @@ const Banner = () => (
                 </Fade>
                 <Fade up delay={100}>
                     <Text className="tagline" content="Built today, for a better tomorrow" />
-                    <Text as="span" className="contract-header" content="UTOPIA Contract:" />
+                    {/* <Text as="span" className="contract-header" content="UTOPIA Contract:" />
                     <div className="tooltip">
                         <div role="button" className="contract-address" onClick={copyToClipboard} onMouseOut={setClipboardTooltip}>
                             <span className="tooltiptext" id="myTooltip">
@@ -40,7 +40,7 @@ const Banner = () => (
                             </span>
                             <Text as="span" className="highlight" content="0x1a1d7c7A92e8d7f0de10Ae532ECD9f63B7EAf67c" /> <Image src="/assets/image/icons/copyIcon2.png" width={20} height={20} />
                         </div>
-                    </div>
+                    </div> */}
                 </Fade>
                 <Fade up delay={150}>
                     <ButtonGroup>
