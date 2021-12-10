@@ -50,8 +50,8 @@ const CryptoModern = () => {
                     <ContentWrapper>
                         <Banner />
                         <Mission />
-                        <Tokenomics />
                         <Products />
+                        <Tokenomics />
                         <HowToBuy />
                         <RoadMap />
                         <Team />

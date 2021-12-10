@@ -53,53 +53,48 @@ export const TokenomicsData = [
     {
         id: 2,
         title: 'Presale',
-        value: '300,000,000,000',
+        value: '400,000,000,000',
     },
     {
         id: 3,
         title: 'Pancakeswap Liquidity',
-        value: '300,000,000,000',
+        value: '400,000,000,000',
     },
     {
         id: 4,
         title: 'Team',
-        value: '35,000,000,000',
+        value: '42,000,000,000',
         description: 'Locked and will be slowly released',
     },
     {
         id: 5,
         title: 'Locked Tokens',
-        value: '365,000,000,000',
-        description: '(These tokens will primarily be used to provide liquidity to centralised exchanges for new listings, for future hires and as a store of value for the business as an asset)',
+        value: '158,000,000,000',
+        description: 'These tokens will primarily be used to provide liquidity to centralised exchanges for new listings, and a store of value for the business as an asset',
     },
 ]
 
 export const TokenomicsTaxHightlights = [
     {
         id: 1,
-        title: 'Total 10%',
-        description: 'tax applied on each transaction.',
+        title: '10%',
+        description: 'Total',
     },
     {
         id: 2,
-        title: '2%',
-        description: 'goes to existing holders allowing them to passively earn.',
+        title: '5%',
+        description: 'Utopia Labs Development',
     },
 
     {
         id: 3,
-        title: '2%',
-        description: 'goes towards Businesss Development',
+        title: '4%',
+        description: 'Auto liquidity',
     },
     {
         id: 4,
-        title: '2%',
-        description: 'goes towards Charity/Marketing',
-    },
-    {
-        id: 5,
-        title: '4%',
-        description: 'goes towards Liquidity pool',
+        title: '1%',
+        description: 'Autostaking for holders',
     },
 ]
 

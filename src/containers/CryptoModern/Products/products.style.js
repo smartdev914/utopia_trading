@@ -2,7 +2,8 @@ import styled from 'styled-components'
 
 const SectionWrapper = styled.div`
     background-color: #004fbf;
-    padding: 75px 0;
+    padding: 1rem;
+    padding-top: 70px;
     overflow: hidden;
     @media (max-width: 1440px) {
     }
@@ -15,8 +16,10 @@ export const ContentWrapper = styled.div`
     justify-content: space-around;
     text-align: center;
 
-    &:nth-child(2) {
-        margin-top: 140px;
+    @media (max-width: 768px) {
+        h2 {
+            font-size: 30px;
+        }
     }
 
     .content {
@@ -33,16 +36,29 @@ export const ContentWrapper = styled.div`
             margin-bottom: 50px;
         }
     }
+
+    @media only screen and (max-width: 1254px) {
+        .utopiaEcosystemLink {
+            display: none;
+        }
+    }
 `
 
 export const ProductSectionWrapper = styled.div`
-    padding: 90px 40px 70px;
+    margin-top: -5px;
+    padding-top: 50px;
     border-radius: 20px;
     background-color: var(--primaryBackgroundColor);
     width: auto;
     margin-bottom: 150px;
     position: relative;
     font-family: var(--fontDosis);
+
+    hr {
+        height: 4px;
+        color: var(--tertiaryTextColor);
+        opacity: 1;
+    }
 
     @media only screen and (min-width: 768px) {
         width: 600px;
@@ -65,22 +81,59 @@ export const ProductSectionWrapper = styled.div`
             font-weight: 700;
         }
     }
+
+    .productContent {
+        padding: 20px 60px;
+
+        @media only screen and (max-width: 768px) {
+            padding: 10px 20px 0;
+        }
+    }
+
+    .subheader {
+        font-size: 18px;
+        font-weight: 400;
+        letter-spacing: 0px;
+        margin-bottom: 30px;
+    }
+
+    .logoContainer {
+        padding: 0 20px;
+    }
 `
 
 export const ProductIcon = styled.div`
-    position: absolute;
-    top: -70px;
-    border-radius: 50%;
-    box-shadow: 0px 3px 20px 5px rgba(249, 223, 0, 0.7);
-    left: 50%;
-    z-index: 1;
-    transform: translateX(-50%);
-    width: 140px;
-    height: 140px;
-    background-color: var(--secondaryBackgroundColor);
+    flex-shrink: 0;
+`
+
+export const ProductItem = styled.div`
     display: flex;
-    align-items: center;
-    justify-content: center;
+    margin-bottom: 50px;
+
+    @media only screen and (max-width: 768px) {
+        margin-bottom: 0px;
+    }
+
+    h3 {
+        font-family: var(--fontDosis);
+        font-weight: 500;
+        font-size: 28px;
+    }
+
+    span {
+        font-size: 18px;
+    }
+
+    div {
+        text-align: left;
+    }
+
+    .content {
+        margin-left: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
 `
 
 export default SectionWrapper

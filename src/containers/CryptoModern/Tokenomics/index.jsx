@@ -30,11 +30,13 @@ const Tokenomics = ({ sectionHeader, sectionSubTitle }) => (
             </ContentWrapper>
             <ContentWrapper className="tokenomicsHighlights">
                 <Fade left delay={50}>
+                    <h2>
+                        <Text className="taxHeader" as="span" content="TAX" />
+                    </h2>
                     <TokenomicsHighlight>
-                        <Text className="sectionHeader" content="TAX" />
                         {TokenomicsTaxHightlights.map((highlight) => (
                             <div className="highlight" key={highlight.id}>
-                                <Text fontSize="36px" fontWeight="600" content={highlight.title} />
+                                <Text className="taxTitle" fontSize="36px" fontWeight="600" content={highlight.title} />
                                 <Text fontSize="16px" fontWeight="500" content={highlight.description} />
                             </div>
                         ))}
@@ -42,24 +44,6 @@ const Tokenomics = ({ sectionHeader, sectionSubTitle }) => (
                             <Image src="/assets/image/utopia/utopiaBuilding1.svg" alt="futuristic space needle building" width={141} height={280} />
                         </div>
                         <div className="utopiaFlyingCarRight carThree" />
-                    </TokenomicsHighlight>
-                </Fade>
-                <Fade right delay={50}>
-                    <TokenomicsHighlight>
-                        <Text className="sectionHeader" content="ANTI WHALE/BOT FEATURE" />
-                        {TokenomicsWhaleHightlights.map((highlight) => (
-                            <div className="highlight" key={highlight.id}>
-                                <Text fontSize="36px" fontWeight="600" content={highlight.title} />
-                                <Text fontSize="16px" fontWeight="500" content={highlight.description} />
-                            </div>
-                        ))}
-                        <div className="spaceNeedleTwo">
-                            <Image src="/assets/image/utopia/utopiaBuilding2.svg" alt="futuristic space needle building" width={107} height={190} />
-                        </div>
-                        <div className="spaceNeedleThree">
-                            <Image src="/assets/image/utopia/utopiaBuilding3.svg" alt="futuristic space needle building" width={103} height={281} />
-                        </div>
-                        <div className="utopiaFlyingCarLeft carFour" />
                     </TokenomicsHighlight>
                 </Fade>
             </ContentWrapper>

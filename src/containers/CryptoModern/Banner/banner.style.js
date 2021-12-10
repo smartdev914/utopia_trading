@@ -7,6 +7,10 @@ const BannerWrapper = styled.div`
     overflow: hidden;
     text-align: center;
 
+    p {
+        margin-top: 20px;
+    }
+
     .contract-header,
     .contract-address {
         font-family: var(--fontDosis);

@@ -128,10 +128,18 @@ export const TokenomicsNumber = styled.div`
 export const TokenomicsHighlight = styled.div`
     background-color: #004fbf;
     display: flex;
-    flex-direction: column;
     padding: 50px 70px;
     border-radius: 20px;
     position: relative;
+    width: 800px;
+    height: 219px;
+    flex-wrap: wrap;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        height: unset;
+        flex-direction: column;
+    }
 
     .sectionHeader {
         font-size: 24px;
@@ -142,8 +150,14 @@ export const TokenomicsHighlight = styled.div`
     }
 
     .highlight {
+        text-align: center;
+        width: 25%;
         margin-bottom: 10px;
         z-index: 1;
+
+        @media (max-width: 768px) {
+            text-align: left;
+        }
 
         p {
             font-family: var(--fontNotoSans);
@@ -151,6 +165,9 @@ export const TokenomicsHighlight = styled.div`
 
         p:first-child {
             margin-bottom: 0.25em;
+        }
+        .taxTitle {
+            color: var(--tertiaryTextColor);
         }
     }
     .spaceNeedleOne,
@@ -161,7 +178,7 @@ export const TokenomicsHighlight = styled.div`
     }
 
     .spaceNeedleOne {
-        top: -248px;
+        top: -228px;
         left: -25px;
         z-index: -1;
     }
@@ -201,13 +218,27 @@ export const ContentWrapper = styled.div`
         margin-top: 75px;
         z-index: 0;
 
-        > div:nth-child(2) {
-            margin-top: 65px;
-        }
-
         @media only screen and (min-width: 1140px) {
             width: 1350px;
         }
+    }
+
+    h2 {
+        width: 800px;
+        text-align: center;
+        border-bottom: 1px solid var(--tertiaryTextColor);
+        line-height: 0.1em;
+        margin: 10px 0 20px;
+    }
+
+    .taxHeader {
+        background: var(--tertiaryBackgroundColor);
+        color: var(--tertiaryTextColor);
+        font-family: var(--fontDosis);
+        letter-spacing: 4px;
+        font-size: 24px;
+        font-weight: 600;
+        padding: 0 10px;
     }
 
     .content {
