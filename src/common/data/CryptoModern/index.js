@@ -47,8 +47,9 @@ export const MissionData = [
 export const TokenomicsData = [
     {
         id: 1,
-        title: 'Total Supply',
-        value: '1,000,000,000',
+        title: 'Locked Tokens',
+        value: '229,000,000',
+        description: 'Locked for CEX Liquidity',
     },
     {
         id: 2,
@@ -77,11 +78,11 @@ export const TokenomicsData = [
         value: '177,700,000',
         description: 'Locked and will be slowly released',
     },
+
     {
         id: 7,
-        title: 'Locked Tokens',
-        value: '229,000,000',
-        description: 'These tokens will primarily be used to provide liquidity to centralised exchanges for new listings, and a store of value for the business as an asset',
+        title: 'Total Supply',
+        value: '1,000,000,000',
     },
 ]
 
