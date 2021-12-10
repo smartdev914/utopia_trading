@@ -81,10 +81,10 @@ const WalletPortal = () => (
                                             content="Once that is done, obtain the Utopia token address and paste into the pancakeswap exchange. Ensure to set slippage to 11% and if any error occurs try a higher slippage. Next swap BnB Smart Chain for Utopia token, which you should be able to view now in your wallet. To view Utopia token on MetaMask, you will have to manually add Utopia to your network list."
                                         />
                                     </p>
-                                    <p>
+                                    {/* <p>
                                         <Text as="span" content="UTOPIA Token Address: " />
                                         <Text as="div" content="0x1a1d7c7A92e8d7f0de10Ae532ECD9f63B7EAf67c" />
-                                    </p>
+                                    </p> */}
                                 </div>
                                 <div className="stepNumber">3</div>
                             </Fade>

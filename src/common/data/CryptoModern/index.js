@@ -48,28 +48,39 @@ export const TokenomicsData = [
     {
         id: 1,
         title: 'Total Supply',
-        value: '1,000,000,000,000',
+        value: '1,000,000,000',
     },
     {
         id: 2,
         title: 'Presale',
-        value: '400,000,000,000',
+        value: '290,000,000',
     },
     {
         id: 3,
-        title: 'Pancakeswap Liquidity',
-        value: '400,000,000,000',
+        title: 'Private Sale',
+        value: '50,000,000',
     },
     {
         id: 4,
-        title: 'Team',
-        value: '42,000,000,000',
-        description: 'Locked and will be slowly released',
+        title: 'Pancakeswap Liquidity',
+        value: '203,000,000',
     },
     {
         id: 5,
+        title: 'Team',
+        value: '50,000,000',
+        description: 'Locked and will be slowly released',
+    },
+    {
+        id: 6,
+        title: 'V1 Holders',
+        value: '177,700,000',
+        description: 'Locked and will be slowly released',
+    },
+    {
+        id: 7,
         title: 'Locked Tokens',
-        value: '158,000,000,000',
+        value: '229,000,000',
         description: 'These tokens will primarily be used to provide liquidity to centralised exchanges for new listings, and a store of value for the business as an asset',
     },
 ]

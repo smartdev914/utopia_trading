@@ -86,7 +86,9 @@ const PrivacyPortal = () => (
                 <div className="productColumn">
                     <Fade right>
                         <ProductSectionWrapper>
-                            <Image src="/assets/image/utopia/utopiaWorldLogo.svg" width={338} height={86} />
+                            <div className="logoContainer">
+                                <Image src="/assets/image/utopia/utopiaWorldLogo.svg" width={338} height={86} />
+                            </div>
                             <Text className="subheader" as="p" content="This branch of Utopia will focus on creating the Utopia metaverse and various blockchain games within the metaverse" />
                             <hr />
                             <div className="productContent">

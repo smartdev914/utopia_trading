@@ -49,7 +49,7 @@ const CryptoModern = () => {
                     </Sticky>
                     <ContentWrapper>
                         <Banner />
-                        <Mission />
+                        {/* <Mission /> */}
                         <Products />
                         <Tokenomics />
                         <HowToBuy />
