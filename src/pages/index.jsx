@@ -11,13 +11,13 @@ import Products from 'containers/CryptoModern/Products'
 import HowToBuy from 'containers/CryptoModern/HowToBuy'
 import Team from 'containers/CryptoModern/Team'
 import GlobalStyle, { CryptoWrapper, ContentWrapper } from 'containers/CryptoModern/cryptoModern.style'
-import dynamic from 'next/dynamic'
+// import dynamic from 'next/dynamic'
 import { ToastContainer } from 'react-toastify'
-import Button from 'common/components/Button'
+// import Button from 'common/components/Button'
 import { ResetCSS } from '../../public/assets/css/style'
-import UtopiaWhitePaper from '../../public/assets/docs/Utopia_Whitepaper.pdf'
+// import UtopiaWhitePaper from '../../public/assets/docs/Utopia_Whitepaper.pdf'
 
-const PDFViewer = dynamic(() => import('../containers/CryptoModern/PDFViewer'), { ssr: false })
+// const PDFViewer = dynamic(() => import('../containers/CryptoModern/PDFViewer'), { ssr: false })
 
 const CryptoModern = () => {
     const [showWhitePaper, toggleShowWhitePaper] = useState(false)
@@ -44,7 +44,7 @@ const CryptoModern = () => {
                 {/* start app classic landing */}
                 <CryptoWrapper>
                     <Sticky top={0} innerZ={9999} activeClass="sticky-active">
-                        <Navbar toggleShowWhitePaper={toggleShowWhitePaper} showWhitePaper={showWhitePaper} />
+                        <Navbar />
                     </Sticky>
                     <ContentWrapper>
                         <Banner />
