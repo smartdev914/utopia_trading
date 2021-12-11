@@ -54,10 +54,10 @@ const CryptoModern = () => {
                         <HowToBuy />
                         <RoadMap />
                         <Team />
-                        <div className="temp-footer">
+                        {/* <div className="temp-footer">
                             <Button onClick={() => toggleShowWhitePaper(!showWhitePaper)} className="whitepaper" title="WHITE PAPER" />
                         </div>
-                        {showWhitePaper && <PDFViewer url={UtopiaWhitePaper} toggleShowWhitePaper={toggleShowWhitePaper} />}
+                        {showWhitePaper && <PDFViewer url={UtopiaWhitePaper} toggleShowWhitePaper={toggleShowWhitePaper} />} */}
                     </ContentWrapper>
                 </CryptoWrapper>
                 {/* end of app classic landing */}
