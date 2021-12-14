@@ -120,7 +120,7 @@ export default function MarketTrade() {
                         {currentBalance ? (
                             <>
                                 <h4>CURRENT BALANCE</h4>
-                                <div className="green"> {currentBalance}</div>
+                                <div className="green">${currentBalance}</div>
                             </>
                         ) : (
                             <h4>PLEASE CONNECT YOUR WALLET</h4>
