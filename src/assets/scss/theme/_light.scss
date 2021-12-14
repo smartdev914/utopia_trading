@@ -500,6 +500,21 @@ letter-spacing: 5px;
   .token-info .selected-token .token-icon {
       border-color: #5F53DE 
   }
+
+  .token-info {
+    .social-drop-down {
+      background: #E8E8F3;
+
+      a {
+        color: #5F53DE
+      }
+    }
+
+    .token-info-button {
+      color: #1D0E6B;
+      border-color: #1D0E6B;
+    }
+  }
 }
 
 .lightMode  {

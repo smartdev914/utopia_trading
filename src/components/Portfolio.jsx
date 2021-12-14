@@ -155,7 +155,7 @@ export default function MarketTrade() {
                         </tbody>
                     </table>
                 </div>
-                <div role="button" tabIndex="-1" className="show-unsupported" onClick={() => toggleShowUnfilteredTokenList(!showUnfilteredTokenList)}>
+                <div role="button" tabIndex="0" className="show-unsupported" onClick={() => toggleShowUnfilteredTokenList(!showUnfilteredTokenList)}>
                     {showUnfilteredTokenList ? 'Hide' : 'Show'} unsupported tokens
                 </div>
             </div>

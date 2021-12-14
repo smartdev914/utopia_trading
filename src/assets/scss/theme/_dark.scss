@@ -482,6 +482,23 @@ th {
     .token-info .selected-token .token-icon {
         border-color: #26de81   
     }
+
+    .token-info {
+        .social-drop-down {
+            background: #070B15;
+            a {
+                color: #fff;
+            }
+        }
+
+        .info-header {
+            color: #C1C5D2
+        }
+
+        .info-value {
+            color: #A3FFFF
+        }
+    }
 }
 
 .darkMode .toggle-wrapper {
