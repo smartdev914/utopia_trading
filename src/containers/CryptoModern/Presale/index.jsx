@@ -119,7 +119,6 @@ const Presale = () => {
             await presaleContract
                 .withdrawTokens()
                 .then((result) => {
-                    console.log(result)
                     setLoadingWithdraw(false)
                     setErrorMessage('Tokens Successfully Withdrawn!')
                 })

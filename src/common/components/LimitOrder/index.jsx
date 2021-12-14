@@ -362,8 +362,8 @@ const MarketOrder = () => {
 
     useEffect(async () => {
         try {
-            const tokenAInUSD = await getTokenPriceInUSD(tokenA.address, tokenA.decimals)
-            const tokenBInUSD = await getTokenPriceInUSD(tokenB.address, tokenB.decimals)
+            const tokenAInUSD = await getTokenPriceInUSD(tokenA.address)
+            const tokenBInUSD = await getTokenPriceInUSD(tokenB.address)
             setCurrentTokenAInUSD(tokenAInUSD)
             setCurrentTokenBInUSD(tokenBInUSD)
         } catch (e) {

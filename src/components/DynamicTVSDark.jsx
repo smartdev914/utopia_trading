@@ -9,12 +9,14 @@ export default function DynamicTVS() {
     const tokenContext = useContext(TokenContext)
     const themeContext = useContext(ThemeContext)
     const currentTokenSymbol = tokenContext.currentlySelectedToken.symbol
+    const supportedToken = supportedPancakeTokens.tokens.find((token) => token.symbol === currentTokenSymbol)
+    const currentTokenAddress = tokenContext.currentlySelectedToken.address
 
     useEffect(() => {
         const initTVwidgetDark = () => {
             window.tvWidget = new window.TradingView.widget({
-                symbol: `Utopia:${currentTokenSymbol}/BNB`, // default symbol
-                interval: '240', // default interval
+                symbol: supportedToken ? `${currentTokenSymbol}/BNB` : currentTokenAddress, // default symbol
+                interval: '1D', // default interval
                 container: 'tv_chart_container',
                 datafeed: Datafeed,
                 disabled_features: ['use_localstorage_for_settings'],
@@ -34,8 +36,8 @@ export default function DynamicTVS() {
         }
         const initTVwidgetLight = () => {
             window.tvWidget = new window.TradingView.widget({
-                symbol: `Utopia:${currentTokenSymbol}/BNB`, // default symbol
-                interval: '240', // default interval
+                symbol: supportedToken ? `${currentTokenSymbol}/BNB` : currentTokenAddress, // default symbol
+                interval: '1D', // default interval
                 container: 'tv_chart_container',
                 datafeed: Datafeed,
                 disabled_features: ['use_localstorage_for_settings'],
@@ -55,8 +57,8 @@ export default function DynamicTVS() {
         }
         const initTVwidgetUTOPIA = () => {
             window.tvWidget = new window.TradingView.widget({
-                symbol: `Utopia:${currentTokenSymbol}/BNB`, // default symbol
-                interval: '240', // default interval
+                symbol: supportedToken ? `${currentTokenSymbol}/BNB` : currentTokenAddress, // default symbol
+                interval: '1D', // default interval
                 container: 'tv_chart_container',
                 datafeed: Datafeed,
                 disabled_features: ['use_localstorage_for_settings'],
@@ -92,12 +94,12 @@ export default function DynamicTVS() {
     return (
         <div className="main-chart mb15">
             <div id="tv_chart_container" />
-            {!supportedPancakeTokens.tokens.find((token) => token.symbol === currentTokenSymbol) && (
+            {/* {!supportedPancakeTokens.tokens.find((token) => token.symbol === currentTokenSymbol) && (
                 <div className="token-not-supported">
                     <div>Token Chart Not Currently Supported!</div>
                     <span>Tokens added by popular demand</span>
                 </div>
-            )}
+            )} */}
         </div>
     )
 }

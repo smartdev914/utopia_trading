@@ -10,6 +10,7 @@ import BSCContext from 'context/BSCContext'
 import { toast } from 'react-toastify'
 import { toastSettings } from 'common/constants'
 import { SocialIcon } from 'react-social-icons'
+import { formatISO, subDays } from 'date-fns'
 
 const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
     const tokenContext = useContext(TokenContext)
@@ -37,10 +38,12 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
     }
 
     useEffect(async () => {
+        const today = new Date()
+        const formattedDate = formatISO(subDays(today, 2))
         const twentyFourHourInfo = await axios.post(
             `https://graphql.bitquery.io`,
             {
-                query: `{ ethereum(network: bsc) { dexTrades( options: {limit: 24, desc: "timeInterval.hour"} date: {since: "2021-06-03"} exchangeName: {is: "Pancake v2"} baseCurrency: {is: "${tokenContext.currentlySelectedToken.address}"} ) { count tradeAmount(in: USD) timeInterval { hour(count: 1) } } } } `,
+                query: `{ ethereum(network: bsc) { dexTrades( options: {limit: 1, desc: "timeInterval.day"} date: {since: "${formattedDate}"} baseCurrency: {is: "${tokenContext.currentlySelectedToken.address}"} ) { count tradeAmount(in: USD) timeInterval { day(count: 1) } } } } `,
             },
             {
                 headers: {
@@ -49,8 +52,8 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
                 },
             }
         )
-        const summedValue = twentyFourHourInfo?.data?.data?.ethereum?.dexTrades?.reduce((currSum, currentValue) => currSum + currentValue.tradeAmount, 0)
-        const summedTransactions = twentyFourHourInfo?.data?.data?.ethereum?.dexTrades?.reduce((currSum, currentValue) => currSum + currentValue.count, 0)
+        const summedValue = twentyFourHourInfo?.data?.data?.ethereum?.dexTrades?.[0]?.tradeAmount
+        const summedTransactions = twentyFourHourInfo?.data?.data?.ethereum?.dexTrades?.[0]?.count
         setTwentyFourHourVolume(`$${parseToMorB(summedValue)}`)
         setTwentyFourHourTransactions(summedTransactions?.toLocaleString())
     }, [tokenContext.currentlySelectedToken])

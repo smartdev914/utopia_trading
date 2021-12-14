@@ -305,7 +305,7 @@ const MarketOrder = () => {
     }, [bscContext.currentAccountAddress, fromBNB, tokenA.address, tokenB.address, bscContext.tokenBalances])
 
     useEffect(async () => {
-        const currentTokenInUSD = await getTokenPriceInUSD(tokenA.address, tokenA.decimals)
+        const currentTokenInUSD = await getTokenPriceInUSD(tokenA.address)
         setCurrentSwapInUSD(currentTokenInUSD)
     }, [tokenA, fromBNB])
 
