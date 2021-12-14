@@ -13,8 +13,8 @@ export default function MarketTrade() {
     const bscContext = useContext(BSCContext)
     const themeContext = useContext(ThemeContext)
     const [currentBalance, setCurrentBalance] = useState(0)
-    const [tokenLabels, setTokenLabels] = useState([])
-    const [tokenBalances, setTokenBalances] = useState([])
+    const [tokenLabels, setTokenLabels] = useState(['Token1', 'Token2', 'Token3', 'Token4'])
+    const [tokenBalances, setTokenBalances] = useState(null)
     const [filteredTokensList, setFilteredTokensList] = useState([])
     const [sortDescending, toggleSortDescending] = useState(true)
     const [unfilteredTokenList, setUnfilteredTokenList] = useState([])
@@ -55,7 +55,7 @@ export default function MarketTrade() {
             break
     }
 
-    const series = tokenBalances
+    const series = tokenBalances || [25, 25, 25, 25]
     const chartOptions = {
         labels: tokenLabels,
         colors,
@@ -117,8 +117,14 @@ export default function MarketTrade() {
                 <div className="portfolio-chart">
                     <ApexCharts options={chartOptions} series={series} type="donut" width="100%" height="400px" />
                     <div className="current-balance">
-                        <h4>CURRENT BALANCE</h4>
-                        <div className="green">${currentBalance}</div>
+                        {currentBalance ? (
+                            <>
+                                <h4>CURRENT BALANCE</h4>
+                                <div className="green"> {currentBalance}</div>
+                            </>
+                        ) : (
+                            <h4>PLEASE CONNECT YOUR WALLET</h4>
+                        )}
                     </div>
                 </div>
                 <div className="portfolio-table">
