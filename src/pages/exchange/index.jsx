@@ -8,6 +8,7 @@ import MarketInfo from '../../components/MarketInfo'
 import Layout from '../../components/Layout'
 import MarketHistory from '../../components/MarketHistory'
 import MarketExchange from '../../components/MarketExchange'
+import Portfolio from '../../components/Portfolio'
 import DynamicTVSDark from '../../components/DynamicTVSDark'
 
 const Home = () => {
@@ -36,12 +37,15 @@ const Home = () => {
                                 <Image src={`/assets/image/utopia/utopiaU-${themeContext.currentTheme}.svg`} width={400} height={400} alt="utopia Logo" priority />
                             </div>
                         </div>
-                        <div className="col-sm-12 col-md-9">
+                        <div className="col-sm-12 col-md-6">
                             <DynamicTVSDark />
                             <MarketHistory />
                             <div className="utopia-logo-u-main mobile">
                                 <Image src={`/assets/image/utopia/utopiaU-${themeContext.currentTheme}.svg`} width={400} height={400} alt="utopia Logo" priority />
                             </div>
+                        </div>
+                        <div className="col-md-3">
+                            <Portfolio />
                         </div>
                     </div>
                 </div>

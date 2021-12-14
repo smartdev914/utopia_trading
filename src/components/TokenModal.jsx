@@ -62,7 +62,7 @@ const TokenModal = ({ hideBar, show, onTokenSelect, toggleShowTokenModal }) => {
                     }
                 }
             } catch (e) {
-                console.log(e)
+                // console.log(e)
             }
 
             setLoadinTokenInfo(false)

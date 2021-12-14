@@ -258,7 +258,7 @@ export default {
                 volume: el.volume,
             }))
 
-            console.log(bars)
+            // console.log(bars)
             if (bars.length) {
                 onHistoryCallback(bars, { noData: false })
             } else {

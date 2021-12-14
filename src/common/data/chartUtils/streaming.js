@@ -66,7 +66,7 @@ socket.on('m', (data) => {
     }
     const { lastDailyBar } = subscriptionItem
     let bar
-    if (tradeTime >= millisecondsToSeconds(lastDailyBar.time)) {
+    if (tradeTime >= millisecondsToSeconds(lastDailyBar?.time)) {
         bar = {
             time: tradeTime * 1000,
             open: tradePriceO.toFixed(),
@@ -78,8 +78,8 @@ socket.on('m', (data) => {
     } else {
         bar = {
             ...lastDailyBar,
-            high: Math.max(lastDailyBar.high, tradePriceH.toFixed()),
-            low: Math.min(lastDailyBar.low, tradePriceL.toFixed()),
+            high: Math.max(lastDailyBar?.high, tradePriceH.toFixed()),
+            low: Math.min(lastDailyBar?.low, tradePriceL.toFixed()),
             close: tradePriceC.toFixed(),
         }
         console.log('[socket] Update the latest bar by price', tradePriceC.toFixed())

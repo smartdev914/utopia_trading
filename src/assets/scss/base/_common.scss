@@ -48,13 +48,16 @@ img {
 .dropdown-toggle::after {
     vertical-align: 1px;
 }
-thead tr th {
-    padding: 8px 5px !important;
+
+th {
+    color: #A3FFFF;
+    position: sticky;
+    top: 0;
 }
 thead th {
     color: #758696;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 500;
     border: 0 !important;
 }
 tbody tr {
@@ -86,10 +89,6 @@ td {
 }
 .red {
     color: #ff231f;
-}
-.table td,
-.table th {
-    border-top: 1px solid #f0f3fa;
 }
 .light-bb,
 .input-group-text {

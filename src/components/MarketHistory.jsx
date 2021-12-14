@@ -28,7 +28,6 @@ export default function MarketHistory() {
             )
 
             const filteredTransactions = recentTransactionsResponse.data.data.ethereum.dexTrades.filter((v, i, a) => a.findIndex((t) => t.transaction.hash === v.transaction.hash) === i)
-            console.log(filteredTransactions)
             setRecentTransactions(filteredTransactions)
         }
         await getRecentTrades()
@@ -52,9 +51,9 @@ export default function MarketHistory() {
                             <table className="table">
                                 <thead>
                                     <tr>
-                                        <th>Time</th>
-                                        <th>Amount</th>
-                                        {tokenContext.currentTokenPriceInUSD && <th>Price</th>}
+                                        <th>TIME</th>
+                                        <th>AMOUNT</th>
+                                        {tokenContext.currentTokenPriceInUSD && <th>PRICE</th>}
                                     </tr>
                                 </thead>
                                 <tbody>

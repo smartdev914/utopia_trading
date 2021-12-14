@@ -45,12 +45,8 @@ letter-spacing: 5px;
   background: #E8E8F3
 }
 .lightMode th {
-  color: #A4A7B6 !important;
+  color: #2A3962 !important;
   background: #F8F7FC
-}
-.lightMode .market-pairs .table td,
-.lightMode .market-pairs .table th {
-  border-top: 1px solid #2a2e39;
 }
 .lightMode .market-history .table td,
 .lightMode .market-history .table th {
@@ -86,7 +82,7 @@ letter-spacing: 5px;
   color: #69727a;
 }
 .lightMode tbody tr {
-  color: #ffffff;
+  color: #2A3962;
 }
 .lightMode thead th,
 .lightMode .market-pairs .nav-link {
@@ -173,10 +169,35 @@ letter-spacing: 5px;
 .lightMode .no-data {
   color: #2a2e39;
 }
-.lightMode .market-trade {
+.lightMode .market-trade,
+.lightMode .market-portfolio {
   border: 1px solid #fff;
   background: #fff;
   color: #2A3962;
+}
+
+.lightMode .market-portfolio {
+  h4 {
+    color: #2A3962;
+  }
+
+  .portfolio-table {
+    color: #2A3962;
+    background: #E8E8F3;
+
+    th {
+      background-color: #E8E8F3;
+    }
+    tr {
+      background: #E8E8F3
+    }
+    tr:nth-child(2n+1) {
+      background: #D0D0EE
+    }
+    .secondary-label {
+      color: #828282
+    }
+  }
 }
 .lightMode .market-trade .nav .nav-item .nav-link.active {
   background: transparent;
@@ -224,10 +245,6 @@ letter-spacing: 5px;
 }
 .lightMode .markets {
   background: #131722;
-}
-.lightMode .table td,
-.lightMode table th {
-  border-top: 1px solid #2a2e39;
 }
 .lightMode .markets-pair-list .nav {
   background: #1c2030;
@@ -279,8 +296,6 @@ letter-spacing: 5px;
 
 .lightMode .dropdown-menu::before {
   background: #131722;
-  border-top: 1px solid #2a2e39;
-  border-left: 1px solid #2a2e39;
 }
 
 .lightMode .dropdown-menu p {
@@ -289,9 +304,6 @@ letter-spacing: 5px;
 
 .lightMode .dropdown-header {
   border-bottom: 1px solid #2a2e39;
-}
-.lightMode .dropdown-footer {
-  border-top: 1px solid #2a2e39;
 }
 
 .lightMode .nav-item.input-group .form-control {
@@ -362,10 +374,6 @@ letter-spacing: 5px;
   color: #c5cbce;
 }
 
-.lightMode .wallet .nav-pills a,
-.lightMode .wallet-history {
-  border-top: 1px solid #2a2e39;
-}
 .lightMode .wallet .nav {
   background: #1e222d;
 }

@@ -7,6 +7,10 @@
 
 .darkMode {
     background: #111721;
+
+    .green {
+        color: #6FCF97;
+    }
 }
 .darkMode header {
     background: #192029;
@@ -35,23 +39,22 @@
     color: #00DEE6
 }
 
+th {
+    color: #C1C5D2 !important;
+}
+
 .darkMode .market-pairs {
     border: 1px solid #2a2e39;
     background: #202734;
 }
-.darkMode tr {
-    background: #111721;
+.darkMode th { 
+    background-color: #111721 !important;
 }
-.darkMode tr:nth-child(2n) {
+.darkMode tr {
     background: #070B15
 }
-.darkMode .market-pairs .table td,
-.darkMode .market-pairs .table th {
-    border-top: 1px solid #2a2e39;
-}
-.darkMode .market-history .table td,
-.darkMode .market-history .table th {
-    border-top: 1px solid #2a2e39;
+.darkMode tr:nth-child(2n) {
+    background: #111721;
 }
 .darkMode .order-book thead tr {
     border-bottom: 1px solid #2a2e39;
@@ -174,11 +177,35 @@
 .darkMode .no-data {
     color: #2a2e39;
 }
-.darkMode .market-trade {
+.darkMode .market-trade,
+.darkMode .market-portfolio {
     border: 1px solid #2a2e39;
     background: #202734;
     color: white;
 }
+.darkMode .market-portfolio {
+    h4 {
+      color: #C1C5D2;
+    }
+
+    .portfolio-table {
+        color: #2A3962;
+        background: #111721;
+    
+        th {
+          background-color: #111721;
+        }
+        tr {
+          background: #111721
+        }
+        tr:nth-child(2n+1) {
+          background: #070B15
+        }
+        .secondary-label {
+            color: #C1C5D2
+        }
+      }
+  }
 .darkMode .market-trade .nav .nav-item .nav-link.active {
     background: transparent;
     color: #ffffff;
@@ -221,10 +248,6 @@
 }
 .darkMode .markets {
     background: #131722;
-}
-.darkMode .table td,
-.darkMode table th {
-    border-top: 1px solid #2a2e39;
 }
 .darkMode .markets-pair-list .nav {
     background: #1c2030;
@@ -274,21 +297,12 @@
     background-color: #007bff;
 }
 
-.darkMode .dropdown-menu::before {
-    background: #131722;
-    border-top: 1px solid #2a2e39;
-    border-left: 1px solid #2a2e39;
-}
-
 .darkMode .dropdown-menu p {
     color: #ffffff;
 }
 
 .darkMode .dropdown-header {
     border-bottom: 1px solid #2a2e39;
-}
-.darkMode .dropdown-footer {
-    border-top: 1px solid #2a2e39;
 }
 
 .darkMode .nav-item.input-group .form-control {
@@ -339,10 +353,6 @@
     color: #c5cbce;
 }
 
-.darkMode .wallet .nav-pills a,
-.darkMode .wallet-history {
-    border-top: 1px solid #2a2e39;
-}
 .darkMode .wallet .nav {
     background: #1e222d;
 }

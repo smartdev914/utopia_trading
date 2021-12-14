@@ -7,6 +7,10 @@
 
 .utopiaMode {
     background: #150035;
+
+    .green {
+        color: #1FC08E;
+    }
 }
 .utopiaMode header {
     background: #1733AA;
@@ -22,7 +26,6 @@
 .utopiaMode .input-group-text,
 .utopiaMode .nav-tabs {
     border: none;
-    border-bottom: 1px solid #2a2e39;
 }
 .utopiaMode .market-trade .nav-tabs {
     border: none;
@@ -53,25 +56,15 @@
 .utopiaMode tr:nth-child(2n) {
     background: #1B003B
 }
-.utopiaMode .market-pairs .table td,
-.utopiaMode .market-pairs .table th {
-    border-top: 1px solid #2a2e39;
-}
-.utopiaMode .market-history .table td,
-.utopiaMode .market-history .table th {
-    border-top: 1px solid #2a2e39;
-}
 
 .utopiaMode .market-history .table th {
-  background-color: #1D0E6B !important;
+  background-color: #150035 !important;
 }
 .utopiaMode .order-book thead tr {
     border-bottom: 1px solid #2a2e39;
 }
 .utopiaMode .order-book,
-.utopiaMode .market-history,
 .utopiaMode .market-news {
-    border: 1px solid #2a2e39;
     background: #1D0E6B;
     margin-bottom: 1rem;
 }
@@ -182,11 +175,37 @@
 .utopiaMode .no-data {
     color: #2a2e39;
 }
-.utopiaMode .market-trade {
-    border: 1px solid #2a2e39;
+.utopiaMode .market-trade,
+.utopiaMode .market-portfolio {
+    border: none;
     background: #1D0E6B;
     color: white;
 }
+
+.utopiaMode .market-portfolio {
+    h4 {
+      color: #FFFFFF;
+    }
+  
+    .portfolio-table {
+      color: #2A3962;
+      background: #1B003B;
+  
+      th {
+        background-color: #1B003B;
+      }
+      tr {
+        background: #1B003B
+      }
+      tr:nth-child(2n+1) {
+        background: #051557
+      }
+      .secondary-label {
+        color: #828282
+      }
+    }
+  }
+
 .utopiaMode .market-trade .nav .nav-item .nav-link.active {
     background: transparent;
     color: #ffffff;
@@ -224,10 +243,6 @@
 }
 .utopiaMode .markets {
     background: #131722;
-}
-.utopiaMode .table td,
-.utopiaMode table th {
-    border-top: 1px solid #2a2e39;
 }
 .utopiaMode .markets-pair-list .nav {
     background: #1c2030;
@@ -279,8 +294,6 @@
 
 .utopiaMode .dropdown-menu::before {
     background: #131722;
-    border-top: 1px solid #2a2e39;
-    border-left: 1px solid #2a2e39;
 }
 
 .utopiaMode .dropdown-menu p {
@@ -289,9 +302,6 @@
 
 .utopiaMode .dropdown-header {
     border-bottom: 1px solid #2a2e39;
-}
-.utopiaMode .dropdown-footer {
-    border-top: 1px solid #2a2e39;
 }
 
 .utopiaMode .header-img-icon .profile-nav .nav-item .nav-link:hover {
@@ -337,10 +347,6 @@
     color: #c5cbce;
 }
 
-.utopiaMode .wallet .nav-pills a,
-.utopiaMode .wallet-history {
-    border-top: 1px solid #2a2e39;
-}
 .utopiaMode .wallet .nav {
     background: #1e222d;
 }
