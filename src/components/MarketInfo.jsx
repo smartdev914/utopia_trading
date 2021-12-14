@@ -94,7 +94,6 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
             },
         })
         setTokenInfo(tokenInfoRes?.data?.result?.[0] || {})
-        console.log(tokenInfoRes?.data?.result?.[0])
     }, [tokenContext.currentlySelectedToken.address])
 
     const addToWallet = async () => {

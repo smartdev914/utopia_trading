@@ -67,7 +67,16 @@ const BSCContextProvider = ({ children }) => {
                             TokenQuantity: balance.toString(),
                         }
                     }
-                } catch (e) {}
+                } catch (e) {
+                    const tokenContract = getContractNoABI(token.TokenAddress, signer)
+                    if (tokenContract.balanceOf) {
+                        const balance = await tokenContract.balanceOf(currentAccountAddress)
+                        return {
+                            ...token,
+                            TokenQuantity: balance.toString(),
+                        }
+                    }
+                }
                 return token
             })
             Promise.all(newTokenBalances).then((values) => {

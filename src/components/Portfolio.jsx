@@ -21,14 +21,20 @@ export default function MarketTrade() {
     const [showUnfilteredTokenList, toggleShowUnfilteredTokenList] = useState(false)
 
     useEffect(async () => {
-        const walletBalancesObject = bscContext.tokenBalances.map((token) => ({
+        const walletBalancesList = bscContext.tokenBalances.map((token) => ({
             token_address: token.TokenAddress,
-            amount: parseFloat(getBalanceAmount(token.TokenQuantity).toFixed()),
+            amount: parseFloat(getBalanceAmount(token.TokenQuantity, token.TokenDivisor).toFixed()),
         }))
+        if (bscContext.currentBnbBalance) {
+            walletBalancesList.push({
+                token_address: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
+                amount: parseFloat(getBalanceAmount(bscContext.currentBnbBalance).toFixed()),
+            })
+        }
         try {
             const walletBalancesResponse = await axios.post('https://go-wallet-reader-dot-utopia-315014.uw.r.appspot.com/getWallet', {
                 wallet_address: bscContext.currentAccountAddress,
-                tokens: walletBalancesObject,
+                tokens: walletBalancesList,
             })
 
             setUnfilteredTokenList(walletBalancesResponse.data.token_values)
@@ -40,7 +46,7 @@ export default function MarketTrade() {
         } catch (e) {
             // console.log(e)
         }
-    }, [bscContext.currentAccountAddress, bscContext.tokenBalances])
+    }, [bscContext.currentAccountAddress, bscContext.tokenBalances, bscContext.currentBnbBalance])
 
     let colors = []
     switch (themeContext.currentTheme) {
@@ -117,7 +123,7 @@ export default function MarketTrade() {
                 <div className="portfolio-chart">
                     <ApexCharts options={chartOptions} series={series} type="donut" width="100%" height="400px" />
                     <div className="current-balance">
-                        {currentBalance ? (
+                        {bscContext.currentAccountAddress ? (
                             <>
                                 <h4>CURRENT BALANCE</h4>
                                 <div className="green">${currentBalance}</div>
