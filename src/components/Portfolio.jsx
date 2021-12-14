@@ -158,10 +158,16 @@ export default function MarketTrade() {
                                 ?.map((token) => (
                                     <tr key={token.token_symbol}>
                                         <td>
-                                            <div>
-                                                {token.token_symbol} <span className="green">${token.unit_price ? token.unit_price.toFixed(2) : 0}</span>
+                                            <div>{token.token_symbol}</div>
+                                            <div className="green">
+                                                $
+                                                {token.unit_price
+                                                    ? token.unit_price.toLocaleString('en-US', {
+                                                          minimumFractionDigits: 2,
+                                                          maximumFractionDigits: 10,
+                                                      })
+                                                    : 0}
                                             </div>
-                                            <div className="secondary-label">{token.token_symbol}</div>
                                         </td>
                                         <td>
                                             <div>{round(token.amount, 8)}</div>
