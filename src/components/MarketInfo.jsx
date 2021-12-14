@@ -35,7 +35,7 @@ const MarketInfo = () => {
         const summedValue = twentyFourHourInfo?.data?.data?.ethereum?.dexTrades?.reduce((currSum, currentValue) => currSum + currentValue.tradeAmount, 0)
         const summedTransactions = twentyFourHourInfo?.data?.data?.ethereum?.dexTrades?.reduce((currSum, currentValue) => currSum + currentValue.count, 0)
         setTwentyFourHourVolume(`$${parseToMorB(summedValue)}`)
-        setTwentyFourHourTransactions(summedTransactions.toLocaleString())
+        setTwentyFourHourTransactions(summedTransactions?.toLocaleString())
     }, [tokenContext.currentlySelectedToken])
 
     useEffect(async () => {

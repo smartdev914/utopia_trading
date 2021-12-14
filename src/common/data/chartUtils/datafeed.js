@@ -1,9 +1,8 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-restricted-syntax */
-import { makeUtopiaApiRequest } from './helpers'
-import { subscribeOnStream, unsubscribeFromStream } from './streaming'
-
 import axios from 'axios'
+import { formatISO, fromUnixTime } from 'date-fns'
+import { subscribeOnStream, unsubscribeFromStream } from './streaming'
 
 const lastBarsCache = new Map()
 
@@ -222,64 +221,52 @@ export default {
 
         onSymbolResolvedCallback(symbolInfo)
     },
-    getBars: async(symbolInfo, resolution, onHistoryCallback, onErrorCallback) =>{
-        try{
-            if (resolution==='1D') {
-                resolution = 1440;
+    getBars: async (symbolInfo, resolution, periodParams, onHistoryCallback, onErrorCallback) => {
+        try {
+            const { from, to, firstDataRequest } = periodParams
+            if (resolution === '1D') {
+                resolution = 1440
             }
-            const response2 = await axios.post("https://graphql.bitquery.io", {
-                query: `{
-                    ethereum(network: bsc) {
-                      dexTrades(
-                        options: {asc: "timeInterval.minute"}
-                        date: {since: "2021-06-20T07:23:21.000Z", till: "2021-06-23T15:23:21.000Z"}
-                        exchangeAddress: {is: "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73"}
-                        baseCurrency: {is: "0x2170ed0880ac9a755fd29b2688956bd959f933f8"},
-                        quoteCurrency: {is: "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"},
-                        tradeAmountUsd: {gt: 10}
-                      ) 
-                      {
-                        timeInterval {
-                          minute(count: 15, format: "%Y-%m-%dT%H:%M:%SZ")  
-                        }
-                        volume: quoteAmount
-                        high: quotePrice(calculate: maximum)
-                        low: quotePrice(calculate: minimum)
-                        open: minimum(of: block, get: quote_price)
-                        close: maximum(of: block, get: quote_price) 
-                      }
-                    }
-                  }`,
-                variables: {
-                    "from": new Date("2021-10-20T07:23:21.000Z").toISOString(),
-                    "to": new Date("2021-10-23T15:23:21.000Z").toISOString(),
-                    "interval": Number(resolution),
-                    "tokenAddress": symbolInfo.ticker
+            const response2 = await axios.post(
+                'https://graphql.bitquery.io',
+                {
+                    query: `{ ethereum(network: bsc) { dexTrades( options: {asc: "timeInterval.minute"} date: {since: "${formatISO(fromUnixTime(from))}", till: "${formatISO(
+                        fromUnixTime(to)
+                    )}"} exchangeAddress: {is: "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73"} baseCurrency: {is: "${
+                        symbolInfo.address
+                    }"}, quoteCurrency: {is: "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"}, tradeAmountUsd: {gt: 10} ) { timeInterval { minute(count: 15, format: "%Y-%m-%dT%H:%M:%SZ") } volume: quoteAmount high: quotePrice(calculate: maximum) low: quotePrice(calculate: minimum) open: minimum(of: block, get: quote_price) close: maximum(of: block, get: quote_price) } } }`,
                 },
-                mode: 'cors',
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-API-KEY": "BQYmsfh6zyChKKHtKogwvrjXLw8AJkdP"
+                {
+                    // variables: {
+                    //     from: new Date('2021-10-20T07:23:21.000Z').toISOString(),
+                    //     to: new Date('2021-10-23T15:23:21.000Z').toISOString(),
+                    //     interval: Number(resolution),
+                    //     tokenAddress: symbolInfo.ticker,
+                    // },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-KEY': 'BQYmsfh6zyChKKHtKogwvrjXLw8AJkdP',
+                    },
                 }
-            })
-
-            const bars = response2.data.data.ethereum.dexTrades.map(el => ({
+            )
+            const bars = response2?.data?.data?.ethereum?.dexTrades.map((el) => ({
                 time: new Date(el.timeInterval.minute).getTime(), // date string in api response
                 low: el.low,
                 high: el.high,
                 open: Number(el.open),
                 close: Number(el.close),
-                volume: el.volume
+                volume: el.volume,
             }))
 
-            if (bars.length){
-                onHistoryCallback(bars, {noData: false}); 
-            }else{
-                onHistoryCallback(bars, {noData: true}); 
+            console.log(bars)
+            if (bars.length) {
+                onHistoryCallback(bars, { noData: false })
+            } else {
+                onHistoryCallback([], { noData: true })
+                return
             }
-
-        } catch(err){
-            console.log({err})
+        } catch (err) {
+            console.log({ err })
             onErrorCallback(err)
         }
     },
@@ -318,16 +305,16 @@ export default {
     //                         baseCurrency: {is: ${symbolInfo.address}},
     //                         quoteCurrency: {is: "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"},
     //                         tradeAmountUsd: {gt: 10}
-    //                       ) 
+    //                       )
     //                       {
     //                         timeInterval {
-    //                           minute(count: 15, format: "%Y-%m-%dT%H:%M:%SZ")  
+    //                           minute(count: 15, format: "%Y-%m-%dT%H:%M:%SZ")
     //                         }
     //                         volume: quoteAmount
     //                         high: quotePrice(calculate: maximum)
     //                         low: quotePrice(calculate: minimum)
     //                         open: minimum(of: block, get: quote_price)
-    //                         close: maximum(of: block, get: quote_price) 
+    //                         close: maximum(of: block, get: quote_price)
     //                       }
     //                     }
     //                   }`
