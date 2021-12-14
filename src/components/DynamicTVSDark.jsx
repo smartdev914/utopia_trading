@@ -13,13 +13,14 @@ export default function DynamicTVS() {
     const currentTokenAddress = tokenContext.currentlySelectedToken.address
 
     useEffect(() => {
+        window.localStorage.removeItem('tradingview.chartproperties')
         const initTVwidgetDark = () => {
             window.tvWidget = new window.TradingView.widget({
                 symbol: supportedToken ? `${currentTokenSymbol}/BNB` : currentTokenAddress, // default symbol
                 interval: '1D', // default interval
                 container: 'tv_chart_container',
                 datafeed: Datafeed,
-                disabled_features: ['use_localstorage_for_settings'],
+                // disabled_features: ['use_localstorage_for_settings'],
                 library_path: '/libs/charting_library_cloned_data/charting_library/',
                 height: '100%',
                 width: '100%',
@@ -41,7 +42,7 @@ export default function DynamicTVS() {
                 interval: '1D', // default interval
                 container: 'tv_chart_container',
                 datafeed: Datafeed,
-                disabled_features: ['use_localstorage_for_settings'],
+                // disabled_features: ['use_localstorage_for_settings'],
                 library_path: '/libs/charting_library_cloned_data/charting_library/',
                 height: '100%',
                 width: '100%',
@@ -63,7 +64,7 @@ export default function DynamicTVS() {
                 interval: '1D', // default interval
                 container: 'tv_chart_container',
                 datafeed: Datafeed,
-                disabled_features: ['use_localstorage_for_settings'],
+                // disabled_features: ['use_localstorage_for_settings'],
                 library_path: '/libs/charting_library_cloned_data/charting_library/',
                 height: '100%',
                 width: '100%',
