@@ -274,6 +274,11 @@ export default {
                     break
                 }
             }
+            console.log({
+                from: formatISO(fromUnixTime(from)),
+                to: formatISO(fromUnixTime(to)),
+                firstDataRequest,
+            })
             const response2 = await axios.post(
                 'https://graphql.bitquery.io',
                 {
@@ -309,8 +314,11 @@ export default {
                 if (firstDataRequest) {
                     lastBarsCache.set(symbolInfo.full_name, { ...bars[bars.length - 1] })
                 }
-
-                onHistoryCallback(bars, { noData: false })
+                if (bars.length) {
+                    onHistoryCallback(bars, { noData: false })
+                } else {
+                    onHistoryCallback([], { noData: true })
+                }
             } catch (error) {
                 onErrorCallback(error)
             }
@@ -412,6 +420,8 @@ export default {
             ['15', 15 * 60],
             ['240', 4 * 60 * 60],
             ['1D', 60 * 60 * 24],
+            ['1W', 60 * 60 * 24 * 7],
+            ['1M', 60 * 60 * 24 * 30],
         ])
         const newResolution = resolutionMap.get(resolution)
         subscribeOnStream(symbolInfo, newResolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback, lastBarsCache.get(symbolInfo.full_name))

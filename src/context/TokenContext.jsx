@@ -6,14 +6,7 @@ const TokenContext = React.createContext()
 
 const TokenContextProvider = ({ children }) => {
     const supportedTokenList = supportedPancakeTokens.tokens
-    const [currentlySelectedToken, setCurrentlySelectedToken] = useState({
-        address: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
-        chainId: 56,
-        decimals: 18,
-        logoURI: 'https://pancakeswap.finance/images/tokens/0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82.png',
-        name: 'PancakeSwap',
-        symbol: 'CAKE',
-    })
+    const [currentlySelectedToken, setCurrentlySelectedToken] = useState(supportedPancakeTokens.tokens[11])
     const [currentTokenPriceInUSD, setCurrentTokenPriceInUSD] = useState()
 
     useEffect(async () => {
