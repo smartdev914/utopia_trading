@@ -31,6 +31,20 @@
         }
     }
 }
+
+.utopiaMode .nav-item.input-group .form-control {
+    background-color: #170038;
+    color: #f2f2f2;
+}
+
+.utopiaMode {
+    .search-box {
+        input::placeholder {
+            color: #f2f2f2
+        }
+    }
+}
+
 .utopiaMode header {
     background: #1733AA;
 }
@@ -49,10 +63,13 @@
 .utopiaMode .market-trade .nav-tabs {
     border: none;
 }
-.utopiaMode header nav a {
-    padding-left: 1rem;
-    color: #ffffff !important;
+
+.utopiaMode {
+    .search-dropdown-options {
+        background-color: #1D0E6B
+    }
 }
+
 .utopiaMode header nav a:hover {
     color: #007bff;
 }

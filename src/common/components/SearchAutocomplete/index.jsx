@@ -1,12 +1,15 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import axios from 'axios'
 import { getPancakeFactoryPair } from 'common/utils/tokens'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Spinner } from 'react-bootstrap'
 import { Img } from 'react-image'
+import Image from 'next/image'
+import ThemeContext from 'context/ThemeContext'
 import ComponentWrapper from './searchAutocomplete.style'
 
 const SearchAutocomplete = ({ onSelect, searchOptions }) => {
+    const themeContext = useContext(ThemeContext)
     const [searchInput, setSearchInput] = useState('')
     const [focused, setFocused] = useState(false)
     const [unlistedToken, setUnlistedToken] = useState()
@@ -68,16 +71,21 @@ const SearchAutocomplete = ({ onSelect, searchOptions }) => {
 
     return (
         <ComponentWrapper className={addAllClasses.join(' ')}>
-            <input
-                onFocus={() => setFocused(true)}
-                onBlur={() => setTimeout(() => setFocused(false), 200)}
-                type="text"
-                value={searchInput}
-                className="form-control"
-                placeholder="&#x1F50D; Search token name / address"
-                aria-describedby="inputGroup-sizing-sm"
-                onChange={(e) => setSearchInput(e.target.value)}
-            />
+            <div className="search-box">
+                <input
+                    onFocus={() => setFocused(true)}
+                    onBlur={() => setTimeout(() => setFocused(false), 200)}
+                    type="text"
+                    value={searchInput}
+                    className="form-control"
+                    placeholder="Search token name / address"
+                    aria-describedby="inputGroup-sizing-sm"
+                    onChange={(e) => setSearchInput(e.target.value)}
+                />
+                <div className="mag-glass">
+                    <Image src={`/assets/image/icons/magGlass${themeContext.currentTheme === 'lightMode' ? 'Light' : ''}.svg`} width={18} height={18} />
+                </div>
+            </div>
             {focused && (
                 <div className="search-dropdown-options">
                     {filteredOptions?.map((option) => (

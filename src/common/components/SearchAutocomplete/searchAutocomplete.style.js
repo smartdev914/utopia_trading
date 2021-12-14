@@ -2,15 +2,37 @@ import styled from 'styled-components'
 
 const ComponentWrapper = styled.div`
     position: relative;
-    width: 100%;
+    width: 375px;
+    flex-shrink: 0;
+
+    @media only screen and (max-width: 768px) {
+        width: 100%;
+        margin-bottom: 10px;
+    }
 
     .form-control {
+        padding: 0.41rem 0.75rem;
         border-radius: 18px;
     }
 
+    .search-box {
+        position: relative;
+
+        input {
+            font-family: var(--fontDosis);
+            padding-left: 35px;
+        }
+
+        .mag-glass {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+        }
+    }
+
     .search-dropdown-options {
+        font-family: var(--fontDosis);
         position: absolute;
-        background: #1733aa;
         width: calc(100% - 25px);
         max-height: 400px;
         overflow: scroll;

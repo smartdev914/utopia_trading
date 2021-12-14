@@ -305,6 +305,12 @@ th {
     border-bottom: 1px solid #2a2e39;
 }
 
+.darkMode {
+    .search-dropdown-options {
+        background-color: #070B15
+    }
+}
+
 .darkMode .nav-item.input-group .form-control {
     background-color: #070B15;
     color: #2a2e39;
@@ -497,6 +503,14 @@ th {
 
         .info-value {
             color: #A3FFFF
+        }
+    }
+}
+
+.darkMode {
+    .search-box {
+        input::placeholder {
+            color: #f2f2f2
         }
     }
 }

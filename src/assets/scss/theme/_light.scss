@@ -517,6 +517,24 @@ letter-spacing: 5px;
   }
 }
 
+.lightMode {
+  .search-dropdown-options {
+      background-color: #E8E8F3;
+
+      div {
+        color: #5F53DE;
+      }
+  }
+}
+
+.lightMode {
+  .search-box {
+      input::placeholder {
+          color: #828282
+      }
+  }
+}
+
 .lightMode  {
   .toggle-wrapper {
       .toggleContainer {
