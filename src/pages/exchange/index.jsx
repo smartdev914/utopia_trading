@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify'
 // import { Modal } from 'react-bootstrap'
 import ErrorBoundary from 'components/ErrorBoundry'
 import ThemeContext from 'context/ThemeContext'
+import BSCContext from 'context/BSCContext'
 import { Fade } from 'react-bootstrap'
 import MarketInfo from '../../components/MarketInfo'
 import Layout from '../../components/Layout'
@@ -14,8 +15,10 @@ import DynamicTVSDark from '../../components/DynamicTVSDark'
 
 const Home = () => {
     // const [showModal, setShowModal] = useState(false)
+    const bscContext = useContext(BSCContext)
     const themeContext = useContext(ThemeContext)
     const [showPortfolio, toggleShowPortfolio] = useState(false)
+    const [autoOpened, setAutoOpened] = useState(false)
 
     useEffect(() => {
         document.querySelector('body').classList.remove('darkMode')
@@ -26,6 +29,13 @@ const Home = () => {
         // setShowModal(!shownModal)
         // sessionStorage.setItem('shownWarningModal', true)
     }, [themeContext.currentTheme])
+
+    useEffect(() => {
+        if (bscContext.currentAccountAddress && !autoOpened) {
+            setAutoOpened(true)
+            toggleShowPortfolio(true)
+        }
+    }, [bscContext.currentAccountAddress])
 
     return (
         <Layout>
@@ -76,7 +86,5 @@ const Home = () => {
         </Layout>
     )
 }
-
-Home.getInitialProps = ({ query }) => ({ query })
 
 export default Home

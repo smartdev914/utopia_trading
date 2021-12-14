@@ -422,10 +422,12 @@
   text-align: center;
 }
 
-.market-trade .spinner-container {
+.market-trade .spinner-container,
+.market-portfolio .spinner-container {
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  margin: 2rem 0;
 }
 
 .market-trade .token-A-balance,

@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import BSCContext from 'context/BSCContext'
 import dynamic from 'next/dynamic'
 import { getBalanceAmount } from 'common/utils/numbers'
+import { Spinner } from 'react-bootstrap'
 import axios from 'axios'
 import ThemeContext from 'context/ThemeContext'
 import { round } from '../common/utils/numbers'
@@ -19,8 +20,10 @@ export default function MarketTrade() {
     const [sortDescending, toggleSortDescending] = useState(true)
     const [unfilteredTokenList, setUnfilteredTokenList] = useState([])
     const [showUnfilteredTokenList, toggleShowUnfilteredTokenList] = useState(false)
+    const [loadingBalances, setLoadingBalances] = useState(false)
 
     useEffect(async () => {
+        setLoadingBalances(true)
         const walletBalancesList = bscContext.tokenBalances.map((token) => ({
             token_address: token.TokenAddress,
             amount: parseFloat(getBalanceAmount(token.TokenQuantity, token.TokenDivisor).toFixed()),
@@ -43,6 +46,7 @@ export default function MarketTrade() {
             setTokenBalances(filteredWalletBalances.map((token) => token.token_value))
             setTokenLabels(filteredWalletBalances.map((token) => token.token_symbol))
             setCurrentBalance(walletBalancesResponse.data.total_value.toFixed(2))
+            setLoadingBalances(false)
         } catch (e) {
             // console.log(e)
         }
@@ -120,19 +124,26 @@ export default function MarketTrade() {
         <>
             <div className="market-portfolio mb15">
                 <h3>PORTFOLIO</h3>
-                <div className="portfolio-chart">
-                    <ApexCharts options={chartOptions} series={series} type="donut" width="100%" height="400px" />
-                    <div className="current-balance">
-                        {bscContext.currentAccountAddress ? (
-                            <>
-                                <h4>CURRENT BALANCE</h4>
-                                <div className="green">${currentBalance}</div>
-                            </>
-                        ) : (
-                            <h4>PLEASE CONNECT YOUR WALLET</h4>
-                        )}
+                {loadingBalances ? (
+                    <div className="spinner-container">
+                        <Spinner size="" animation="border" variant="primary" />
                     </div>
-                </div>
+                ) : (
+                    <div className="portfolio-chart">
+                        <ApexCharts options={chartOptions} series={series} type="donut" width="100%" height="400px" />
+                        <div className="current-balance">
+                            {bscContext.currentAccountAddress ? (
+                                <>
+                                    <h4>CURRENT BALANCE</h4>
+                                    <div className="green">${currentBalance}</div>
+                                </>
+                            ) : (
+                                <h4>PLEASE CONNECT YOUR WALLET</h4>
+                            )}
+                        </div>
+                    </div>
+                )}
+
                 <div className="portfolio-table">
                     <table className="table">
                         <thead>
