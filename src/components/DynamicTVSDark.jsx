@@ -31,6 +31,7 @@ export default function DynamicTVS() {
                     'paneProperties.backgroundType': 'solid',
                     'paneProperties.backgroundGradientStartColor': '#111721',
                     'paneProperties.backgroundGradientEndColor': '#111721',
+                    'mainSeriesProperties.style': 8,
                 },
             })
         }
@@ -52,6 +53,7 @@ export default function DynamicTVS() {
                     'paneProperties.backgroundType': 'solid',
                     'paneProperties.backgroundGradientStartColor': '#FFF',
                     'paneProperties.backgroundGradientEndColor': '#FFF',
+                    'mainSeriesProperties.style': 8,
                 },
             })
         }
@@ -73,6 +75,7 @@ export default function DynamicTVS() {
                     'paneProperties.backgroundType': 'solid',
                     'paneProperties.backgroundGradientStartColor': '#150035',
                     'paneProperties.backgroundGradientEndColor': '#150035',
+                    'mainSeriesProperties.style': 8,
                 },
             })
         }

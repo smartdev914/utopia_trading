@@ -7,7 +7,7 @@ import { subscribeOnStream, unsubscribeFromStream } from './streaming'
 const lastBarsCache = new Map()
 
 const configurationData = {
-    supported_resolutions: ['1M', '1W', '1D', '5', '15', '240'],
+    supported_resolutions: ['1M', '1W', '1D', '1', '5', '10', '15', '30', '1H', '240', '12H'],
     exchanges: [
         {
             value: 'Utopia',
@@ -219,12 +219,12 @@ export default {
                         pricescale: tokenInfo.divisor === '18' ? 10 ** 9 : 10 ** 12,
                         has_intraday: true,
                         has_no_volume: false,
-                        has_weekly_and_monthly: false,
+                        has_weekly_and_monthly: true,
                         supported_resolutions: configurationData.supported_resolutions,
                         volume_precision: 2,
                         data_status: 'streaming',
                         address: tokenInfo.contractAddress,
-                        has_empty_bars: true,
+                        has_empty_bars: false,
                     }
                     onSymbolResolvedCallback(symbolInfo)
                 }
@@ -245,12 +245,12 @@ export default {
             pricescale: symbolItem.pricescale,
             has_intraday: true,
             has_no_volume: false,
-            has_weekly_and_monthly: false,
+            has_weekly_and_monthly: true,
             supported_resolutions: configurationData.supported_resolutions,
             volume_precision: 2,
             data_status: 'streaming',
             address: symbolItem.address,
-            has_empty_bars: true,
+            has_empty_bars: false,
         }
 
         onSymbolResolvedCallback(symbolInfo)
@@ -260,6 +260,12 @@ export default {
             const { from, to, firstDataRequest } = periodParams
             let resolutionTime = resolution
             switch (resolution) {
+                case '1H':
+                    resolutionTime = '60'
+                    break
+                case '12H':
+                    resolutionTime = '720'
+                    break
                 case '1D':
                     resolutionTime = '1440'
                     break
