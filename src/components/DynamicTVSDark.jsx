@@ -13,9 +13,30 @@ export default function DynamicTVS() {
     const currentTokenAddress = tokenContext.currentlySelectedToken.address
 
     useEffect(() => {
-        window.localStorage.removeItem('tradingview.chartproperties')
+        const chartProperties = window.localStorage.getItem('tradingview.chartproperties')
         const savedResolution = window.localStorage.getItem('tradingview.chart.lastUsedTimeBasedResolution')
         const initTVwidgetDark = () => {
+            if (chartProperties) {
+                const parsedProperties = JSON.parse(chartProperties)
+                const darkChartOverrideSettings = {
+                    ...parsedProperties,
+                    paneProperties: {
+                        ...parsedProperties.paneProperties,
+                        background: '#111721',
+                        backgroundGradientEndColor: '#111721',
+                        backgroundGradientStartColor: '#111721',
+                        backgroundType: 'solid',
+                        bottomMargin: 8,
+                        horzGridProperties: {
+                            color: 'rgba(240, 243, 250, 0.06)',
+                        },
+                        vertGridProperties: {
+                            color: 'rgba(240, 243, 250, 0.06)',
+                        },
+                    },
+                }
+                window.localStorage.setItem('tradingview.chartproperties', JSON.stringify(darkChartOverrideSettings))
+            }
             window.tvWidget = new window.TradingView.widget({
                 symbol: supportedToken ? `${currentTokenSymbol}/BNB` : currentTokenAddress, // default symbol
                 interval: savedResolution || '1D', // default interval
@@ -34,10 +55,33 @@ export default function DynamicTVS() {
                     'paneProperties.backgroundGradientStartColor': '#111721',
                     'paneProperties.backgroundGradientEndColor': '#111721',
                     'mainSeriesProperties.style': 8,
+                    'paneProperties.horzGridProperties.color': 'rgba(240, 243, 250, 0.06)',
+                    'paneProperties.vertGridProperties.color': 'rgba(240, 243, 250, 0.06)',
                 },
             })
         }
         const initTVwidgetLight = () => {
+            if (chartProperties) {
+                const parsedProperties = JSON.parse(chartProperties)
+                const darkChartOverrideSettings = {
+                    ...parsedProperties,
+                    paneProperties: {
+                        ...parsedProperties.paneProperties,
+                        background: '#F8F7FC',
+                        backgroundGradientEndColor: '#F8F7FC',
+                        backgroundGradientStartColor: '#F8F7FC',
+                        backgroundType: 'solid',
+                        bottomMargin: 8,
+                        horzGridProperties: {
+                            color: 'rgba(67, 70, 81, 0.2)',
+                        },
+                        vertGridProperties: {
+                            color: 'rgba(67, 70, 81, 0.2)',
+                        },
+                    },
+                }
+                window.localStorage.setItem('tradingview.chartproperties', JSON.stringify(darkChartOverrideSettings))
+            }
             window.tvWidget = new window.TradingView.widget({
                 symbol: supportedToken ? `${currentTokenSymbol}/BNB` : currentTokenAddress, // default symbol
                 interval: savedResolution || '1D', // default interval
@@ -51,15 +95,36 @@ export default function DynamicTVS() {
                 custom_css_url: '/assets/css/tradingViewLight.css',
                 applyOverrides: true,
                 overrides: {
-                    'paneProperties.background': '#FFF',
+                    'paneProperties.background': '#F8F7FC',
                     'paneProperties.backgroundType': 'solid',
-                    'paneProperties.backgroundGradientStartColor': '#FFF',
-                    'paneProperties.backgroundGradientEndColor': '#FFF',
+                    'paneProperties.backgroundGradientStartColor': '#F8F7FC',
+                    'paneProperties.backgroundGradientEndColor': '#F8F7FC',
                     'mainSeriesProperties.style': 8,
                 },
             })
         }
         const initTVwidgetUTOPIA = () => {
+            if (chartProperties) {
+                const parsedProperties = JSON.parse(chartProperties)
+                const darkChartOverrideSettings = {
+                    ...parsedProperties,
+                    paneProperties: {
+                        ...parsedProperties.paneProperties,
+                        background: '#150035',
+                        backgroundGradientEndColor: '#150035',
+                        backgroundGradientStartColor: '#150035',
+                        backgroundType: 'solid',
+                        bottomMargin: 8,
+                        horzGridProperties: {
+                            color: 'rgba(240, 243, 250, 0.06)',
+                        },
+                        vertGridProperties: {
+                            color: 'rgba(240, 243, 250, 0.06)',
+                        },
+                    },
+                }
+                window.localStorage.setItem('tradingview.chartproperties', JSON.stringify(darkChartOverrideSettings))
+            }
             window.tvWidget = new window.TradingView.widget({
                 symbol: supportedToken ? `${currentTokenSymbol}/BNB` : currentTokenAddress, // default symbol
                 interval: savedResolution || '1D', // default interval
@@ -78,6 +143,8 @@ export default function DynamicTVS() {
                     'paneProperties.backgroundGradientStartColor': '#150035',
                     'paneProperties.backgroundGradientEndColor': '#150035',
                     'mainSeriesProperties.style': 8,
+                    'paneProperties.horzGridProperties.color': 'rgba(240, 243, 250, 0.06)',
+                    'paneProperties.vertGridProperties.color': 'rgba(240, 243, 250, 0.06)',
                 },
             })
         }
