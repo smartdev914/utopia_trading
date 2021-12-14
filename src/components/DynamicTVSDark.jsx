@@ -14,10 +14,11 @@ export default function DynamicTVS() {
 
     useEffect(() => {
         window.localStorage.removeItem('tradingview.chartproperties')
+        const savedResolution = window.localStorage.getItem('tradingview.chart.lastUsedTimeBasedResolution')
         const initTVwidgetDark = () => {
             window.tvWidget = new window.TradingView.widget({
                 symbol: supportedToken ? `${currentTokenSymbol}/BNB` : currentTokenAddress, // default symbol
-                interval: '1D', // default interval
+                interval: savedResolution || '1D', // default interval
                 container: 'tv_chart_container',
                 datafeed: Datafeed,
                 // disabled_features: ['use_localstorage_for_settings'],
@@ -39,7 +40,7 @@ export default function DynamicTVS() {
         const initTVwidgetLight = () => {
             window.tvWidget = new window.TradingView.widget({
                 symbol: supportedToken ? `${currentTokenSymbol}/BNB` : currentTokenAddress, // default symbol
-                interval: '1D', // default interval
+                interval: savedResolution || '1D', // default interval
                 container: 'tv_chart_container',
                 datafeed: Datafeed,
                 // disabled_features: ['use_localstorage_for_settings'],
@@ -61,7 +62,7 @@ export default function DynamicTVS() {
         const initTVwidgetUTOPIA = () => {
             window.tvWidget = new window.TradingView.widget({
                 symbol: supportedToken ? `${currentTokenSymbol}/BNB` : currentTokenAddress, // default symbol
-                interval: '1D', // default interval
+                interval: savedResolution || '1D', // default interval
                 container: 'tv_chart_container',
                 datafeed: Datafeed,
                 // disabled_features: ['use_localstorage_for_settings'],
