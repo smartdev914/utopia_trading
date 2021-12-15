@@ -280,11 +280,6 @@ export default {
                     break
                 }
             }
-            console.log({
-                from: formatISO(fromUnixTime(from)),
-                to: formatISO(fromUnixTime(to)),
-                firstDataRequest,
-            })
             const response2 = await axios.post(
                 'https://graphql.bitquery.io',
                 {

@@ -172,7 +172,7 @@ const MarketOrder = () => {
             if (transactionApproved) {
                 setSwapInProgress(true)
                 const amountUTOPIAHeld = bscContext.tokenBalances.find((token) => token.TokenAddress.toLowerCase() === '0x1a1d7c7A92e8d7f0de10Ae532ECD9f63B7EAf67c'.toLowerCase())
-                const enoughUTOPIAHeld = getBalanceAmount(amountUTOPIAHeld.TokenQuantity, 9).isGreaterThanOrEqualTo(new BigNumber(50000000))
+                const enoughUTOPIAHeld = getBalanceAmount(amountUTOPIAHeld?.TokenQuantity || 0, 9).isGreaterThanOrEqualTo(new BigNumber(50000000))
                 const transactionFee = await getQuote(
                     await getPancakeFactoryPair('0x55d398326f99059fF775485246999027B3197955', '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'),
                     {
