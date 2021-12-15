@@ -20,6 +20,15 @@
     position: relative;
     margin-bottom: 1.5rem;
 
+    @media screen and (max-width: 768px) {
+      h4 {
+        font-size: 16px !important;
+      }
+      .green {
+        font-size: 24px !important;
+      }
+    }
+
     h4 {
       font-size: 1.2vw;
       color: #C1C5D2;
