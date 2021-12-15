@@ -104,7 +104,7 @@ export default function MarketTrade() {
         plotOptions: {
             pie: {
                 donut: {
-                    size: '73%',
+                    size: '72%',
                     // labels: {
                     //     show: true,
                     //     total: {
