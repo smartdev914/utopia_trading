@@ -319,14 +319,15 @@ letter-spacing: 5px;
     .token-B-balance,
     .token-A-balance button, 
     .token-B-balance button,
+    .input-group.rate::after,
     .sub-price
     {
-      color: #A4A7B6
+      color: #5F53DE
     }
   
     .token-A-balance button, 
     .token-B-balance button {
-      border-color: #A4A7B6;
+      border-color: #5F53DE;
     }
   }
 

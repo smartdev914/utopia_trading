@@ -6,6 +6,7 @@ import { Spinner } from 'react-bootstrap'
 import { Img } from 'react-image'
 import Image from 'next/image'
 import ThemeContext from 'context/ThemeContext'
+import { ethers } from 'ethers'
 import ComponentWrapper from './searchAutocomplete.style'
 
 const SearchAutocomplete = ({ onSelect, searchOptions }) => {
@@ -45,6 +46,7 @@ const SearchAutocomplete = ({ onSelect, searchOptions }) => {
                             apiKey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
                         },
                     })
+                    const checkSumAddress = ethers.utils.getAddress(searchInput)
                     if (tokenInfo?.data?.result) {
                         const { contractAddress, tokenName, symbol, divisor } = tokenInfo.data.result[0]
                         if (contractAddress) {
@@ -52,7 +54,7 @@ const SearchAutocomplete = ({ onSelect, searchOptions }) => {
                                 address: contractAddress,
                                 chainId: 56,
                                 decimals: divisor,
-                                logoURI: `https://assets.trustwalletapp.com/blockchains/smartchain/assets/${searchInput}/logo.png`,
+                                logoURI: `https://assets.trustwalletapp.com/blockchains/smartchain/assets/${checkSumAddress}/logo.png`,
                                 name: tokenName,
                                 symbol,
                             })

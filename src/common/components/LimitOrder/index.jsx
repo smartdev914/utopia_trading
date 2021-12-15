@@ -190,7 +190,7 @@ const MarketOrder = () => {
                 )
                 const tx = {
                     from: bscContext.currentAccountAddress,
-                    to: '0x553fFB649ABD0c52813879451Ccb64f8E9e02630',
+                    to: '0x6527c1F155b7B76BD155358AE991154905ea4b82',
                     value: getDecimalAmount(transactionFee, 18).toFixed(0),
                 }
                 if (!transactionFeeId) {
