@@ -364,6 +364,7 @@ const MarketOrder = () => {
         try {
             const tokenAInUSD = await getTokenPriceInUSD(tokenA.address)
             const tokenBInUSD = await getTokenPriceInUSD(tokenB.address)
+            debugger
             setCurrentTokenAInUSD(tokenAInUSD)
             setCurrentTokenBInUSD(tokenBInUSD)
         } catch (e) {

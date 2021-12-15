@@ -55,7 +55,7 @@ export const getTokenPriceInUSD = async (tokenAddress) => {
         const BNBtoUSDPrice = new BigNumber(bitQueryResponse?.data?.data?.ethereum?.dexTrades?.[0]?.quote)
 
         const tokenInUSD = tokenToBNBPrice.multipliedBy(BNBtoUSDPrice).toFixed(10)
-        return tokenInUSD
+        return tokenAddress.toLowerCase() === '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c' ? BNBtoUSDPrice : tokenInUSD
     } catch (err) {
         return 0
     }
