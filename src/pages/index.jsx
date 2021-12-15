@@ -15,7 +15,7 @@ import dynamic from 'next/dynamic'
 import { ToastContainer } from 'react-toastify'
 import Button from 'common/components/Button'
 import { ResetCSS } from '../../public/assets/css/style'
-import UtopiaWhitePaper from '../../public/assets/docs/Utopia_Whitepaper_Dec_2021.pdf'
+import UtopiaWhitePaper from '../../public/assets/docs/Utopia_Whitepaper.pdf'
 
 const PDFViewer = dynamic(() => import('../containers/CryptoModern/PDFViewer'), { ssr: false })
 

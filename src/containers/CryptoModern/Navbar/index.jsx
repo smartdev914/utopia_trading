@@ -4,7 +4,6 @@ import Button from 'common/components/Button'
 import Container from 'common/components/UI/Container'
 
 import { SocialIcon } from 'react-social-icons'
-import Link from 'next/link'
 import NavbarWrapper, { MenuArea, SocialMediaButtonGroup } from './navbar.style'
 
 const Navbar = () => {

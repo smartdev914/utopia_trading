@@ -1,0 +1,15 @@
+:root {
+  --tv-color-platform-background: #111721;
+  --tv-color-pane-background: #111721;
+  --tv-color-pane-background-secondary: #111721;
+  --tv-color-toolbar-button-background-hover: #1D0E6B;
+  --tv-color-toolbar-button-background-secondary-hover: #1FC08E;
+  --tv-color-toolbar-button-background-expanded: #1D0E6B;
+  --tv-color-toolbar-button-text: #A4A7B6;
+  --tv-color-toolbar-button-text-hover: #1FC08E;
+  --tv-color-toolbar-button-text-active: #1FC08E;
+  --tv-color-toolbar-button-text-active-hover: #1FC08E;
+  --tv-color-item-active-text: #A4A7B6;
+  --tv-color-toolbar-toggle-button-background-active: #1FC08E;
+  --tv-color-toolbar-toggle-button-background-active-hover: #A4A7B6;
+}

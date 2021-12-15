@@ -1,0 +1,533 @@
+:root {
+  --fontSyncopate: 'Syncopate', sans-serif;
+  --fontOswald: 'Oswald', sans-serif;
+  --fontDosis: 'Dosis', sans-serif;
+  --fontNotoSans: 'Noto Sans', sans-serif;
+}
+
+.utopiaMode {
+    background: #150035;
+
+    .green {
+        color: #1FC08E;
+    }
+}
+
+.utopiaMode {
+    .token-info {
+        .social-drop-down {
+            background: #1D0E6B;
+            a {
+                color: #fff;
+            }
+        }
+
+        .info-header {
+            color: #C1C5D2
+        }
+
+        .info-value {
+            color: #A3FFFF
+        }
+    }
+}
+
+.utopiaMode .nav-item.input-group .form-control {
+    background-color: #170038;
+    color: #f2f2f2;
+}
+
+.utopiaMode {
+    .search-box {
+        input::placeholder {
+            color: #f2f2f2
+        }
+    }
+}
+
+.utopiaMode header {
+    background: #1733AA;
+}
+.utopiaMode h3 {
+  font-family: var(--fontSyncopate);
+  color: #F9DF00;
+  font-size: 24px;
+  font-weight: 550;
+  letter-spacing: 5px;
+}
+.utopiaMode .light-bb,
+.utopiaMode .input-group-text,
+.utopiaMode .nav-tabs {
+    border: none;
+}
+.utopiaMode .market-trade .nav-tabs {
+    border: none;
+}
+
+.utopiaMode {
+    .search-dropdown-options {
+        background-color: #1D0E6B
+    }
+}
+
+.utopiaMode header nav a:hover {
+    color: #007bff;
+}
+.utopiaMode .nav-tabs .nav-link.active {
+    background: transparent;
+}
+.utopiaMode header nav a.btn:hover {
+    color: #ffffff;
+}
+.utopiaMode header nav .nav-item.active a {
+    color: #007bff;
+}
+.utopiaMode .market-pairs {
+    border: 1px solid #2a2e39;
+    background: #1D0E6B;
+}
+.utopiaMode tr {
+    background: #1D0E6B;
+}
+.utopiaMode tr:nth-child(2n) {
+    background: #1B003B
+}
+
+.utopiaMode .market-history .table th {
+  background-color: #150035 !important;
+}
+.utopiaMode .order-book thead tr {
+    border-bottom: 1px solid #2a2e39;
+}
+.utopiaMode .order-book,
+.utopiaMode .market-news {
+    background: #1D0E6B;
+    margin-bottom: 1rem;
+}
+.utopiaMode tbody tr:hover {
+    background: #2a2e39;
+}
+.utopiaMode .form-control::-webkit-input-placeholder {
+    /* Chrome/Opera/Safari */
+    color: #69727a;
+}
+.utopiaMode .form-control::-moz-placeholder {
+    /* Firefox 19+ */
+    color: #69727a;
+}
+.utopiaMode .form-control:-ms-input-placeholder {
+    /* IE 10+ */
+    color: #69727a;
+}
+.utopiaMode .form-control:-moz-placeholder {
+    /* Firefox 18- */
+    color: #69727a;
+}
+.utopiaMode tbody tr {
+    color: #ffffff;
+}
+.utopiaMode thead th,
+.utopiaMode .market-pairs .nav-link {
+    color: #4f5966;
+}
+.utopiaMode .market-pairs .nav-link.active,
+.utopiaMode #STAR i {
+    color: #ffffff;
+}
+.utopiaMode .red {
+    color: #ff231f;
+}
+.utopiaMode .market-pairs .nav {
+    background: #1D0E6B;
+}
+.utopiaMode .market-pairs input{
+    border-color: #2a2e39;
+    background: #ffffff;
+}
+.utopiaMode .market-pairs input {
+    color: #1D0E6B;
+}
+.utopiaMode .heading {
+    background: #1c2030;
+    color: #ffffff;
+}
+.utopiaMode .ob-heading tr {
+    border-top: 1px solid #2a2e39 !important;
+    border-bottom: 1px solid #2a2e39 !important;
+}
+.utopiaMode .ob-heading tr:hover {
+    background: #131722;
+    cursor: default;
+}
+.utopiaMode .ob-heading span {
+    color: #4f5966;
+}
+.utopiaMode .dropdown-menu {
+    background: #131722;
+    box-shadow: 0 0 10px 0 #131722;
+    border: 1px solid #2a2e39;
+}
+.utopiaMode .dropdown-item:focus,
+.utopiaMode .dropdown-item:hover {
+    background-color: #2a2e39;
+    color: #ffffff;
+}
+.utopiaMode .market-history .nav {
+    background: #1D0E6B;
+}
+.utopiaMode .market-history .nav-link.active {
+    color: #ffffff;
+}
+.utopiaMode .market-history .nav-link {
+    color: #4f5966;
+}
+.utopiaMode .red-bg-80:after,
+.utopiaMode .red-bg-60:after,
+.utopiaMode .red-bg-40:after,
+.utopiaMode .red-bg-20:after,
+.utopiaMode .red-bg-10:after,
+.utopiaMode .red-bg-8:after,
+.utopiaMode .red-bg-5:after,
+.utopiaMode .red-bg:after {
+    background: #ff231f63;
+}
+.utopiaMode .market-news {
+    background: #131722;
+}
+.utopiaMode .market-news li {
+    border-bottom: 1px solid #2a2e39;
+}
+.utopiaMode .market-news li:hover {
+    background: #2a2e39;
+}
+.utopiaMode .market-news li strong,
+.utopiaMode .market-news li a {
+    color: #c5cbce;
+}
+.utopiaMode .market-order {
+    background: #131722;
+}
+.utopiaMode .no-data i,
+.utopiaMode .no-data {
+    color: #2a2e39;
+}
+.utopiaMode .market-trade,
+.utopiaMode .market-portfolio {
+    border: none;
+    background: #1D0E6B;
+    color: white;
+}
+
+.utopiaMode .market-portfolio {
+    h4 {
+      color: #FFFFFF;
+    }
+  
+    .portfolio-table {
+      color: #2A3962;
+      background: #1B003B;
+  
+      th {
+        background-color: #1B003B;
+      }
+      tr {
+        background: #1B003B
+      }
+      tr:nth-child(2n+1) {
+        background: #051557
+      }
+      .secondary-label {
+        color: #828282
+      }
+    }
+  }
+
+.utopiaMode .market-trade .nav .nav-item .nav-link.active {
+    background: transparent;
+    color: #ffffff;
+}
+.utopiaMode .market-trade .nav .nav-item .nav-link {
+    color: #4f5966;
+}
+.utopiaMode .market-trade p {
+    color: #c5cbce;
+}
+.utopiaMode .market-trade-list li a {
+    background: #2a2e39;
+    color: #ffffff;
+}
+.utopiaMode .market-trade input {
+    border: 1px solid #2a2e39;
+    background: #1B003B;
+    color: #F9DF00;
+}
+.utopiaMode .market-trade .input-group-text {
+    background: #2a2e39;
+    color: #ffffff;
+    border-color: #2a2e39;
+}
+.utopiaMode .market-trade-buy .market-trade-list li a:hover {
+    background: #26de81;
+    color: #fff;
+}
+.utopiaMode .market-trade-sell .market-trade-list li a:hover {
+    background: #ff231f;
+    color: #fff;
+}
+.utopiaMode #darkDepthChart {
+    background: #131722;
+}
+.utopiaMode .markets {
+    background: #131722;
+}
+.utopiaMode .markets-pair-list .nav {
+    background: #1c2030;
+}
+.utopiaMode .markets-pair-list .nav-link.active,
+.utopiaMode #STAR i {
+    color: #ffffff;
+}
+.utopiaMode thead th,
+.utopiaMode .markets-pair-list .nav-link {
+    color: #4f5966;
+}
+.utopiaMode .markets-pair-list .load-more {
+    border: 1px solid #2a2e39;
+    color: #ffffff;
+}
+.utopiaMode .markets-pair-list .load-more:hover {
+    color: #fff;
+    border: 1px solid #007bff;
+}
+.utopiaMode .markets-content h2,
+.utopiaMode .markets-content p {
+    color: #ffffff;
+}
+.utopiaMode .markets-content span.green,
+.utopiaMode .markets-content span.red {
+    color: #fff;
+}
+.utopiaMode .market-trade-sell {
+    border-left: 1px solid #2a2e39;
+}
+.utopiaMode .markets-container {
+    background: #1e222d;
+}
+.utopiaMode .sign-up-form h3 {
+    border-top: 0;
+    margin-top: 0;
+    padding-top: 15px;
+}
+.utopiaMode header nav .nav-item.active a.btn:hover {
+    color: #fff;
+}
+
+.utopiaMode .custom-control-input:checked ~ .custom-control-label::before {
+    color: #fff;
+    border-color: #007bff;
+    background-color: #007bff;
+}
+
+.utopiaMode .dropdown-menu::before {
+    background: #131722;
+}
+
+.utopiaMode .dropdown-menu p {
+    color: #ffffff;
+}
+
+.utopiaMode .dropdown-header {
+    border-bottom: 1px solid #2a2e39;
+}
+
+.utopiaMode .header-img-icon .profile-nav .nav-item .nav-link:hover {
+    background-color: #2a2e39;
+    color: #ffffff;
+}
+
+.utopiaMode .form-control,
+.utopiaMode .settings-profile select {
+    background-color: #2a2e39;
+    border: 1px solid #2a2e39 !important;
+    color: #ffffff;
+}
+.utopiaMode .form-access form {
+    padding: 30px;
+    border-radius: 5px;
+    min-width: 350px;
+    box-shadow: 0 0 10px 0 #131722;
+    border: 1px solid #2a2e39;
+}
+.utopiaMode .form-access h2,
+.utopiaMode .form-access {
+    color: #ffffff;
+}
+
+.utopiaMode .form-access .custom-control-label::before {
+    border: #2a2e39 solid 1px;
+    background-color: #2a2e39;
+}
+
+.utopiaMode .error-page a {
+    border: 1px solid #2a2e39;
+    color: #ffffff;
+}
+.utopiaMode .error-page a:hover {
+    border: 1px solid #007bff;
+    background: #007bff;
+    color: #ffffff;
+}
+
+.utopiaMode .error-page h2,
+.utopiaMode .error-page p {
+    color: #c5cbce;
+}
+
+.utopiaMode .wallet .nav {
+    background: #1e222d;
+}
+.utopiaMode .wallet h2,
+.utopiaMode .wallet h3,
+.utopiaMode .wallet h4,
+.utopiaMode .wallet p {
+    color: #ffffff !important;
+}
+.utopiaMode .wallet button.green,
+.utopiaMode .wallet button.red,
+.utopiaMode .wallet .nav-pills a.active h2,
+.utopiaMode .wallet .nav-pills a.active h3,
+.utopiaMode .wallet .nav-pills a.active p {
+    color: #ffffff;
+}
+
+.utopiaMode .wallet .tab-content li:first-child {
+    border-bottom: 1px solid #2a2e39;
+}
+.utopiaMode .wallet-history tr {
+    background: #1e222d;
+}
+.utopiaMode .wallet-address input,
+.utopiaMode .wallet-address input:focus {
+    border: 1px solid #2a2e39;
+    background: #2a2e39;
+    box-shadow: none;
+    color: #ffffff;
+}
+.utopiaMode .depth-chart-inner {
+    border: 1px solid #2a2e39;
+}
+
+.utopiaMode .markets-capital-item {
+    box-shadow: 0 0 10px 0 #131722;
+    border: 1px solid #2a2e39;
+}
+
+.utopiaMode .markets-capital-item h2,
+.utopiaMode .markets-capital-item h4 {
+    color: #fff;
+}
+.utopiaMode .settings .card {
+    background: #1e222d;
+}
+
+.utopiaMode .settings .card-title {
+    color: #fff;
+}
+
+.utopiaMode .settings-nav {
+    background: #1e222d;
+}
+
+.utopiaMode .settings-nav .nav-link {
+    color: #ffffff;
+}
+
+.utopiaMode .settings-notification li {
+    border-bottom: 1px solid #2a2e39;
+}
+.utopiaMode .settings-notification li:last-child {
+    border-bottom: 0;
+}
+.utopiaMode .settings-notification p {
+    color: #ffffff;
+}
+.utopiaMode .settings-notification span {
+    color: #4f5966;
+}
+
+.utopiaMode .settings label {
+    color: #fff;
+}
+.utopiaMode .settings .custom-file-label {
+    background: #2a2e39;
+    border: 1px solid #2a2e39;
+    color: #616d75;
+}
+
+.utopiaMode .settings-profile input[type='submit'] {
+    border: 1px solid #007bff;
+}
+.utopiaMode .market-carousel-item {
+    border: 1px solid #2a2e39;
+}
+.utopiaMode .market-carousel-item {
+    color: #fff;
+}
+.utopiaMode .market-carousel-item .btn.buy:hover,
+.utopiaMode .market-carousel-item .btn.sell:hover {
+    color: #fff;
+    border-color: #fff;
+}
+.utopiaMode .news-details,
+.utopiaMode .page-content {
+    color: #fff;
+}
+.utopiaMode .navbar-toggler-icon {
+    filter: contrast(0.1);
+}
+
+.utopiaMode {
+  .market-trade {
+    .rc-slider-track, .rc-slider-handle {
+      background-color: #F9DF00;
+    }
+    .rc-slider-handle:hover, .rc-slider-handle {
+      border-color: #F9DF00;
+    }
+  
+    .rc-slider-rail {
+      background-color: #A3FFFF;
+    }
+  
+    .rc-slider-dot {
+      background-color: #A3FFFF;
+      border-color: #A3FFFF
+    }
+  }
+}
+
+.utopiaMode .toggle-wrapper {
+    .toggleContainer {
+        background: #2D75DC;
+        
+        .toggle {
+            background: #A3FFFF;
+        }
+    }
+
+    .toggleContainer .toggleOption.selected {
+        background-color: #A3FFFF;
+        color: #2D75DC;
+    }
+
+    .toggleContainer .toggleOption {
+        color: #A3FFFF;
+    }
+}
+
+.utopiaMode .market-trade {
+    .nav-tabs .nav-link.active:after,
+    .nav-tabs .nav-link:hover:after {
+        border: 2px solid #00DEE6;
+    }
+}

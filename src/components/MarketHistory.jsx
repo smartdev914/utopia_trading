@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useDebouncedCallback } from 'common/hooks/useDebouncedCallback'
 import TokenContext from 'context/TokenContext'
-import { formatDistanceToNowStrict, parseJSON } from 'date-fns'
+import { formatDistanceToNowStrict, intlFormat, parseJSON } from 'date-fns'
 import React, { useContext, useEffect, useState } from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
 
@@ -12,7 +12,6 @@ export default function MarketHistory() {
 
     const debouncedCallback = useDebouncedCallback(async (address, lastIntervalId) => {
         clearInterval(lastIntervalId)
-
         const getRecentTrades = async () => {
             const recentTransactionsResponse = await axios.post(
                 `https://graphql.bitquery.io`,
@@ -30,7 +29,9 @@ export default function MarketHistory() {
             const filteredTransactions = recentTransactionsResponse.data.data.ethereum.dexTrades.filter((v, i, a) => a.findIndex((t) => t.transaction.hash === v.transaction.hash) === i)
             setRecentTransactions(filteredTransactions)
         }
-        await getRecentTrades()
+        if (address) {
+            await getRecentTrades()
+        }
         const intervalId = setInterval(async () => {
             await getRecentTrades()
         }, 300000)
@@ -51,10 +52,9 @@ export default function MarketHistory() {
                             <table className="table">
                                 <thead>
                                     <tr>
-                                        <th>Time</th>
-                                        <th>Amount(BNB)</th>
-                                        <th>Amount({`${tokenContext.currentlySelectedToken.symbol}`})</th>
-                                        {tokenContext.currentTokenPriceInUSD && <th>Value (USD)</th>}
+                                        <th>TIME</th>
+                                        <th>AMOUNT</th>
+                                        {tokenContext.currentTokenPriceInUSD && <th>PRICE</th>}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -63,15 +63,39 @@ export default function MarketHistory() {
                                             const timeSince = formatDistanceToNowStrict(parseJSON(transaction.block.timestamp.time)).replace('minutes', 'm')
                                             return (
                                                 <tr onClick={() => window.open(`https://bscscan.com/tx/${transaction.transaction.hash}`, '_blank')} key={transaction.transaction.hash}>
-                                                    <td className="red">{timeSince === 0 ? 'Just Now' : `${timeSince} ago`}</td>
-                                                    <td className="red">{transaction.sellAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 3 })}</td>
-                                                    <td className="red">{transaction.buyAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 3 })}</td>
+                                                    <td className="red">
+                                                        <div>{timeSince === 0 ? 'Just Now' : `${timeSince} ago`}</div>
+                                                        <div>
+                                                            {intlFormat(new Date(`${transaction.block.timestamp.time} GMT`), {
+                                                                month: 'numeric',
+                                                                day: 'numeric',
+                                                                year: 'numeric',
+                                                                hour: 'numeric',
+                                                                minute: 'numeric',
+                                                                second: 'numeric',
+                                                                timeZoneName: 'short',
+                                                                localeMatcher: 'lookup',
+                                                            })
+                                                                .replaceAll('/', '-')
+                                                                .replaceAll(',', '')}
+                                                        </div>
+                                                    </td>
+                                                    <td className="red">
+                                                        <div>{transaction.buyAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 3 })}</div>
+                                                        <div>{`${tokenContext.currentlySelectedToken.symbol}`}</div>
+                                                    </td>
                                                     {tokenContext.currentTokenPriceInUSD && (
                                                         <td className="red">
-                                                            {(transaction.buyAmount * tokenContext.currentTokenPriceInUSD).toLocaleString(undefined, {
-                                                                minimumFractionDigits: 2,
-                                                                maximumFractionDigits: 2,
-                                                            })}
+                                                            <div>
+                                                                $
+                                                                {(transaction.buyAmount * tokenContext.currentTokenPriceInUSD).toLocaleString(undefined, {
+                                                                    minimumFractionDigits: 2,
+                                                                    maximumFractionDigits: 2,
+                                                                })}
+                                                            </div>
+                                                            <div className="bnb-price">
+                                                                {transaction.sellAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 3 })} BNB
+                                                            </div>
                                                         </td>
                                                     )}
                                                 </tr>
@@ -80,15 +104,37 @@ export default function MarketHistory() {
                                         const timeSince = formatDistanceToNowStrict(parseJSON(transaction.block.timestamp.time)).replace('minutes', 'm')
                                         return (
                                             <tr onClick={() => window.open(`https://bscscan.com/tx/${transaction.transaction.hash}`, '_blank')} key={transaction.transaction.hash}>
-                                                <td className="green">{timeSince === 0 ? 'Just Now' : `${timeSince} ago`}</td>
-                                                <td className="green">{transaction.buyAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 3 })}</td>
-                                                <td className="green">{transaction.sellAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 3 })}</td>
+                                                <td className="green">
+                                                    <div>{timeSince === 0 ? 'Just Now' : `${timeSince} ago`}</div>
+                                                    <div>
+                                                        {intlFormat(new Date(`${transaction.block.timestamp.time} GMT`), {
+                                                            month: 'numeric',
+                                                            day: 'numeric',
+                                                            year: 'numeric',
+                                                            hour: 'numeric',
+                                                            minute: 'numeric',
+                                                            second: 'numeric',
+                                                            timeZoneName: 'short',
+                                                            localeMatcher: 'lookup',
+                                                        })
+                                                            .replaceAll('/', '-')
+                                                            .replaceAll(',', '')}
+                                                    </div>
+                                                </td>
+                                                <td className="green">
+                                                    <div>{transaction.sellAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 3 })}</div>
+                                                    <div>{`${tokenContext.currentlySelectedToken.symbol}`}</div>
+                                                </td>
                                                 {tokenContext.currentTokenPriceInUSD && (
                                                     <td className="green">
-                                                        {(transaction.sellAmount * tokenContext.currentTokenPriceInUSD).toLocaleString(undefined, {
-                                                            minimumFractionDigits: 2,
-                                                            maximumFractionDigits: 2,
-                                                        })}
+                                                        <div>
+                                                            $
+                                                            {(transaction.sellAmount * tokenContext.currentTokenPriceInUSD).toLocaleString(undefined, {
+                                                                minimumFractionDigits: 2,
+                                                                maximumFractionDigits: 2,
+                                                            })}
+                                                        </div>
+                                                        <div>{transaction.buyAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 3 })} BNB</div>
                                                     </td>
                                                 )}
                                             </tr>

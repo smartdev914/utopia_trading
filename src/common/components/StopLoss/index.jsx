@@ -133,7 +133,7 @@ const StopLoss = () => {
             if (transactionApproved) {
                 setSwapInProgress(true)
                 const amountUTOPIAHeld = bscContext.tokenBalances.find((token) => token.TokenAddress.toLowerCase() === '0x1a1d7c7A92e8d7f0de10Ae532ECD9f63B7EAf67c'.toLowerCase())
-                const enoughUTOPIAHeld = getBalanceAmount(amountUTOPIAHeld.TokenQuantity, 9).isGreaterThanOrEqualTo(new BigNumber(50000000))
+                const enoughUTOPIAHeld = getBalanceAmount(amountUTOPIAHeld?.TokenQuantity || 0, 9).isGreaterThanOrEqualTo(new BigNumber(50000000))
                 const transactionFee = await getQuote(
                     await getPancakeFactoryPair('0x55d398326f99059fF775485246999027B3197955', '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'),
                     {
@@ -151,7 +151,7 @@ const StopLoss = () => {
                 )
                 const tx = {
                     from: bscContext.currentAccountAddress,
-                    to: '0x553fFB649ABD0c52813879451Ccb64f8E9e02630',
+                    to: '0x6527c1F155b7B76BD155358AE991154905ea4b82',
                     value: getDecimalAmount(transactionFee, 18).toFixed(0),
                 }
                 if (!transactionFeeId) {
@@ -304,8 +304,8 @@ const StopLoss = () => {
 
     useEffect(async () => {
         try {
-            const tokenAInUSD = await getTokenPriceInUSD(tokenA.address, tokenA.decimals)
-            const tokenBInUSD = await getTokenPriceInUSD(tokenB.address, tokenB.decimals)
+            const tokenAInUSD = await getTokenPriceInUSD(tokenA.address)
+            const tokenBInUSD = await getTokenPriceInUSD(tokenB.address)
             setCurrentTokenAInUSD(tokenAInUSD)
             setCurrentTokenBInUSD(tokenBInUSD)
         } catch (e) {

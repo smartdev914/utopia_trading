@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Modal } from '@redq/reuse-modal'
 import '@redq/reuse-modal/es/index.css'
 import '../../public/assets/css/flaticon.css'
@@ -11,10 +11,11 @@ import '../assets/css/ionicons.min.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../assets/scss/style.scss'
 import 'react-toastify/dist/ReactToastify.min.css'
+import 'react-multi-toggle/style.css'
 
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { pdfjs } from 'react-pdf'
-import { ThemeProvider } from 'context/ThemeContext'
+import { ThemeContextProvider } from 'context/ThemeContext'
 import { BSCContextProvider } from 'context/BSCContext'
 import { TokenContextProvider } from 'context/TokenContext'
 import { useRouter } from 'next/dist/client/router'
@@ -25,8 +26,6 @@ pdfjs.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js'
 const queryClient = new QueryClient()
 export default function CustomApp({ Component, pageProps }) {
     const router = useRouter()
-
-    const [theme, setTheme] = useState('dark')
 
     useEffect(() => {
         const handleRouteChange = (url) => {
@@ -44,14 +43,7 @@ export default function CustomApp({ Component, pageProps }) {
     }, [router.events])
 
     return (
-        <ThemeProvider
-            value={{
-                data: { theme },
-                update: () => {
-                    setTheme(theme === 'light' ? 'dark' : 'light')
-                },
-            }}
-        >
+        <ThemeContextProvider>
             <QueryClientProvider client={queryClient}>
                 <TokenContextProvider>
                     <BSCContextProvider>
@@ -61,6 +53,6 @@ export default function CustomApp({ Component, pageProps }) {
                     </BSCContextProvider>
                 </TokenContextProvider>
             </QueryClientProvider>
-        </ThemeProvider>
+        </ThemeContextProvider>
     )
 }

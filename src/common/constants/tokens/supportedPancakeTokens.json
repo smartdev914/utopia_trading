@@ -9,6 +9,14 @@
   "timestamp": "2021-05-06T00:00:00Z",
   "tokens": [
     {
+      "address": "0x391748379827340DB2daFFC845AC6Cffad431B50",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://utopia.cc/assets/image/utopia/utopiaUDarkbg.svg",
+      "name": "TOPIA Token",
+      "symbol": "TOPIA"
+    },
+    {
       "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
       "chainId": 56,
       "decimals": 18,

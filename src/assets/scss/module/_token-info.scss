@@ -1,0 +1,149 @@
+.token-info {
+  font-family: var(--fontDosis);
+  padding: 20px;
+
+  &.market-history h3 {
+    padding: 0
+  }
+
+  .selected-token {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+
+    .token-icon {
+      width: 50px;
+      height: 50px;
+      border: 3px solid #F9DF00;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+  }
+
+  .flex-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .info-row {
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    width: 33%;
+
+    &.socials {
+      width: 310px;
+    }
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+
+      .selected-token {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .info-stat {
+        margin: 5px 0;
+        width: 50%;
+      }
+    }
+  }
+
+  .info-stat {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    text-align: center;
+  }
+
+  .info-header {
+    font-size: 16px;
+    color: #00DEE6
+  }
+
+  .info-value {
+    color: #fff;
+    font-size: 24px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .info-row .info-stat {
+      width: 25%;
+    }
+
+    .info-header {
+      font-size: 14px;
+    }
+
+    .info-value {
+      font-size: 18px;
+    }
+  }
+
+
+  .selected-token-info div {
+    font-size: 24px;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .token-info-button {
+    border: 1px solid #A3FFFF;
+    border-radius: 5px;
+    color: #A3FFFF;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    padding: 5px 5px;
+    height: 30px;
+    margin-left: 10px;
+    cursor: pointer;
+
+    &.share {
+      position: relative;
+    }
+
+    .social-drop-down {
+      display: none;
+      position: absolute;
+      top: 35px;
+      right: -15px;
+      z-index: 10;
+      padding: 1rem 1rem 0 1rem;
+      border-radius: 8px;
+
+      &.show {
+        display: block;
+      }
+
+      a {
+        display: flex;
+        margin-bottom: 5px;
+
+        > * {
+          margin-right: 5px;
+        }
+      }
+    }
+
+    &.wide {
+      > * {
+        margin: 5px !important;
+      }
+    }
+
+    &.wallet {
+      border: none;
+      padding: none;
+      margin-left: 5px;
+    }
+  }
+}

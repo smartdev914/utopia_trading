@@ -5,7 +5,9 @@ import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import { getContract, getContractNoABI } from 'common/utils/getContract'
 import { ethers } from 'ethers'
+import BigNumber from 'bignumber.js'
 import bscPresaleABI from '../ABI/bscPresaleABI'
+import wbnbABI from '../ABI/tokenABI/WBNB'
 
 const Contract = require('web3-eth-contract')
 // set provider for all later instances to use
@@ -32,6 +34,7 @@ const BSCContextProvider = ({ children }) => {
     const [loadPresaleContract, setLoadPresaleContract] = useState(false)
     const [hasDappBrowser, setHasDappBrowser] = useState(false)
     const [currentBnbBalance, setBNBBalance] = useState('')
+    const [currentWbnbBalance, setWBNBBalance] = useState('')
     const [pancakeSwapRouterV2, setPancakeSwapRouterV2] = useState(null)
     const UtopiaPresaleBSCAddress = '0x609692D1A4c45FB8f535269f4339b7880296baa0'
     const utopiaLimitOrderAddress = '0xFaDB11EC99Bf90A6f32d079f33a37E0Ba1cf4bdE'
@@ -67,14 +70,21 @@ const BSCContextProvider = ({ children }) => {
                             TokenQuantity: balance.toString(),
                         }
                     }
-                } catch (e) {}
+                } catch (e) {
+                    const tokenContract = getContractNoABI(token.TokenAddress, signer)
+                    if (tokenContract.balanceOf) {
+                        const balance = await tokenContract.balanceOf(currentAccountAddress)
+                        return {
+                            ...token,
+                            TokenQuantity: balance.toString(),
+                        }
+                    }
+                }
                 return token
             })
             Promise.all(newTokenBalances).then((values) => {
                 setTokenBalances(values)
             })
-            const bnbBalance = await window.web3.eth.getBalance(currentAccountAddress)
-            setBNBBalance(bnbBalance)
             setRefreshTokens(false)
         }
     }, [currentAccountAddress, refreshTokens, signer])
@@ -144,6 +154,26 @@ const BSCContextProvider = ({ children }) => {
         setCurrentAccountAddress('')
     }, [currentProvider])
 
+    const loadAccountInfo = async (account, provider) => {
+        const newBnbBalance = await window.web3.eth.getBalance(account[0])
+        setCurrentAccountAddress(account[0])
+        setBNBBalance(newBnbBalance)
+        const ethersProvider = new ethers.providers.Web3Provider(provider)
+        const currSigner = ethersProvider.getSigner()
+        const wbnbContract = new ethers.Contract(WBNBAddress, wbnbABI, currSigner)
+        const wbnbBalance = await wbnbContract.balanceOf(account[0])
+        setWBNBBalance(wbnbBalance.toString())
+        setSigner(currSigner)
+        // if (loadPresaleContract) {
+        //     loadUTPPresaleContract()
+        // }
+        if (loadDexContract) {
+            await loadPancakeSwapFactoryContract()
+            await loadPancakeSwapRouterV2Contract(currSigner)
+        }
+        await loadWBNBContract(currSigner)
+    }
+
     const triggerDappModal = async () => {
         const providerOptions = {
             walletconnect: {
@@ -181,21 +211,12 @@ const BSCContextProvider = ({ children }) => {
         setCurrentAccountAddress(accounts[0])
         setBNBBalance(bnbBalance)
         setHasDappBrowser(true)
+
         provider.on('accountsChanged', async (newAccounts) => {
-            const newBnbBalance = await window.web3.eth.getBalance(newAccounts[0])
-            setCurrentAccountAddress(newAccounts[0])
-            setBNBBalance(newBnbBalance)
+            await loadAccountInfo(newAccounts, provider)
         })
-        const ethersProvider = new ethers.providers.Web3Provider(provider)
-        setSigner(ethersProvider.getSigner())
-        if (loadPresaleContract) {
-            loadUTPPresaleContract()
-        }
-        if (loadDexContract) {
-            await loadPancakeSwapFactoryContract()
-            await loadPancakeSwapRouterV2Contract(ethersProvider.getSigner())
-        }
-        await loadWBNBContract(ethersProvider.getSigner())
+
+        loadAccountInfo(accounts, provider)
     }
 
     const registerToken = async (token) => {
@@ -230,6 +251,7 @@ const BSCContextProvider = ({ children }) => {
                 hasDappBrowser,
                 triggerDappModal,
                 currentBnbBalance,
+                currentWbnbBalance,
                 pancakeSwapRouterV2,
                 registerToken,
                 pancakeSwapFactoryAddress,

@@ -37,7 +37,7 @@
     }
 }
 
-.navbar .navbar-nav .reusecore__button {
+.connect-wallet.reusecore__button {
   background-color: #1FC08E;
   box-shadow: 0px 0px 15px 0px #26de81ad;
   font-family: var(--fontDosis);
@@ -47,6 +47,11 @@
   width: 160px;
   font-size: 14px;
   min-height: unset;
+  flex-shrink: 0;
+}
+
+.theme-toggle-container {
+    margin-right: 10px;
 }
 
 header nav a {
@@ -56,11 +61,16 @@ header nav a:hover {
     color: #007bff;
 }
 header .navbar-brand {
+    display: flex;
+    align-items: center;
     padding: 0;
 }
 header .navbar-brand img {
     height: 24px;
     padding-left: 1rem;
+}
+header .navbar-expand-lg {
+  justify-content: space-between;
 }
 .navbar-expand-lg .navbar-nav .nav-link {
     padding-right: 1rem;
@@ -84,6 +94,11 @@ header .nav-link.btn {
     right: 12px;
     top: 8px;
 }
+
+nav.navbar {
+    padding: 0.5rem 1rem;
+}
+
 
 .circle-pulse:after {
     background-color: #0089ff;

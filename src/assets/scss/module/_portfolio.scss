@@ -1,0 +1,70 @@
+.market-portfolio {
+  font-family: var(--fontDosis);
+  padding: 1rem;
+  border-radius: 8px;
+
+  h3 {
+    padding: 0 0 0 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  p {
+    padding: 5px 5px;
+  }
+
+  .input-group>.form-control:focus, .input-group>.form-select:focus {
+    z-index: unset;
+  }
+
+  .portfolio-chart {
+    position: relative;
+    margin-bottom: 1.5rem;
+
+    @media screen and (max-width: 768px) {
+      h4 {
+        font-size: 16px !important;
+      }
+      .green {
+        font-size: 24px !important;
+      }
+    }
+
+    h4 {
+      font-size: 1.2vw;
+      color: #C1C5D2;
+      margin-bottom: 0;
+    }
+
+    .green {
+       font-size: 2vw;
+    }
+
+    .current-balance {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+  }
+
+  .portfolio-table {
+    border-radius: 12px;
+    max-height: 400px;
+    overflow-y: scroll;
+    margin-bottom: 1rem;
+    padding: 0rem 0.5rem;
+
+    thead tr th {
+      padding: 1rem;
+    }
+
+    td {
+      padding: 0.5rem 1rem;
+    }
+  }
+  .show-unsupported {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}

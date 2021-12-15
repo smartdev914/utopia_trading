@@ -8,9 +8,6 @@ img {
     max-width: 100%;
     height: auto;
 }
-.mtb15 {
-    margin: 15px 0;
-}
 .mt15 {
     margin-top: 15px;
 }
@@ -48,13 +45,16 @@ img {
 .dropdown-toggle::after {
     vertical-align: 1px;
 }
-thead tr th {
-    padding: 8px 5px !important;
+
+th {
+    color: #A3FFFF;
+    position: sticky;
+    top: 0;
 }
 thead th {
     color: #758696;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 500;
     border: 0 !important;
 }
 tbody tr {
@@ -82,14 +82,10 @@ td {
     color: #4a4a4a;
 }
 .green {
-    color: #26de81;
+    color: #219653;
 }
 .red {
     color: #ff231f;
-}
-.table td,
-.table th {
-    border-top: 1px solid #f0f3fa;
 }
 .light-bb,
 .input-group-text {
@@ -255,4 +251,46 @@ input[type="number"] {
 .underlined-button {
     color: white;
     text-decoration: underline;
+}
+
+// slider overrides
+div.rc-slider-rail {
+    height: 2px;
+}
+span.rc-slider-dot {
+    bottom: -1;
+}
+div.rc-slider-track {
+    height: 2px;
+}
+div.rc-slider-handle {
+    width: 12px;
+    height: 12px;
+    margin-top: -5px;
+}
+
+.toggle-wrapper {
+    margin: 0;
+    width: 171px;
+    font-size: 12px;
+    font-family: var(--fontDosis);
+    height: 23px;
+
+    .toggleContainer {
+        border: none;
+        border-radius: 12px;
+        
+        .toggle {
+            border-radius: 12px;
+        }
+    }
+
+    .toggleContainer .toggleOption.selected {
+        border-radius: 12px;
+    }
+
+    .toggleContainer .toggleOption {
+        height: 23px;
+        line-height: 23px;
+    }
 }

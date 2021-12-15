@@ -1,45 +1,67 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
-import MarketNews from 'components/MarketNews'
 import { ToastContainer } from 'react-toastify'
 // import { Modal } from 'react-bootstrap'
 import ErrorBoundary from 'components/ErrorBoundry'
+import ThemeContext from 'context/ThemeContext'
+import BSCContext from 'context/BSCContext'
+import { Fade } from 'react-bootstrap'
+import MarketInfo from '../../components/MarketInfo'
 import Layout from '../../components/Layout'
 import MarketHistory from '../../components/MarketHistory'
-import MarketPairs from '../../components/MarketPairs'
 import MarketExchange from '../../components/MarketExchange'
-import { ThemeConsumer } from '../../context/ThemeContext'
-import DynamicTVS from '../../components/DynamicTVS'
+import Portfolio from '../../components/Portfolio'
 import DynamicTVSDark from '../../components/DynamicTVSDark'
 
 const Home = () => {
     // const [showModal, setShowModal] = useState(false)
+    const bscContext = useContext(BSCContext)
+    const themeContext = useContext(ThemeContext)
+    const [showPortfolio, toggleShowPortfolio] = useState(false)
+    const [autoOpened, setAutoOpened] = useState(false)
 
     useEffect(() => {
-        document.querySelector('body').classList.add('dark')
+        document.querySelector('body').classList.remove('darkMode')
+        document.querySelector('body').classList.remove('lightMode')
+        document.querySelector('body').classList.remove('utopiaMode')
+        document.querySelector('body').classList.add(themeContext.currentTheme)
         // const shownModal = sessionStorage.getItem('shownWarningModal')
         // setShowModal(!shownModal)
-        sessionStorage.setItem('shownWarningModal', true)
-    }, [])
+        // sessionStorage.setItem('shownWarningModal', true)
+    }, [themeContext.currentTheme])
+
+    useEffect(() => {
+        if (bscContext.currentAccountAddress && !autoOpened) {
+            setAutoOpened(true)
+            toggleShowPortfolio(true)
+        }
+    }, [bscContext.currentAccountAddress])
 
     return (
         <Layout>
             <ErrorBoundary>
                 <div className="container-fluid mtb15 no-fluid">
+                    <MarketInfo toggleShowPortfolio={toggleShowPortfolio} showPortfolio={showPortfolio} />
                     <div className="row sm-gutters">
                         <div className="col-md-3">
                             <MarketExchange />
+                            <div className="utopia-logo-u-main">
+                                <Image src={`/assets/image/utopia/utopiaU-${themeContext.currentTheme}.svg`} width={400} height={400} alt="utopia Logo" priority />
+                            </div>
                         </div>
-                        <div className="col-sm-12 col-md-6">
-                            <ThemeConsumer>{({ data }) => (data.theme === 'light' ? <DynamicTVS /> : <DynamicTVSDark />)}</ThemeConsumer>
+                        <div className={`col-sm-12 col-md-${showPortfolio ? 6 : 9}`}>
+                            <DynamicTVSDark />
                             <MarketHistory />
                         </div>
-                        <div className="col-sm-12 col-md-3">
-                            <MarketPairs />
-                            <MarketNews />
-                            <div className="utopia-logo-u-main">
-                                <Image src="/assets/gifs/utopiaLogoGif1.gif" width={600} height={600} alt="utopia Logo" priority />
+                        {showPortfolio && (
+                            <div className="col-md-3">
+                                <Fade right delay={200}>
+                                    <Portfolio />
+                                </Fade>
                             </div>
+                        )}
+                        <div className="utopia-logo-u-main mobile">
+                            <Image src={`/assets/image/utopia/utopiaU-${themeContext.currentTheme}.svg`} width={400} height={400} alt="utopia Logo" priority />
                         </div>
                     </div>
                 </div>
@@ -64,7 +86,5 @@ const Home = () => {
         </Layout>
     )
 }
-
-Home.getInitialProps = ({ query }) => ({ query })
 
 export default Home

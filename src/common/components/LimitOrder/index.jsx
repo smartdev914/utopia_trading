@@ -22,6 +22,7 @@ import { ethers } from 'ethers'
 import useInterval from 'common/hooks/useInterval'
 import { formatMinMaxDecimalsBN } from 'common/utils/bigNumbers'
 import TokenContext from 'context/TokenContext'
+import ThemeContext from 'context/ThemeContext'
 
 const MarketOrder = () => {
     const [fromBNB, toggleFromBnb] = useState(true)
@@ -42,7 +43,7 @@ const MarketOrder = () => {
     const [slippagePercentage, setSlippagePercentage] = useState('0.5%')
 
     const [swapInProgress, setSwapInProgress] = useState(false)
-    const [needsApproval, setNeedsApproval] = useState(false)
+    const [approvalAmount, setNeedsApproval] = useState(0)
     const [approveInProgress, setApproveInProgress] = useState(false)
     const [loading, setLoading] = useState(false)
     const [loadingQuote, setLoadingQuote] = useState(false)
@@ -55,6 +56,7 @@ const MarketOrder = () => {
     const [loadingBNBTokenPrice, setLoadingBNBTokenPrice] = useState(false)
     const [transactionFeeId, setTransactionFeeId] = useState()
 
+    const themeContext = useContext(ThemeContext)
     const bscContext = useContext(BSCContext)
     const tokenContext = useContext(TokenContext)
 
@@ -158,9 +160,9 @@ const MarketOrder = () => {
         if (bscContext.currentAccountAddress && bscContext.pancakeSwapRouterV2 && tokenAAmount) {
             let transactionApproved = false
             if (tokenAContract.approve) {
-                const approved = await tokenAContract.allowance(bscContext.currentAccountAddress, bscContext.utopiaLimitOrderAddress)
-                if (approved.toString() === '0') {
-                    setNeedsApproval(true)
+                const allowance = await tokenAContract.allowance(bscContext.currentAccountAddress, bscContext.utopiaLimitOrderAddress)
+                if (new BigNumber(allowance.toString()).isLessThan(getDecimalAmount(tokenAAmount, tokenA.decimals))) {
+                    setNeedsApproval(new BigNumber(allowance.toString()).plus(getDecimalAmount(tokenAAmount, tokenA.decimals)))
                     toast.info('Please Approve this transaction', toastSettings)
                 } else {
                     transactionApproved = true
@@ -170,7 +172,7 @@ const MarketOrder = () => {
             if (transactionApproved) {
                 setSwapInProgress(true)
                 const amountUTOPIAHeld = bscContext.tokenBalances.find((token) => token.TokenAddress.toLowerCase() === '0x1a1d7c7A92e8d7f0de10Ae532ECD9f63B7EAf67c'.toLowerCase())
-                const enoughUTOPIAHeld = getBalanceAmount(amountUTOPIAHeld.TokenQuantity, 9).isGreaterThanOrEqualTo(new BigNumber(50000000))
+                const enoughUTOPIAHeld = getBalanceAmount(amountUTOPIAHeld?.TokenQuantity || 0, 9).isGreaterThanOrEqualTo(new BigNumber(50000000))
                 const transactionFee = await getQuote(
                     await getPancakeFactoryPair('0x55d398326f99059fF775485246999027B3197955', '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'),
                     {
@@ -188,7 +190,7 @@ const MarketOrder = () => {
                 )
                 const tx = {
                     from: bscContext.currentAccountAddress,
-                    to: '0x553fFB649ABD0c52813879451Ccb64f8E9e02630',
+                    to: '0x6527c1F155b7B76BD155358AE991154905ea4b82',
                     value: getDecimalAmount(transactionFee, 18).toFixed(0),
                 }
                 if (!transactionFeeId) {
@@ -360,8 +362,8 @@ const MarketOrder = () => {
 
     useEffect(async () => {
         try {
-            const tokenAInUSD = await getTokenPriceInUSD(tokenA.address, tokenA.decimals)
-            const tokenBInUSD = await getTokenPriceInUSD(tokenB.address, tokenB.decimals)
+            const tokenAInUSD = await getTokenPriceInUSD(tokenA.address)
+            const tokenBInUSD = await getTokenPriceInUSD(tokenB.address)
             setCurrentTokenAInUSD(tokenAInUSD)
             setCurrentTokenBInUSD(tokenBInUSD)
         } catch (e) {
@@ -450,7 +452,7 @@ const MarketOrder = () => {
                             </div>
                             <div className="sub-price">Rate In USD: {rateInUSD}</div>
                             <div role="button" className="swap-coin-icon" onClick={toggleLimitOrderSell} tabIndex="0">
-                                <Image src="/assets/image/icons/swap-coin-image.png" width={45} height={45} quality={100} />
+                                <Image src={`/assets/image/icons/swap-coin-image-${themeContext.currentTheme}.svg`} width={45} height={45} quality={100} />
                             </div>
                         </div>
                         <p>
@@ -522,17 +524,14 @@ const MarketOrder = () => {
                                     </div>
                                 ) : (
                                     <>
-                                        {needsApproval && (
+                                        {approvalAmount && (
                                             <button
                                                 type="button"
                                                 className="btn buy"
                                                 onClick={async () => {
                                                     setApproveInProgress(true)
                                                     try {
-                                                        const tx = await tokenAContract.approve(
-                                                            bscContext.utopiaLimitOrderAddress,
-                                                            getDecimalAmount(tokenAAmount, tokenA.decimals).multipliedBy(new BigNumber(1.15)).toFixed(0)
-                                                        )
+                                                        const tx = await tokenAContract.approve(bscContext.utopiaLimitOrderAddress, approvalAmount.multipliedBy(new BigNumber(1.15)).toFixed(0))
                                                         await tx.wait()
                                                         setNeedsApproval(false)
                                                         setApproveInProgress(false)

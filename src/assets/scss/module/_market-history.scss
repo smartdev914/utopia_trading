@@ -1,6 +1,10 @@
 .market-history {
   padding: 1rem;
   font-family: var(--fontDosis);
+
+  .bnb-price {
+    font-size: 12px;
+  }
 }
 .market-history .nav {
     background: #f5f9fc;
@@ -28,16 +32,8 @@
     overflow-y: auto;
 }
 
-.market-history {
-    border: 1px solid #e0e3eb;
-    border-radius: 8px;
-}
-
-.market-history th {
-    color: #A3FFFF !important;
-    position: sticky;
-    top: 0;
-    background-color: #1D0E6B !important;
+.market-history td {
+    font-size: 14px;
 }
 
 .market-history a {

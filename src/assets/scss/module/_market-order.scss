@@ -1,7 +1,20 @@
 .utopia-logo-u-main {
   margin-top: 10px;
   max-width: 330px;
+  padding: 50px;
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+  
+  &.mobile {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+
+    &.mobile {
+      display: block;
+    }
+  }
 }

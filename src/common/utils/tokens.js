@@ -1,6 +1,7 @@
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import pancakeFactoryABI from 'ABI/pancakeFactoryABI'
+import { formatISO, subDays } from 'date-fns'
 import { getContract, getContractNoABI } from './getContract'
 import { getBalanceAmount } from './numbers'
 
@@ -34,23 +35,26 @@ export const calculateSlippage = async (tokenContract) => {
     return totalSlippage < 100 ? totalSlippage : null
 }
 
-export const getTokenPriceInUSD = async (tokenAddress, decimals) => {
+export const getTokenPriceInUSD = async (tokenAddress) => {
     try {
-        const usdToBnb = await axios.get(`https://price-retriever-dot-utopia-315014.uw.r.appspot.com/retrievePrice/0x55d398326f99059fF775485246999027B3197955`, {
-            timeout: 4000,
-        })
-
-        if (tokenAddress.toLowerCase() === '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'.toLowerCase()) {
-            return new BigNumber(1).dividedBy(new BigNumber(usdToBnb.data)).toFixed(10)
-        }
-
-        const pricingResponse = await axios.get(`https://price-retriever-dot-utopia-315014.uw.r.appspot.com/retrievePrice/${tokenAddress}`, { timeout: 4000 })
-        const BNpriceInUSD = new BigNumber(pricingResponse.data)
-        const BNUSDInBNB = new BigNumber(usdToBnb.data)
-        if (decimals === 9) {
-            return BNpriceInUSD.dividedBy(BNUSDInBNB).toFixed(10)
-        }
-        return BNpriceInUSD.dividedBy(BNUSDInBNB).toFixed(10)
+        const today = new Date()
+        const formattedDate = formatISO(subDays(today, 1))
+        const bitQueryResponse = await axios.post(
+            `https://graphql.bitquery.io`,
+            {
+                query: `{ ethereum(network: bsc) { dexTrades( date: {since: "${formattedDate}"} any: [{baseCurrency: {is: "${tokenAddress}"}, quoteCurrency: {is: "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"}}, {baseCurrency: {is: "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"}, quoteCurrency: {is: "0xe9e7cea3dedca5984780bafc599bd69add087d56"}}] options: {desc: ["block.height"], limitBy: {each: "baseCurrency.symbol", limit: 1}} ) { baseCurrency { symbol } block { height } transaction { index } quoteCurrency { symbol } quote: quotePrice } } }`,
+            },
+            {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'X-API-KEY': 'BQYmsfh6zyChKKHtKogwvrjXLw8AJkdP',
+                },
+            }
+        )
+        const tokenToBNBPrice = new BigNumber(bitQueryResponse?.data?.data?.ethereum?.dexTrades?.[1]?.quote)
+        const BNBtoUSDPrice = new BigNumber(bitQueryResponse?.data?.data?.ethereum?.dexTrades?.[0]?.quote)
+        const tokenInUSD = tokenToBNBPrice.multipliedBy(BNBtoUSDPrice).toFixed(10)
+        return tokenAddress.toLowerCase() === '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c' ? BNBtoUSDPrice : tokenInUSD
     } catch (err) {
         return 0
     }
