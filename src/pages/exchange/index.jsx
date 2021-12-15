@@ -52,9 +52,6 @@ const Home = () => {
                         <div className={`col-sm-12 col-md-${showPortfolio ? 6 : 9}`}>
                             <DynamicTVSDark />
                             <MarketHistory />
-                            <div className="utopia-logo-u-main mobile">
-                                <Image src={`/assets/image/utopia/utopiaU-${themeContext.currentTheme}.svg`} width={400} height={400} alt="utopia Logo" priority />
-                            </div>
                         </div>
                         {showPortfolio && (
                             <div className="col-md-3">
@@ -63,6 +60,9 @@ const Home = () => {
                                 </Fade>
                             </div>
                         )}
+                        <div className="utopia-logo-u-main mobile">
+                            <Image src={`/assets/image/utopia/utopiaU-${themeContext.currentTheme}.svg`} width={400} height={400} alt="utopia Logo" priority />
+                        </div>
                     </div>
                 </div>
                 <ToastContainer />
