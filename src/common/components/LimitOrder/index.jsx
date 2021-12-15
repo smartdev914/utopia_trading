@@ -43,7 +43,7 @@ const MarketOrder = () => {
     const [slippagePercentage, setSlippagePercentage] = useState('0.5%')
 
     const [swapInProgress, setSwapInProgress] = useState(false)
-    const [needsApproval, setNeedsApproval] = useState(false)
+    const [approvalAmount, setNeedsApproval] = useState(0)
     const [approveInProgress, setApproveInProgress] = useState(false)
     const [loading, setLoading] = useState(false)
     const [loadingQuote, setLoadingQuote] = useState(false)
@@ -160,9 +160,9 @@ const MarketOrder = () => {
         if (bscContext.currentAccountAddress && bscContext.pancakeSwapRouterV2 && tokenAAmount) {
             let transactionApproved = false
             if (tokenAContract.approve) {
-                const approved = await tokenAContract.allowance(bscContext.currentAccountAddress, bscContext.utopiaLimitOrderAddress)
-                if (approved.toString() === '0') {
-                    setNeedsApproval(true)
+                const allowance = await tokenAContract.allowance(bscContext.currentAccountAddress, bscContext.utopiaLimitOrderAddress)
+                if (new BigNumber(allowance.toString()).isLessThan(getDecimalAmount(tokenAAmount, tokenA.decimals))) {
+                    setNeedsApproval(new BigNumber(allowance.toString()).plus(getDecimalAmount(tokenAAmount, tokenA.decimals)))
                     toast.info('Please Approve this transaction', toastSettings)
                 } else {
                     transactionApproved = true
@@ -524,17 +524,14 @@ const MarketOrder = () => {
                                     </div>
                                 ) : (
                                     <>
-                                        {needsApproval && (
+                                        {approvalAmount && (
                                             <button
                                                 type="button"
                                                 className="btn buy"
                                                 onClick={async () => {
                                                     setApproveInProgress(true)
                                                     try {
-                                                        const tx = await tokenAContract.approve(
-                                                            bscContext.utopiaLimitOrderAddress,
-                                                            getDecimalAmount(tokenAAmount, tokenA.decimals).multipliedBy(new BigNumber(1.15)).toFixed(0)
-                                                        )
+                                                        const tx = await tokenAContract.approve(bscContext.utopiaLimitOrderAddress, approvalAmount.multipliedBy(new BigNumber(1.15)).toFixed(0))
                                                         await tx.wait()
                                                         setNeedsApproval(false)
                                                         setApproveInProgress(false)

@@ -33,6 +33,11 @@ export default function MarketTrade() {
                 token_address: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
                 amount: parseFloat(getBalanceAmount(bscContext.currentBnbBalance).toFixed()),
             })
+            walletBalancesList.push({
+                token_address: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
+                amount: parseFloat(getBalanceAmount(bscContext.currentWbnbBalance).toFixed()),
+                is_wrapped: true,
+            })
         }
         try {
             const walletBalancesResponse = await axios.post('https://go-wallet-reader-dot-utopia-315014.uw.r.appspot.com/getWallet', {
