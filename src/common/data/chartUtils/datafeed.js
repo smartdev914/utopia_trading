@@ -25,10 +25,10 @@ const configurationData = {
 
 const supportedChartTokens = [
     {
-        description: 'CAKE/TOPIA',
+        description: 'TOPIA/BNB',
         exchange: 'Utopia',
-        full_name: 'CAKE/TOPIA',
-        symbol: 'CAKE/TOPIA',
+        full_name: 'TOPIA/BNB',
+        symbol: 'TOPIA/BNB',
         type: 'crypto',
         address: '0x391748379827340DB2daFFC845AC6Cffad431B50',
         pricescale: 10 ** 9,
@@ -95,15 +95,6 @@ const supportedChartTokens = [
         type: 'crypto',
         address: '0x47bead2563dcbf3bf2c9407fea4dc236faba485a',
         pricescale: 10 ** 9,
-    },
-    {
-        description: 'UTOPIA/BNB',
-        exchange: 'Utopia',
-        full_name: 'UTOPIA/BNB',
-        symbol: 'UTOPIA/BNB',
-        type: 'crypto',
-        address: '0x1a1d7c7A92e8d7f0de10Ae532ECD9f63B7EAf67c',
-        pricescale: 10 ** 12,
     },
     {
         description: 'ETH/BNB',

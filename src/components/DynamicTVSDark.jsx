@@ -11,7 +11,6 @@ export default function DynamicTVS() {
     const currentTokenSymbol = tokenContext.currentlySelectedToken.symbol
     const supportedToken = supportedPancakeTokens.tokens.find((token) => token.symbol === currentTokenSymbol)
     const currentTokenAddress = tokenContext.currentlySelectedToken.address
-
     useEffect(() => {
         const chartProperties = window.localStorage.getItem('tradingview.chartproperties')
         const savedResolution = window.localStorage.getItem('tradingview.chart.lastUsedTimeBasedResolution')
