@@ -17,7 +17,7 @@ const Home = () => {
     // const [showModal, setShowModal] = useState(false)
     const bscContext = useContext(BSCContext)
     const themeContext = useContext(ThemeContext)
-    const [showPortfolio, toggleShowPortfolio] = useState(false)
+    const [showPortfolio, toggleShowPortfolio] = useState(true)
     const [autoOpened, setAutoOpened] = useState(false)
 
     useEffect(() => {
