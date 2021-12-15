@@ -77,12 +77,8 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
             },
         })
         const circulatingSupply = tokenCirculatingSupply?.data?.result
-
         if (circulatingSupply && tokenContext.currentTokenPriceInUSD) {
-            const currentMarketCap = getBalanceAmount(circulatingSupply, tokenContext.currentlySelectedToken.decimals).multipliedBy(
-                new BigNumber(parseFloat(tokenContext.currentTokenPriceInUSD?.replace(',', '')))
-            )
-
+            const currentMarketCap = getBalanceAmount(circulatingSupply, tokenContext.currentlySelectedToken.decimals).multipliedBy(new BigNumber(parseFloat(tokenContext.currentTokenPriceInUSD)))
             setMarketCap(currentMarketCap ? `$${parseToMorB(currentMarketCap.toFixed())}` : `$-`)
         }
     }, [tokenContext.currentlySelectedToken, tokenContext.currentlySelectedToken.address, tokenContext.currentTokenPriceInUSD])

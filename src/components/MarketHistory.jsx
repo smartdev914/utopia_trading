@@ -12,7 +12,6 @@ export default function MarketHistory() {
 
     const debouncedCallback = useDebouncedCallback(async (address, lastIntervalId) => {
         clearInterval(lastIntervalId)
-
         const getRecentTrades = async () => {
             const recentTransactionsResponse = await axios.post(
                 `https://graphql.bitquery.io`,
@@ -30,7 +29,9 @@ export default function MarketHistory() {
             const filteredTransactions = recentTransactionsResponse.data.data.ethereum.dexTrades.filter((v, i, a) => a.findIndex((t) => t.transaction.hash === v.transaction.hash) === i)
             setRecentTransactions(filteredTransactions)
         }
-        await getRecentTrades()
+        if (address) {
+            await getRecentTrades()
+        }
         const intervalId = setInterval(async () => {
             await getRecentTrades()
         }, 300000)

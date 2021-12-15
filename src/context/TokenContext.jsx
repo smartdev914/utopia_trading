@@ -6,15 +6,15 @@ const TokenContext = React.createContext()
 
 const TokenContextProvider = ({ children }) => {
     const supportedTokenList = supportedPancakeTokens.tokens
-    const [currentlySelectedToken, setCurrentlySelectedToken] = useState(supportedPancakeTokens.tokens[11])
-    const [currentTokenPriceInUSD, setCurrentTokenPriceInUSD] = useState()
+    const [currentlySelectedToken, setCurrentlySelectedToken] = useState(supportedPancakeTokens.tokens[0])
+    const [currentTokenPriceInUSD, setCurrentTokenPriceInUSD] = useState('0')
 
     useEffect(async () => {
         const currentPriceOfToken = await getTokenPriceInUSD(currentlySelectedToken.address)
         if (currentPriceOfToken) {
             setCurrentTokenPriceInUSD(currentPriceOfToken)
         } else {
-            setCurrentTokenPriceInUSD(`-`)
+            setCurrentTokenPriceInUSD(0)
         }
     }, [currentlySelectedToken.address])
 
