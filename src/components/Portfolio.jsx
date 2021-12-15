@@ -23,7 +23,7 @@ export default function MarketTrade() {
     const [loadingBalances, setLoadingBalances] = useState(false)
 
     useEffect(async () => {
-        setLoadingBalances(true)
+        setLoadingBalances(bscContext.currentAccountAddress)
         const walletBalancesList = bscContext.tokenBalances.map((token) => ({
             token_address: token.TokenAddress,
             amount: parseFloat(getBalanceAmount(token.TokenQuantity, token.TokenDivisor).toFixed()),
