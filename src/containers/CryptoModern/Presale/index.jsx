@@ -209,7 +209,7 @@ const Presale = () => {
                                 </div>
                             </div>
 
-                            <Text content="REGISTER THE UTOPIA TOKEN ADDRESS TO YOUR WALLET" />
+                            <Text content="REGISTER THE TOPIA TOKEN ADDRESS TO YOUR WALLET" />
                             <Text content="For Metamask users:" />
                             <Button
                                 title="Click here to register token"

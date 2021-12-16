@@ -133,7 +133,7 @@ const StopLoss = () => {
             if (transactionApproved) {
                 setSwapInProgress(true)
                 const amountUTOPIAHeld = bscContext.tokenBalances.find((token) => token.TokenAddress.toLowerCase() === '0x1a1d7c7A92e8d7f0de10Ae532ECD9f63B7EAf67c'.toLowerCase())
-                const enoughUTOPIAHeld = getBalanceAmount(amountUTOPIAHeld?.TokenQuantity || 0, 9).isGreaterThanOrEqualTo(new BigNumber(50000000))
+                const enoughUTOPIAHeld = getBalanceAmount(amountUTOPIAHeld?.TokenQuantity || 0, 9).isGreaterThanOrEqualTo(new BigNumber(50000))
                 const transactionFee = await getQuote(
                     await getPancakeFactoryPair('0x55d398326f99059fF775485246999027B3197955', '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'),
                     {
@@ -517,7 +517,7 @@ const StopLoss = () => {
                         )}
                     </form>
                     <div className="disclaimers-section">
-                        <p>Limit Orders cost $0.50 worth of BNB to place (+$0.50 gas fee) or FREE if you are holding at least 50,000,000 UTOPIA (just pay $0.50 to cover gas).</p>
+                        <p>Limit Orders cost $0.50 worth of BNB to place (+$0.50 gas fee) or FREE if you are holding at least 5,000,000 TOPIA (just pay $0.50 to cover gas).</p>
 
                         <p>Orders are good for 28 days and after that will be cancelled.</p>
                     </div>
