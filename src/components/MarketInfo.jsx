@@ -12,6 +12,7 @@ import { toastSettings } from 'common/constants'
 import { SocialIcon } from 'react-social-icons'
 import { formatISO, subDays } from 'date-fns'
 import useInterval from 'common/hooks/useInterval'
+import { Spinner } from 'react-bootstrap'
 
 const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
     const tokenContext = useContext(TokenContext)
@@ -118,24 +119,30 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
                         <div className="green">{`$${!Number.isNaN(tokenContext.currentTokenPriceInUSD) ? tokenContext.currentTokenPriceInUSD : '-'}`}</div>
                     </div>
                 </div>
-                <div className="info-row">
-                    <div className="info-stat">
-                        <div className="info-header">24hr Volume</div>
-                        <div className="info-value">{twentyFourHourVolume}</div>
+                {loading ? (
+                    <div className="spinner-container">
+                        <Spinner size="" animation="border" variant="primary" />
                     </div>
-                    <div className="info-stat">
-                        <div className="info-header">Transactions</div>
-                        <div className="info-value">{twentyFourHourTransactions}</div>
+                ) : (
+                    <div className="info-row">
+                        <div className="info-stat">
+                            <div className="info-header">24hr Volume</div>
+                            <div className="info-value">{twentyFourHourVolume}</div>
+                        </div>
+                        <div className="info-stat">
+                            <div className="info-header">Transactions</div>
+                            <div className="info-value">{twentyFourHourTransactions}</div>
+                        </div>
+                        <div className="info-stat">
+                            <div className="info-header">Liquidity</div>
+                            <div className="info-value">{liquidity}</div>
+                        </div>
+                        <div className="info-stat">
+                            <div className="info-header">Marketcap</div>
+                            <div className="info-value">{marketCap}</div>
+                        </div>
                     </div>
-                    <div className="info-stat">
-                        <div className="info-header">Liquidity</div>
-                        <div className="info-value">{liquidity}</div>
-                    </div>
-                    <div className="info-stat">
-                        <div className="info-header">Marketcap</div>
-                        <div className="info-value">{marketCap}</div>
-                    </div>
-                </div>
+                )}
                 <div className="info-row socials">
                     <div role="button" tabIndex="0" onClick={addToWallet} className="token-info-button wide">
                         <Image src="/assets/image/icons/metamask.svg" width={20} height={20} />{' '}
