@@ -21,7 +21,7 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
     const [twentyFourHourVolume, setTwentyFourHourVolume] = useState('$-')
     const [twentyFourHourTransactions, setTwentyFourHourTransactions] = useState('-')
     const [showSocials, toggleShowSocials] = useState(false)
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
     const [liquidity, setLiquidity] = useState('$-')
     const [marketCap, setMarketCap] = useState('$-')
     const [tokenInfo, setTokenInfo] = useState({})
