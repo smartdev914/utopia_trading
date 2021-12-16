@@ -120,7 +120,7 @@ const SearchAutocomplete = ({ onSelect, searchOptions }) => {
                             </div>
                         </div>
                     ) : (
-                        <>
+                        <div className="search-dropdown-options">
                             {loadingTokenInfo ? (
                                 <div className="spinner-container">
                                     <Spinner size="" animation="border" variant="primary" />
@@ -130,7 +130,7 @@ const SearchAutocomplete = ({ onSelect, searchOptions }) => {
                                     <div>No Results Found</div>
                                 </div>
                             )}
-                        </>
+                        </div>
                     )}
                 </>
             )}

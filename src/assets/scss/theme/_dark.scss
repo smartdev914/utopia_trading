@@ -313,7 +313,10 @@ th {
 
 .darkMode .nav-item.input-group .form-control {
     background-color: #070B15;
-    color: #2a2e39;
+
+    &::placeholder {
+        color: #2a2e39;
+    }
 }
 
 .darkMode .header-img-icon .profile-nav .nav-item .nav-link:hover {

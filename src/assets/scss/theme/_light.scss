@@ -308,7 +308,11 @@ letter-spacing: 5px;
 
 .lightMode .nav-item.input-group .form-control {
   background-color: #FFF;
-  color: #A4A7B6;
+
+  color: #5F53DE;
+  &::placeholder{
+    color: #A4A7B6;
+  }
 }
 
 .lightMode {

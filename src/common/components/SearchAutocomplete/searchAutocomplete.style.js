@@ -42,6 +42,11 @@ const ComponentWrapper = styled.div`
         border-bottom-left-radius: 20px;
         border-bottomr-right-radius: 20px;
         z-index: 1;
+
+        .token-option {
+            padding: 10px;
+            font-size: 20px;
+        }
     }
 
     .unlisted-token {
