@@ -160,7 +160,7 @@ const MarketOrder = () => {
         if (bscContext.currentAccountAddress && bscContext.pancakeSwapRouterV2 && tokenAAmount) {
             let transactionApproved = false
             if (tokenAContract.approve) {
-                const allowance = await tokenAContract.allowance(bscContext.currentAccountAddress, bscContext.utopiaLimitOrderAddress)
+                const allowance = await tokenAContract.allowance(bscContext.currentAccountAddress, fromBNB ? bscContext.utopiaLimitOrderAddress : bscContext.utopiaStopLossAddress)
                 if (new BigNumber(allowance.toString()).isLessThan(getDecimalAmount(tokenAAmount, tokenA.decimals))) {
                     setNeedsApproval(new BigNumber(allowance.toString()).plus(getDecimalAmount(tokenAAmount, tokenA.decimals)))
                     toast.info('Please Approve this transaction', toastSettings)
@@ -399,7 +399,7 @@ const MarketOrder = () => {
                                 value={tokenAAmount}
                                 onInput={(e) => {
                                     setTokenAAmount(e.target.value)
-                                    setTokenBAmount(tokenBRate ? formatMinMaxDecimalsBN(new BigNumber(e.target.value).multipliedBy(new BigNumber(tokenBRate)), 3) : '')
+                                    setTokenBAmount(tokenBRate ? formatMinMaxDecimalsBN(new BigNumber(e.target.value).multipliedBy(new BigNumber(tokenBRate)), 10) : '')
                                 }}
                             />
                             <div className="token-A-balance">
@@ -436,7 +436,7 @@ const MarketOrder = () => {
                                 }}
                                 onInput={(e) => {
                                     setTokenBRate(e.target.value)
-                                    setTokenBAmount(tokenAAmount ? formatMinMaxDecimalsBN(new BigNumber(tokenAAmount).multipliedBy(new BigNumber(e.target.value)), 3) : '')
+                                    setTokenBAmount(tokenAAmount ? formatMinMaxDecimalsBN(new BigNumber(tokenAAmount).multipliedBy(new BigNumber(e.target.value)), 10) : '')
                                 }}
                             />
 
@@ -445,7 +445,7 @@ const MarketOrder = () => {
                                     title="CURRENT"
                                     onClick={() => {
                                         setTokenBRate(currentTokenAToTokenBPrice)
-                                        setTokenBAmount(tokenAAmount ? formatMinMaxDecimalsBN(new BigNumber(tokenAAmount).multipliedBy(new BigNumber(currentTokenAToTokenBPrice)), 3) : '')
+                                        setTokenBAmount(tokenAAmount ? formatMinMaxDecimalsBN(new BigNumber(tokenAAmount).multipliedBy(new BigNumber(currentTokenAToTokenBPrice)), 10) : '')
                                     }}
                                 />
                                 {`${tokenB.displaySymbol || tokenB.symbol} per ${tokenA.displaySymbol || tokenA.symbol}`}
@@ -531,12 +531,16 @@ const MarketOrder = () => {
                                                 onClick={async () => {
                                                     setApproveInProgress(true)
                                                     try {
-                                                        const tx = await tokenAContract.approve(bscContext.utopiaLimitOrderAddress, approvalAmount.multipliedBy(new BigNumber(1.15)).toFixed(0))
+                                                        const tx = await tokenAContract.approve(
+                                                            fromBNB ? bscContext.utopiaLimitOrderAddress : bscContext.utopiaStopLossAddress,
+                                                            approvalAmount.multipliedBy(new BigNumber(1.15)).toFixed(0)
+                                                        )
                                                         await tx.wait()
                                                         setNeedsApproval(false)
                                                         setApproveInProgress(false)
                                                         toast.success('Swap Approved', toastSettings)
                                                     } catch (e) {
+                                                        console.log(e)
                                                         toast.error('Error Approving', toastSettings)
                                                         setApproveInProgress(false)
                                                     }

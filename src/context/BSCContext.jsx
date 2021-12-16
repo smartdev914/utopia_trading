@@ -58,7 +58,7 @@ const BSCContextProvider = ({ children }) => {
                     apikey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
                 },
             })
-            const currentTokenBalances = currentTokenBalancesResponse.data.result
+            const currentTokenBalances = currentTokenBalancesResponse?.data?.result || []
             const newTokenBalances = await currentTokenBalances.map(async (token) => {
                 try {
                     const abi = await import(`../ABI/tokenABI/${token.TokenSymbol.toUpperCase()}.js`)

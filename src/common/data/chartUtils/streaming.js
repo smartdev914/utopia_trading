@@ -102,7 +102,7 @@ export function unsubscribeFromStream(subscriberUID) {
 
             if (subscriptionItem.handlers.length === 0) {
                 // unsubscribe from the channel, if it was the last handler
-                console.log('[unsubscribeBars]: Unsubscribe from streaming. Channel:', channelString.toLowerCase())
+                console.log('[unsubscribeBars]: Unsubscribe from streaming. Channel:', channelString)
                 socket.emit('SubRemove', { subs: [channelString] })
                 channelToSubscription.delete(channelString.toLowerCase())
                 break
