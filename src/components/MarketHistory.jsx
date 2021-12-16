@@ -61,12 +61,13 @@ export default function MarketHistory() {
                                     {recentTransactions?.map((transaction) => {
                                         if (transaction.buyCurrency.symbol.toLowerCase() === tokenContext.currentlySelectedToken.symbol.toLowerCase()) {
                                             const timeSince = formatDistanceToNowStrict(parseJSON(transaction.block.timestamp.time)).replace('minutes', 'm')
+                                            console.log()
                                             return (
                                                 <tr onClick={() => window.open(`https://bscscan.com/tx/${transaction.transaction.hash}`, '_blank')} key={transaction.transaction.hash}>
                                                     <td className="red">
                                                         <div>{timeSince === 0 ? 'Just Now' : `${timeSince} ago`}</div>
                                                         <div>
-                                                            {intlFormat(new Date(`${transaction.block.timestamp.time} GMT`), {
+                                                            {intlFormat(new Date(new Date(`${transaction.block.timestamp.time}Z`.replace(' ', 'T'))), {
                                                                 month: 'numeric',
                                                                 day: 'numeric',
                                                                 year: 'numeric',
@@ -107,7 +108,7 @@ export default function MarketHistory() {
                                                 <td className="green">
                                                     <div>{timeSince === 0 ? 'Just Now' : `${timeSince} ago`}</div>
                                                     <div>
-                                                        {intlFormat(new Date(`${transaction.block.timestamp.time} GMT`), {
+                                                        {intlFormat(new Date(`${transaction.block.timestamp.time}Z`.replace(' ', 'T')), {
                                                             month: 'numeric',
                                                             day: 'numeric',
                                                             year: 'numeric',
