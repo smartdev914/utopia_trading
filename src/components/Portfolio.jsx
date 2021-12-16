@@ -6,6 +6,7 @@ import { getBalanceAmount } from 'common/utils/numbers'
 import { Spinner } from 'react-bootstrap'
 import axios from 'axios'
 import ThemeContext from 'context/ThemeContext'
+import { ethers } from 'ethers'
 import { round } from '../common/utils/numbers'
 
 const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false })
@@ -25,7 +26,7 @@ export default function MarketTrade() {
     useEffect(async () => {
         setLoadingBalances(bscContext.currentAccountAddress)
         const walletBalancesList = bscContext.tokenBalances.map((token) => ({
-            token_address: token.TokenAddress,
+            token_address: ethers.utils.getAddress(token.TokenAddress),
             amount: parseFloat(getBalanceAmount(token.TokenQuantity, token.TokenDivisor).toFixed()),
         }))
         if (bscContext.currentBnbBalance) {
@@ -41,7 +42,7 @@ export default function MarketTrade() {
         }
         try {
             const walletBalancesResponse = await axios.post('https://go-wallet-reader-dot-utopia-315014.uw.r.appspot.com/getWallet', {
-                wallet_address: bscContext.currentAccountAddress,
+                wallet_address: ethers.utils.getAddress(bscContext.currentAccountAddress),
                 tokens: walletBalancesList,
             })
 
