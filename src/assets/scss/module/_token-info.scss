@@ -6,6 +6,14 @@
     padding: 0
   }
 
+  .spinner-container {
+    width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5em 0;
+  }
+
   .selected-token {
     color: #fff;
     display: flex;

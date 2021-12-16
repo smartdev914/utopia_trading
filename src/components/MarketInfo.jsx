@@ -11,6 +11,8 @@ import { toast } from 'react-toastify'
 import { toastSettings } from 'common/constants'
 import { SocialIcon } from 'react-social-icons'
 import { formatISO, subDays } from 'date-fns'
+import useInterval from 'common/hooks/useInterval'
+import { Spinner } from 'react-bootstrap'
 
 const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
     const tokenContext = useContext(TokenContext)
@@ -19,6 +21,7 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
     const [twentyFourHourVolume, setTwentyFourHourVolume] = useState('$-')
     const [twentyFourHourTransactions, setTwentyFourHourTransactions] = useState('-')
     const [showSocials, toggleShowSocials] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [liquidity, setLiquidity] = useState('$-')
     const [marketCap, setMarketCap] = useState('$-')
     const [tokenInfo, setTokenInfo] = useState({})
@@ -37,7 +40,7 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
         toast.success('Address copied to clipboard!', toastSettings)
     }
 
-    useEffect(async () => {
+    useInterval(async () => {
         const today = new Date()
         const formattedDate = formatISO(subDays(today, 2))
         const twentyFourHourInfo = await axios.post(
@@ -56,18 +59,13 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
         const summedTransactions = twentyFourHourInfo?.data?.data?.ethereum?.dexTrades?.[0]?.count
         setTwentyFourHourVolume(`$${parseToMorB(summedValue)}`)
         setTwentyFourHourTransactions(summedTransactions?.toLocaleString())
-    }, [tokenContext.currentlySelectedToken])
 
-    useEffect(async () => {
         const currentlLiquidity = await axios.get(
             `https://liquidity-calculator-dot-utopia-315014.uw.r.appspot.com/liquidity/${tokenContext.currentlySelectedToken.address}/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c`
         )
         if (currentlLiquidity.data) {
             setLiquidity(`$${parseToMorB(currentlLiquidity.data)}`)
         }
-    }, [tokenContext.currentlySelectedToken])
-
-    useEffect(async () => {
         const tokenCirculatingSupply = await axios.get('https://api.bscscan.com/api', {
             params: {
                 module: 'stats',
@@ -81,9 +79,11 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
             const currentMarketCap = getBalanceAmount(circulatingSupply, tokenContext.currentlySelectedToken.decimals).multipliedBy(new BigNumber(parseFloat(tokenContext.currentTokenPriceInUSD)))
             setMarketCap(currentMarketCap ? `$${parseToMorB(currentMarketCap.toFixed())}` : `$-`)
         }
-    }, [tokenContext.currentlySelectedToken, tokenContext.currentlySelectedToken.address, tokenContext.currentTokenPriceInUSD])
+        setLoading(false)
+    }, 5000)
 
     useEffect(async () => {
+        setLoading(true)
         const tokenInfoRes = await axios.get('https://api.bscscan.com/api', {
             params: {
                 module: 'token',
@@ -107,31 +107,40 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
     return (
         <div className="token-info">
             <div className="flex-row">
-                <div className="selected-token">
-                    <img className="token-icon" src={tokenContext.currentlySelectedToken.logoURI} alt="token logo" />
-                    <div className="selected-token-info">
-                        <div>{`${tokenContext.currentlySelectedToken.name} (${tokenContext.currentlySelectedToken.symbol} / BNB)`}</div>
-                        <div className="green">{`$${!Number.isNaN(tokenContext.currentTokenPriceInUSD) ? tokenContext.currentTokenPriceInUSD : '-'}`}</div>
+                {loading ? (
+                    <div className="spinner-container">
+                        <Spinner size="" animation="border" variant="primary" />
                     </div>
-                </div>
-                <div className="info-row">
-                    <div className="info-stat">
-                        <div className="info-header">24hr Volume</div>
-                        <div className="info-value">{twentyFourHourVolume}</div>
-                    </div>
-                    <div className="info-stat">
-                        <div className="info-header">Transactions</div>
-                        <div className="info-value">{twentyFourHourTransactions}</div>
-                    </div>
-                    <div className="info-stat">
-                        <div className="info-header">Liquidity</div>
-                        <div className="info-value">{liquidity}</div>
-                    </div>
-                    <div className="info-stat">
-                        <div className="info-header">Marketcap</div>
-                        <div className="info-value">{marketCap}</div>
-                    </div>
-                </div>
+                ) : (
+                    <>
+                        <div className="selected-token">
+                            <img className="token-icon" src={tokenContext.currentlySelectedToken.logoURI} alt="token logo" />
+                            <div className="selected-token-info">
+                                <div>{`${tokenContext.currentlySelectedToken.name} (${tokenContext.currentlySelectedToken.symbol} / BNB)`}</div>
+                                <div className="green">{`$${!Number.isNaN(tokenContext.currentTokenPriceInUSD) ? tokenContext.currentTokenPriceInUSD : '-'}`}</div>
+                            </div>
+                        </div>
+
+                        <div className="info-row">
+                            <div className="info-stat">
+                                <div className="info-header">24hr Volume</div>
+                                <div className="info-value">{twentyFourHourVolume}</div>
+                            </div>
+                            <div className="info-stat">
+                                <div className="info-header">Transactions</div>
+                                <div className="info-value">{twentyFourHourTransactions}</div>
+                            </div>
+                            <div className="info-stat">
+                                <div className="info-header">Liquidity</div>
+                                <div className="info-value">{liquidity}</div>
+                            </div>
+                            <div className="info-stat">
+                                <div className="info-header">Marketcap</div>
+                                <div className="info-value">{marketCap}</div>
+                            </div>
+                        </div>
+                    </>
+                )}
                 <div className="info-row socials">
                     <div role="button" tabIndex="0" onClick={addToWallet} className="token-info-button wide">
                         <Image src="/assets/image/icons/metamask.svg" width={20} height={20} />{' '}
