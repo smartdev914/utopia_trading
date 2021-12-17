@@ -711,12 +711,6 @@ const StopLoss = () => {
                             )}
                         </div>
                     </div>
-                    {!supportedPancakeTokens.tokens.find((token) => token.symbol === tokenA.symbol) && (
-                        <div className="token-not-supported">
-                            <div>{tokenA.symbol} Stop Loss Not Currently Supported!</div>
-                            <span>Tokens added by popular demand</span>
-                        </div>
-                    )}
                 </div>
             </div>
             <TokenModal

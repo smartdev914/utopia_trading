@@ -767,12 +767,6 @@ const MarketOrder = () => {
                             )}
                         </div>
                     </div>
-                    {!supportedPancakeTokens.tokens.find((token) => token.symbol === (fromBNB ? tokenB.symbol : tokenA.symbol)) && (
-                        <div className="token-not-supported">
-                            <div>{fromBNB ? tokenB.symbol : tokenA.symbol} Limit Orders Not Currently Supported!</div>
-                            <span>Tokens added by popular demand</span>
-                        </div>
-                    )}
                 </div>
             </div>
             <TokenModal
