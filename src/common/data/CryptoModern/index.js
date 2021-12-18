@@ -106,7 +106,7 @@ export const TokenomicsTaxHightlights = [
     {
         id: 4,
         title: '1%',
-        description: 'Autostaking for holders',
+        description: 'Airdrops/Giveaways/Shill Competitions',
     },
 ]
 
