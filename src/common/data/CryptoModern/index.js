@@ -195,7 +195,7 @@ export const Q3RoadMap = [
     {
         id: 'Q3-2',
         checked: false,
-        label: 'Establish LLC',
+        label: 'Establish Business Entity',
     },
     {
         id: 'Q3-3',
