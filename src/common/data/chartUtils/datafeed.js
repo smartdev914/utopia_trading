@@ -250,7 +250,7 @@ export default {
             volume_precision: 2,
             data_status: 'streaming',
             address: symbolItem.address,
-            has_empty_bars: false,
+            has_empty_bars: true,
         }
 
         onSymbolResolvedCallback(symbolInfo)
