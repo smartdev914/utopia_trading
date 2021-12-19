@@ -1,10 +1,8 @@
 /* eslint-disable no-restricted-syntax */
-import axios from 'axios'
 import BigNumber from 'bignumber.js'
-import { formatISO, millisecondsToSeconds, subMinutes } from 'date-fns'
+import { millisecondsToSeconds } from 'date-fns'
 import { io } from 'socket.io-client'
 import { parseFullSymbol } from './helpers'
-import getLastBlock from './queries/getLastBlock'
 
 const socket = io('https://price-retriever-dot-utopia-315014.uw.r.appspot.com', { origins: '*', transports: ['websocket'] })
 // const socket = io('localhost:3001'); // For local testing
@@ -23,22 +21,7 @@ socket.on('error', (error) => {
     console.log('[socket] Error:', error)
 })
 
-export async function subscribeOnStream(symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback, lastDailyBar) {
-    const response = await axios.post(
-        'https://graphql.bitquery.io',
-        {
-            query: `subscription { ethereum(network: bsc) { dexTrades(time: {since: "${formatISO(
-                subMinutes(new Date(), 2)
-            )}"}, options: {limit: 1}) { block { timestamp{ time(format: "%FT%TZ") } height } } } }`,
-        },
-        {
-            headers: {
-                'Content-Type': 'application/json',
-                'X-API-KEY': 'BQYmsfh6zyChKKHtKogwvrjXLw8AJkdP',
-            },
-        }
-    )
-    console.log(response)
+export function subscribeOnStream(symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback, lastDailyBar) {
     const parsedSymbol = parseFullSymbol(symbolInfo.full_name)
     const channelString = `0~${parsedSymbol.exchange}~${symbolInfo.address}~0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c`
     const handler = {

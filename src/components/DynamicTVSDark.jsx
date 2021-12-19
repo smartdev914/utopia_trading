@@ -38,7 +38,7 @@ export default function DynamicTVS() {
             }
             window.tvWidget = new window.TradingView.widget({
                 symbol: supportedToken ? `${currentTokenSymbol}/BNB` : currentTokenAddress, // default symbol
-                interval: savedResolution || '30', // default interval
+                interval: savedResolution || '15', // default interval
                 container: 'tv_chart_container',
                 datafeed: Datafeed,
                 // disabled_features: ['use_localstorage_for_settings'],
