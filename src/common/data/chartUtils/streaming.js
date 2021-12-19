@@ -1,7 +1,10 @@
 /* eslint-disable no-restricted-syntax */
+import axios from 'axios'
 import BigNumber from 'bignumber.js'
-import { millisecondsToSeconds } from 'date-fns'
+import { formatISO, millisecondsToSeconds } from 'date-fns'
 import { io } from 'socket.io-client'
+import SockJS from 'sockjs-client'
+import Stomp from 'stompjs'
 import { parseFullSymbol } from './helpers'
 
 const socket = io('https://price-retriever-dot-utopia-315014.uw.r.appspot.com', { origins: '*', transports: ['websocket'] })
@@ -9,19 +12,45 @@ const socket = io('https://price-retriever-dot-utopia-315014.uw.r.appspot.com', 
 
 const channelToSubscription = new Map()
 
-socket.on('connect', () => {
-    console.log('[socket] Connected')
-})
+// socket.on('connect', () => {
+//     console.log('[socket] Connected')
+// })
 
-socket.on('disconnect', (reason) => {
-    console.log('[socket] Disconnected:', reason)
-})
+// socket.on('disconnect', (reason) => {
+//     console.log('[socket] Disconnected:', reason)
+// })
 
-socket.on('error', (error) => {
-    console.log('[socket] Error:', error)
-})
+// socket.on('error', (error) => {
+//     console.log('[socket] Error:', error)
+// })
 
-export function subscribeOnStream(symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback, lastDailyBar) {
+export async function subscribeOnStream(symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback, lastDailyBar) {
+    const today = new Date()
+    const formattedDate = formatISO(today)
+    const sub = await axios.post(
+        'https://graphql.bitquery.io',
+        {
+            query: `subscription { ethereum(network: bsc) { dexTrades( options: {desc: "timeInterval.minute", limit: 1} date: {since: "${formattedDate}"} exchangeAddress: {is: "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73"} baseCurrency: {is: "${
+                symbolInfo.address
+            }"}, quoteCurrency: {is: "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"}, tradeAmountUsd: {gt: 10} ) { timeInterval { minute(count: ${1}, format: "%Y-%m-%dT%H:%M:%SZ") } volume: quoteAmount high: quotePrice(calculate: maximum) low: quotePrice(calculate: minimum) open: minimum(of: block, get: quote_price) close: maximum(of: block, get: quote_price) } } }`,
+        },
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-API-KEY': 'BQYmsfh6zyChKKHtKogwvrjXLw8AJkdP',
+            },
+        }
+    )
+    console.log('>>>>', sub)
+
+    const sockSocket = new SockJS('https://streaming.bitquery.io/stomp')
+    const stompClient = Stomp.over(sockSocket)
+    stompClient.connect({}, (frame) => {
+        stompClient.subscribe(sub.data.extensions.subId, (update) => {
+            console.log(update)
+        })
+    })
+
     const parsedSymbol = parseFullSymbol(symbolInfo.full_name)
     const channelString = `0~${parsedSymbol.exchange}~${symbolInfo.address}~0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c`
     const handler = {

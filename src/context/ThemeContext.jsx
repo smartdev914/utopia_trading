@@ -1,9 +1,18 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const ThemeContext = React.createContext()
 
 const ThemeContextProvider = ({ children }) => {
     const [currentTheme, toggleCurrentTheme] = useState('darkMode')
+
+    useEffect(() => {
+        const theme = localStorage.getItem('theme')
+        toggleCurrentTheme(theme)
+    }, [])
+
+    useEffect(() => {
+        localStorage.setItem('theme', currentTheme)
+    }, [currentTheme])
 
     return (
         <ThemeContext.Provider
