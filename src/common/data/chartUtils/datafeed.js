@@ -7,7 +7,7 @@ import { subscribeOnStream, unsubscribeFromStream } from './streaming'
 const lastBarsCache = new Map()
 
 const configurationData = {
-    supported_resolutions: ['1M', '1W', '1D', '1', '5', '10', '15', '30', '1H', '240', '12H'],
+    supported_resolutions: ['1M', '1W', '1D', '1', '5', '10', '30', '1H', '240', '12H'],
     exchanges: [
         {
             value: 'Utopia',
