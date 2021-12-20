@@ -7,7 +7,7 @@ const ThemeContextProvider = ({ children }) => {
 
     useEffect(() => {
         const theme = localStorage.getItem('theme')
-        toggleCurrentTheme(theme)
+        toggleCurrentTheme(theme || 'darkMode')
     }, [])
 
     useEffect(() => {
