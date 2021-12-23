@@ -47,7 +47,7 @@ export const MissionData = [
 export const TokenomicsData = [
     {
         id: 1,
-        title: 'Tokens',
+        title: 'Locked Tokens',
         value: '229,000,000',
         description: 'Locked for CEX Liquidity',
     },
