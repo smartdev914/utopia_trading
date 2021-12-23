@@ -78,7 +78,7 @@ export const TokenomicsData = [
         id: 6,
         title: 'V1 Holders',
         value: '177,700,000',
-        description: '',
+        description: 'No one left behind!',
     },
 
     {
