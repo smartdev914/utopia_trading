@@ -47,7 +47,9 @@ export const MissionData = [
 export const TokenomicsData = [
     {
         id: 1,
-        title: 'Locked Tokens',
+        title: '
+        
+        Tokens',
         value: '229,000,000',
         description: 'Locked for CEX Liquidity',
     },
@@ -76,7 +78,7 @@ export const TokenomicsData = [
         id: 6,
         title: 'V1 Holders',
         value: '177,700,000',
-        description: 'Locked and will be slowly released',
+        description: '',
     },
 
     {
@@ -136,8 +138,8 @@ export const Q2RoadMap = [
     },
     {
         id: 'Q2-2',
-        checked: false,
-        label: 'Twitch AMAs',
+        checked: true,
+        label: 'AMAs with Large Investor Groups',
     },
     {
         id: 'Q2-3',
@@ -152,11 +154,11 @@ export const Q2RoadMap = [
     {
         id: 'Q2-5',
         checked: true,
-        label: 'Tech-rate and Certik audit before launch',
+        label: 'Tech Audit and Certik',
     },
     {
         id: 'Q2-6',
-        checked: false,
+        checked: true,
         label: 'Launch marketing',
     },
     {
@@ -210,11 +212,11 @@ export const Q3RoadMap = [
     {
         id: 'Q3-5',
         checked: false,
-        label: 'Charity Partnerships',
+        label: 'Staking on PanCakeSwap',
     },
     {
         id: 'Q3-6',
-        checked: false,
+        checked: true,
         label: 'V2 Exchange - Charting, limit orders, stop losses',
     },
     {
@@ -228,7 +230,7 @@ export const Q4RoadMap = [
     {
         id: 'Q4-1',
         checked: false,
-        label: 'Utopia charity foundation',
+        label: 'Web3 BEP2<>BEP20 Converter',
     },
     {
         id: 'Q4-2',
