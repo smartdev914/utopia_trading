@@ -152,7 +152,7 @@ export const Q2RoadMap = [
     {
         id: 'Q2-5',
         checked: true,
-        label: 'Tech Audit and Certik',
+        label: 'Tech Audit',
     },
     {
         id: 'Q2-6',
@@ -200,7 +200,7 @@ export const Q3RoadMap = [
     {
         id: 'Q3-3',
         checked: false,
-        label: 'Marketing Campaign',
+        label: 'Certik Audit',
     },
     {
         id: 'Q3-4',
