@@ -25,6 +25,22 @@
       "symbol": "BUSD"
     },
     {
+      "address": "0x3D0e93bfCb8FB46331Ea8c98B6ab8C575aB424C3",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/15719.png",
+      "name": "SmashCash Token",
+      "symbol": "SMASH"
+    },
+    {
+      "address": "0xb1ced2e320e3f4c8e3511b1dc59203303493f382",
+      "chainId": 56,
+      "decimals": 9,
+      "logoURI": "https://bscscan.com/token/images/moonlighttoken_32.png",
+      "name": "Moonlight Token",
+      "symbol": "MOONLIGHT"
+    },
+    {
       "address": "0x55b53855eae06c4744841dbfa06fce335db4355b",
       "chainId": 56,
       "decimals": 9,
