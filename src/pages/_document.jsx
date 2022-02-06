@@ -34,6 +34,7 @@ export default class CustomDocument extends Document {
             <Html lang="en">
                 <Head>
                     <script async src="https://www.googletagmanager.com/gtag/js?id=GTM-WJ9MS9B" />
+                    <script src="https://cdn.jsdelivr.net/gh/bitquery/widgets-runtime@v1.0/dataSource.js" defer />
                     <script
                         dangerouslySetInnerHTML={{
                             __html: `window.dataLayer = window.dataLayer || [];

@@ -1,12 +1,4 @@
 {
-  "keywords": [
-    "pancake",
-    "default"
-  ],
-  "logoURI": "https://pancakeswap.finance/logo.png",
-  "name": "PancakeSwap Default List",
-  "tags": {},
-  "timestamp": "2021-05-06T00:00:00Z",
   "tokens": [
     {
       "address": "0x391748379827340DB2daFFC845AC6Cffad431B50",

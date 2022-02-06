@@ -2,6 +2,8 @@
 import BigNumber from 'bignumber.js'
 import { millisecondsToSeconds } from 'date-fns'
 import { io } from 'socket.io-client'
+import * as SockJS from 'sockjs-client'
+import Stomp from 'stompjs'
 import { parseFullSymbol } from './helpers'
 
 const socket = io('https://price-retriever-dot-utopia-315014.uw.r.appspot.com', { origins: '*', transports: ['websocket'] })
@@ -19,6 +21,16 @@ socket.on('disconnect', (reason) => {
 
 socket.on('error', (error) => {
     console.log('[socket] Error:', error)
+})
+
+let stompClient = null
+
+const bitQuerySocket = new SockJS('https://streaming.bitquery.io/stomp')
+stompClient = Stomp.over(bitQuerySocket)
+stompClient.connect({}, (frame) => {
+    stompClient.subscribe('<PLACE subId HERE!!>', (update) => {
+        showUpdate(update.body)
+    })
 })
 
 export function subscribeOnStream(symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback, lastDailyBar) {
