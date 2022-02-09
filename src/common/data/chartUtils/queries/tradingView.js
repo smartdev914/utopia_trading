@@ -22,7 +22,7 @@ export const getTradingViewData = async (baseAddress, quoteAddress, interval) =>
 		   {tradeAmountUsd: { is: 0 }}
 		 ]
 	   ) {
-		 timeInterval {
+		 time: timeInterval {
 		   minute(format:"%FT%TZ", count: $interval)
 		 }
 		 buyCurrency: baseCurrency {
@@ -45,7 +45,7 @@ export const getTradingViewData = async (baseAddress, quoteAddress, interval) =>
    }
  `,
         {
-            from: '2021-10-18T00:00:00',
+            from: '2020-10-18T00:00:00',
             interval,
             baseAddress,
             quoteAddress,
@@ -56,7 +56,6 @@ export const getTradingViewData = async (baseAddress, quoteAddress, interval) =>
     )
     const data = await ds.fetcher()
     const json = await data.json()
-    console.log(json)
     return ds.setupData(json)
 }
 
