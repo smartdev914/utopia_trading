@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-restricted-syntax */
 import axios from 'axios'
-import { formatISO, fromUnixTime } from 'date-fns'
 import { getTradingViewData } from './queries/tradingView'
 import { subscribeOnStream, unsubscribeFromStream } from './streaming'
 import supportedChartTokens from './supportedChartTokens'
@@ -103,7 +102,7 @@ export default {
     },
     getBars: async (symbolInfo, resolution, periodParams, onHistoryCallback, onErrorCallback) => {
         try {
-            const { from, to, firstDataRequest } = periodParams
+            const { from, to, firstDataRequest, countBack } = periodParams
             let resolutionTime = resolution
             switch (resolution) {
                 case '1H':
@@ -126,9 +125,9 @@ export default {
                     break
                 }
             }
-            const bitQueryData = await getTradingViewData(symbolInfo.address, '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', parseInt(resolutionTime, 10))
+            const bitQueryData = await getTradingViewData(symbolInfo.address, '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', parseInt(resolutionTime, 10), countBack)
             try {
-                const bars = bitQueryData.map((el) => ({
+                const bars = bitQueryData.reverse().map((el) => ({
                     time: new Date(el.time.minute).getTime(), // date string in api response
                     low: el.low,
                     high: el.high,
@@ -136,7 +135,6 @@ export default {
                     close: Number(el.close),
                     volume: el.volume,
                 }))
-
                 if (firstDataRequest) {
                     lastBarsCache.set(symbolInfo.full_name, { ...bars[bars.length - 1] })
                 }

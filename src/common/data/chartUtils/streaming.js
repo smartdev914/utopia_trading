@@ -31,13 +31,20 @@ let stompClient = null
 // stompClient.reconnect = 5000
 
 const updateCandle = (trade, candle) => {
-    if (trade.quotePrice > candle.high) candle.high = trade.quotePrice
-    if (trade.quotePrice < candle.low) candle.low = trade.quotePrice
+    const newCandle = {
+        ...candle,
+    }
+    if (trade.quotePrice > candle.high) newCandle.high = trade.quotePrice
+    if (trade.quotePrice < candle.low) newCandle.low = trade.quotePrice
+
+    return newCandle
 }
 export async function subscribeOnStream(symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback, lastDailyBar) {
-    const bitQuerySocket = new SockJS('https://streaming.bitquery.io/stomp')
+    const bitQuerySocket = new SockJS('https://streaming.bitquery.io/stomp', null, {
+        timeout: 5000,
+    })
     stompClient = Stomp.over(bitQuerySocket)
-    stompClient.reconnect = 5000
+    stompClient.reconnect_delay = 3000
     const [subID, lastBlockSubID] = await Promise.all([getSubscriptionId(symbolInfo.address, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'), getLastBlockSubscriptionId()])
     console.log(lastDailyBar)
     let lastTimeInterval = new Date(fromUnixTime(lastDailyBar.time / 1000)).toISOString()
@@ -45,47 +52,57 @@ export async function subscribeOnStream(symbolInfo, resolution, onRealtimeCallba
     console.log({ lastTimeInterval, nextTimeInterval })
     const includeLastCandle = (timestamp) => getUnixTime(parseISO(lastTimeInterval)) >= getUnixTime(parseISO(timestamp)) < getUnixTime(parseISO(nextTimeInterval))
     const includeNextCandle = (timestamp) => getUnixTime(parseISO(timestamp)) >= getUnixTime(parseISO(nextTimeInterval))
+    channelToSubscription.set(subscribeUID, subID)
     const successCB = (frame) => {
-        stompClient.subscribe(subID, (update) => {
-            const data = JSON.parse(update.body).data.ethereum.dexTrades
+        stompClient.subscribe(
+            subID,
+            (update) => {
+                const data = JSON.parse(update.body).data.ethereum.dexTrades
 
-            const lastCandle = lastDailyBar
-            let nextCandle = {
-                time: getUnixTime(parseISO(nextTimeInterval)) * 1000,
-            }
-            for (let i = data.length - 1; i >= 0; i -= 1) {
-                if (includeLastCandle(data[i].block.timestamp.time)) {
-                    updateCandle(data[i], lastCandle)
-                    if (i === 0) {
-                        lastCandle.close = data[i].quotePrice
-                        onRealtimeCallback(lastCandle)
+                let lastCandle = lastDailyBar
+                let nextCandle = {
+                    time: getUnixTime(parseISO(nextTimeInterval)) * 1000,
+                }
+                for (let i = data.length - 1; i >= 0; i -= 1) {
+                    if (includeLastCandle(data[i].block.timestamp.time)) {
+                        console.log('Before: ', lastCandle)
+                        const updatedCandle = updateCandle(data[i], lastCandle)
+                        lastCandle = updatedCandle
+                        console.log('After: ', lastCandle)
+                        if (i === 0) {
+                            lastCandle.close = data[i].quotePrice
+                            onRealtimeCallback(lastCandle)
+                        }
+                    }
+                    if (includeNextCandle(data[i].block.timestamp.time)) {
+                        console.log('nextCandle')
+                        if (i === 0) {
+                            nextCandle.close = data[i].quotePrice
+                            lastTimeInterval = new Date((getUnixTime(parseISO(lastTimeInterval)) + parseInt(resolution, 10) * 60) * 1000).toISOString()
+                            nextTimeInterval = new Date((getUnixTime(parseISO(nextTimeInterval)) + parseInt(resolution, 10) * 60) * 1000).toISOString()
+                            onRealtimeCallback(nextCandle)
+                        }
+                        if (includeLastCandle(data[i + 1] && data[i + 1].block.timestamp.time)) {
+                            nextCandle.open = data[i].quotePrice
+                            nextCandle.high = data[i].quotePrice
+                            nextCandle.low = data[i].quotePrice
+                        }
+                        if ('open' in nextCandle) {
+                            const newCandle = updateCandle(data[i], nextCandle)
+                            nextCandle = newCandle
+                        }
                     }
                 }
-                if (includeNextCandle(data[i].block.timestamp.time)) {
-                    if (i === 0) {
-                        nextCandle.close = data[i].quotePrice
-                        lastTimeInterval = new Date((getUnixTime(parseISO(lastTimeInterval)) + parseInt(resolution, 10) * 60) * 1000).toISOString()
-                        nextTimeInterval = new Date((getUnixTime(parseISO(nextTimeInterval)) + parseInt(resolution, 10) * 60) * 1000).toISOString()
-                        onRealtimeCallback(nextCandle)
-                    }
-                    if (includeLastCandle(data[i + 1] && data[i + 1].block.timestamp.time)) {
-                        nextCandle.open = data[i].quotePrice
-                        nextCandle.high = data[i].quotePrice
-                        nextCandle.low = data[i].quotePrice
-                    }
-                    if ('open' in nextCandle) {
-                        updateCandle(data[i], nextCandle)
-                    }
-                }
-            }
-            onResetCacheNeededCallback()
-            nextCandle = {}
-        })
+                onResetCacheNeededCallback()
+                nextCandle = {}
+            },
+            { id: subID }
+        )
     }
 
     const errorCB = () => {
         stompClient = Stomp.over(bitQuerySocket)
-        stompClient.reconnect = 5000
+        stompClient.reconnect_delay = 3000
         stompClient.connect({}, successCB, errorCB)
     }
 
@@ -137,23 +154,24 @@ export async function subscribeOnStream(symbolInfo, resolution, onRealtimeCallba
 //     subscriptionItem.handlers.forEach((handler) => handler.callback(bar))
 // })
 export function unsubscribeFromStream(subscriberUID) {
-    // find a subscription with id === subscriberUID
+    const subID = channelToSubscription.get(subscriberUID)
 
     for (const channelString of channelToSubscription.keys()) {
-        const subscriptionItem = channelToSubscription.get(channelString.toLowerCase())
-        const handlerIndex = subscriptionItem.handlers.findIndex((handler) => handler.id === subscriberUID)
+        console.log(channelString)
 
-        if (handlerIndex !== -1) {
-            // remove from handlers
-            subscriptionItem.handlers.splice(handlerIndex, 1)
+        // const handlerIndex = subscriptionItem.handlers.findIndex((handler) => handler.id === subscriberUID)
 
-            if (subscriptionItem.handlers.length === 0) {
-                // unsubscribe from the channel, if it was the last handler
-                console.log('[unsubscribeBars]: Unsubscribe from streaming. Channel:', channelString.toLowerCase())
-                // socket.emit('SubRemove', { subs: [channelString] })
-                channelToSubscription.delete(channelString.toLowerCase())
-                break
-            }
-        }
+        // if (handlerIndex !== -1) {
+        //     // remove from handlers
+        //     subscriptionItem.handlers.splice(handlerIndex, 1)
+
+        //     if (subscriptionItem.handlers.length === 0) {
+        //         // unsubscribe from the channel, if it was the last handler
+        //         console.log('[unsubscribeBars]: Unsubscribe from streaming. Channel:', channelString.toLowerCase())
+        //         // socket.emit('SubRemove', { subs: [channelString] })
+        //         channelToSubscription.delete(channelString.toLowerCase())
+        //         break
+        //     }
+        // }
     }
 }

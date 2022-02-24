@@ -5,7 +5,7 @@ import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import { getContract, getContractNoABI } from 'common/utils/getContract'
 import { ethers } from 'ethers'
-import BigNumber from 'bignumber.js'
+import { useDebouncedCallback } from 'common/hooks/useDebouncedCallback'
 import bscPresaleABI from '../ABI/bscPresaleABI'
 import wbnbABI from '../ABI/tokenABI/WBNB'
 
@@ -47,24 +47,24 @@ const BSCContextProvider = ({ children }) => {
     const [currentProvider, setProvider] = useState()
     const [signer, setSigner] = useState()
 
-    useEffect(async () => {
-        if (currentAccountAddress && window.web3) {
+    const debounceGetTokenBalance = useDebouncedCallback(async (address) => {
+        if (address && window.web3) {
             const currentTokenBalancesResponse = await axios.get('https://api.bscscan.com/api', {
                 params: {
                     module: 'account',
                     action: 'addresstokenbalance',
-                    address: currentAccountAddress,
+                    address,
                     tag: 'latest',
                     apikey: 'IEXFMZMTEFKY351A7BG72V18TQE2VS74J1',
                 },
             })
             const currentTokenBalances = currentTokenBalancesResponse?.data?.result || []
-            const newTokenBalances = await currentTokenBalances.map(async (token) => {
+            const newTokenBalances = currentTokenBalances.map(async (token) => {
                 try {
                     const abi = await import(`../ABI/tokenABI/${token.TokenSymbol.toUpperCase()}.js`)
                     const tokenContract = getContract(abi.default, token.TokenAddress, signer)
                     if (tokenContract.balanceOf) {
-                        const balance = await tokenContract.balanceOf(currentAccountAddress)
+                        const balance = await tokenContract.balanceOf(address)
                         return {
                             ...token,
                             TokenQuantity: balance.toString(),
@@ -73,7 +73,7 @@ const BSCContextProvider = ({ children }) => {
                 } catch (e) {
                     const tokenContract = getContractNoABI(token.TokenAddress, signer)
                     if (tokenContract.balanceOf) {
-                        const balance = await tokenContract.balanceOf(currentAccountAddress)
+                        const balance = await tokenContract.balanceOf(address)
                         return {
                             ...token,
                             TokenQuantity: balance.toString(),
@@ -87,6 +87,10 @@ const BSCContextProvider = ({ children }) => {
             })
             setRefreshTokens(false)
         }
+    }, 2000)
+
+    useEffect(async () => {
+        debounceGetTokenBalance(currentAccountAddress)
     }, [currentAccountAddress, refreshTokens, signer])
 
     const loadUTPPresaleContract = useCallback(() => {

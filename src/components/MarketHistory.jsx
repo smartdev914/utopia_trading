@@ -61,7 +61,6 @@ export default function MarketHistory() {
                                     {recentTransactions?.map((transaction) => {
                                         if (transaction.buyCurrency.symbol.toLowerCase() === tokenContext.currentlySelectedToken.symbol.toLowerCase()) {
                                             const timeSince = formatDistanceToNowStrict(parseJSON(transaction.block.timestamp.time)).replace('minutes', 'm')
-                                            console.log()
                                             return (
                                                 <tr onClick={() => window.open(`https://bscscan.com/tx/${transaction.transaction.hash}`, '_blank')} key={transaction.transaction.hash}>
                                                     <td className="red">
