@@ -1,34 +1,14 @@
 /* eslint-disable no-restricted-syntax */
-import BigNumber from 'bignumber.js'
-import { getUnixTime, millisecondsToSeconds, parseISO } from 'date-fns'
+import { getUnixTime, parseISO } from 'date-fns'
 import fromUnixTime from 'date-fns/fromUnixTime'
-import { io } from 'socket.io-client'
 import * as SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
-import { parseFullSymbol } from './helpers'
 import getLastBlockSubscriptionId from './queries/getLastBlock'
 import getSubscriptionId from './queries/subscription'
 
-// const socket = io('https://price-retriever-dot-utopia-315014.uw.r.appspot.com', { origins: '*', transports: ['websocket'] })
-// // const socket = io('localhost:3001'); // For local testing
-
 const channelToSubscription = new Map()
 
-// socket.on('connect', () => {
-//     console.log('[socket] Connected')
-// })
-
-// socket.on('disconnect', (reason) => {
-//     console.log('[socket] Disconnected:', reason)
-// })
-
-// socket.on('error', (error) => {
-//     console.log('[socket] Error:', error)
-// })
 let stompClient = null
-// const bitQuerySocket = new SockJS('https://streaming.bitquery.io/stomp')
-// stompClient = Stomp.over(bitQuerySocket)
-// stompClient.reconnect = 5000
 
 const updateCandle = (trade, candle) => {
     const newCandle = {
@@ -46,10 +26,8 @@ export async function subscribeOnStream(symbolInfo, resolution, onRealtimeCallba
     stompClient = Stomp.over(bitQuerySocket)
     stompClient.reconnect_delay = 3000
     const [subID, lastBlockSubID] = await Promise.all([getSubscriptionId(symbolInfo.address, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'), getLastBlockSubscriptionId()])
-    console.log(lastDailyBar)
     let lastTimeInterval = new Date(fromUnixTime(lastDailyBar.time / 1000)).toISOString()
     let nextTimeInterval = new Date((getUnixTime(parseISO(lastTimeInterval)) + parseInt(resolution, 10) * 60) * 1000).toISOString()
-    console.log({ lastTimeInterval, nextTimeInterval })
     const includeLastCandle = (timestamp) => getUnixTime(parseISO(lastTimeInterval)) >= getUnixTime(parseISO(timestamp)) < getUnixTime(parseISO(nextTimeInterval))
     const includeNextCandle = (timestamp) => getUnixTime(parseISO(timestamp)) >= getUnixTime(parseISO(nextTimeInterval))
     channelToSubscription.set(subscribeUID, subID)
@@ -65,17 +43,14 @@ export async function subscribeOnStream(symbolInfo, resolution, onRealtimeCallba
                 }
                 for (let i = data.length - 1; i >= 0; i -= 1) {
                     if (includeLastCandle(data[i].block.timestamp.time)) {
-                        console.log('Before: ', lastCandle)
                         const updatedCandle = updateCandle(data[i], lastCandle)
                         lastCandle = updatedCandle
-                        console.log('After: ', lastCandle)
                         if (i === 0) {
                             lastCandle.close = data[i].quotePrice
                             onRealtimeCallback(lastCandle)
                         }
                     }
                     if (includeNextCandle(data[i].block.timestamp.time)) {
-                        console.log('nextCandle')
                         if (i === 0) {
                             nextCandle.close = data[i].quotePrice
                             lastTimeInterval = new Date((getUnixTime(parseISO(lastTimeInterval)) + parseInt(resolution, 10) * 60) * 1000).toISOString()
