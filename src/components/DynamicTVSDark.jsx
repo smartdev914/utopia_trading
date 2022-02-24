@@ -1,6 +1,6 @@
 /* eslint-disable new-cap */
 import TokenContext from 'context/TokenContext'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import supportedPancakeTokens from 'common/constants/tokens/supportedPancakeTokens.json'
 import ThemeContext from 'context/ThemeContext'
 import Datafeed from '../common/data/chartUtils/datafeed'
@@ -8,6 +8,7 @@ import Datafeed from '../common/data/chartUtils/datafeed'
 export default function DynamicTVS() {
     const tokenContext = useContext(TokenContext)
     const themeContext = useContext(ThemeContext)
+    const [chartLoaded, setChartLoaded] = useState(false)
     const currentTokenSymbol = tokenContext.currentlySelectedToken.symbol
     const supportedToken = supportedPancakeTokens.tokens.find((token) => token.symbol === currentTokenSymbol)
     const currentTokenAddress = tokenContext.currentlySelectedToken.address
@@ -160,7 +161,17 @@ export default function DynamicTVS() {
             default:
                 break
         }
-    }, [currentTokenSymbol, themeContext.currentTheme])
+        setChartLoaded(true)
+    }, [themeContext.currentTheme])
+
+    useEffect(() => {
+        const savedResolution = window.localStorage.getItem('tradingview.chart.lastUsedTimeBasedResolution')
+        if (chartLoaded) {
+            window.tvWidget.setSymbol(`${currentTokenSymbol}/BNB`, savedResolution || '30', () => {
+                console.log('Chart Loaded')
+            })
+        }
+    }, [currentTokenSymbol])
 
     return (
         <div className="main-chart mb15">

@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-restricted-syntax */
 import axios from 'axios'
-import { formatISO, fromUnixTime } from 'date-fns'
 import { getTradingViewData } from './queries/tradingView'
 import { subscribeOnStream, unsubscribeFromStream } from './streaming'
 import supportedChartTokens from './supportedChartTokens'
@@ -64,7 +63,7 @@ export default {
                         minmov: 1,
                         pricescale: tokenInfo.divisor === '18' ? 10 ** 9 : 10 ** 12,
                         has_intraday: true,
-                        has_no_volume: false,
+                        has_no_volume: true,
                         has_weekly_and_monthly: true,
                         supported_resolutions: configurationData.supported_resolutions,
                         volume_precision: 2,
@@ -90,20 +89,20 @@ export default {
             minmov: 1,
             pricescale: symbolItem.pricescale,
             has_intraday: true,
-            has_no_volume: false,
+            has_no_volume: true,
             has_weekly_and_monthly: true,
             supported_resolutions: configurationData.supported_resolutions,
             volume_precision: 2,
             data_status: 'streaming',
             address: symbolItem.address,
-            has_empty_bars: false,
+            has_empty_bars: true,
         }
 
         onSymbolResolvedCallback(symbolInfo)
     },
     getBars: async (symbolInfo, resolution, periodParams, onHistoryCallback, onErrorCallback) => {
         try {
-            const { from, to, firstDataRequest } = periodParams
+            const { from, to, firstDataRequest, countBack } = periodParams
             let resolutionTime = resolution
             switch (resolution) {
                 case '1H':
@@ -126,17 +125,16 @@ export default {
                     break
                 }
             }
-            const bitQueryData = await getTradingViewData(symbolInfo.address, '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', parseInt(resolutionTime, 10))
+            const bitQueryData = await getTradingViewData(symbolInfo.address, '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', parseInt(resolutionTime, 10), countBack)
             try {
-                const bars = bitQueryData.map((el) => ({
-                    time: new Date(el.timeInterval.minute).getTime(), // date string in api response
+                const bars = bitQueryData.reverse().map((el) => ({
+                    time: new Date(el.time.minute).getTime(), // date string in api response
                     low: el.low,
                     high: el.high,
                     open: Number(el.open),
                     close: Number(el.close),
                     volume: el.volume,
                 }))
-
                 if (firstDataRequest) {
                     lastBarsCache.set(symbolInfo.full_name, { ...bars[bars.length - 1] })
                 }
@@ -241,16 +239,29 @@ export default {
     //     }
     // },
     subscribeBars: (symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback) => {
-        const resolutionMap = new Map([
-            ['5', 300],
-            ['15', 15 * 60],
-            ['240', 4 * 60 * 60],
-            ['1D', 60 * 60 * 24],
-            ['1W', 60 * 60 * 24 * 7],
-            ['1M', 60 * 60 * 24 * 30],
-        ])
-        const newResolution = resolutionMap.get(resolution)
-        subscribeOnStream(symbolInfo, newResolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback, lastBarsCache.get(symbolInfo.full_name))
+        let resolutionTime = resolution
+        switch (resolution) {
+            case '1H':
+                resolutionTime = '60'
+                break
+            case '12H':
+                resolutionTime = '720'
+                break
+            case '1D':
+                resolutionTime = '1440'
+                break
+            case '1W':
+                resolutionTime = '10080'
+                break
+            case '1M':
+                resolutionTime = '43200'
+                break
+            default: {
+                resolutionTime = resolution
+                break
+            }
+        }
+        subscribeOnStream(symbolInfo, resolutionTime, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback, lastBarsCache.get(symbolInfo.full_name))
     },
     unsubscribeBars: (subscriberUID) => {
         unsubscribeFromStream(subscriberUID)

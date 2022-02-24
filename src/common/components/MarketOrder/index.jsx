@@ -103,102 +103,33 @@ const MarketOrder = () => {
                 toSymbol: tokenB.symbol,
             },
         })
-        // Also verify pancakeSwapRouterV2Address
-        if (bscContext.currentAccountAddress && bscContext.pancakeSwapRouterV2 && tokenAAmount) {
-            // TODO: Check tokenA is approved for swap (Maybe put this logic in another function?)
+        try {
+            // Also verify pancakeSwapRouterV2Address
+            if (bscContext.currentAccountAddress && bscContext.pancakeSwapRouterV2 && tokenAAmount) {
+                // TODO: Check tokenA is approved for swap (Maybe put this logic in another function?)
 
-            // TODO: Change 0 to value depending on desired slippage
-            // TODO: Consider changing deadline value to something else in the future (for slower executing times?)
-            if (fromBNB) {
-                // if swapping from BNB to token
-                setSwapInProgress(true)
-
-                await bscContext.pancakeSwapRouterV2.estimateGas
-                    .swapExactETHForTokensSupportingFeeOnTransferTokens(
-                        getDecimalAmount(parseInt(tokenBAmount * parsedSlippagePercentage, 10), tokenB.decimals).toFixed(),
-                        [tokenA.address, tokenB.address],
-                        bscContext.currentAccountAddress,
-                        Math.floor(Date.now() / 1000) + 30,
-                        { value: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed() }
-                    )
-                    .then(async () => {
-                        try {
-                            const tx = await bscContext.pancakeSwapRouterV2.swapExactETHForTokensSupportingFeeOnTransferTokens(
-                                getDecimalAmount(parseInt(tokenBAmount * parsedSlippagePercentage, 10), tokenB.decimals).toFixed(),
-                                [tokenA.address, tokenB.address],
-                                bscContext.currentAccountAddress,
-                                Math.floor(Date.now() / 1000) + 30,
-                                { value: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed() }
-                            )
-                            const receipt = await tx.wait()
-                            setSwapInProgress(false)
-                            toast.success(
-                                <div className="toast-approved-transaction">
-                                    <span>Transaction Approved!</span>{' '}
-                                    <a href={`https://bscscan.com/tx/${receipt.transactionHash}`} target="_blank" rel="noreferrer">
-                                        View
-                                    </a>
-                                </div>,
-                                toastSettings
-                            )
-                            setTimeout(() => {
-                                bscContext.setRefreshTokens(true)
-                            }, 3000)
-                        } catch (err) {
-                            setSwapInProgress(false)
-
-                            if (err.code === 4001) {
-                                toast.error('Transaction Rejected!', toastSettings)
-                            } else {
-                                toast.error('Transaction Failed!', toastSettings)
-                            }
-                        }
-                    })
-                    .catch((error) => {
-                        try {
-                            const parsedError = JSON.parse(error.message.substring(error.message.indexOf('\n') + 1))
-                            toast.error(parsedError.message, toastSettings)
-                            setSwapInProgress(false)
-                        } catch (e) {
-                            toast.error(error?.data?.message || 'Error Occured', toastSettings)
-                            setSwapInProgress(false)
-                        }
-                    })
-            } else {
-                // if swapping to BNB
-                // Check if approval is required
-
-                let transactionApproved = false
-                if (tokenAContract.approve) {
-                    // Maybe render approval button?
-                    // Check if approval is ready
-                    const approved = await tokenAContract.allowance(bscContext.currentAccountAddress, bscContext.pancakeSwapRouterV2Address)
-                    if (approved.toString() === '0') {
-                        setNeedsApproval(true)
-                        toast.info('Please Approve the Swap', toastSettings)
-                    } else {
-                        transactionApproved = true
-                    }
-                }
-
-                if (transactionApproved) {
+                // TODO: Change 0 to value depending on desired slippage
+                // TODO: Consider changing deadline value to something else in the future (for slower executing times?)
+                if (fromBNB) {
+                    // if swapping from BNB to token
                     setSwapInProgress(true)
+
                     await bscContext.pancakeSwapRouterV2.estimateGas
-                        .swapExactTokensForETHSupportingFeeOnTransferTokens(
-                            getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
-                            getDecimalAmount(parseInt(tokenBAmount * parsedSlippagePercentage, 10), tokenB.decimals).toFixed(),
+                        .swapExactETHForTokensSupportingFeeOnTransferTokens(
+                            getDecimalAmount(parseFloat(tokenBAmount * parsedSlippagePercentage), tokenB.decimals).toFixed(),
                             [tokenA.address, tokenB.address],
                             bscContext.currentAccountAddress,
-                            Math.floor(Date.now() / 1000) + 30
+                            Date.now() + 1000 * 60 * 10,
+                            { value: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed() }
                         )
                         .then(async () => {
                             try {
-                                const tx = await bscContext.pancakeSwapRouterV2.swapExactTokensForETHSupportingFeeOnTransferTokens(
-                                    getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
-                                    getDecimalAmount(parseInt(tokenBAmount * parsedSlippagePercentage, 10), tokenB.decimals).toFixed(),
+                                const tx = await bscContext.pancakeSwapRouterV2.swapExactETHForTokensSupportingFeeOnTransferTokens(
+                                    getDecimalAmount(parseFloat(tokenBAmount * parsedSlippagePercentage), tokenB.decimals).toFixed(),
                                     [tokenA.address, tokenB.address],
                                     bscContext.currentAccountAddress,
-                                    Math.floor(Date.now() / 1000) + 30
+                                    Date.now() + 1000 * 60 * 10,
+                                    { value: getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed() }
                                 )
                                 const receipt = await tx.wait()
                                 setSwapInProgress(false)
@@ -215,6 +146,7 @@ const MarketOrder = () => {
                                     bscContext.setRefreshTokens(true)
                                 }, 3000)
                             } catch (err) {
+                                console.log(err)
                                 setSwapInProgress(false)
 
                                 if (err.code === 4001) {
@@ -234,8 +166,81 @@ const MarketOrder = () => {
                                 setSwapInProgress(false)
                             }
                         })
+                } else {
+                    // if swapping to BNB
+                    // Check if approval is required
+
+                    let transactionApproved = false
+                    if (tokenAContract.approve) {
+                        // Maybe render approval button?
+                        // Check if approval is ready
+                        const approved = await tokenAContract.allowance(bscContext.currentAccountAddress, bscContext.pancakeSwapRouterV2Address)
+                        if (approved.toString() === '0') {
+                            setNeedsApproval(true)
+                            toast.info('Please Approve the Swap', toastSettings)
+                        } else {
+                            transactionApproved = true
+                        }
+                    }
+
+                    if (transactionApproved) {
+                        setSwapInProgress(true)
+                        await bscContext.pancakeSwapRouterV2.estimateGas
+                            .swapExactTokensForETHSupportingFeeOnTransferTokens(
+                                getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
+                                getDecimalAmount(parseInt(tokenBAmount * parsedSlippagePercentage, 10), tokenB.decimals).toFixed(),
+                                [tokenA.address, tokenB.address],
+                                bscContext.currentAccountAddress,
+                                Math.floor(Date.now() / 1000) + 30
+                            )
+                            .then(async () => {
+                                try {
+                                    const tx = await bscContext.pancakeSwapRouterV2.swapExactTokensForETHSupportingFeeOnTransferTokens(
+                                        getDecimalAmount(tokenAAmount, tokenA.decimals).toFixed(),
+                                        getDecimalAmount(parseInt(tokenBAmount * parsedSlippagePercentage, 10), tokenB.decimals).toFixed(),
+                                        [tokenA.address, tokenB.address],
+                                        bscContext.currentAccountAddress,
+                                        Math.floor(Date.now() / 1000) + 30
+                                    )
+                                    const receipt = await tx.wait()
+                                    setSwapInProgress(false)
+                                    toast.success(
+                                        <div className="toast-approved-transaction">
+                                            <span>Transaction Approved!</span>{' '}
+                                            <a href={`https://bscscan.com/tx/${receipt.transactionHash}`} target="_blank" rel="noreferrer">
+                                                View
+                                            </a>
+                                        </div>,
+                                        toastSettings
+                                    )
+                                    setTimeout(() => {
+                                        bscContext.setRefreshTokens(true)
+                                    }, 3000)
+                                } catch (err) {
+                                    setSwapInProgress(false)
+
+                                    if (err.code === 4001) {
+                                        toast.error('Transaction Rejected!', toastSettings)
+                                    } else {
+                                        toast.error('Transaction Failed!', toastSettings)
+                                    }
+                                }
+                            })
+                            .catch((error) => {
+                                try {
+                                    const parsedError = JSON.parse(error.message.substring(error.message.indexOf('\n') + 1))
+                                    toast.error(parsedError.message, toastSettings)
+                                    setSwapInProgress(false)
+                                } catch (e) {
+                                    toast.error(error?.data?.message || 'Error Occured', toastSettings)
+                                    setSwapInProgress(false)
+                                }
+                            })
+                    }
                 }
             }
+        } catch (e) {
+            console.log(e)
         }
     }
 
