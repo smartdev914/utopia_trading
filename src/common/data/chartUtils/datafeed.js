@@ -23,7 +23,6 @@ const configurationData = {
         },
     ],
 }
-
 export default {
     onReady: (callback) => {
         setTimeout(() => callback(configurationData))
@@ -127,6 +126,10 @@ export default {
                 }
             }
             try {
+                if (!firstDataRequest) {
+                    onHistoryCallback([], { noData: true })
+                    return
+                }
                 const bitQueryData = await getTradingViewData(symbolInfo.address, '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', parseInt(resolutionTime, 10))
                 if (!bitQueryData.length) {
                     onHistoryCallback([], { noData: true })

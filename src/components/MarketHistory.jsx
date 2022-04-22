@@ -12,20 +12,25 @@ export default function MarketHistory() {
     const buyTrades = useSelector((state) => state.trades.buyTrades)
 
     useEffect(async () => {
-        const recentTransactionsResponse = await axios.post(
-            `https://graphql.bitquery.io`,
-            {
-                query: `{ ethereum(network: bsc) { dexTrades( options: {limit: 100, desc: ["block.timestamp.time"]} baseCurrency: {is: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"} quoteCurrency: {is: "${tokenContext.currentlySelectedToken.address}"} date: {since: "2021-09-28"} ) { block { height timestamp { time(format: "%Y-%m-%d %H:%M:%S") } } tradeIndex protocol buyAmount buyCurrency { address symbol } sellAmount sellCurrency { address symbol } transaction { hash } } } } `,
-            },
-            {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'X-API-KEY': 'BQYmsfh6zyChKKHtKogwvrjXLw8AJkdP',
+        try {
+            const recentTransactionsResponse = await axios.post(
+                `https://graphql.bitquery.io`,
+                {
+                    query: `{ ethereum(network: bsc) { dexTrades( options: {limit: 100, desc: ["block.timestamp.time"]} baseCurrency: {is: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"} quoteCurrency: {is: "${tokenContext.currentlySelectedToken.address}"} date: {since: "2021-12-20"} ) { block { height timestamp { time(format: "%Y-%m-%d %H:%M:%S") } } tradeIndex protocol buyAmount buyCurrency { address symbol } sellAmount sellCurrency { address symbol } transaction { hash } } } } `,
                 },
-            }
-        )
-        const filteredTransactions = recentTransactionsResponse.data.data.ethereum.dexTrades.filter((v, i, a) => a.findIndex((t) => t.transaction.hash === v.transaction.hash) === i)
-        setRecentTransactions(filteredTransactions)
+                {
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'X-API-KEY': 'BQYmsfh6zyChKKHtKogwvrjXLw8AJkdP',
+                    },
+                }
+            )
+            const filteredTransactions = recentTransactionsResponse.data.data.ethereum.dexTrades.filter((v, i, a) => a.findIndex((t) => t.transaction.hash === v.transaction.hash) === i)
+            setRecentTransactions(filteredTransactions)
+        } catch (error) {
+            console.log(error)
+            setRecentTransactions([])
+        }
     }, [tokenContext.currentlySelectedToken.address])
 
     useEffect(() => {

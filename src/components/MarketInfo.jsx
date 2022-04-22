@@ -41,24 +41,30 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
     }
 
     useInterval(async () => {
-        const today = new Date()
-        const formattedDate = formatISO(subDays(today, 2))
-        const twentyFourHourInfo = await axios.post(
-            `https://graphql.bitquery.io`,
-            {
-                query: `{ ethereum(network: bsc) { dexTrades( options: {limit: 1, desc: "timeInterval.day"} date: {since: "${formattedDate}"} baseCurrency: {is: "${tokenContext.currentlySelectedToken.address}"} ) { count tradeAmount(in: USD) timeInterval { day(count: 1) } } } } `,
-            },
-            {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'X-API-KEY': 'BQYmsfh6zyChKKHtKogwvrjXLw8AJkdP',
+        try {
+            const today = new Date()
+            const formattedDate = formatISO(subDays(today, 2))
+            const twentyFourHourInfo = await axios.post(
+                `https://graphql.bitquery.io`,
+                {
+                    query: `{ ethereum(network: bsc) { dexTrades( options: {limit: 1, desc: "timeInterval.day"} date: {since: "${formattedDate}"} baseCurrency: {is: "${tokenContext.currentlySelectedToken.address}"} ) { count tradeAmount(in: USD) timeInterval { day(count: 1) } } } } `,
                 },
-            }
-        )
-        const summedValue = twentyFourHourInfo?.data?.data?.ethereum?.dexTrades?.[0]?.tradeAmount
-        const summedTransactions = twentyFourHourInfo?.data?.data?.ethereum?.dexTrades?.[0]?.count
-        setTwentyFourHourVolume(`$${parseToMorB(summedValue)}`)
-        setTwentyFourHourTransactions(summedTransactions?.toLocaleString())
+                {
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'X-API-KEY': 'BQYmsfh6zyChKKHtKogwvrjXLw8AJkdP',
+                    },
+                }
+            )
+            const summedValue = twentyFourHourInfo?.data?.data?.ethereum?.dexTrades?.[0]?.tradeAmount
+            const summedTransactions = twentyFourHourInfo?.data?.data?.ethereum?.dexTrades?.[0]?.count
+            setTwentyFourHourVolume(`$${parseToMorB(summedValue)}`)
+            setTwentyFourHourTransactions(summedTransactions?.toLocaleString())
+        } catch (error) {
+            console.log(error)
+            setTwentyFourHourVolume(`$-`)
+            setTwentyFourHourTransactions(`-`)
+        }
     }, 5000)
 
     useInterval(async () => {

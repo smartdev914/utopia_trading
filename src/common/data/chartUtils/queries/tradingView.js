@@ -52,8 +52,8 @@ export const getTradingViewData = async (baseAddress, quoteAddress, interval) =>
         return ds.setupData(json)
     } catch (e) {
         console.log(e)
-        throw new Error(e)
     }
+    return []
 }
 
 export default {}
