@@ -97,8 +97,9 @@ export default {
             address: symbolItem.address,
             has_empty_bars: true,
         }
-
-        onSymbolResolvedCallback(symbolInfo)
+        setTimeout(() => {
+            onSymbolResolvedCallback(symbolInfo)
+        }, 0)
     },
     getBars: async (symbolInfo, resolution, periodParams, onHistoryCallback, onErrorCallback) => {
         try {
@@ -125,24 +126,30 @@ export default {
                     break
                 }
             }
-            const bitQueryData = await getTradingViewData(symbolInfo.address, '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', parseInt(resolutionTime, 10), countBack)
             try {
-                const bars = bitQueryData.reverse().map((el) => ({
-                    time: new Date(el.time.minute).getTime(), // date string in api response
-                    low: el.low,
-                    high: el.high,
-                    open: Number(el.open),
-                    close: Number(el.close),
-                    volume: el.volume,
-                }))
+                const bitQueryData = await getTradingViewData(symbolInfo.address, '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', parseInt(resolutionTime, 10))
+                if (!bitQueryData.length) {
+                    onHistoryCallback([], { noData: true })
+                    return
+                }
+                let bars = []
+                bitQueryData.reverse().forEach((el) => {
+                    bars = [
+                        ...bars,
+                        {
+                            time: new Date(el.time.minute).getTime(), // date string in api response
+                            low: el.low,
+                            high: el.high,
+                            open: Number(el.open),
+                            close: Number(el.close),
+                            volume: el.volume,
+                        },
+                    ]
+                })
                 if (firstDataRequest) {
                     lastBarsCache.set(symbolInfo.full_name, { ...bars[bars.length - 1] })
                 }
-                if (bars.length) {
-                    onHistoryCallback(bars, { noData: false })
-                } else {
-                    onHistoryCallback([], { noData: true })
-                }
+                onHistoryCallback(bars, { noData: false })
             } catch (error) {
                 onErrorCallback(error)
             }
@@ -151,93 +158,6 @@ export default {
             onErrorCallback(err)
         }
     },
-    // getBars: async (symbolInfo, resolution, periodParams, onHistoryCallback, onErrorCallback) => {
-    //     const { from, to, firstDataRequest } = periodParams
-    //     let resolutionTime
-    //     switch (resolution) {
-    //         case '5':
-    //             resolutionTime = '300'
-    //             break
-    //         case '15':
-    //             resolutionTime = '900'
-    //             break
-    //         case '240':
-    //             resolutionTime = '14400'
-    //             break
-    //         case '1D':
-    //             resolutionTime = '86400'
-    //             break
-    //         default: {
-    //             resolutionTime = '86400'
-    //         }
-    //     }
-    //     try {
-    //         // const data = await makeUtopiaApiRequest(`retrievePrice/${symbolInfo.address}/${resolutionTime}/${from}/${to}`)
-
-    //         const data = await axios.post(
-    //             `https://graphql.bitquery.io`,
-    //             {
-    //                 query: `{
-    //                     ethereum(network: bsc) {
-    //                       dexTrades(
-    //                         options: {asc: "timeInterval.minute"}
-    //                         date: {since: "2021-10-20T07:23:21.000Z", till: "2021-10-23T15:23:21.000Z"}
-    //                         exchangeAddress: {is: "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73"}
-    //                         baseCurrency: {is: ${symbolInfo.address}},
-    //                         quoteCurrency: {is: "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"},
-    //                         tradeAmountUsd: {gt: 10}
-    //                       )
-    //                       {
-    //                         timeInterval {
-    //                           minute(count: 15, format: "%Y-%m-%dT%H:%M:%SZ")
-    //                         }
-    //                         volume: quoteAmount
-    //                         high: quotePrice(calculate: maximum)
-    //                         low: quotePrice(calculate: minimum)
-    //                         open: minimum(of: block, get: quote_price)
-    //                         close: maximum(of: block, get: quote_price)
-    //                       }
-    //                     }
-    //                   }`
-    //             },
-    //             {
-    //                 headers: {
-    //                     'Access-Control-Allow-Origin': '*',
-    //                     'X-API-KEY': 'BQYmsfh6zyChKKHtKogwvrjXLw8AJkdP',
-    //                 },
-    //             }
-    //         )
-    //         console.log("abcde");
-    //         console.log(data);
-
-    //         if ((data && data.status === 'Not Found') || data.length === 0) {
-    //             // "noData" should be set if there is no data in the requested period.
-    //             onHistoryCallback([], { noData: true })
-    //             return
-    //         }
-    //         let bars = []
-    //         data.forEach((bar) => {
-    //             if (bar.startTime >= from && bar.startTime < to) {
-    //                 bars = [
-    //                     ...bars,
-    //                     {
-    //                         time: bar.startTime * 1000,
-    //                         low: bar.low,
-    //                         high: bar.high,
-    //                         open: bar.open,
-    //                         close: bar.close,
-    //                     },
-    //                 ]
-    //             }
-    //         })
-    //         if (firstDataRequest) {
-    //             lastBarsCache.set(symbolInfo.full_name, { ...bars[bars.length - 1] })
-    //         }
-    //         onHistoryCallback(bars, { noData: false })
-    //     } catch (error) {
-    //         onErrorCallback(error)
-    //     }
-    // },
     subscribeBars: (symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback) => {
         let resolutionTime = resolution
         switch (resolution) {
@@ -264,6 +184,7 @@ export default {
         subscribeOnStream(symbolInfo, resolutionTime, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback, lastBarsCache.get(symbolInfo.full_name))
     },
     unsubscribeBars: (subscriberUID) => {
+        console.log('Unsubscribingg from ', subscriberUID)
         unsubscribeFromStream(subscriberUID)
     },
 }

@@ -59,9 +59,13 @@ const getSubscriptionId = async (baseAddress, quoteAddress) => {
         `ethereum.dexTrades`,
         'BQYmsfh6zyChKKHtKogwvrjXLw8AJkdP'
     )
-    const data = await ds.fetcher()
-    const json = await data.json()
-    return json.extensions.subId
+    try {
+        const data = await ds.fetcher()
+        const json = await data.json()
+        return json.extensions.subId
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 export default getSubscriptionId

@@ -20,6 +20,8 @@ import { BSCContextProvider } from 'context/BSCContext'
 import { TokenContextProvider } from 'context/TokenContext'
 import { useRouter } from 'next/dist/client/router'
 import { pageview } from 'common/utils/ga'
+import { Provider } from 'react-redux'
+import store from '../../redux/store'
 
 pdfjs.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js'
 
@@ -43,16 +45,18 @@ export default function CustomApp({ Component, pageProps }) {
     }, [router.events])
 
     return (
-        <ThemeContextProvider>
-            <QueryClientProvider client={queryClient}>
-                <TokenContextProvider>
-                    <BSCContextProvider>
-                        <Modal>
-                            <Component {...pageProps} />
-                        </Modal>
-                    </BSCContextProvider>
-                </TokenContextProvider>
-            </QueryClientProvider>
-        </ThemeContextProvider>
+        <Provider store={store}>
+            <ThemeContextProvider>
+                <QueryClientProvider client={queryClient}>
+                    <TokenContextProvider>
+                        <BSCContextProvider>
+                            <Modal>
+                                <Component {...pageProps} />
+                            </Modal>
+                        </BSCContextProvider>
+                    </TokenContextProvider>
+                </QueryClientProvider>
+            </ThemeContextProvider>
+        </Provider>
     )
 }

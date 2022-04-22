@@ -1,46 +1,43 @@
 import axios from 'axios'
-import { useDebouncedCallback } from 'common/hooks/useDebouncedCallback'
 import TokenContext from 'context/TokenContext'
 import { formatDistanceToNowStrict, intlFormat, parseJSON } from 'date-fns'
 import React, { useContext, useEffect, useState } from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
+import { setBuyTrades } from '../../redux/reducers/tradeReducer'
 
 export default function MarketHistory() {
     const tokenContext = useContext(TokenContext)
     const [recentTransactions, setRecentTransactions] = useState([])
-    const [currentInterval, setCurrentInterval] = useState(null)
-
-    const debouncedCallback = useDebouncedCallback(async (address, lastIntervalId) => {
-        clearInterval(lastIntervalId)
-        const getRecentTrades = async () => {
-            const recentTransactionsResponse = await axios.post(
-                `https://graphql.bitquery.io`,
-                {
-                    query: `{ ethereum(network: bsc) { dexTrades( options: {limit: 100, desc: ["block.timestamp.time"]} baseCurrency: {is: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"} quoteCurrency: {is: "${address}"} date: {since: "2021-09-28"} ) { block { height timestamp { time(format: "%Y-%m-%d %H:%M:%S") } } tradeIndex protocol buyAmount buyCurrency { address symbol } sellAmount sellCurrency { address symbol } transaction { hash } } } } `,
-                },
-                {
-                    headers: {
-                        'Access-Control-Allow-Origin': '*',
-                        'X-API-KEY': 'BQYmsfh6zyChKKHtKogwvrjXLw8AJkdP',
-                    },
-                }
-            )
-
-            const filteredTransactions = recentTransactionsResponse.data.data.ethereum.dexTrades.filter((v, i, a) => a.findIndex((t) => t.transaction.hash === v.transaction.hash) === i)
-            setRecentTransactions(filteredTransactions)
-        }
-        if (address) {
-            await getRecentTrades()
-        }
-        const intervalId = setInterval(async () => {
-            await getRecentTrades()
-        }, 300000)
-        setCurrentInterval(intervalId)
-    }, 1000)
+    const buyTrades = useSelector((state) => state.trades.buyTrades)
 
     useEffect(async () => {
-        debouncedCallback(tokenContext.currentlySelectedToken.address, currentInterval)
+        const recentTransactionsResponse = await axios.post(
+            `https://graphql.bitquery.io`,
+            {
+                query: `{ ethereum(network: bsc) { dexTrades( options: {limit: 100, desc: ["block.timestamp.time"]} baseCurrency: {is: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"} quoteCurrency: {is: "${tokenContext.currentlySelectedToken.address}"} date: {since: "2021-09-28"} ) { block { height timestamp { time(format: "%Y-%m-%d %H:%M:%S") } } tradeIndex protocol buyAmount buyCurrency { address symbol } sellAmount sellCurrency { address symbol } transaction { hash } } } } `,
+            },
+            {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'X-API-KEY': 'BQYmsfh6zyChKKHtKogwvrjXLw8AJkdP',
+                },
+            }
+        )
+        const filteredTransactions = recentTransactionsResponse.data.data.ethereum.dexTrades.filter((v, i, a) => a.findIndex((t) => t.transaction.hash === v.transaction.hash) === i)
+        setRecentTransactions(filteredTransactions)
     }, [tokenContext.currentlySelectedToken.address])
+
+    useEffect(() => {
+        if (buyTrades.length) {
+            const transactions = [...buyTrades, ...recentTransactions]
+            const filteredTransactions = transactions
+                .filter((v, i, a) => a.findIndex((t) => t.transaction.hash === v.transaction.hash) === i)
+                .sort((a, b) => new Date(b?.block?.timestamp?.time).getTime() - new Date(a?.block?.timestamp?.time).getTime())
+            setRecentTransactions(filteredTransactions)
+            setBuyTrades([])
+        }
+    }, [buyTrades])
 
     return (
         <div className="market-history">

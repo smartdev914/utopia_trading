@@ -1,4 +1,4 @@
-export const getTradingViewData = async (baseAddress, quoteAddress, interval, count) => {
+export const getTradingViewData = async (baseAddress, quoteAddress, interval) => {
     const ds = new window.dataSourceWidget(
         `
         query ($baseAddress: String, $quoteAddress: String, $from: ISO8601DateTime!, $interval: Int, $protocol: String, $exchangeName: String, $count: Int) {
@@ -14,7 +14,7 @@ export const getTradingViewData = async (baseAddress, quoteAddress, interval, co
               options: {limit: $count, desc: "time.minute"}
             ) {
               time: timeInterval {
-                minute(format: "%FT%TZ", count: $interval)
+                minute(format: "%Y-%m-%d %H:%M:%S", count: $interval)
               }
               buyCurrency: baseCurrency {
                 symbol
@@ -41,14 +41,19 @@ export const getTradingViewData = async (baseAddress, quoteAddress, interval, co
             baseAddress,
             quoteAddress,
             protocol: 'Uniswap v2',
-            count,
+            count: 750,
         },
         `ethereum.dexTrades`,
         'BQYmsfh6zyChKKHtKogwvrjXLw8AJkdP'
     )
-    const data = await ds.fetcher()
-    const json = await data.json()
-    return ds.setupData(json)
+    try {
+        const data = await ds.fetcher()
+        const json = await data.json()
+        return ds.setupData(json)
+    } catch (e) {
+        console.log(e)
+        throw new Error(e)
+    }
 }
 
 export default {}
