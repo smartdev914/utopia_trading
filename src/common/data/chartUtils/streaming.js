@@ -111,7 +111,6 @@ export async function subscribeOnStream(symbolInfo, resolution, onRealtimeCallba
             subIDTransactions,
             (update) => {
                 const data = JSON.parse(update.body).data.ethereum.dexTrades
-                console.log(data)
                 store.dispatch(setBuyTrades(data))
             },
             { id: subIDTransactions }
