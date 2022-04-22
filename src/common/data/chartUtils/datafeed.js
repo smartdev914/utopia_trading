@@ -125,37 +125,33 @@ export default {
                     break
                 }
             }
-            try {
-                if (!firstDataRequest) {
-                    onHistoryCallback([], { noData: true })
-                    return
-                }
-                const bitQueryData = await getTradingViewData(symbolInfo.address, '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', parseInt(resolutionTime, 10))
-                if (!bitQueryData.length) {
-                    onHistoryCallback([], { noData: true })
-                    return
-                }
-                let bars = []
-                bitQueryData.reverse().forEach((el) => {
-                    bars = [
-                        ...bars,
-                        {
-                            time: new Date(el.time.minute).getTime(), // date string in api response
-                            low: el.low,
-                            high: el.high,
-                            open: Number(el.open),
-                            close: Number(el.close),
-                            volume: el.volume,
-                        },
-                    ]
-                })
-                if (firstDataRequest) {
-                    lastBarsCache.set(symbolInfo.full_name, { ...bars[bars.length - 1] })
-                }
-                onHistoryCallback(bars, { noData: false })
-            } catch (error) {
-                onErrorCallback(error)
+            if (!firstDataRequest) {
+                onHistoryCallback([], { noData: true })
+                return
             }
+            const bitQueryData = await getTradingViewData(symbolInfo.address, '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', parseInt(resolutionTime, 10))
+            if (!bitQueryData.length) {
+                onHistoryCallback([], { noData: true })
+                return
+            }
+            let bars = []
+            bitQueryData.reverse().forEach((el) => {
+                bars = [
+                    ...bars,
+                    {
+                        time: new Date(el.time.minute).getTime(), // date string in api response
+                        low: el.low,
+                        high: el.high,
+                        open: Number(el.open),
+                        close: Number(el.close),
+                        volume: el.volume,
+                    },
+                ]
+            })
+            if (firstDataRequest) {
+                lastBarsCache.set(symbolInfo.full_name, { ...bars[bars.length - 1] })
+            }
+            onHistoryCallback(bars, { noData: false })
         } catch (err) {
             console.log({ err })
             onErrorCallback(err)
