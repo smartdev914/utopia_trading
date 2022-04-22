@@ -88,11 +88,11 @@ const PrivacyPortal = () => (
                 <TeamMember>
                     <Fade up delay={225}>
                         <div>
-                            <Image src="/assets/image/TeamMembers/ProfilePic-Lane.png" alt="Lane Ainbinder" width={275} height={275} priority unoptimized />
+                            <Image src="/assets/image/TeamMembers/ProfilePic-Lane.png" alt="Sasha Ainbinder" width={275} height={275} priority unoptimized />
                             <div className="nameHeader">
                                 <Heading as="h4" content="LANE AINBINDER" />
                                 <a href="https://www.linkedin.com/in/julia-ainbinder/">
-                                    <Image src="/assets/image/icons/linkedin.svg" alt="Lane Ainbinder's LinkedIn Profile" width={32} height={32} />
+                                    <Image src="/assets/image/icons/linkedin.svg" alt="Sasha Ainbinder's LinkedIn Profile" width={32} height={32} />
                                 </a>
                             </div>
                             <Text content="LEAD DESIGNER" />
