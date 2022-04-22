@@ -14,7 +14,7 @@ export const getTradingViewData = async (baseAddress, quoteAddress, interval) =>
               options: {limit: $count, desc: "time.minute"}
             ) {
               time: timeInterval {
-                minute(format: "%Y-%m-%d %H:%M:%S", count: $interval)
+                minute(format: "%Y-%m-%dT%H:%M:%S", count: $interval)
               }
               buyCurrency: baseCurrency {
                 symbol
