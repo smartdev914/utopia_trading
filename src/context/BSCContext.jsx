@@ -6,7 +6,6 @@ import WalletConnectProvider from '@walletconnect/web3-provider'
 import { getContract, getContractNoABI } from 'common/utils/getContract'
 import { ethers } from 'ethers'
 import { useDebouncedCallback } from 'common/hooks/useDebouncedCallback'
-import bscPresaleABI from '../ABI/bscPresaleABI'
 import wbnbABI from '../ABI/tokenABI/WBNB'
 
 const Contract = require('web3-eth-contract')
@@ -27,16 +26,13 @@ const nodes = [
 ]
 
 const BSCContextProvider = ({ children }) => {
-    const [presaleContract, setPresaleContract] = useState(null)
     const [WBNBContract, setWBNBContract] = useState(null)
     const [currentAccountAddress, setCurrentAccountAddress] = useState('')
     const [loadDexContract, setLoadDexContract] = useState(false)
-    const [loadPresaleContract, setLoadPresaleContract] = useState(false)
     const [hasDappBrowser, setHasDappBrowser] = useState(false)
     const [currentBnbBalance, setBNBBalance] = useState('')
     const [currentWbnbBalance, setWBNBBalance] = useState('')
     const [pancakeSwapRouterV2, setPancakeSwapRouterV2] = useState(null)
-    const UtopiaPresaleBSCAddress = '0x609692D1A4c45FB8f535269f4339b7880296baa0'
     const utopiaLimitOrderAddress = '0xFaDB11EC99Bf90A6f32d079f33a37E0Ba1cf4bdE'
     const utopiaStopLossAddress = '0x8f4E2B6CFbC53A68A0DEB6eD1ea8dae678eABAf8'
     const pancakeSwapFactoryAddress = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
@@ -92,11 +88,6 @@ const BSCContextProvider = ({ children }) => {
     useEffect(async () => {
         debounceGetTokenBalance(currentAccountAddress)
     }, [currentAccountAddress, refreshTokens, signer])
-
-    const loadUTPPresaleContract = useCallback(() => {
-        const UtopiaContract = getContract(bscPresaleABI, UtopiaPresaleBSCAddress, signer)
-        setPresaleContract(UtopiaContract)
-    }, [UtopiaPresaleBSCAddress, signer])
 
     const setupNetwork = async () => {
         const provider = window.ethereum
@@ -168,9 +159,6 @@ const BSCContextProvider = ({ children }) => {
         const wbnbBalance = await wbnbContract.balanceOf(account[0])
         setWBNBBalance(wbnbBalance.toString())
         setSigner(currSigner)
-        // if (loadPresaleContract) {
-        //     loadUTPPresaleContract()
-        // }
         if (loadDexContract) {
             await loadPancakeSwapFactoryContract()
             await loadPancakeSwapRouterV2Contract(currSigner)
@@ -248,10 +236,8 @@ const BSCContextProvider = ({ children }) => {
         <BSCContext.Provider
             value={{
                 currentAccountAddress,
-                presaleContract,
                 logout,
                 setLoadDexContract,
-                setLoadPresaleContract,
                 hasDappBrowser,
                 triggerDappModal,
                 currentBnbBalance,

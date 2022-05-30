@@ -9,7 +9,8 @@ import getTransactionSubscriptionId from './queries/transactions'
 import store from '../../../../redux/store'
 import { setBuyTrades, setSellTrades } from '../../../../redux/reducers/tradeReducer'
 
-const channelToSubscription = new Map()
+const channelToSubscription = []
+const tradesSubscription = []
 
 let stompClient = null
 let bitQuerySocket = null
@@ -65,7 +66,8 @@ export async function subscribeOnStream(symbolInfo, resolution, onRealtimeCallba
         let nextTimeInterval = new Date((getUnixTime(parseISO(lastTimeInterval)) + parseInt(resolution, 10) * 60) * 1000).toISOString()
         const includeLastCandle = (timestamp) => getUnixTime(parseISO(lastTimeInterval)) >= getUnixTime(parseISO(timestamp)) < getUnixTime(parseISO(nextTimeInterval))
         const includeNextCandle = (timestamp) => getUnixTime(parseISO(timestamp)) >= getUnixTime(parseISO(nextTimeInterval))
-        channelToSubscription.set(subscribeUID, subIDBuy)
+        channelToSubscription.push(subIDBuy)
+        tradesSubscription.push(subIDTransactions)
         stompClient.subscribe(
             subIDBuy,
             (update) => {
@@ -120,25 +122,12 @@ export async function subscribeOnStream(symbolInfo, resolution, onRealtimeCallba
     }
 }
 export function unsubscribeFromStream(subscriberUID) {
-    // console.log('Unsubbing from: ', subscriberUID)
-    // console.log(channelToSubscription)
-    // // const subID = channelToSubscription.get(subscriberUID)
-    // // stompClient.unsubscribe(subID)
-    // // channelToSubscription.delete(subscriberUID)
-    // console.log(channelToSubscription)
-    // for (const channelString of channelToSubscription.keys()) {
-    //     console.log(channelString)
-    //     // const handlerIndex = subscriptionItem.handlers.findIndex((handler) => handler.id === subscriberUID)
-    //     // if (handlerIndex !== -1) {
-    //     //     // remove from handlers
-    //     //     subscriptionItem.handlers.splice(handlerIndex, 1)
-    //     //     if (subscriptionItem.handlers.length === 0) {
-    //     //         // unsubscribe from the channel, if it was the last handler
-    //     //         console.log('[unsubscribeBars]: Unsubscribe from streaming. Channel:', channelString.toLowerCase())
-    //     //         // socket.emit('SubRemove', { subs: [channelString] })
-    //     //         channelToSubscription.delete(channelString.toLowerCase())
-    //     //         break
-    //     //     }
-    //     // }
-    // }
+    for (let i = 0; i < channelToSubscription.length - 1; i += 1) {
+        const subID = channelToSubscription.shift()
+        stompClient.unsubscribe(subID)
+    }
+    for (let i = 0; i < tradesSubscription.length - 1; i += 1) {
+        const subID = tradesSubscription.shift()
+        stompClient.unsubscribe(subID)
+    }
 }
