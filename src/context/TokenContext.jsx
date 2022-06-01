@@ -26,7 +26,6 @@ const TokenContextProvider = ({ children }) => {
 
     useEffect(() => {
         if (pathname === '/exchange') {
-            // debugger
             let currentTokenIndex = parseInt(localStorage.getItem('currentTokenIndex'), 10)
             if (Number.isNaN(currentTokenIndex)) {
                 localStorage.setItem('currentTokenIndex', 0)
