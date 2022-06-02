@@ -535,6 +535,7 @@ const MarketOrder = () => {
                     setLoading(true)
                     if (fromBNB) {
                         setTokenB(token)
+                        tokenContext.setCurrentlySelectedToken(token)
                     } else {
                         setTokenA(token)
                     }
