@@ -25,6 +25,7 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
     const [liquidity, setLiquidity] = useState('$-')
     const [marketCap, setMarketCap] = useState('$-')
     const [tokenInfo, setTokenInfo] = useState({})
+    const [logoUrl, setLogoURL] = useState('')
     const parseToMorB = (number) => {
         if (number / 1000000 > 1000) {
             return `${round(number / 1000000000, 3)}B`
@@ -104,6 +105,7 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
         })
         setTokenInfo(tokenInfoRes?.data?.result?.[0] || {})
         setLoading(false)
+        setLogoURL(tokenContext.currentlySelectedToken.logoURI)
     }, [tokenContext.currentlySelectedToken.address])
 
     const addToWallet = async () => {
@@ -114,12 +116,13 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
         }
     }
 
+    console.log(tokenContext.currentlySelectedToken.logoURI)
     const iconSize = '25px'
     return (
         <div className="token-info">
             <div className="flex-row">
                 <div className="selected-token">
-                    <img className="token-icon" src={tokenContext.currentlySelectedToken.logoURI} alt="token logo" />
+                    <img className="token-icon" src={logoUrl} alt="token logo" />
                     <div className="selected-token-info">
                         <div>{`${tokenContext.currentlySelectedToken.name} (${tokenContext.currentlySelectedToken.symbol} / BNB)`}</div>
                         <div className="green">{`$${!Number.isNaN(tokenContext.currentTokenPriceInUSD) ? tokenContext.currentTokenPriceInUSD : '-'}`}</div>
