@@ -3,6 +3,7 @@ import TokenContext from 'context/TokenContext'
 import React, { useContext, useEffect, useState } from 'react'
 import supportedPancakeTokens from 'common/constants/tokens/supportedPancakeTokens.json'
 import ThemeContext from 'context/ThemeContext'
+import { ResizableBox } from 'react-resizable'
 import Datafeed from '../common/data/chartUtils/datafeed'
 
 export default function DynamicTVS() {
@@ -174,14 +175,16 @@ export default function DynamicTVS() {
     }, [currentTokenSymbol])
 
     return (
-        <div className="main-chart mb15">
-            <div id="tv_chart_container" />
-            {/* {!supportedPancakeTokens.tokens.find((token) => token.symbol === currentTokenSymbol) && (
+        <ResizableBox height={500}>
+            <div className="main-chart mb15">
+                <div id="tv_chart_container" />
+                {/* {!supportedPancakeTokens.tokens.find((token) => token.symbol === currentTokenSymbol) && (
                 <div className="token-not-supported">
                     <div>Token Chart Not Currently Supported!</div>
                     <span>Tokens added by popular demand</span>
                 </div>
             )} */}
-        </div>
+            </div>
+        </ResizableBox>
     )
 }

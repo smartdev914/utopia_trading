@@ -576,3 +576,7 @@ letter-spacing: 5px;
       border: 2px solid #5F53DE;
   }
 }
+
+.lightMode .react-resizable-handle {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg fill='none' xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Cpath d='M25.172 6.828C27.692 4.308 32 6.093 32 9.657V24a8 8 0 01-8 8H9.657c-3.564 0-5.348-4.309-2.829-6.828L25.172 6.828z' fill='%2362b7ad'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M19 24.5a.5.5 0 01.5-.5H24v-4.5a.5.5 0 011 0V25h-5.5a.5.5 0 01-.5-.5z' fill='%23fff'/%3E%3C/svg%3E");
+}
