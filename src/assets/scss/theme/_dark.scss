@@ -15,6 +15,16 @@
 .darkMode header {
     background: #192029;
 }
+
+.darkMode footer {
+    background: #192029;
+    color: white;
+}
+
+.darkMode footer a{
+    color: white;
+}
+
 .darkMode h3 {
   font-family: var(--fontSyncopate);
   color: #00DEE6;
@@ -234,6 +244,9 @@ th {
     background: #2a2e39;
     color: #ffffff;
     border-color: #2a2e39;
+}
+.darkMode .token-modal .form-control {
+    color: #000;
 }
 .darkMode .market-trade-buy .market-trade-list li a:hover {
     background: #26de81;

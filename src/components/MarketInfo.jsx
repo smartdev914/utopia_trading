@@ -28,6 +28,7 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
     const [tokenInfo, setTokenInfo] = useState({})
 
     const socialRef = useRef(null)
+    const [logoUrl, setLogoURL] = useState('')
 
     const parseToMorB = (number) => {
         if (number / 1000000 > 1000) {
@@ -108,6 +109,7 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
         })
         setTokenInfo(tokenInfoRes?.data?.result?.[0] || {})
         setLoading(false)
+        setLogoURL(tokenContext.currentlySelectedToken.logoURI)
     }, [tokenContext.currentlySelectedToken.address])
 
     const addToWallet = async () => {
@@ -125,7 +127,7 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
         <div className="token-info">
             <div className="flex-row">
                 <div className="selected-token">
-                    <img className="token-icon" src={tokenContext.currentlySelectedToken.logoURI} alt="token logo" />
+                    <img className="token-icon" src={logoUrl} alt="token logo" />
                     <div className="selected-token-info">
                         <div>{`${tokenContext.currentlySelectedToken.name} (${tokenContext.currentlySelectedToken.symbol} / BNB)`}</div>
                         <div className="green">{`$${!Number.isNaN(tokenContext.currentTokenPriceInUSD) ? tokenContext.currentTokenPriceInUSD : '-'}`}</div>

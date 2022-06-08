@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 import BSCContext from 'context/BSCContext'
 import dynamic from 'next/dynamic'
 import { getBalanceAmount } from 'common/utils/numbers'
@@ -14,7 +14,7 @@ const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false })
 export default function MarketTrade() {
     const bscContext = useContext(BSCContext)
     const themeContext = useContext(ThemeContext)
-    const [currentBalance, setCurrentBalance] = useState(0)
+    const [currentBalance, setCurrentBalance] = useState('')
     const [tokenLabels, setTokenLabels] = useState(['Token1', 'Token2', 'Token3', 'Token4'])
     const [tokenBalances, setTokenBalances] = useState(null)
     const [filteredTokensList, setFilteredTokensList] = useState([])
@@ -22,6 +22,8 @@ export default function MarketTrade() {
     const [unfilteredTokenList, setUnfilteredTokenList] = useState([])
     const [showUnfilteredTokenList, toggleShowUnfilteredTokenList] = useState(false)
     const [loadingBalances, setLoadingBalances] = useState(false)
+    const [chartHeight, setChartHeight] = useState(0)
+    const chartRef = useRef(null)
 
     useEffect(async () => {
         setLoadingBalances(bscContext.currentAccountAddress)
@@ -51,7 +53,11 @@ export default function MarketTrade() {
             setFilteredTokensList(filteredWalletBalances)
             setTokenBalances(filteredWalletBalances.map((token) => token.token_value))
             setTokenLabels(filteredWalletBalances.map((token) => token.token_symbol))
-            setCurrentBalance(walletBalancesResponse.data.total_value.toFixed(2))
+
+            let ballance = walletBalancesResponse.data.total_value.toFixed(2)
+            ballance = ballance / 1000 > 1000 ? `${ballance / 1000} K` : ballance
+            setCurrentBalance(ballance)
+
             setLoadingBalances(false)
         } catch (e) {
             // console.log(e)
@@ -122,10 +128,33 @@ export default function MarketTrade() {
     }
 
     useEffect(() => {
+        const handleResize = () => {
+            const legendElements = document.getElementsByClassName('apexcharts-legend')
+            if (legendElements.length > 0) {
+                const labelHeight = legendElements[0].clientHeight
+                setChartHeight(chartRef.current.offsetHeight - labelHeight)
+            }
+        }
+
+        const legendElements = document.getElementsByClassName('apexcharts-legend')
+
+        if (legendElements.length > 0 && !loadingBalances) {
+            const labelHeight = legendElements[0].clientHeight
+            setChartHeight(chartRef.current.offsetHeight - labelHeight)
+            window.addEventListener('resize', handleResize)
+        }
+
+        return () => {
+            window.removeEventListener('resize', handleResize)
+        }
+    }, [tokenBalances, loadingBalances])
+
+    useEffect(() => {
         // Component Set up
         bscContext.setLoadDexContract(true)
         bscContext.setupNetwork()
     }, [])
+
     return (
         <>
             <div className="market-portfolio mb15">
@@ -135,9 +164,9 @@ export default function MarketTrade() {
                         <Spinner size="" animation="border" variant="primary" />
                     </div>
                 ) : (
-                    <div className="portfolio-chart">
+                    <div ref={chartRef} className="portfolio-chart">
                         <ApexCharts options={chartOptions} series={series} type="donut" width="100%" height="400px" />
-                        <div className="current-balance">
+                        <div className="current-balance" style={chartHeight === 0 ? { top: '45%' } : { top: chartHeight / 2.1 }}>
                             {bscContext.currentAccountAddress ? (
                                 <>
                                     <h4>CURRENT BALANCE</h4>
