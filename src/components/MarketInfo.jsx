@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import axios from 'axios'
 import TokenContext from 'context/TokenContext'
@@ -13,6 +13,7 @@ import { SocialIcon } from 'react-social-icons'
 import { formatISO, subDays } from 'date-fns'
 import useInterval from 'common/hooks/useInterval'
 import { Spinner } from 'react-bootstrap'
+import useOnClickOutside from '../common/hooks/useOnClickOutside'
 
 const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
     const tokenContext = useContext(TokenContext)
@@ -25,7 +26,10 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
     const [liquidity, setLiquidity] = useState('$-')
     const [marketCap, setMarketCap] = useState('$-')
     const [tokenInfo, setTokenInfo] = useState({})
+
+    const socialRef = useRef(null)
     const [logoUrl, setLogoURL] = useState('')
+
     const parseToMorB = (number) => {
         if (number / 1000000 > 1000) {
             return `${round(number / 1000000000, 3)}B`
@@ -116,7 +120,8 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
         }
     }
 
-    console.log(tokenContext.currentlySelectedToken.logoURI)
+    useOnClickOutside(socialRef, () => toggleShowSocials(false))
+
     const iconSize = '25px'
     return (
         <div className="token-info">
@@ -165,7 +170,7 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
                             <Image src={`/assets/image/icons/bscScan${themeContext.currentTheme === 'lightMode' ? 'Light' : ''}.svg`} width={20} height={20} />
                         </div>
                     </a>
-                    <div role="button" tabIndex="0" onClick={() => toggleShowSocials(!showSocials)} className="token-info-button share">
+                    <div role="button" ref={socialRef} tabIndex="0" onClick={() => toggleShowSocials(!showSocials)} className="token-info-button share">
                         <Image src={`/assets/image/icons/share${themeContext.currentTheme === 'lightMode' ? 'Light' : ''}.svg`} width={20} height={20} />
                         <div className={`social-drop-down ${showSocials ? 'show' : ''}`}>
                             {tokenInfo.linkedin && (
