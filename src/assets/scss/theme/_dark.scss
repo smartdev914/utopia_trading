@@ -16,13 +16,17 @@
     background: #192029;
 }
 
-.darkMode footer {
+.darkMode footer .footercontent {
     background: #192029;
-    color: white;
+    color: #545c66;
 }
 
 .darkMode footer a{
-    color: white;
+    color:#9488f0;
+}
+
+.darkMode footer a :hover{
+    color:#bcb4f4;
 }
 
 .darkMode h3 {

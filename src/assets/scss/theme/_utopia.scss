@@ -45,17 +45,21 @@
     }
 }
 
-.utopiaMode header {
+.utopiaMode header  {
     background: #1733AA;
 }
 
-.utopiaMode footer {
+.utopiaMode footer .footercontent {
     background: #1733AA;
-    color: #007bff;
+    color: #818c99;
   }
   
 .utopiaMode footer a{
-    color: #007bff;
+    color: #aab1b7;
+}
+
+.utopiaMode footer a :hover {
+    color: #c2c9cf;
 }
 
 .utopiaMode h3 {
