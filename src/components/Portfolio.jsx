@@ -56,27 +56,8 @@ export default function MarketTrade() {
             setTokenBalances(filteredWalletBalances.map((token) => token.token_value))
             setTokenLabels(filteredWalletBalances.map((token) => token.token_symbol))
 
-            // setTokenLabels([
-            //     'adafe ef',
-            //     'adafe ef',
-            //     'adafe ef',
-            //     'adafe ef',
-            //     'adafe ef',
-            //     'adafe ef',
-            //     'adafe ef',
-            //     'adafe ef',
-            //     'adafe ef',
-            //     'adafe ef',
-            //     'adafe ef',
-            //     'adafe ef',
-            //     'adafe ef',
-            //     'adafe ef',
-            //     'adafe ef',
-            //     'adafe ef',
-            //     'adafe ef',
-            // ])
             let ballance = walletBalancesResponse.data.total_value.toFixed(2)
-            ballance = ballance / 1000 > 1000 ? `${ballance / 1000} K` : ballance
+            ballance = ballance / 1000 > 1000 ? `${(ballance / 1000).toFixed(2)} K` : ballance
             setCurrentBalance(ballance)
 
             setLoadingBalances(false)
@@ -188,7 +169,7 @@ export default function MarketTrade() {
                     </div>
                 ) : (
                     <div ref={chartRef} className="portfolio-chart">
-                        <ApexCharts options={chartOptions} series={series} type="donut" width="100%" height={chartHeight} />
+                        <ApexCharts options={chartOptions} series={series} type="donut" width="100%" height={chartHeight === 0 ? 400 : chartHeight} />
                         <div className="current-balance" style={labelPosition === 0 ? { top: '45%' } : { top: labelPosition / 2.1 }}>
                             {bscContext.currentAccountAddress ? (
                                 <>
