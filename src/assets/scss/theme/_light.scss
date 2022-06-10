@@ -5,13 +5,17 @@
   background: #F8F7FC;
 }
 
-.lightMode footer {
+.lightMode footer .footercontent{
   background: #F8F7FC;
   color: black;
 }
 
 .lightMode footer a{
   color: black
+}
+
+.lightMode footer a :hover{
+  color: rgb(92, 89, 89)
 }
 
 .lightMode h3 {

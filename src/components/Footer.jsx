@@ -1,12 +1,11 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react'
-import { Navbar } from 'react-bootstrap'
 
 const Header = () => (
     <>
-        <footer className="">
-            <Navbar expand="lg">
+        <footer className="footer">
+            <div className="footercontent">
                 <p className="utopia">@ 2022 Utopia</p>
                 <a href="https://forms.gle/9WRD22TVkWWJgtZg7" target="_blank" rel="noreferrer">
                     <span>Bug Report</span>
@@ -23,7 +22,7 @@ const Header = () => (
                 <a href="https://discord.gg/XWv5hCb8mG" target="_blank" rel="noreferrer">
                     <span>Discord</span>
                 </a>
-            </Navbar>
+            </div>
         </footer>
     </>
 )
