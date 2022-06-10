@@ -23,6 +23,8 @@ export default function MarketTrade() {
     const [showUnfilteredTokenList, toggleShowUnfilteredTokenList] = useState(false)
     const [loadingBalances, setLoadingBalances] = useState(false)
     const [chartHeight, setChartHeight] = useState(0)
+    const [labelPosition, setLabelPosition] = useState(0)
+
     const chartRef = useRef(null)
 
     useEffect(async () => {
@@ -55,7 +57,7 @@ export default function MarketTrade() {
             setTokenLabels(filteredWalletBalances.map((token) => token.token_symbol))
 
             let ballance = walletBalancesResponse.data.total_value.toFixed(2)
-            ballance = ballance / 1000 > 1000 ? `${ballance / 1000} K` : ballance
+            ballance = ballance / 1000 > 1000 ? `${(ballance / 1000).toFixed(2)} K` : ballance
             setCurrentBalance(ballance)
 
             setLoadingBalances(false)
@@ -132,7 +134,8 @@ export default function MarketTrade() {
             const legendElements = document.getElementsByClassName('apexcharts-legend')
             if (legendElements.length > 0) {
                 const labelHeight = legendElements[0].clientHeight
-                setChartHeight(chartRef.current.offsetHeight - labelHeight)
+                setLabelPosition(chartRef.current.offsetHeight - labelHeight)
+                setChartHeight(380 + labelHeight)
             }
         }
 
@@ -140,7 +143,8 @@ export default function MarketTrade() {
 
         if (legendElements.length > 0 && !loadingBalances) {
             const labelHeight = legendElements[0].clientHeight
-            setChartHeight(chartRef.current.offsetHeight - labelHeight)
+            setLabelPosition(chartRef.current.offsetHeight - labelHeight)
+            setChartHeight(380 + labelHeight)
             window.addEventListener('resize', handleResize)
         }
 
@@ -165,8 +169,8 @@ export default function MarketTrade() {
                     </div>
                 ) : (
                     <div ref={chartRef} className="portfolio-chart">
-                        <ApexCharts options={chartOptions} series={series} type="donut" width="100%" height="400px" />
-                        <div className="current-balance" style={chartHeight === 0 ? { top: '45%' } : { top: chartHeight / 2.1 }}>
+                        <ApexCharts options={chartOptions} series={series} type="donut" width="100%" height={chartHeight === 0 ? 400 : chartHeight} />
+                        <div className="current-balance" style={labelPosition === 0 ? { top: '45%' } : { top: labelPosition / 2.1 }}>
                             {bscContext.currentAccountAddress ? (
                                 <>
                                     <h4>CURRENT BALANCE</h4>
