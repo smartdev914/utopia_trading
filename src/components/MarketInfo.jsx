@@ -167,7 +167,7 @@ const MarketInfo = ({ showPortfolio, toggleShowPortfolio }) => {
                     </div>
                     <a href={`https://bscscan.com/token/${tokenContext.currentlySelectedToken.address}`} target="_blank" rel="noreferrer">
                         <div className="token-info-button">
-                            <Image src={`/assets/image/icons/bscScan${themeContext.currentTheme === 'lightMode' ? 'Light' : ''}.svg`} width={20} height={20} />
+                            <Image src={`/assets/image/icons/bscScan${themeContext.currentTheme === 'lightMode' ? 'Light' : ''}.svg`} width={20} height={20} quality={100} layout="intrinsic" />
                         </div>
                     </a>
                     <div role="button" ref={socialRef} tabIndex="0" onClick={() => toggleShowSocials(!showSocials)} className="token-info-button share">
