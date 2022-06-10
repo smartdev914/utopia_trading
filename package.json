@@ -66,6 +66,7 @@
         "react-pdf-pages": "^0.1.8",
         "react-query": "^3.24.5",
         "react-redux": "^7.2.6",
+        "react-resizable": "^3.0.4",
         "react-reveal": "^1.2.2",
         "react-rnd": "^10.2.3",
         "react-scroll-parallax": "^2.3.4",
